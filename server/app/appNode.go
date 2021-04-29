@@ -6,7 +6,7 @@
 package app
 
 import (
-	"github.com/jinyun/base/protoFiles/protoManage"
+	"github.com/liyiligang/base/protoFiles/protoManage"
 )
 
 //节点登录

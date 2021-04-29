@@ -7,10 +7,10 @@ package app
 
 import (
 	"errors"
-	"github.com/jinyun/base/component/Jtoken"
-	"github.com/jinyun/base/component/Jtool"
-	"github.com/jinyun/base/protoFiles/protoManage"
-	"manageServer/typedef/config"
+	"github.com/liyiligang/base/component/Jtoken"
+	"github.com/liyiligang/base/component/Jtool"
+	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/typedef/config"
 )
 
 //管理员登录

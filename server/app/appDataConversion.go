@@ -6,9 +6,9 @@
 package app
 
 import (
-	"github.com/jinyun/base/component/Jtool"
-	"github.com/jinyun/base/protoFiles/protoManage"
-	"manageServer/typedef/orm"
+	"github.com/liyiligang/base/component/Jtool"
+	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/typedef/orm"
 )
 
 //NodeStateID To NodeStateName

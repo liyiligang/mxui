@@ -6,12 +6,12 @@
 package app
 
 import (
-	"github.com/jinyun/base/component/Jtoken"
-	"github.com/jinyun/base/protoFiles/protoManage"
+	"github.com/liyiligang/base/component/Jtoken"
+	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/typedef/config"
+	"github.com/liyiligang/manage/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
-	"manageServer/typedef/config"
-	"manageServer/typedef/orm"
 	"time"
 )
 

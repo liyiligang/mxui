@@ -6,7 +6,7 @@
 package logTest
 
 import (
-	"github.com/jinyun/base/component/Jlog"
+	"github.com/liyiligang/base/component/Jlog"
 	"testing"
 )
 

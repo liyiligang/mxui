@@ -8,11 +8,11 @@ package app
 import (
 	"fmt"
 	"github.com/gogo/protobuf/proto"
-	"github.com/jinyun/base/commonConst"
-	"github.com/jinyun/base/component/Jlog"
-	"github.com/jinyun/base/component/Jrpc"
-	"github.com/jinyun/base/component/Jtool"
-	"github.com/jinyun/base/protoFiles/protoManage"
+	"github.com/liyiligang/base/commonConst"
+	"github.com/liyiligang/base/component/Jlog"
+	"github.com/liyiligang/base/component/Jrpc"
+	"github.com/liyiligang/base/component/Jtool"
+	"github.com/liyiligang/base/protoFiles/protoManage"
 	"github.com/pkg/errors"
 )
 

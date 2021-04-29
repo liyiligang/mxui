@@ -6,9 +6,9 @@
 package app
 
 import (
-	"github.com/jinyun/base/commonConst"
-	"github.com/jinyun/base/component/Jdiscovery"
-	"github.com/jinyun/base/component/Jlog"
+	"github.com/liyiligang/base/commonConst"
+	"github.com/liyiligang/base/component/Jdiscovery"
+	"github.com/liyiligang/base/component/Jlog"
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
 	"net/http"

@@ -7,8 +7,8 @@ package dbTest
 
 import (
 	"fmt"
-	"github.com/jinyun/base/component/Jorm"
-	"manageServer/typedef/config"
+	"github.com/liyiligang/base/component/Jorm"
+	"github.com/liyiligang/manage/typedef/config"
 	"testing"
 	"time"
 )

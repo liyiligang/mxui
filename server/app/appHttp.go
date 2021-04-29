@@ -2,10 +2,10 @@ package app
 
 import (
 	"errors"
-	"github.com/jinyun/base/component/Jlog"
-	"github.com/jinyun/base/component/Jtoken"
-	"github.com/jinyun/base/protoFiles/protoManage"
-	"manageServer/typedef/config"
+	"github.com/liyiligang/base/component/Jlog"
+	"github.com/liyiligang/base/component/Jtoken"
+	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/typedef/config"
 )
 
 func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {

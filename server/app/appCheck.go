@@ -6,8 +6,8 @@
 package app
 
 import (
-	"github.com/jinyun/base/component/Jtool"
-	"github.com/jinyun/base/protoFiles/protoManage"
+	"github.com/liyiligang/base/component/Jtool"
+	"github.com/liyiligang/base/protoFiles/protoManage"
 	"github.com/pkg/errors"
 	"unicode/utf8"
 )

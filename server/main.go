@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/jinyun/base/component/Jconfig"
-	"manageServer/app"
-	"manageServer/typedef/config"
+	"github.com/liyiligang/base/component/Jconfig"
+	"github.com/liyiligang/manage/app"
+	"github.com/liyiligang/manage/typedef/config"
 	"os"
 )
 

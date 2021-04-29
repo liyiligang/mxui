@@ -7,9 +7,9 @@ package app
 
 import (
 	"errors"
-	"github.com/jinyun/base/protoFiles/protoManage"
+	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/typedef/orm"
 	"gorm.io/gorm"
-	"manageServer/typedef/orm"
 )
 
 //查找管理员(账号)
