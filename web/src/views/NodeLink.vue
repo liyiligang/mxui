@@ -1,0 +1,75 @@
+<template>
+    <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
+        <el-space class="view-space" wrap :size="12">
+            <NodeLinkCard  v-for="i in data.nodeLinkList" :nodeLink="i" :sourceNode=data.nodeMap.get(i.SourceID) :targetNode=data.nodeMap.get(i.TargetID)>
+            </NodeLinkCard>
+        </el-space>
+    </NodeViewFrame>
+</template>
+
+<script lang="ts">
+import {defineComponent, reactive, onMounted} from "vue";
+import {protoManage} from "../proto/manage"
+import {request} from "../base/request"
+import NodeLinkCard from "../components/NodeLinkCard.vue"
+import Page from "../components/Page.vue"
+import Empty from "../components/Empty.vue"
+import Load from "../components/Load.vue"
+import NodeViewFrame from "../components/NodeViewFrame.vue"
+import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
+import {globals} from "../base/globals";
+
+interface NodeLinkInfo {
+    nodeLinkList: protoManage.INodeLink[]
+    nodeMap: Map<number, protoManage.INode>
+    pageTotal:number
+    isLoading:boolean
+}
+
+export default defineComponent ({
+    name: "NodeLink",
+    components: {
+        NodeLinkCard,
+        Page,
+        Empty,
+        Load,
+        NodeViewFrame
+    },
+    setup(){
+        const data = reactive<NodeLinkInfo>({nodeLinkList:[], nodeMap:new Map<number, protoManage.INode>(), pageTotal:0, isLoading:false})
+        const route = useRoute()
+
+        onBeforeRouteUpdate(to => {
+            initNodeLink(to)
+        })
+        onMounted(()=>{
+            initNodeLink(route)
+        })
+        function initNodeLink(route:RouteLocationNormalizedLoaded){
+            data.isLoading = true
+            request.reqNodeLinkList(protoManage.Filter.create({
+                ID:Number(route.query.id),
+                SourceID:Number(route.query.sourceID),
+                TargetID:Number(route.query.targetID),
+                State:Number(route.query.state),
+                PageSize:Number(route.query.pageSize),
+                PageNum:Number(route.query.pageNum)
+            })).then((response) => {
+                data.pageTotal = response.Length
+                data.nodeLinkList = response.NodeLinkList
+                data.nodeMap.clear()
+                for (let i = 0; i < response.NodeList.length; i++){
+                    let key = Number(response.NodeList[i].Base?.ID)
+                    let val = response.NodeList[i]
+                    data.nodeMap.set(key, val)
+                }
+            }).catch(error => {}).finally(()=>{data.isLoading = false})
+        }
+        return {data}
+    }
+})
+</script>
+
+<style scoped>
+@import "../css/view.css";
+</style>

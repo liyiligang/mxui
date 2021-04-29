@@ -1,0 +1,39 @@
+.color-state-main{
+    color: #409EFF;
+}
+
+.color-state-success{
+    color: #67C23A;
+}
+
+.color-state-warning{
+    color: #E6A23C;
+}
+
+.color-state-danger{
+    color: #F56C6C;
+}
+
+.color-state-lose{
+    color: #909399;
+}
+
+.color-state-other{
+    color: #000000;
+}
+
+.color-text-main{
+    color: #303133;
+}
+
+.color-text-normal{
+    color: #606266;
+}
+
+.color-text-assist{
+    color: #909399;
+}
+
+.color-text-unnecessary{
+    color: #C0C4CC;
+}

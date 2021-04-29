@@ -1,0 +1,32 @@
+{
+  "name": "manageWebClient",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@vue/composition-api": "^1.0.0-rc.1",
+    "axios": "^0.21.1",
+    "echarts": "^5.1.0",
+    "el-table-infinite-scroll": "^1.0.10",
+    "element-plus": "^1.0.1-beta.27",
+    "es6-promise": "^4.2.8",
+    "jsoneditor": "^9.2.0",
+    "protobufjs": "^6.10.2",
+    "vue": "^3.0.4",
+    "vue-echarts": "^6.0.0-rc.4",
+    "vue-json-editor": "^1.4.3",
+    "vue-native-websocket-vue3": "^3.1.0",
+    "vue-router": "^4.0.3",
+    "vuex": "^4.0.0-rc.2",
+    "webpack-merge": "^5.7.3"
+  },
+  "devDependencies": {
+    "@types/jsoneditor": "^8.6.0",
+    "@vue/cli-plugin-router": "^4.5.11",
+    "@vue/cli-plugin-typescript": "^4.5.11",
+    "@vue/compiler-sfc": "^3.0.4",
+    "vite": "^1.0.0-rc.13"
+  }
+}

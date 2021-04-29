@@ -1,0 +1,23 @@
+.card{
+    /*margin: 8px 8px;*/
+}
+.card-divider-row{
+
+}
+.card-divider{
+    margin-top: 50px;
+    width: 98%;
+}
+.card-divider-text{
+    font-size:18px;
+    color: #409EFF;
+}
+.card-head{
+    /*margin: 8px 8px;*/
+}
+.card-link{
+    text-decoration: none;
+}
+.card-state{
+    /*margin: 8px 8px;*/
+}

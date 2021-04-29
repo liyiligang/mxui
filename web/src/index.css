@@ -1,0 +1,50 @@
+#app {
+  font-family: "Helvetica Neue","PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-tap-highlight-color: transparent;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+}
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 5px;
+  border-radius:15px;
+  -webkit-border-radius:  15px;
+}
+::-webkit-scrollbar-track-piece {
+  background-color: #ffff;
+  border-radius:15px;
+  -webkit-border-radius:  15px;
+}
+::-webkit-scrollbar-thumb:vertical {
+  height: 5px;
+  -webkit-border-radius:  15px;
+  cursor: pointer;
+  background-color: rgba(144,147,153,.3);
+  transition: background-color .3s;
+  -webkit-transition: background-color .3s;
+}
+::-webkit-scrollbar-thumb:hover:vertical {
+  background-color: rgba(144,147,153,.5);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+  width: 7px;
+  -webkit-border-radius: 15px;
+  cursor: pointer;
+  background-color: rgba(144, 147, 153, .3);
+  transition: background-color .3s;
+  -webkit-transition: background-color .3s;
+}
+
+::-webkit-scrollbar-thumb:hover:horizontal {
+  background-color: rgba(144,147,153,.5);
+}

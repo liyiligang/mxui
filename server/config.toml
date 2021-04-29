@@ -1,0 +1,17 @@
+Debug = true
+
+[Node]
+NodeGroup = '测试服'
+NodeName = '管控中心'
+
+[Etcd]
+EtcdAddr = '116.62.58.166:2379'
+ConnectWaitTime = 5     #连接超时时间(秒, 0:永远不超时, 负数: 立即超时)
+RequestTimeout = 5      #请求超时时间(秒, 0:永远不超时, 负数: 立即超时)
+
+[Etcd.ConfigKey]
+Log = '配置/公共配置/日志/log'
+DB = '配置/公共配置/数据库/mysql'
+GrpcCert = '配置/公共配置/证书/grpc'
+HttpCert = '配置/公共配置/证书/http'
+Node = '配置/节点配置/'

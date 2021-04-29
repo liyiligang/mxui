@@ -1,0 +1,16 @@
+.view-row{
+    /*min-height: 100%;*/
+}
+
+.view-space{
+    min-width: 100%;
+    min-height: 100%;
+    margin-top: 5px;
+}
+
+.view-page-row{
+    width: 100%;
+    height: 100%;
+    margin-top: 20px;
+}
+
