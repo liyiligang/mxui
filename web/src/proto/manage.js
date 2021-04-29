@@ -153,18 +153,18 @@ export const protoManage = $root.protoManage = (() => {
      * @name protoManage.HttpError
      * @enum {number}
      * @property {number} HttpErrorNull=0 HttpErrorNull value
-     * @property {number} HttpErrorAuthInvalid=601 HttpErrorAuthInvalid value
-     * @property {number} HttpErrorMarshal=603 HttpErrorMarshal value
+     * @property {number} HttpErrorMarshal=601 HttpErrorMarshal value
      * @property {number} HttpErrorUnmarshal=602 HttpErrorUnmarshal value
-     * @property {number} HttpErrorRequest=604 HttpErrorRequest value
+     * @property {number} HttpErrorRequest=603 HttpErrorRequest value
+     * @property {number} HttpErrorAuthInvalid=604 HttpErrorAuthInvalid value
      */
     protoManage.HttpError = (function() {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "HttpErrorNull"] = 0;
-        values[valuesById[601] = "HttpErrorAuthInvalid"] = 601;
-        values[valuesById[603] = "HttpErrorMarshal"] = 603;
+        values[valuesById[601] = "HttpErrorMarshal"] = 601;
         values[valuesById[602] = "HttpErrorUnmarshal"] = 602;
-        values[valuesById[604] = "HttpErrorRequest"] = 604;
+        values[valuesById[603] = "HttpErrorRequest"] = 603;
+        values[valuesById[604] = "HttpErrorAuthInvalid"] = 604;
         return values;
     })();
 

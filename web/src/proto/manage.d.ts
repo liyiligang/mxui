@@ -68,10 +68,10 @@ export namespace protoManage {
     /** HttpError enum. */
     enum HttpError {
         HttpErrorNull = 0,
-        HttpErrorAuthInvalid = 601,
-        HttpErrorMarshal = 603,
+        HttpErrorMarshal = 601,
         HttpErrorUnmarshal = 602,
-        HttpErrorRequest = 604
+        HttpErrorRequest = 603,
+        HttpErrorAuthInvalid = 604
     }
 
     /** Properties of a Message. */
