@@ -15,69 +15,7 @@ import (
 	"time"
 )
 
-//更新管理员token
-func (app *App) managerTokenUpdate(protoManager *protoManage.Manager) error {
-	tokenConfig := Jtoken.TokenConfig{
-		Key: 		   config.NodeConfig.Token.Key,
-		UserID:        int64(protoManager.Base.ID),
-		StartDuration: time.Duration(config.NodeConfig.Token.StartDuration) * time.Hour,
-		StopDuration:  time.Duration(config.NodeConfig.Token.StopDuration) * time.Hour}
-	protoManager.Token = Jtoken.GetToken(tokenConfig)
-	_, err := app.dbUpdateManagerToken(orm.Manager{Base:orm.Base{ID: protoManager.Base.ID}, Token: protoManager.Token})
-	if err != nil {
-		return err
-	}
-	return nil
-}
 
-//管理员登录
-func (app *App) ManagerLogin(manager *protoManage.Manager) error {
-	var ormManager *orm.Manager
-	var err error
-	if manager.Token != "" {
-		userID, err := Jtoken.ParseToken(manager.Token, config.NodeConfig.Token.Key)
-		if err != nil {
-			return errors.New("token已失效, 请使用账户密码登录")
-		}
-		ormManager, err = app.dbFindManagerByToken(orm.Manager{Base:orm.Base{ID: userID}, Token: manager.Token})
-		if err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return errors.New("token已失效, 请使用账户密码登录")
-			}
-			return err
-		}
-	}else {
-		ormManager, err = app.dbFindManagerByUserName(orm.Manager{Name: manager.Name, Password: manager.Password})
-		if err != nil {
-			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return errors.New("用户名或密码不正确")
-			}
-			return err
-		}
-	}
-	app.ormManagerToProtoManager(ormManager, manager)
-	return app.managerTokenUpdate(manager)
-}
-
-//查找管理员信息
-func (app *App) ManagerFind(req protoManage.ReqManagerList) (*protoManage.AnsManagerList, error) {
-	ormManager, err := app.dbFindManager()
-	if err != nil {
-		return nil, err
-	}
-	protoManager := app.ormManagerNickNameListToProtoManagerNickNameList(ormManager)
-	return &protoManage.AnsManagerList{ManagerList: protoManager}, nil
-}
-
-//更新管理员状态
-func (app *App) managerStateUpdate(protoManager *protoManage.Manager) error {
-	ormBase, err := app.dbUpdateManagerState(orm.Manager{Base:orm.Base{ID: protoManager.Base.ID}, State: int32(protoManager.State)})
-	if err != nil {
-		return err
-	}
-	app.ormBaseToProtoBase(ormBase, &protoManager.Base)
-	return nil
-}
 
 //查找顶部链接信息
 func (app *App) topLinkFind(req protoManage.ReqTopLinkList) (*protoManage.AnsTopLinkList, error) {
@@ -89,72 +27,7 @@ func (app *App) topLinkFind(req protoManage.ReqTopLinkList) (*protoManage.AnsTop
 	return &protoManage.AnsTopLinkList{TopLinkList: protoTopLink}, nil
 }
 
-//新增节点组
-func (app *App) nodeGroupAdd(protoNodeGroup *protoManage.NodeGroup) error {
-	if err := app.nodeGroupCheck(protoNodeGroup); err != nil {
-		return err
-	}
-	return app.dbAddNodeGroup(orm.NodeGroup{Name: protoNodeGroup.Name})
-}
 
-//删除节点组
-func (app *App) nodeGroupDel(protoNodeGroup *protoManage.NodeGroup) error {
-	return app.dbDelNodeGroup(orm.NodeGroup{Base:orm.Base{ID: protoNodeGroup.Base.ID}})
-}
-
-//按节点组名查找节点组
-func (app *App) nodeGroupFindByName(protoNodeGroup *protoManage.NodeGroup) error {
-	ormNodeGroup, err := app.dbFindNodeGroupByName(orm.NodeGroup{Name: protoNodeGroup.Name})
-	if err != nil {
-		return err
-	}
-	app.ormNodeGroupToProtoNodeGroup(ormNodeGroup, protoNodeGroup)
-	return nil
-}
-
-//按节点组名查找或者新增节点组
-func (app *App) nodeGroupFindOrAddByName(protoNodeGroup *protoManage.NodeGroup) error {
-	err := app.nodeGroupFindByName(protoNodeGroup)
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return app.nodeGroupAdd(protoNodeGroup)
-		}
-		return err
-	}
-	return nil
-}
-
-//按ID查找节点组
-func (app *App) nodeGroupFindByID(protoNodeGroup *protoManage.NodeGroup) error {
-	ormNodeGroup, err := app.dbFindNodeGroupByID(orm.NodeGroup{Base:orm.Base{ID:protoNodeGroup.Base.ID}})
-	if err != nil {
-		return err
-	}
-	app.ormNodeGroupToProtoNodeGroup(ormNodeGroup, protoNodeGroup)
-	return nil
-}
-
-//查找节点组信息
-func (app *App) nodeGroupFind(req protoManage.ReqNodeGroupList) (*protoManage.AnsNodeGroupList, error) {
-	ormGroupList, err := app.dbFindNodeGroup(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	protoNodeGroupList := app.ormNodeGroupListToProtoNodeGroupList(ormGroupList)
-	count, err := app.dbFindNodeGroupCount(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	nodeStateCountList ,err := app.dbFindNodeStateCount(req.Filter, "groupID")
-	if err != nil {
-		return nil, err
-	}
-	return &protoManage.AnsNodeGroupList{
-		NodeGroupList: protoNodeGroupList,
-		NodeStateCountList: nodeStateCountList,
-		Length: count,
-	}, nil
-}
 
 //新增节点类型
 func (app *App) nodeTypeAdd(protoNodeType *protoManage.NodeType) error {
