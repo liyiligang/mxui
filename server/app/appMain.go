@@ -9,6 +9,10 @@ import (
 	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jdiscovery"
 	"github.com/liyiligang/base/component/Jlog"
+	"github.com/liyiligang/manage/app/data"
+	"github.com/liyiligang/manage/app/db"
+	"github.com/liyiligang/manage/app/gateway"
+	"github.com/liyiligang/manage/app/request"
 	"google.golang.org/grpc"
 	"gorm.io/gorm"
 	"net/http"
@@ -17,12 +21,14 @@ import (
 type App struct {
 	appTypeName     commonConst.NodeTypeName
 	httpServer      *http.Server
-	RpcServer       *grpc.Server
-	db              *gorm.DB
+	rpcServer       *grpc.Server
+	gorm            *gorm.DB
+	db				db.DB
+	data            data.Data
+	request			request.Request
+	gateway			gateway.Gateway
 	discovery 		Jdiscovery.Discovery
-	WebsocketRoute  WebsocketRoute
-	RpcStreamRoute  RpcStreamRoute
-	Receiver        chan appMessage
+	receiver        chan appMessage
 }
 
 type appAnsChan struct {
@@ -40,10 +46,10 @@ type appMessage struct {
 }
 
 func (app *App) distributor() {
-	app.Receiver = make(chan appMessage, 256)
+	app.receiver = make(chan appMessage, 256)
 	for {
 		select {
-		case appMsg := <-app.Receiver:
+		case appMsg := <-app.receiver:
 			switch appMsg.MsgType {
 			case commonConst.WebsocketOrder:
 				break
@@ -57,6 +63,50 @@ func (app *App) distributor() {
 	}
 }
 
-func (app *App) SetDB(db *gorm.DB) {
-	app.db = db
+//服务初始化
+func InitServer() {
+	app := App{appTypeName: commonConst.ManageServerName}
+	app.initDiscovery()
+	app.initLogServer()
+	go app.distributor()
+	if err := app.InitBaseServer(); err != nil {
+		app.StopBaseServer()
+	}
+	app.initAppData()
+	//app.InitDBData()
+	Jlog.Info("服务已经全部启动")
+}
+
+func (app *App) InitBaseServer() error {
+	if err :=  app.initConfig(); err != nil {
+		return err
+	}
+	if err :=  app.initDBServer(); err != nil {
+		return err
+	}
+	if err := app.initWebServer(); err != nil {
+		return err
+	}
+	if err := app.initRpcServer(); err != nil {
+		return err
+	}
+	if err := app.registerNode(); err != nil {
+		return err
+	}
+	Jlog.Info("组件已经全部启动")
+	return nil
+}
+
+func (app *App) StopBaseServer() {
+	app.stopDBServer()
+	app.stopWebServer()
+	app.stopRpcServer()
+	Jlog.Info("组件已经全部停止")
+}
+
+func (app *App) initAppData() {
+	app.db.Gorm = app.gorm
+	app.data.DB = &app.db
+	app.request.Data = &app.data
+	app.gateway.Request = &app.request
 }

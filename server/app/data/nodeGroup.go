@@ -4,13 +4,13 @@ import (
 	"github.com/liyiligang/base/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/check"
 	"github.com/liyiligang/manage/app/convert"
-	"github.com/liyiligang/manage/typedef/orm"
+	"github.com/liyiligang/manage/app/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
 
 //新增节点组
-func (data *Data) nodeGroupAdd(protoNodeGroup *protoManage.NodeGroup) error {
+func (data *Data) NodeGroupAdd(protoNodeGroup *protoManage.NodeGroup) error {
 	if err := check.NodeGroupCheck(protoNodeGroup); err != nil {
 		return err
 	}
@@ -18,12 +18,12 @@ func (data *Data) nodeGroupAdd(protoNodeGroup *protoManage.NodeGroup) error {
 }
 
 //删除节点组
-func (data *Data) nodeGroupDel(protoNodeGroup *protoManage.NodeGroup) error {
-	return data.DB.DelNodeGroup(orm.NodeGroup{Base:orm.Base{ID: protoNodeGroup.Base.ID}})
+func (data *Data) NodeGroupDel(protoNodeGroup *protoManage.NodeGroup) error {
+	return data.DB.DelNodeGroup(orm.NodeGroup{Base: orm.Base{ID: protoNodeGroup.Base.ID}})
 }
 
 //按节点组名查找节点组
-func (data *Data) nodeGroupFindByName(protoNodeGroup *protoManage.NodeGroup) error {
+func (data *Data) NodeGroupFindByName(protoNodeGroup *protoManage.NodeGroup) error {
 	ormNodeGroup, err := data.DB.FindNodeGroupByName(orm.NodeGroup{Name: protoNodeGroup.Name})
 	if err != nil {
 		return err
@@ -33,11 +33,11 @@ func (data *Data) nodeGroupFindByName(protoNodeGroup *protoManage.NodeGroup) err
 }
 
 //按节点组名查找或者新增节点组
-func (data *Data) nodeGroupFindOrAddByName(protoNodeGroup *protoManage.NodeGroup) error {
-	err := data.nodeGroupFindByName(protoNodeGroup)
+func (data *Data) NodeGroupFindOrAddByName(protoNodeGroup *protoManage.NodeGroup) error {
+	err := data.NodeGroupFindByName(protoNodeGroup)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return data.nodeGroupAdd(protoNodeGroup)
+			return data.NodeGroupAdd(protoNodeGroup)
 		}
 		return err
 	}
@@ -45,8 +45,8 @@ func (data *Data) nodeGroupFindOrAddByName(protoNodeGroup *protoManage.NodeGroup
 }
 
 //按ID查找节点组
-func (data *Data) nodeGroupFindByID(protoNodeGroup *protoManage.NodeGroup) error {
-	ormNodeGroup, err := data.DB.FindNodeGroupByID(orm.NodeGroup{Base:orm.Base{ID:protoNodeGroup.Base.ID}})
+func (data *Data) NodeGroupFindByID(protoNodeGroup *protoManage.NodeGroup) error {
+	ormNodeGroup, err := data.DB.FindNodeGroupByID(orm.NodeGroup{Base: orm.Base{ID: protoNodeGroup.Base.ID}})
 	if err != nil {
 		return err
 	}
@@ -55,7 +55,7 @@ func (data *Data) nodeGroupFindByID(protoNodeGroup *protoManage.NodeGroup) error
 }
 
 //查找节点组信息
-func (data *Data) nodeGroupFind(req protoManage.ReqNodeGroupList) (*protoManage.AnsNodeGroupList, error) {
+func (data *Data) NodeGroupFind(req protoManage.ReqNodeGroupList) (*protoManage.AnsNodeGroupList, error) {
 	ormGroupList, err := data.DB.FindNodeGroup(req.Filter)
 	if err != nil {
 		return nil, err

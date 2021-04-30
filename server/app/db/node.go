@@ -2,30 +2,30 @@ package db
 
 import (
 	"github.com/liyiligang/base/protoFiles/protoManage"
-	"github.com/liyiligang/manage/typedef/orm"
+	"github.com/liyiligang/manage/app/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
 
 //新增节点
-func (db *DB) dbAddNode(node orm.Node) error {
+func (db *DB) AddNode(node orm.Node) error {
 	return db.Gorm.Create(&node).Error
 }
 
 //删除节点
-func (db *DB) dbDelNode(node orm.Node) error {
+func (db *DB) DelNode(node orm.Node) error {
 	return db.Gorm.Delete(&node).Error
 }
 
 //按ID更新节点状态
-func (db *DB) dbUpdateNodeState(node orm.Node) error {
+func (db *DB) UpdateNodeState(node orm.Node) error {
 	return db.Gorm.Model(&node).Update("State", node.State).Error
 }
 
 //获取节点信息
-func (db *DB) dbFindNode(filter protoManage.Filter) ([]orm.Node, error) {
+func (db *DB) FindNode(filter protoManage.Filter) ([]orm.Node, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.dbSetFilter(tx, filter)
+	tx = db.SetFilter(tx, filter)
 	var nodeList []orm.Node
 	err := tx.Find(&nodeList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -35,9 +35,9 @@ func (db *DB) dbFindNode(filter protoManage.Filter) ([]orm.Node, error) {
 }
 
 //获取节点计数
-func (db *DB) dbFindNodeCount(filter protoManage.Filter) (int64, error) {
+func (db *DB) FindNodeCount(filter protoManage.Filter) (int64, error) {
 	tx := db.Gorm.Model(&orm.Node{})
-	tx = db.dbSetFilter(tx, filter)
+	tx = db.SetFilter(tx, filter)
 	var count int64
 	err := tx.Count(&count).Error
 	return count, err
@@ -60,9 +60,9 @@ func (db *DB) FindNodeStateCount(filter protoManage.Filter, groupField string) (
 }
 
 //获取节点中节点组ID对应的节点组信息
-func (db *DB) dbFindNodeGroupByNode(filter protoManage.Filter) ([]orm.NodeGroup, error) {
+func (db *DB) FindNodeGroupByNode(filter protoManage.Filter) ([]orm.NodeGroup, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.dbSetFilter(tx, filter)
+	tx = db.SetFilter(tx, filter)
 	subQuery1 := tx.Model(&orm.Node{})
 	subQuery2 := db.Gorm.Select("t.groupID").
 		Table("(?) as t", subQuery1)
@@ -72,9 +72,9 @@ func (db *DB) dbFindNodeGroupByNode(filter protoManage.Filter) ([]orm.NodeGroup,
 }
 
 //获取节点中节点类型ID对应的节点类型信息
-func (db *DB) dbFindNodeTypeByNode(filter protoManage.Filter) ([]orm.NodeType, error) {
+func (db *DB) FindNodeTypeByNode(filter protoManage.Filter) ([]orm.NodeType, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.dbSetFilter(tx, filter)
+	tx = db.SetFilter(tx, filter)
 	subQuery1 := tx.Model(&orm.Node{})
 	subQuery2 := db.Gorm.Select("t.typeID").
 		Table("(?) as t", subQuery1)
@@ -84,27 +84,27 @@ func (db *DB) dbFindNodeTypeByNode(filter protoManage.Filter) ([]orm.NodeType, e
 }
 
 //按ID获取指定节点
-func (db *DB) dbFindNodeByID(node orm.Node) (*orm.Node, error) {
+func (db *DB) FindNodeByID(node orm.Node) (*orm.Node, error) {
 	err := db.Gorm.Where("id = ?", node.ID).First(&node).Error
 	return &node, err
 }
 
 //按节点名获取指定节点
-func (db *DB) dbFindNodeByName(node orm.Node) (*orm.Node, error) {
+func (db *DB) FindNodeByName(node orm.Node) (*orm.Node, error) {
 	err := db.Gorm.Where("name = ? and groupID = ? and typeID = ?",
 		node.Name, node.GroupID, node.TypeID).First(&node).Error
 	return &node, err
 }
 
 //按节点组ID获取节点计数
-func (db *DB) dbCountAllNodeByGroupID(node orm.Node) (int64, error) {
+func (db *DB) CountAllNodeByGroupID(node orm.Node) (int64, error) {
 	var count int64
 	err := db.Gorm.Model(&orm.Node{}).Where("groupID = ?", node.GroupID).Count(&count).Error
 	return count, err
 }
 
 //按节点类型ID获取节点计数
-func (db *DB) dbCountAllNodeByTypeID(node orm.Node) (int64, error) {
+func (db *DB) CountAllNodeByTypeID(node orm.Node) (int64, error) {
 	var count int64
 	err := db.Gorm.Model(&orm.Node{}).Where("typeID = ?", node.TypeID).Count(&count).Error
 	return count, err

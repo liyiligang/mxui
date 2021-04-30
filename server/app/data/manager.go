@@ -4,8 +4,8 @@ import (
 	"github.com/liyiligang/base/component/Jtoken"
 	"github.com/liyiligang/base/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/convert"
-	"github.com/liyiligang/manage/typedef/config"
-	"github.com/liyiligang/manage/typedef/orm"
+	"github.com/liyiligang/manage/app/typedef/config"
+	"github.com/liyiligang/manage/app/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 	"time"
@@ -14,12 +14,12 @@ import (
 //更新管理员token
 func (data *Data) ManagerTokenUpdate(protoManager *protoManage.Manager) error {
 	tokenConfig := Jtoken.TokenConfig{
-		Key: 		   config.NodeConfig.Token.Key,
+		Key:           config.NodeConfig.Token.Key,
 		UserID:        int64(protoManager.Base.ID),
 		StartDuration: time.Duration(config.NodeConfig.Token.StartDuration) * time.Hour,
 		StopDuration:  time.Duration(config.NodeConfig.Token.StopDuration) * time.Hour}
 	protoManager.Token = Jtoken.GetToken(tokenConfig)
-	_, err := data.DB.UpdateManagerToken(orm.Manager{Base:orm.Base{ID: protoManager.Base.ID}, Token: protoManager.Token})
+	_, err := data.DB.UpdateManagerToken(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID}, Token: protoManager.Token})
 	if err != nil {
 		return err
 	}
@@ -35,7 +35,7 @@ func (data *Data) ManagerLogin(manager *protoManage.Manager) error {
 		if err != nil {
 			return errors.New("token已失效, 请使用账户密码登录")
 		}
-		ormManager, err = data.DB.FindManagerByToken(orm.Manager{Base:orm.Base{ID: userID}, Token: manager.Token})
+		ormManager, err = data.DB.FindManagerByToken(orm.Manager{Base: orm.Base{ID: userID}, Token: manager.Token})
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return errors.New("token已失效, 请使用账户密码登录")
@@ -67,7 +67,7 @@ func (data *Data) ManagerFind(req protoManage.ReqManagerList) (*protoManage.AnsM
 
 //更新管理员状态
 func (data *Data) ManagerStateUpdate(protoManager *protoManage.Manager) error {
-	ormBase, err := data.DB.UpdateManagerState(orm.Manager{Base:orm.Base{ID: protoManager.Base.ID}, State: int32(protoManager.State)})
+	ormBase, err := data.DB.UpdateManagerState(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID}, State: int32(protoManager.State)})
 	if err != nil {
 		return err
 	}

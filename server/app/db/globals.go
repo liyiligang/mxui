@@ -2,7 +2,7 @@ package db
 
 import (
 	"github.com/liyiligang/base/protoFiles/protoManage"
-	"github.com/liyiligang/manage/typedef/orm"
+	"github.com/liyiligang/manage/app/typedef/orm"
 	"gorm.io/gorm"
 )
 

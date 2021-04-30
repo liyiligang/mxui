@@ -19,8 +19,8 @@ import (
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
 	"github.com/liyiligang/base/protoFiles/protoManage"
-	"github.com/liyiligang/manage/typedef/config"
-	"github.com/liyiligang/manage/typedef/orm"
+	"github.com/liyiligang/manage/app/typedef/config"
+	"github.com/liyiligang/manage/app/typedef/orm"
 	"google.golang.org/grpc"
 	"log"
 	"os"
@@ -41,7 +41,7 @@ func (app *App) initDiscovery() {
 }
 
 func (app *App) initLogServer(){
-	data, err := app.discovery.GetConfig("/"+config.LocalConfig.Node.NodeGroup+"/"+config.LocalConfig.Etcd.ConfigKey.Log)
+	data, err := app.discovery.GetConfig("/"+ config.LocalConfig.Node.NodeGroup+"/"+ config.LocalConfig.Etcd.ConfigKey.Log)
 	if err != nil {
 		log.Fatal("读取线上配置失败: ", err)
 	}
@@ -56,9 +56,9 @@ func (app *App) initLogServer(){
 		MaxBackups: config.LogConfig.Zap.MaxNum,
 		MaxAge:     config.LogConfig.Zap.MaxAge,
 		InitialFields: map[string]interface{}{
-			"@nodeGroup":   config.LocalConfig.Node.NodeGroup,
+			"@nodeGroup":    config.LocalConfig.Node.NodeGroup,
 			"@nodeTypeName": app.appTypeName,
-			"@nodeName":   config.LocalConfig.Node.NodeName,
+			"@nodeName":     config.LocalConfig.Node.NodeName,
 		}})
 
 	if err != nil {
@@ -124,16 +124,16 @@ func (app *App) initDBServer() error {
 		Jlog.Error("连接数据库" + config.NodeConfig.DB.Name + "失败", "errorBox:", err)
 		return err
 	}
-	app.db = db
+	app.gorm = db
 	Jlog.Info("数据库服务初始化成功")
 	return nil
 }
 
 func (app *App) stopDBServer() error {
-	if app.db == nil {
+	if app.gorm == nil {
 		return nil
 	}
-	db, err := app.db.DB()
+	db, err := app.gorm.DB()
 	if err != nil {
 		Jlog.Error("数据库服务关闭失败", "err", err)
 		return err
@@ -166,11 +166,11 @@ func (app *App) initWebServer() error {
 		ReadWaitTime:  time.Duration(config.WebSocketConfig.WebSocket.ReadWaitTime) * time.Second,
 		PingWaitTime:  time.Duration(config.WebSocketConfig.WebSocket.PingWaitTime) * time.Second,
 		PongWaitTime:  time.Duration(config.WebSocketConfig.WebSocket.PongWaitTime) * time.Second,
-		Call:          app,
+		Call:          &app.gateway,
 	}
 
 	httpConfig := Jweb.HttpConfig{
-		Call: app,
+		Call: &app.gateway,
 	}
 
 	routeFunc := func(r *gin.Engine) {
@@ -243,33 +243,39 @@ func (app *App) initRpcServer() error {
 		PublicKeyPath:  publicKeyPath,
 		PrivateKeyPath: privateKeyPath,
 		RegisterCall: func(s *grpc.Server) {
-			protoManage.RegisterRpcEngineServer(s, app)
+			protoManage.RegisterRpcEngineServer(s, &app.gateway)
 		},
 		LogWrite: &Jlog.LogIoWrite{Msg: "rpc", Flag: "grpc"},
 		ErrorCall: errorOther,
 	})
 
-	app.RpcServer = s
+	app.rpcServer = s
 	Jlog.Info("Rpc服务初始化成功")
 	return nil
 }
 
 //优雅关闭rpc服务
 func (app *App) gracefulStopRpcServer() error {
-	if app.RpcServer == nil {
+	if app.rpcServer == nil {
 		return nil
 	}
-	app.RpcServer.GracefulStop()
+	app.rpcServer.GracefulStop()
 	return nil
 }
 
 //立即关闭rpc服务
 func (app *App) stopRpcServer() error {
-	if app.RpcServer == nil {
+	if app.rpcServer == nil {
 		return nil
 	}
-	app.RpcServer.Stop()
+	app.rpcServer.Stop()
 	return nil
+}
+
+//获取节点key
+func (app *App) getNodeKey() string {
+	return "/"+ config.LocalConfig.Node.NodeGroup+"/服务"+"/"+
+		string(app.appTypeName)+"/"+ config.LocalConfig.Node.NodeName+"/node"
 }
 
 //注册节点
@@ -291,8 +297,7 @@ func (app *App) registerNode() error {
 		return err
 	}
 	err = app.discovery.RegisterNode(&Jdiscovery.DiscoveryNode{
-		NodeKey: "/"+config.LocalConfig.Node.NodeGroup+"/服务"+"/"+
-			string(app.appTypeName)+"/"+config.LocalConfig.Node.NodeName+"/node",
+		NodeKey: app.getNodeKey(),
 		NodeData: byte,
 		NodeKeepLive: 60,
 	})
@@ -304,45 +309,9 @@ func (app *App) registerNode() error {
 	return nil
 }
 
-//节点注册
-
-//服务初始化
-func InitManageServer() {
-	app := App{appTypeName: commonConst.ManageServerName}
-	app.initDiscovery()
-	app.initLogServer()
-	go app.distributor()
-	if err := app.InitBaseServer(); err != nil {
-		app.StopBaseServer()
-	}
-	//app.InitDBData()
-}
-
-func (app *App) InitBaseServer() error {
-	if err :=  app.initConfig(); err != nil {
-		return err
-	}
-	if err :=  app.initDBServer(); err != nil {
-		return err
-	}
-	if err := app.initWebServer(); err != nil {
-		return err
-	}
-	if err := app.initRpcServer(); err != nil {
-		return err
-	}
-	if err := app.registerNode(); err != nil {
-		return err
-	}
-	Jlog.Info("服务已经全部启动")
-	return nil
-}
-
-func (app *App) StopBaseServer() {
-	app.stopDBServer()
-	app.stopWebServer()
-	app.stopRpcServer()
-	Jlog.Info("服务已经全部停止")
+//注销节点
+func (app *App) unRegisterNode() error {
+	return app.discovery.UnRegisterNode(app.getNodeKey())
 }
 
 func errorOther(str string, keysAndValues ...interface{}){
@@ -447,7 +416,7 @@ func (app *App) InitDBData(){
 		for j := startNum; j<nodeReportValLen; j++  {
 			value, _ := Jtool.GetRandInt(0, 1000000)
 			state, _ := Jtool.GetRandInt(1, 5)
-			app.dbAddNodeReportVal(orm.NodeReportVal{
+			app.db.AddNodeReportVal(orm.NodeReportVal{
 				ReportID: int64(i),
 				Value: float64(value/1000),
 				State: int32(state),

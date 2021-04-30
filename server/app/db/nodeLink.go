@@ -2,35 +2,35 @@ package db
 
 import (
 	"github.com/liyiligang/base/protoFiles/protoManage"
-	"github.com/liyiligang/manage/typedef/orm"
+	"github.com/liyiligang/manage/app/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
 
 //新增节点连接
-func (db *DB) dbAddNodeLink(nodeLink orm.NodeLink) error {
+func (db *DB) AddNodeLink(nodeLink orm.NodeLink) error {
 	return db.Gorm.Create(&nodeLink).Error
 }
 
 //删除节点连接
-func (db *DB) dbDelNodeLink(nodeLink orm.NodeLink) error {
+func (db *DB) DelNodeLink(nodeLink orm.NodeLink) error {
 	return db.Gorm.Delete(&nodeLink).Error
 }
 
 //按节点ID删除所有节点连接
-func (db *DB) dbDelAllNodeLinkByNodeID(nodeLink orm.NodeLink) error {
+func (db *DB) DelAllNodeLinkByNodeID(nodeLink orm.NodeLink) error {
 	return db.Gorm.Where("sourceID = ? or targetID = ?", nodeLink.SourceID, nodeLink.TargetID).Delete(orm.NodeLink{}).Error
 }
 
 //按ID更新节点连接状态
-func (db *DB) dbUpdateNodeLinkState(nodeLink orm.NodeLink) error {
+func (db *DB) UpdateNodeLinkState(nodeLink orm.NodeLink) error {
 	return db.Gorm.Model(&nodeLink).Update("state", nodeLink.State).Error
 }
 
 //获取节点连接信息
-func (db *DB) dbFindNodeLink(filter protoManage.Filter) ([]orm.NodeLink, error) {
+func (db *DB) FindNodeLink(filter protoManage.Filter) ([]orm.NodeLink, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.dbSetFilter(tx, filter)
+	tx = db.SetFilter(tx, filter)
 	var nodeLinkList []orm.NodeLink
 	err := tx.Find(&nodeLinkList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -40,18 +40,18 @@ func (db *DB) dbFindNodeLink(filter protoManage.Filter) ([]orm.NodeLink, error) 
 }
 
 //获取节点连接计数
-func (db *DB) dbFindNodeLinkCount(filter protoManage.Filter) (int64, error) {
+func (db *DB) FindNodeLinkCount(filter protoManage.Filter) (int64, error) {
 	tx := db.Gorm.Model(&orm.NodeLink{})
-	tx = db.dbSetFilter(tx, filter)
+	tx = db.SetFilter(tx, filter)
 	var count int64
 	err := tx.Count(&count).Error
 	return count, err
 }
 
 //获取节点连接源节点状态统计
-func (db *DB) dbFindNodeLinkTargetStateCount(filter protoManage.Filter) ([]orm.StateCount, error) {
+func (db *DB) FindNodeLinkTargetStateCount(filter protoManage.Filter) ([]orm.StateCount, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.dbSetFilter(tx, filter)
+	tx = db.SetFilter(tx, filter)
 	subQuery1 := tx.Model(&orm.Node{})
 	subQuery2 := db.Gorm.Select("t.id").
 		Table("(?) as t", subQuery1)
@@ -65,9 +65,9 @@ func (db *DB) dbFindNodeLinkTargetStateCount(filter protoManage.Filter) ([]orm.S
 }
 
 //获取节点连接目标节点状态统计
-func (db *DB) dbFindNodeLinkSourceStateCount(filter protoManage.Filter) ([]orm.StateCount, error) {
+func (db *DB) FindNodeLinkSourceStateCount(filter protoManage.Filter) ([]orm.StateCount, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.dbSetFilter(tx, filter)
+	tx = db.SetFilter(tx, filter)
 	subQuery1 := tx.Model(&orm.Node{})
 	subQuery2 := db.Gorm.Select("t.id").
 		Table("(?) as t", subQuery1)
@@ -81,9 +81,9 @@ func (db *DB) dbFindNodeLinkSourceStateCount(filter protoManage.Filter) ([]orm.S
 }
 
 //获取节点连接中节点ID对应的节点信息
-func (db *DB) dbFindNodeByNodeLink(filter protoManage.Filter) ([]orm.Node, error) {
+func (db *DB) FindNodeByNodeLink(filter protoManage.Filter) ([]orm.Node, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.dbSetFilter(tx, filter)
+	tx = db.SetFilter(tx, filter)
 	subQuery1 := tx.Model(&orm.NodeLink{})
 	subQuery2 := db.Gorm.Select("t.sourceID").
 		Table("(?) as t", subQuery1)
@@ -95,13 +95,13 @@ func (db *DB) dbFindNodeByNodeLink(filter protoManage.Filter) ([]orm.Node, error
 }
 
 //按ID获取指定节点连接
-func (db *DB) dbFindNodeLinkByID(nodeLink orm.NodeLink) (*orm.NodeLink, error) {
+func (db *DB) FindNodeLinkByID(nodeLink orm.NodeLink) (*orm.NodeLink, error) {
 	err := db.Gorm.First(&nodeLink, nodeLink.ID).Error
 	return &nodeLink, err
 }
 
 //按节点ID获取指定节点连接
-func (db *DB) dbFindNodeLinkByNodeID(nodeLink orm.NodeLink) (*orm.NodeLink, error) {
+func (db *DB) FindNodeLinkByNodeID(nodeLink orm.NodeLink) (*orm.NodeLink, error) {
 	err := db.Gorm.Where("sourceID = ? and targetID = ?", nodeLink.SourceID, nodeLink.TargetID).First(&nodeLink).Error
 	return &nodeLink, err
 }

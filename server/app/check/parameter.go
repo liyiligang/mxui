@@ -3,7 +3,7 @@ package check
 import (
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/protoFiles/protoManage"
-	"github.com/liyiligang/manage/typedef/constant"
+	"github.com/liyiligang/manage/app/typedef/constant"
 	"github.com/pkg/errors"
 	"unicode/utf8"
 )
@@ -68,10 +68,10 @@ func NodeCheck(protoNode *protoManage.Node) error {
 
 func NodeLinkCheck(protoNodeLink *protoManage.NodeLink) error {
 	if protoNodeLink.SourceID == 0 {
-		return  IdIsZero("源"+constant.ConstNodeStr)
+		return  IdIsZero("源"+ constant.ConstNodeStr)
 	}
 	if protoNodeLink.TargetID == 0 {
-		return  IdIsZero("目标"+constant.ConstNodeStr)
+		return  IdIsZero("目标"+ constant.ConstNodeStr)
 	}
 	return nil
 }
@@ -84,7 +84,7 @@ func NodeFuncCheck(protoNodeFunc *protoManage.NodeFunc) error {
 		return NameIsEmpty(constant.ConstNodeFuncStr)
 	}
 	if protoNodeFunc.Func == "" {
-		return NameIsEmpty(constant.ConstNodeFuncStr+"函数")
+		return NameIsEmpty(constant.ConstNodeFuncStr +"函数")
 	}
 	if utf8.RuneCountInString(protoNodeFunc.Name) > ConstStringLimitMaxLength {
 		return NameIsTooLong(constant.ConstNodeFuncStr, ConstStringLimitMaxLength)

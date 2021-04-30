@@ -1,14 +1,14 @@
-package app
+package gateway
 
 import (
-	"errors"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jtoken"
 	"github.com/liyiligang/base/protoFiles/protoManage"
-	"github.com/liyiligang/manage/typedef/config"
+	"github.com/liyiligang/manage/app/typedef/config"
+	"github.com/pkg/errors"
 )
 
-func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
+func (gateway *Gateway) HttpReceiver(raw []byte) ([]byte, error, int) {
 	req := protoManage.HttpMessage{}
 	err := req.Unmarshal(raw)
 	if err != nil {
@@ -16,7 +16,7 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 	}
 	var ansMsg []byte
 	if req.Order == protoManage.Order_ManagerLogin{
-		ansMsg, err = app.reqManagerLogin(0, req.Message)
+		ansMsg, err = gateway.Request.ReqManagerLogin(0, req.Message)
 		if err != nil {
 			return nil, err, int(protoManage.HttpError_HttpErrorAuthInvalid)
 		}
@@ -27,49 +27,49 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		}
 		switch req.Order {
 		case protoManage.Order_ManagerFind:
-			ansMsg, err = app.reqManagerFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqManagerFind(userID, req.Message)
 			break
 		case protoManage.Order_TopLinkFind:
-			ansMsg, err = app.reqTopLinkFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqTopLinkFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeGroupFind:
-			ansMsg, err = app.reqNodeGroupFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeGroupFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeTypeFind:
-			ansMsg, err = app.reqNodeTypeFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeTypeFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeFind:
-			ansMsg, err = app.reqNodeFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeLinkFind:
-			ansMsg, err = app.reqNodeLinkFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeLinkFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeFuncFind:
-			ansMsg, err = app.reqNodeFuncFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeFuncFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeReportFind:
-			ansMsg, err = app.reqNodeReportFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeReportFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeGroupFindByID:
-			ansMsg, err = app.reqNodeGroupFindByID(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeGroupFindByID(userID, req.Message)
 			break
 		case protoManage.Order_NodeTypeFindByID:
-			ansMsg, err = app.reqNodeTypeFindByID(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeTypeFindByID(userID, req.Message)
 			break
 		case protoManage.Order_NodeFindByID:
-			ansMsg, err = app.reqNodeFindByID(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeFindByID(userID, req.Message)
 			break
 		case protoManage.Order_NodeFuncCallReq:
-			ansMsg, err = app.reqNodeFuncCall(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeFuncCall(userID, req.Message)
 			break
 		case protoManage.Order_NodeFuncCallFind:
-			ansMsg, err = app.reqNodeFuncCallFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeFuncCallFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeFuncCallFindByID:
-			ansMsg, err = app.reqNodeFuncCallFindByID(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeFuncCallFindByID(userID, req.Message)
 			break
 		case protoManage.Order_NodeReportValFind:
-			ansMsg, err = app.reqNodeReportValFind(userID, req.Message)
+			ansMsg, err = gateway.Request.ReqNodeReportValFind(userID, req.Message)
 			break
 		default:
 			err = errors.New("指令错误")

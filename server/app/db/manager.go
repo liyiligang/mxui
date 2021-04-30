@@ -1,6 +1,6 @@
 package db
 
-import "github.com/liyiligang/manage/typedef/orm"
+import "github.com/liyiligang/manage/app/typedef/orm"
 
 //查找管理员(账号)
 func (db *DB) FindManagerByUserName(manager orm.Manager) (*orm.Manager, error) {

@@ -1,14 +1,14 @@
 package db
 
-import "github.com/liyiligang/manage/typedef/orm"
+import "github.com/liyiligang/manage/app/typedef/orm"
 
 //新增节点通知
-func (db *DB) dbAddNodeNotify(nodeNotify orm.NodeNotify) error {
+func (db *DB) AddNodeNotify(nodeNotify orm.NodeNotify) error {
 	return db.Gorm.Create(&nodeNotify).Error
 }
 
 //按节点ID查询节点通知
-func (db *DB) dbFindNodeNotifyByNodeID(nodeID int64, offset int, num int) ([]orm.NodeNotify, error) {
+func (db *DB) FindNodeNotifyByNodeID(nodeID int64, offset int, num int) ([]orm.NodeNotify, error) {
 	var nodeNotifyList []orm.NodeNotify
 	err := db.Gorm.Where("NodeID = ?", nodeID).Order("id desc").
 		Offset(offset).Limit(num).Find(&nodeNotifyList).Error

@@ -8,7 +8,7 @@ package dbTest
 import (
 	"fmt"
 	"github.com/liyiligang/base/component/Jorm"
-	"github.com/liyiligang/manage/typedef/config"
+	"github.com/liyiligang/manage/app/typedef/config"
 	"testing"
 	"time"
 )
