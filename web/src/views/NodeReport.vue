@@ -1,9 +1,8 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-        <el-space class="view-space" wrap :size="12">
-            <NodeReportCard  v-for="i in data.nodeReportList" :nodeReport="i"
-                             :node=data.nodeMap.get(i.NodeID) :nodeReportVal=data.nodeReportValMap.get(i.Base.ID)></NodeReportCard>
-        </el-space>
+        <NodeReportCard  v-for="i in data.nodeReportList" :nodeReport="i"
+                         :node=data.nodeMap.get(i.NodeID) :nodeReportVal=data.nodeReportValMap.get(i.Base.ID)>
+        </NodeReportCard>
     </NodeViewFrame>
 </template>
 

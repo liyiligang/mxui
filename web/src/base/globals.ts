@@ -24,7 +24,7 @@ export module globals {
 	export let globalsConfig = {
 		httpConfig:{
 			tokenKey:"userToken",
-			requestTimeout: 30000,
+			requestTimeout: 10000,
 		},
 		pageConfig:{
 			sizeList:[9, 21, 54, 108],

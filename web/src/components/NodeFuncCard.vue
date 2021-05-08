@@ -1,5 +1,5 @@
 <template>
-    <el-card class="card" style="width: 296px">
+    <el-card class="card">
         <template #header>
             <CardName :color="convert.getColorByState(nodeFunc.State)" :name="nodeFunc.Name"></CardName>
             <CardInfo  describe="级别" :name="convert.getNodeFuncStateName(nodeFunc.State)"
@@ -67,13 +67,5 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-.card{
-    /*margin: 8px 8px;*/
-}
-.head{
-    /*margin: 8px 8px;*/
-}
-.state{
-    /*margin: 8px 8px;*/
-}
+@import "../css/card.css";
 </style>

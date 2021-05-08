@@ -1,9 +1,7 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-        <el-space class="view-space" wrap :size="12">
-            <NodeLinkCard  v-for="i in data.nodeLinkList" :nodeLink="i" :sourceNode=data.nodeMap.get(i.SourceID) :targetNode=data.nodeMap.get(i.TargetID)>
-            </NodeLinkCard>
-        </el-space>
+        <NodeLinkCard  v-for="i in data.nodeLinkList" :nodeLink="i" :sourceNode=data.nodeMap.get(i.SourceID) :targetNode=data.nodeMap.get(i.TargetID)>
+        </NodeLinkCard>
     </NodeViewFrame>
 </template>
 

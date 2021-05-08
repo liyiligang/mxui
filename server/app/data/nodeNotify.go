@@ -1,4 +1,4 @@
-package data
+ package data
 
 import (
 	"github.com/liyiligang/base/protoFiles/protoManage"

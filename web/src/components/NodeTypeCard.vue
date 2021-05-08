@@ -1,5 +1,5 @@
 <template>
-    <el-card class="card" style="width: 296px">
+    <el-card class="card">
         <template #header>
             <CardName :name="nodeType.Name"></CardName>
             <CardBase :id="nodeType.Base.ID" :time="nodeType.Base.UpdateTime"></CardBase>

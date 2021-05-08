@@ -1,16 +1,22 @@
 .view-row{
-    /*min-height: 100%;*/
+    display: flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content: center;
+    align-content: space-between;
+    min-height: 612px;
 }
 
-.view-space{
-    min-width: 100%;
-    min-height: 100%;
-    margin-top: 5px;
+.view-main{
+    width: 100%;
+    margin: 0px;
+    padding: 0px;
 }
 
 .view-page-row{
     width: 100%;
-    height: 100%;
+    justify-content: center;
     margin-top: 20px;
 }
+
 

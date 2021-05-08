@@ -1,10 +1,8 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-        <el-space class="view-space" wrap :size="12">
-            <NodeGroupCard v-for="i in data.nodeGroupList" :key="i" :nodeGroup="i"
-                           :nodeStateCount=data.nodeStateCountMap.get(i.Base.ID)>
-            </NodeGroupCard>
-        </el-space>
+        <NodeGroupCard v-for="i in data.nodeGroupList" :key="i" :nodeGroup="i"
+                       :nodeStateCount=data.nodeStateCountMap.get(i.Base.ID)>
+        </NodeGroupCard>
     </NodeViewFrame>
 </template>
 

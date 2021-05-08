@@ -1,9 +1,8 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-        <el-space class="view-space" wrap :size="12">
-            <NodeFuncCard  v-for="i in data.nodeFuncList" :nodeFunc="i"
-                           :node=data.nodeMap.get(i.NodeID) :nodeFuncCall=data.nodeFuncCallMap.get(i.Base.ID)></NodeFuncCard>
-        </el-space>
+        <NodeFuncCard  v-for="i in data.nodeFuncList" :nodeFunc="i"
+                       :node=data.nodeMap.get(i.NodeID) :nodeFuncCall=data.nodeFuncCallMap.get(i.Base.ID)>
+        </NodeFuncCard>
     </NodeViewFrame>
 </template>
 

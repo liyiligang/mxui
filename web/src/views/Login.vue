@@ -1,10 +1,12 @@
 <template>
-    <el-row class="view" type="flex" justify="center" align="middle" @keyup.enter.native="loginByName()">
-        <el-card class="logoCard" v-loading="data.isLoad" element-loading-text="登录中...">
-            <img class="logoImg" src="../assets/logo.png" alt="admin">
-            <el-input class="loginInput" v-model="data.username" placeholder="用户名" clearable></el-input>
-            <el-input class="loginInput" v-model="data.password" placeholder="密码" clearable show-password></el-input>
-            <el-button class="loginButton" type="primary" round v-on:click="loginByName()">登录</el-button>
+    <el-row class="loginMain" type="flex" justify="center" align="middle" @keyup.enter.native="loginByName()">
+        <el-card class="loginCard" v-loading="data.isLoad" element-loading-text="登录中...">
+            <el-row type="flex" justify="center" align="middle">
+                <img class="loginLogo" src="../assets/logo.png" alt="admin">
+                <el-input class="loginInput" v-model="data.username" placeholder="用户名" clearable></el-input>
+                <el-input class="loginInput" v-model="data.password" placeholder="密码" clearable show-password></el-input>
+                <el-button class="loginButton" type="primary" round v-on:click="loginByName()">登录</el-button>
+            </el-row>
         </el-card>
     </el-row>
 </template>
@@ -70,29 +72,27 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-.view {
-    position: absolute;
+.loginMain {
     width: 100%;
     height: 100%;
     background-image: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);
 }
 
-.logoCard {
+.loginCard {
     width: 260px;
-    text-align:center;
 }
-.logoImg{
-    max-width: 75%;
-    max-height: 75%;
+
+.loginLogo{
+    width: 160px;
     margin-top: 20px;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
 }
 .loginInput {
     margin-top: 15px;
 }
 .loginButton {
     margin-top: 35px;
-    margin-bottom: 20px;
-    width: 60%;
+    margin-bottom: 15px;
+    width: 100px;
 }
 </style>

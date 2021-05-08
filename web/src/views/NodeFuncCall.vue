@@ -100,9 +100,7 @@ export default defineComponent ({
                     }
                     data.tableIndex++
                 }
-            }).catch(error => {
-
-            }).finally(()=>{})
+            }).catch(error => {}).finally(()=>{})
         }
 
         function funcCall(){
@@ -114,10 +112,7 @@ export default defineComponent ({
                 })
             })).then((response) => {
                 findCall(response.ID)
-            }).catch(error => {
-                ElMessage.error(reqStr + "失败：" + error);
-                data.loading = false
-            }).finally(()=>{})
+            }).catch(error => {}).finally(()=>{data.loading = false})
         }
 
         function findCall(baseID:number){
@@ -141,9 +136,7 @@ export default defineComponent ({
                         ElMessage.error(reqStr + "失败");
                         findCallEnd(timerID, response)
                     }
-                }).catch(error => {
-                    ElMessage.error(reqStr +"失败：" + error);
-                }).finally(()=>{})
+                }).catch(error => {}).finally(()=>{})
             }, 1000)
         }
 

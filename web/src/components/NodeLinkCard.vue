@@ -1,5 +1,5 @@
 <template>
-    <el-card class="card" style="width: 296px">
+    <el-card class="card">
         <CardName :color="convert.getColorByState(nodeLink.State)"
                   :name="convert.getNodeLinkStateName(nodeLink.State)"></CardName>
         <CardInfo  describe="服务端" :name="targetNode.Name" :nameColor="convert.getColorByState(targetNode.State)" :link=routerPath.toNode(protoManage.Filter.create({ID:targetNode.Base.ID}))></CardInfo>
@@ -37,13 +37,5 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-.card{
-    /*margin: 8px 8px;*/
-}
-.head{
-    /*margin: 8px 8px;*/
-}
-.state{
-    /*margin: 8px 8px;*/
-}
+@import "../css/card.css";
 </style>

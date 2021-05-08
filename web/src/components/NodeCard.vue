@@ -1,5 +1,5 @@
 <template>
-    <el-card class="card" style="width: 296px">
+    <el-card class="card">
         <template #header>
             <CardName :color="convert.getColorByState(node.State)" :name="node.Name"></CardName>
             <CardInfo  describe="状态" :name="convert.getNodeStateName(node.State)"

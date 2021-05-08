@@ -61,7 +61,7 @@ export module request {
                     let ans = protoManage.Manager.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -75,7 +75,7 @@ export module request {
                     let ans = protoManage.AnsTopLinkList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -89,7 +89,7 @@ export module request {
                     let ans = protoManage.AnsManagerList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -119,7 +119,7 @@ export module request {
                     let ans = protoManage.AnsNodeTypeList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -134,7 +134,7 @@ export module request {
                     let ans = protoManage.AnsNodeList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -150,7 +150,7 @@ export module request {
                     let ans = protoManage.AnsNodeLinkList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -165,7 +165,7 @@ export module request {
                     let ans = protoManage.AnsNodeFuncList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -180,7 +180,7 @@ export module request {
                     let ans = protoManage.AnsNodeReportList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -195,7 +195,7 @@ export module request {
                     let ans = protoManage.AnsNodeFuncCallList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -210,7 +210,7 @@ export module request {
                     let ans = protoManage.AnsNodeReportValList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -223,7 +223,7 @@ export module request {
                     let ans = protoManage.Base.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -236,7 +236,7 @@ export module request {
                     let ans = protoManage.NodeFuncCall.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -250,7 +250,7 @@ export module request {
                     let ans = protoManage.NodeGroup.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -264,7 +264,7 @@ export module request {
                     let ans = protoManage.NodeType.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }
@@ -278,7 +278,7 @@ export module request {
                     let ans = protoManage.Node.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
-                reject(error)
+                    reject(error)
             })
         })
     }

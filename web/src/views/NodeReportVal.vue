@@ -61,11 +61,7 @@ export default defineComponent ({
                 for (let i = 0; i < response.NodeReportValList.length; i++){
                     data.nodeReportValList.push(response.NodeReportValList[i])
                 }
-            }).catch(error => {
-
-            }).finally(()=>{
-                data.loading = false
-            })
+            }).catch(error => {}).finally(()=>{data.loading = false})
         }
 
 

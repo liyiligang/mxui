@@ -1,12 +1,10 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-        <el-space class="view-space" wrap :size="12">
-            <NodeCard v-for="i in data.nodeList" :node="i"
-                      :nodeGroup=data.nodeGroupMap.get(i.GroupID) :nodeType=data.nodeTypeMap.get(i.TypeID)
-                      :nodeFuncStateCount=data.nodeFuncStateCountMap.get(i.Base.ID) :nodeReportStateCount=data.nodeReportStateCountMap.get(i.Base.ID)
-            :nodeLinkSourceStateCount=data.nodeLinkSourceStateCountMap.get(i.Base.ID) :nodeLinkTargetStateCount="data.nodeLinkTargetStateCountMap.get(i.Base.ID)">
-            </NodeCard>
-        </el-space>
+        <NodeCard v-for="i in data.nodeList" :node="i"
+                  :nodeGroup=data.nodeGroupMap.get(i.GroupID) :nodeType=data.nodeTypeMap.get(i.TypeID)
+                  :nodeFuncStateCount=data.nodeFuncStateCountMap.get(i.Base.ID) :nodeReportStateCount=data.nodeReportStateCountMap.get(i.Base.ID)
+        :nodeLinkSourceStateCount=data.nodeLinkSourceStateCountMap.get(i.Base.ID) :nodeLinkTargetStateCount="data.nodeLinkTargetStateCountMap.get(i.Base.ID)">
+        </NodeCard>
     </NodeViewFrame>
 </template>
 
