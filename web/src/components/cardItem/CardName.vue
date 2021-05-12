@@ -1,12 +1,10 @@
 <template>
-    <router-link v-if="link!==undefined" class="card-link" :to=link>
-        <div :class="[color, 'name']">
-            {{name}}
-        </div>
-    </router-link>
-    <div v-else :class="[color, 'name']">
-        {{name}}
-    </div>
+    <el-row class="cardName" type="flex" justify="start" align="middle">
+        <router-link v-if="link!==undefined" class="card-text-omit card-link" :class="[color]" :to=link>
+            <div>{{name}}</div>
+        </router-link>
+        <div v-else class="card-text-omit" :class="[color, 'name']">{{name}}</div>
+    </el-row>
 </template>
 
 <script lang="ts">
@@ -30,11 +28,8 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 @import "../../css/card.css";
-.name{
+.cardName{
     font-size: 18px;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    max-width: 260px;
+    flex-wrap:nowrap;
 }
 </style>

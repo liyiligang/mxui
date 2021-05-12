@@ -17,9 +17,9 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, PropType} from "vue";
-import {protoManage} from "../proto/manage";
-import {globals} from "../base/globals";
-import {convert} from "../base/convert";
+import {protoManage} from "../../proto/manage";
+import {globals} from "../../base/globals";
+import {convert} from "../../base/convert";
 
 interface NodeReportValTableInfo {
 
@@ -55,7 +55,7 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-@import "../css/color.css";
+@import "../../css/color.css";
 .historyTable {
     width: 100%;
 }

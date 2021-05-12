@@ -10,13 +10,13 @@
 
 <script lang="ts">
 import {defineComponent, reactive, onMounted, PropType} from "vue";
-import CardName from "../components/Card/CardName.vue"
-import CardInfo from "../components/Card/CardInfo.vue"
-import CardBase from "../components/Card/CardBase.vue"
-import {routerPath} from "../router";
-import {protoManage} from "../proto/manage"
-import {request} from "../base/request";
-import {convert} from "../base/convert";
+import CardName from "../cardItem/CardName.vue"
+import CardInfo from "../cardItem/CardInfo.vue"
+import CardBase from "../cardItem/CardBase.vue"
+import {routerPath} from "../../router";
+import {protoManage} from "../../proto/manage"
+import {request} from "../../base/request";
+import {convert} from "../../base/convert";
 
 export default defineComponent ({
     name: "NodeLinkCard",
@@ -37,5 +37,5 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-@import "../css/card.css";
+@import "../../css/card.css";
 </style>

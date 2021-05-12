@@ -1,17 +1,11 @@
 <template>
-    <el-row class="row" type="flex" justify="space-between" align="middle">
-        <el-col :span="6">
-            <el-row class="row" type="flex" justify="start" align="middle">
-                <img class="logo" src="../assets/logo.png" alt="admin">
-            </el-row>
-        </el-col>
-        <el-col :span="18">
-            <el-row class="row" type="flex" justify="end" align="middle">
-                <el-link v-for="i in data.topLinkList" class="head-link" type="primary" :underline="false" :href="i.Url" target="_blank">{{i.Name}}</el-link>
-                <el-divider class="divider" direction="vertical"></el-divider>
-                <el-button class="button" icon="el-icon-setting" @click="settingClick()" circle plain></el-button>
-            </el-row>
-        </el-col>
+    <el-row class="head" type="flex" justify="space-between" align="middle">
+        <img class="head-logo" src="../assets/logo.png" alt="admin">
+        <el-row type="flex" justify="end" align="middle">
+            <el-link v-for="i in data.topLinkList" class="head-link" type="primary" :underline="false" :href="i.Url" target="_blank">{{i.Name}}</el-link>
+            <el-divider class="head-divider" direction="vertical"></el-divider>
+            <el-button class="head-button" icon="el-icon-setting" @click="settingClick()" circle plain></el-button>
+        </el-row>
     </el-row>
 </template>
 
@@ -61,29 +55,28 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-.logo{
+.head{
+    width: 100%;
+    height: 100%;
+}
+
+.head-logo{
     width: 150px;
 }
-.row{
-    min-height: 80px;
-}
+
 .head-link{
     font-size: 18px;
     margin-right: 30px;
 }
-.divider{
+
+.head-divider{
     margin-left: 10px;
-    margin-right: 40px;
+    margin-right: 30px;
     height: 22px;
 }
-.button{
+.head-button{
     border:0px;
-    cursor: pointer;
     font-size:30px;
-    text-align:center;
     margin-right: 10px;
-}
-.button.is-circle {
-    padding: 0px;
 }
 </style>

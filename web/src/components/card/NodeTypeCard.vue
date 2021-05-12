@@ -15,12 +15,12 @@
 
 <script lang="ts">
 import {defineComponent, reactive, onMounted, PropType} from "vue";
-import CardName from "../components/Card/CardName.vue"
-import CardBase from "../components/Card/CardBase.vue"
-import CardState from "../components/Card/CardState.vue"
-import {routerPath} from "../router";
-import {request} from "../base/request";
-import {protoManage} from "../proto/manage"
+import CardName from "../cardItem/CardName.vue"
+import CardBase from "../cardItem/CardBase.vue"
+import CardState from "../cardItem/CardState.vue"
+import {routerPath} from "../../router";
+import {request} from "../../base/request";
+import {protoManage} from "../../proto/manage"
 
 interface NodeTypeCardInfo {
     nodeStateCount:protoManage.IStateCount
@@ -50,5 +50,5 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-@import "../css/card.css";
+@import "../../css/card.css";
 </style>

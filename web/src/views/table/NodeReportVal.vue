@@ -17,11 +17,11 @@
 
 <script lang="ts">
 import {defineComponent, reactive, onMounted} from "vue";
-import {protoManage} from "../proto/manage";
-import NodeReportValTable from "../components/NodeReportValTable.vue"
-import Line from "../components/Echarts/Line.vue"
-import Empty from "../components/Empty.vue"
-import {request} from "../base/request";
+import {protoManage} from "../../proto/manage";
+import NodeReportValTable from "../../components/table/NodeReportValTable.vue"
+import Line from "../../components/echarts/Line.vue"
+import Empty from "../../components/Empty.vue"
+import {request} from "../../base/request";
 
 interface NodeReportValInfo {
     loading: boolean

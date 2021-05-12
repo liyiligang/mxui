@@ -15,6 +15,7 @@ export default defineComponent ({
 
 <style scoped>
 .empty{
-    height: 100%;
+    width: 100%;
+    height: 80%;
 }
 </style>

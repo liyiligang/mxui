@@ -20,10 +20,6 @@
     </el-menu>
 </template>
 
-<!--:default-active="defaultActive"-->
-<!--@open="menuOpen"-->
-<!--@close="menuClose"-->
-
 <script lang="ts">
 import { defineComponent } from "vue";
 import { routerPath } from "../router";
@@ -71,14 +67,9 @@ export default defineComponent ({
 .el-menu {
     border-right: none;
 }
-/*.el-submenu {*/
-/*    text-align:center;*/
-/*}*/
-/*.menu-item{*/
-/*    font-size:20px;*/
-/*    text-align:center;*/
-/*}*/
+
 .menu{
+    width: 100%;
     height: 100%;
 }
 .submenuSpanOne {
@@ -86,8 +77,5 @@ export default defineComponent ({
 }
 .submenuSpanTwo {
     font-size:16px;
-}
-.menuItem {
-    font-size:14px;
 }
 </style>

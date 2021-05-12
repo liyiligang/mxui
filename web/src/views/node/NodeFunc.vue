@@ -8,15 +8,15 @@
 
 <script lang="ts">
 import {defineComponent, reactive, onMounted, PropType} from "vue";
-import {protoManage} from "../proto/manage";
-import {request} from "../base/request";
-import NodeFuncCard from "../components/NodeFuncCard.vue"
-import Page from "../components/Page.vue"
-import Empty from "../components/Empty.vue"
-import Load from "../components/Load.vue"
-import NodeViewFrame from "../components/NodeViewFrame.vue"
+import {protoManage} from "../../proto/manage";
+import {request} from "../../base/request";
+import NodeFuncCard from "../../components/card/NodeFuncCard.vue"
+import Page from "../../components/Page.vue"
+import Empty from "../../components/Empty.vue"
+import Load from "../../components/Load.vue"
+import NodeViewFrame from "../../components/NodeViewFrame.vue"
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
-import {globals} from "../base/globals";
+import {globals} from "../../base/globals";
 
 interface NodeFuncInfo {
     nodeFuncList: protoManage.INodeFunc[]
@@ -79,5 +79,5 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-@import "../css/view.css";
+
 </style>

@@ -1,13 +1,13 @@
 <template>
-    <el-row class="row" type="flex" justify="space-between" align="middle">
-        <el-button type="text" @click="click">{{name}}</el-button>
+    <el-row class="cardFuncCall" type="flex" justify="space-between" align="middle">
+        <el-button class="callButton" type="text" @click="click">{{name}}</el-button>
         <div :class="[stateColor]">{{state}}</div>
-        <div :class="['color-text-assist']">{{globals.formatDate(time)}}</div>
+        <div class="callTime color-text-assist">{{globals.formatDate(time)}}</div>
     </el-row>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive} from "vue";
+import {defineComponent} from "vue";
 import {globals} from "../../base/globals";
 export default defineComponent ({
     name: "CardFuncCall",
@@ -41,18 +41,17 @@ export default defineComponent ({
 
 <style scoped>
 @import "../../css/color.css";
-@import "../../css/card.css";
-.row{
-    margin-top: 5px;
+
+.cardFuncCall{
     font-size: 14px;
-    line-height:19px;
 }
-.card-call{
-    margin-top: 2px;
-    font-size: 14px;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    max-width: 260px;
+
+.callButton{
+    padding: 0px;
+    line-height: normal;
+}
+
+.callTime{
+    font-size: 13px;
 }
 </style>

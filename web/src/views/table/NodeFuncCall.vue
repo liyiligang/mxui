@@ -21,11 +21,11 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, PropType, reactive, ref} from "vue";
-import JsonEdit from "../components/Json/JsonEdit.vue"
-import NodeFuncCallTable from "../components/NodeFuncCallTable.vue"
+import JsonEdit from "../../components/json/JsonEdit.vue"
+import NodeFuncCallTable from "../../components/table/NodeFuncCallTable.vue"
 import {ElMessage} from "element-plus";
-import {request} from "../base/request";
-import {protoManage} from "../proto/manage";
+import {request} from "../../base/request";
+import {protoManage} from "../../proto/manage";
 
 interface NodeFuncCallInfo {
     loading: boolean

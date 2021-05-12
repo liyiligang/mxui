@@ -1,14 +1,14 @@
 <template>
-    <el-row class="row" type="flex" justify="space-between" align="middle">
+    <el-row class="cardState" type="flex" justify="space-between" align="middle">
         <router-link class="card-link" :to=link>
-            <span  :class="['color-text-normal', 'name']">
-                {{name}}：
-            </span>
+            <span  class="color-text-normal">{{name}}：</span>
         </router-link>
-        <span :class="['block', 'color-state-success']">{{successCnt}}</span>
-        <span :class="['block', 'color-state-warning']">{{warningCnt}}</span>
-        <span :class="['block', 'color-state-danger']">{{dangerCnt}}</span>
-        <span :class="['block', 'color-state-lose']">{{loseCnt}}</span>
+        <el-row class="cardStateNum" type="flex" justify="space-around" align="middle">
+            <span class="color-state-success">{{successCnt}}</span>
+            <span class="color-state-warning">{{warningCnt}}</span>
+            <span class="color-state-danger">{{dangerCnt}}</span>
+            <span class="color-state-lose">{{loseCnt}}</span>
+        </el-row>
     </el-row>
 </template>
 
@@ -51,20 +51,15 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 @import "../../css/card.css";
-.row{
+
+.cardState{
     margin-top: 5px;
     font-size: 14px;
-    line-height:19px;
+    flex-wrap:nowrap;
 }
-.name{
 
+.cardStateNum{
+    flex:auto;
 }
-.block{
-    max-width: 53px;
-    min-width: 53px;
-    text-align: center;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-}
+
 </style>

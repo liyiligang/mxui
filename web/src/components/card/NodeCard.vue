@@ -4,8 +4,8 @@
             <CardName :color="convert.getColorByState(node.State)" :name="node.Name"></CardName>
             <CardInfo  describe="状态" :name="convert.getNodeStateName(node.State)"
                        :name-color="convert.getColorByState(node.State)"></CardInfo>
-            <CardInfo  describe="集群" :name="nodeGroup.Name" :link=routerPath.toNodeGroup(protoManage.Filter.create({ID:node.GroupID}))></CardInfo>
-            <CardInfo  describe="服务" :name="nodeType.Name" :link=routerPath.toNodeType(protoManage.Filter.create({ID:node.TypeID}))></CardInfo>
+            <CardInfo  describe="集群" :name="nodeGroup.Name" :nameColor="convert.getColorByState(protoManage.State.StateNot)" :link=routerPath.toNodeGroup(protoManage.Filter.create({ID:node.GroupID}))></CardInfo>
+            <CardInfo  describe="服务" :name="nodeType.Name"  :nameColor="convert.getColorByState(protoManage.State.StateNot)" :link=routerPath.toNodeType(protoManage.Filter.create({ID:node.TypeID}))></CardInfo>
             <CardBase :id="node.Base.ID" :time="node.Base.UpdateTime"></CardBase>
         </template>
         <cardState name="连接" :link=routerPath.toNodeLink(node.Base.ID)
@@ -31,14 +31,14 @@
 
 <script lang="ts">
 import {defineComponent, reactive, onMounted, PropType} from "vue"
-import CardName from "../components/Card/CardName.vue"
-import CardBase from "../components/Card/CardBase.vue"
-import CardInfo from "../components/Card/CardInfo.vue"
-import CardState from "../components/Card/CardState.vue"
-import {protoManage} from "../proto/manage"
-import {request} from "../base/request"
-import {convert} from "../base/convert"
-import {routerPath} from "../router"
+import CardName from "../cardItem/CardName.vue"
+import CardBase from "../cardItem/CardBase.vue"
+import CardInfo from "../cardItem/CardInfo.vue"
+import CardState from "../cardItem/CardState.vue"
+import {protoManage} from "../../proto/manage"
+import {request} from "../../base/request"
+import {convert} from "../../base/convert"
+import {routerPath} from "../../router"
 
 interface NodeCardInfo {
     nodeLinkSourceStateCount:protoManage.IStateCount
@@ -91,5 +91,5 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-@import "../css/card.css";
+@import "../../css/card.css";
 </style>

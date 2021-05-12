@@ -24,9 +24,9 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, PropType, ref} from "vue";
-import {protoManage} from "../proto/manage";
-import {globals} from "../base/globals";
-import {convert} from "../base/convert";
+import {protoManage} from "../../proto/manage";
+import {globals} from "../../base/globals";
+import {convert} from "../../base/convert";
 import {ElTable} from "element-plus";
 
 interface NodeFuncCallTableInfo {
@@ -76,7 +76,7 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-@import "../css/color.css";
+@import "../../css/color.css";
 .historyTable {
     width: 100%;
 }

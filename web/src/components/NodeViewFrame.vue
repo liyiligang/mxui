@@ -1,16 +1,16 @@
 <template>
     <Load v-if="isLoading"></Load>
-    <div v-else>
+    <el-row v-else class="frameView">
         <Empty v-if="pageTotal<=0"></Empty>
-        <el-row v-else class="view-row">
-            <el-row class="view-main">
+        <el-row v-else class="mainView flex-row-center-between">
+            <el-row class="slotView">
                 <slot>暂无数据</slot>
             </el-row>
-            <el-row class="view-page-row">
+            <el-row class="pageView flex-row-center-start">
                 <Page :pageTotal="pageTotal"></Page>
             </el-row>
         </el-row>
-    </div>
+    </el-row>
 </template>
 
 <script lang="ts">
@@ -41,5 +41,26 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-@import "../css/view.css";
+@import "../css/flex.css";
+
+.frameView{
+    width: 100%;
+    min-height: 100%;
+}
+
+.mainView{
+    width: 100%;
+    min-height: 100%;
+}
+
+.slotView{
+    width: 100%;
+}
+
+.pageView{
+    width: 100%;
+    margin-top: 50px;
+    margin-bottom: 25px;
+}
+
 </style>

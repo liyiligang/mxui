@@ -8,7 +8,7 @@ import 'element-plus/lib/theme-chalk/index.css'
 import 'dayjs/locale/zh-cn'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 import VueNativeSock from "vue-native-websocket-vue3"
-import elTableInfiniteScroll from "./components/TableInfiniteScroll";
+import elTableInfiniteScroll from "./components/tableInfiniteScroll";
 import ECharts  from 'vue-echarts'
 import { use } from "echarts/core";
 import {

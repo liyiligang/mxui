@@ -1,7 +1,7 @@
 <template>
-    <el-row type="flex" justify="space-between" align="middle">
-        <div :class="['base', 'color-text-assist']">{{globals.formatDate(time)}}</div>
-        <div :class="['base', 'color-text-assist']">{{id}}</div>
+    <el-row class="baseView color-text-assist" type="flex" justify="space-between" align="middle">
+        <div>{{globals.formatDate(time)}}</div>
+        <div>{{id}}</div>
     </el-row>
 </template>
 
@@ -23,7 +23,9 @@ export default defineComponent ({
 
 <style scoped>
 @import "../../css/color.css";
-.base{
+
+.baseView{
+    width: 100%;
     margin-top: 6px;
     font-size: 12px;
 }

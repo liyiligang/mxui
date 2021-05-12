@@ -1,32 +1,32 @@
 <template>
-    <el-container class="home">
-        <el-header class="headContainer" height ="80px">
-            <Head></Head>
-        </el-header>
-        <el-divider class="headDivider"></el-divider>
-        <el-container class="bodyContainer">
-            <el-aside  width="210px">
-                <Aside></Aside>
-            </el-aside>
-            <el-divider direction="vertical" class="asideDivider"></el-divider>
-            <el-container class="mainContainer">
-                <el-main class="elMain">
+    <el-row class="home flex-row-center-start">
+        <el-row class="homeView flex-row-center-start">
+            <el-row class="headView">
+                <Head></Head>
+            </el-row>
+            <el-divider class="headDivider"></el-divider>
+            <el-row class="bodyView flex-row-start-start-nowrap">
+                <el-row class="asideView">
+                    <Aside></Aside>
+                </el-row>
+                <el-divider class="asideDivider" direction="vertical"></el-divider>
+                <el-row class="routerView">
                     <router-view></router-view>
-                </el-main>
-            </el-container>
-        </el-container>
-    </el-container>
+                </el-row>
+            </el-row>
+        </el-row>
+    </el-row>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import Head from "../components/Head.vue";
 import Aside from "../components/Aside.vue";
-import NodeGroup from "./NodeGroup.vue";
-import Node from "./Node.vue";
-import NodeLink from "./NodeLink.vue";
-import NodeFunc from "./NodeFunc.vue";
-import NodeReport from "./NodeReport.vue";
+import NodeGroup from "./node/NodeGroup.vue";
+import Node from "./node/Node.vue";
+import NodeLink from "./node/NodeLink.vue";
+import NodeFunc from "./node/NodeFunc.vue";
+import NodeReport from "./node/NodeReport.vue";
 
 export default defineComponent ({
   name: "Home",
@@ -43,40 +43,46 @@ export default defineComponent ({
 </script>
 
 <style scoped>
+@import "../css/flex.css";
 
 .home{
-    margin: auto;
-    max-width: 75%;
-    min-width: 75%;
+    width: 100%;
+    height: 100%;
+    overflow-x:hidden
+}
+
+.homeView{
+    width: 75%;
     height: 100%;
 }
-.headContainer{
-    padding: 0px;
-    min-width: 635px;
+
+.headView{
+    width: 100%;
+    min-height: 12%;
 }
+
 .headDivider{
-    margin-top: 2px;
-    margin-bottom: 10px;
-    min-width: 635px;
+    margin-top: 0.1%;
+    margin-bottom: 1%;
 }
-.bodyContainer{
-    padding: 0px;
-    max-width: 75%;
-    min-width: 75%;
-    position: absolute;
-    top: 93px;
-    bottom: 10px;
+
+.bodyView{
+    width: 100%;
+    min-height: 86.1%;
 }
+
+.asideView{
+    min-width: 19%;
+    height: 100%;
+}
+
 .asideDivider{
-    margin: 3px 0px 0px 0px;
-    height: 99%;
+    margin: 0px;
+    height: 100%;
 }
-.mainContainer{
-    padding: 0px;
-}
-.elMain{
-    padding-top: 0px;
-    padding-right: 0px;
-    padding-bottom: 10px;
+
+.routerView{
+    flex: auto;
+    height: 100%;
 }
 </style>

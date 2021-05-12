@@ -1,11 +1,11 @@
 <template>
-    <div :class="['card-info']">
-        <span :class="[descColor]">{{describe}}：</span>
-        <router-link v-if="link!==''" class="card-link" :to=link>
-            <span :class="[nameColor]">{{name}}</span>
+    <el-row class="cardInfo" type="flex" justify="start" align="middle">
+        <span class="cardInfoNowrap" :class="[descColor]">{{describe}}：</span>
+        <router-link v-if="link!==''" class="card-text-omit card-link" :class="[nameColor]" :to=link>
+            <span>{{name}}</span>
         </router-link>
-        <span v-else :class="[nameColor]">{{name}}</span>
-    </div>
+        <span v-else  class="card-text-omit" :class="[nameColor]">{{name}}</span>
+    </el-row>
 </template>
 
 <script lang="ts">
@@ -40,12 +40,13 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 @import "../../css/card.css";
-.card-info{
-    margin-top: 2px;
+.cardInfo{
+    margin-top: 3px;
     font-size: 14px;
-    overflow: hidden;
-    text-overflow:ellipsis;
-    white-space: nowrap;
-    max-width: 260px;
+    flex-wrap:nowrap;
+}
+
+.cardInfoNowrap{
+    white-space:nowrap;
 }
 </style>

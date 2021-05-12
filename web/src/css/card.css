@@ -1,24 +1,16 @@
 .card{
-    margin: 6px;
-    width: 296px;
+    margin-left: 15px;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    width: 295px;
 }
-.card-divider-row{
 
-}
-.card-divider{
-    margin-top: 50px;
-    width: 98%;
-}
-.card-divider-text{
-    font-size:18px;
-    color: #409EFF;
-}
-.card-head{
-    /*margin: 8px 8px;*/
-}
 .card-link{
     text-decoration: none;
 }
-.card-state{
-    /*margin: 8px 8px;*/
+
+.card-text-omit{
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
 }

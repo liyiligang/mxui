@@ -23,15 +23,15 @@
 
 <script lang="ts">
 import {defineComponent, reactive, PropType} from "vue"
-import CardName from "../components/Card/CardName.vue"
-import CardBase from "../components/Card/CardBase.vue"
-import {protoManage} from "../proto/manage"
-import {request} from "../base/request"
-import {convert} from "../base/convert"
-import {routerPath} from "../router"
-import CardInfo from "../components/Card/CardInfo.vue"
-import CardFuncCall from "./Card/CardFuncCall.vue"
-import NodeFuncCall from "../views/NodeFuncCall.vue"
+import CardName from "../cardItem/CardName.vue"
+import CardBase from "../cardItem/CardBase.vue"
+import {protoManage} from "../../proto/manage"
+import {request} from "../../base/request"
+import {convert} from "../../base/convert"
+import {routerPath} from "../../router"
+import CardInfo from "../cardItem/CardInfo.vue"
+import CardFuncCall from "../cardItem/CardFuncCall.vue"
+import NodeFuncCall from "../../views/table/NodeFuncCall.vue"
 
 interface NodeFuncCardInfo {
     dialogVisible:boolean
@@ -67,5 +67,5 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-@import "../css/card.css";
+@import "../../css/card.css";
 </style>
