@@ -31,6 +31,11 @@ export module globals {
 			initSize:21,
 			initNum:1,
 			initCount:7
+		},
+		funcCallConfig:{
+			tablePageSize:50,
+			findReturnValRetryTime:1000,
+			findReturnValRetryCnt:5
 		}
 	}
 

@@ -12,11 +12,14 @@
             :stateColor="convert.getColorByState(nodeFuncCall.State)" :time="nodeFuncCall.Base?.UpdateTime"></CardFuncCall>
 
         <el-dialog
-            :title="nodeFunc.Name"
             v-model="data.dialogVisible"
-            width="800px"
+            width="860px"
+            top="10vh"
             destroy-on-close>
-        <NodeFuncCall :nodeFunc="nodeFunc"></NodeFuncCall>
+            <template v-slot:title>
+                <span class="card-dialog-title" :class=convert.getColorByState(nodeFunc.State)>{{nodeFunc.Name}}</span>
+            </template>
+            <NodeFuncCall :nodeFunc="nodeFunc"></NodeFuncCall>
         </el-dialog>
     </el-card>
 </template>
@@ -68,4 +71,5 @@ export default defineComponent ({
 
 <style scoped>
 @import "../../css/card.css";
+@import "../../css/color.css";
 </style>

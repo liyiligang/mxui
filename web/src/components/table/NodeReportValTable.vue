@@ -1,12 +1,12 @@
 <template>
-    <el-table :data="tableData" class="historyTable" highlight-current-row height="420" v-elTableInfiniteScroll="tableLoad">
-        <el-table-column label="编号" type="index" align="center" width="70"></el-table-column>
-        <el-table-column label="报告值" align="center" width="120">
+    <el-table :data="tableData" highlight-current-row height="361" v-elTableInfiniteScroll="tableLoad">
+        <el-table-column label="编号" type="index" align="center" width="160"></el-table-column>
+        <el-table-column label="报告值" align="center">
             <template #default="scope">
                 <div :class="[getStateColor(scope.$index)]">{{getValue(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="日期" align="center" width="160">
+        <el-table-column label="日期" align="center" width="220">
             <template #default="scope">
                 <div>{{getTime(scope.$index)}}</div>
             </template>
@@ -56,8 +56,5 @@ export default defineComponent ({
 
 <style scoped>
 @import "../../css/color.css";
-.historyTable {
-    width: 100%;
-}
 </style>
 

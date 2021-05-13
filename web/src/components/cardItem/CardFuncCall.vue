@@ -1,8 +1,8 @@
 <template>
     <el-row class="cardFuncCall" type="flex" justify="space-between" align="middle">
-        <el-button class="callButton" type="text" @click="click">{{name}}</el-button>
+        <el-button class="cardFuncCallButton" type="text" @click="click">{{name}}</el-button>
         <div :class="[stateColor]">{{state}}</div>
-        <div class="callTime color-text-assist">{{globals.formatDate(time)}}</div>
+        <div class="cardFuncCallTime color-text-assist">{{globals.formatDate(time)}}</div>
     </el-row>
 </template>
 
@@ -46,12 +46,12 @@ export default defineComponent ({
     font-size: 14px;
 }
 
-.callButton{
+.cardFuncCallButton{
     padding: 0px;
     line-height: normal;
 }
 
-.callTime{
+.cardFuncCallTime{
     font-size: 13px;
 }
 </style>

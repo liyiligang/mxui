@@ -1,16 +1,24 @@
 <template>
-    <el-row  v-loading="data.loading" type="flex" justify="center" align="middle">
-        <Empty v-if="data.nodeReportValList.length==0"></Empty>
-        <el-row v-else type="flex" justify="space-around" align="middle">
-            <el-col :span="9">
-                <NodeReportValTable class="history" :tableData="data.nodeReportValList"></NodeReportValTable>
-            </el-col>
-            <el-col :span="15">
-                <Line :lineData="data.nodeReportValList"></Line>
-            </el-col>
-            <el-button @click=freshen circle icon="el-icon-refresh-right"></el-button>
-            <el-input-number v-model="data.reportValNum" controls-position="right" :precision="0"
-                             :min="0" :max="100000" label="报告数量"></el-input-number>
+    <el-row type="flex" justify="center" align="middle">
+        <Empty v-if="data.nodeReportValList.length==0" class="tableReportValBodyEmpty"></Empty>
+        <el-row class="tableReportValMainView" v-else>
+            <el-row class="tableReportValBodyView" v-loading="data.loading" element-loading-text="请等待结果返回..." type="flex" justify="space-between" align="middle">
+                <el-tabs class="tableReportValTabs" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
+                    <el-tab-pane label="折线" name="line">
+                        <Line class="tableReportValLine" :lineData="data.nodeReportValList"></Line>
+                    </el-tab-pane>
+                    <el-tab-pane label="表格" name="table">
+                        <NodeReportValTable class="tableReportValTable" :tableData="data.nodeReportValList"></NodeReportValTable>
+                    </el-tab-pane>
+                </el-tabs>
+            </el-row>
+            <el-row class="tableReportValFooterView" type="flex" justify="center" align="middle">
+                <el-select class="tableReportValSelect" v-model="data.selectValue" @change="selectChanged"
+                           filterable allow-create :disabled="data.loading"
+                           default-first-option placeholder="请输入请求数目">
+                    <el-option v-for="item in data.selectOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                </el-select>
+            </el-row>
         </el-row>
     </el-row>
 </template>
@@ -25,9 +33,11 @@ import {request} from "../../base/request";
 
 interface NodeReportValInfo {
     loading: boolean
-    reportValNum: number
     tabActiveName:string
     nodeReportValList:protoManage.INodeFuncCall[]
+    selectValue:string
+    selectOptions: Array<{value:string, label: string}>
+
 }
 
 export default defineComponent ({
@@ -44,7 +54,10 @@ export default defineComponent ({
         }
     },
     setup(props){
-        const data = reactive<NodeReportValInfo>({loading:false, reportValNum:100, tabActiveName:"parameter", nodeReportValList:[]})
+        const data = reactive<NodeReportValInfo>({loading:false, tabActiveName:"line",
+            nodeReportValList:[], selectValue:"100", selectOptions:[{value: '100', label: '100'},
+                {value: '500', label: '500'}, {value: '1000', label: '1000'},
+                {value: '5000', label: '5000'}, {value: '10000', label: '10000'}]})
 
         onMounted(()=>{
             reqNodeReportValList()
@@ -54,7 +67,7 @@ export default defineComponent ({
             data.loading = true
             request.reqNodeReportValList(protoManage.Filter.create({
                 ReportID:Number(props.nodeReport.Base?.ID),
-                PageSize:Number(data.reportValNum),
+                PageSize:Number(data.selectValue),
                 PageNum:Number(1)
             })).then((response) => {
                 data.nodeReportValList.length = 0
@@ -64,8 +77,7 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{data.loading = false})
         }
 
-
-        function freshen() {
+        function selectChanged() {
             reqNodeReportValList()
         }
 
@@ -73,16 +85,37 @@ export default defineComponent ({
 
         }
 
-        return {data, tabClick, freshen}
+        return {data, tabClick, selectChanged}
     }
 })
 </script>
 
 <style scoped>
-.history{
-    width: 680px;
+
+.tableReportValBodyEmpty{
+    width: 100%;
+    height: 460px;
 }
-.tabs{
-    width: 380px;
+
+.tableReportValMainView{
+    width: 100%;
+}
+
+.tableReportValBodyView{
+    width: 100%;
+    flex-wrap: nowrap;
+}
+
+.tableReportValTabs{
+    width: 100%;
+}
+
+.tableReportValFooterView{
+    margin-top: 20px;
+    width: 100%;
+}
+
+.tableReportValSelect{
+    width: 150px;
 }
 </style>

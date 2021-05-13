@@ -104,7 +104,6 @@ export default defineComponent ({
 
 <style scoped>
 .json-editor {
-    height: 350px;
-    /*background-image: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);*/
+    height: 356px;
 }
 </style>

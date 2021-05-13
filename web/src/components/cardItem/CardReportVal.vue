@@ -1,9 +1,9 @@
 <template>
     <el-row class="cardReportVal" type="flex" justify="space-between" align="middle">
-        <el-button class="callButton" type="text" @click="click">{{name}}</el-button>
+        <el-button class="cardReportValButton" type="text" @click="click">{{name}}</el-button>
         <div v-if=isValidState() :class="[stateColor]">{{"暂无"}}</div>
         <div v-else :class="[stateColor]">{{value}}</div>
-        <div class="callTime color-text-assist">{{globals.formatDate(time)}}</div>
+        <div class="cardReportValTime color-text-assist">{{globals.formatDate(time)}}</div>
     </el-row>
 </template>
 
@@ -53,12 +53,12 @@ export default defineComponent ({
     font-size: 14px;
 }
 
-.callButton{
+.cardReportValButton{
     padding: 0px;
     line-height: normal;
 }
 
-.callTime{
+.cardReportValTime{
     font-size: 13px;
 }
 </style>

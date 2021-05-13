@@ -1,10 +1,8 @@
 <template>
-    <el-row type="flex" justify="space-around" align="middle">
-        <el-col :span="12">
-            <NodeFuncCallTable class="history" ref="table" :tableData="data.nodeFuncCallList" @tableSelect="tableSelect" @tableLoad=tableLoad></NodeFuncCallTable>
-        </el-col>
-        <el-col :span="12">
-            <el-tabs class="tabs" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick" v-loading="data.loading">
+    <el-row type="flex" justify="center" align="middle">
+        <el-row class="tableFuncCallBodyView" v-loading="data.loading" element-loading-text="请等待结果返回..." type="flex" justify="space-between" align="middle">
+            <NodeFuncCallTable class="tableFuncCallTable" ref="table" :tableData="data.nodeFuncCallList" @tableSelect="tableSelect" @tableLoad=tableLoad></NodeFuncCallTable>
+            <el-tabs class="tableFuncCallTabs" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
                 <el-tab-pane label="参数" name="parameter">
                     <JsonEdit ref="parameter" :readOnly="false" :modes="['code', 'tree']" :id="'parameter'+nodeFunc.Base.ID"
                               :name="nodeFunc.Name" @jsonChanged=parameterChanged></JsonEdit>
@@ -14,9 +12,11 @@
                               :name="nodeFunc.Name" @jsonChanged=returnValChanged></JsonEdit>
                 </el-tab-pane>
             </el-tabs>
-        </el-col>
+        </el-row>
+        <el-row class="tableFuncCallFooterView" type="flex" justify="center" align="middle">
+            <el-button class="tableFuncCallButton" type="primary" @click=funcCall :disabled="data.loading">调用</el-button>
+        </el-row>
     </el-row>
-    <el-button @click=funcCall :disabled="data.loading">调用</el-button>
 </template>
 
 <script lang="ts">
@@ -25,6 +25,7 @@ import JsonEdit from "../../components/json/JsonEdit.vue"
 import NodeFuncCallTable from "../../components/table/NodeFuncCallTable.vue"
 import {ElMessage} from "element-plus";
 import {request} from "../../base/request";
+import {globals} from "../../base/globals";
 import {protoManage} from "../../proto/manage";
 
 interface NodeFuncCallInfo {
@@ -88,7 +89,7 @@ export default defineComponent ({
         function pullNodeFuncCall(){
             request.reqNodeFuncCallList(protoManage.Filter.create({
                 FuncID:Number(props.nodeFunc.Base?.ID),
-                PageSize:Number(10),
+                PageSize:Number(globals.globalsConfig.funcCallConfig.tablePageSize),
                 PageNum:Number(data.tableIndex)
             })).then((response) => {
                 for (let i = 0; i < response.NodeFuncCallList.length; i++){
@@ -112,7 +113,7 @@ export default defineComponent ({
                 })
             })).then((response) => {
                 findCall(response.ID)
-            }).catch(error => {}).finally(()=>{data.loading = false})
+            }).catch(error => {}).finally(()=>{})
         }
 
         function findCall(baseID:number){
@@ -128,7 +129,7 @@ export default defineComponent ({
                         findCallEnd(timerID, response)
                     }else if (response.State == protoManage.State.StateUnknow){
                         reqCount++
-                        if (reqCount >= 1) {
+                        if (reqCount >= globals.globalsConfig.funcCallConfig.findReturnValRetryCnt) {
                             ElMessage.error(reqStr + "超时");
                             findCallEnd(timerID, response)
                         }
@@ -137,7 +138,7 @@ export default defineComponent ({
                         findCallEnd(timerID, response)
                     }
                 }).catch(error => {}).finally(()=>{})
-            }, 1000)
+            }, globals.globalsConfig.funcCallConfig.findReturnValRetryTime)
         }
 
         function findCallEnd(timerID, response){
@@ -164,10 +165,26 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-.history{
-    width: 380px;
+
+.tableFuncCallBodyView{
+    width: 100%;
+    flex-wrap: nowrap;
 }
-.tabs{
-    width: 380px;
+
+.tableFuncCallTable{
+    width: 50%;
+}
+
+.tableFuncCallTabs{
+    width: 49%;
+}
+
+.tableFuncCallFooterView{
+    margin-top: 20px;
+    width: 100%;
+}
+
+.tableFuncCallButton{
+    width: 80px;
 }
 </style>

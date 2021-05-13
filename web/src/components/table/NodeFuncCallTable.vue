@@ -1,14 +1,14 @@
 <template>
     <el-table
-        ref="table" :data="tableData" @current-change="tableSelect" v-elTableInfiniteScroll="tableLoad"
-        class="historyTable" height="420" highlight-current-row>
-        <el-table-column label="编号" type="index" align="center" width="50"></el-table-column>
+        ref="table" :data="tableData" @current-change="tableSelect"
+        v-elTableInfiniteScroll="tableLoad" height="432" highlight-current-row>
+        <el-table-column label="编号" type="index" align="center" width="80"></el-table-column>
         <el-table-column label="调用者" align="center">
             <template #default="scope">
                 <div>{{getManagerNickName(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" width="70">
+        <el-table-column label="状态" align="center" width="90">
             <template #default="scope">
                 <div :class="[getStateColor(scope.$index)]">{{getState(scope.$index)}}</div>
             </template>
@@ -77,7 +77,4 @@ export default defineComponent ({
 
 <style scoped>
 @import "../../css/color.css";
-.historyTable {
-    width: 100%;
-}
 </style>

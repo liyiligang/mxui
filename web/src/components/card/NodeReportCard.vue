@@ -12,10 +12,13 @@
                        :time="nodeReportVal.Base?.UpdateTime"></CardReportVal>
 
         <el-dialog
-            :title="nodeReport.Name"
             v-model="data.dialogVisible"
-            width="1000px"
+            width="860px"
+            top="10vh"
             destroy-on-close>
+            <template v-slot:title>
+                <span class="card-dialog-title" :class=convert.getColorByState(nodeReport.State)>{{nodeReport.Name}}</span>
+            </template>
             <NodeReportVal :nodeReport="nodeReport"></NodeReportVal>
         </el-dialog>
     </el-card>
@@ -66,4 +69,5 @@ export default defineComponent ({
 
 <style scoped>
 @import "../../css/card.css";
+@import "../../css/color.css";
 </style>

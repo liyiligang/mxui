@@ -41,8 +41,15 @@ export default defineComponent ({
                         type: 'line'
                     }
                 },
+                grid: {
+                    x: 50,
+                    y: 25,
+                    x2: 20,
+                    y2: 40
+                },
                 xAxis: {
                     type: 'time',
+                    boundaryGap: false,
                     splitLine: {
                         show: false
                     },
@@ -62,7 +69,7 @@ export default defineComponent ({
                 },
                 yAxis: {
                     type: 'value',
-                    // boundaryGap: [0, '10%']
+                    boundaryGap: false
                 },
                 dataZoom: [{
                     type: 'inside',
@@ -102,7 +109,7 @@ export default defineComponent ({
 
 <style scoped>
 .chart {
-    height: 450px;
+    height: 361px;
     width: 100%;
 }
 </style>
