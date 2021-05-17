@@ -166,11 +166,11 @@ func (app *App) initWebServer() error {
 		ReadWaitTime:  time.Duration(config.WebSocketConfig.WebSocket.ReadWaitTime) * time.Second,
 		PingWaitTime:  time.Duration(config.WebSocketConfig.WebSocket.PingWaitTime) * time.Second,
 		PongWaitTime:  time.Duration(config.WebSocketConfig.WebSocket.PongWaitTime) * time.Second,
-		Call:          &app.gateway,
+		Call:          app,
 	}
 
 	httpConfig := Jweb.HttpConfig{
-		Call: &app.gateway,
+		Call: app,
 	}
 
 	routeFunc := func(r *gin.Engine) {
@@ -243,7 +243,7 @@ func (app *App) initRpcServer() error {
 		PublicKeyPath:  publicKeyPath,
 		PrivateKeyPath: privateKeyPath,
 		RegisterCall: func(s *grpc.Server) {
-			protoManage.RegisterRpcEngineServer(s, &app.gateway)
+			protoManage.RegisterRpcEngineServer(s, app)
 		},
 		LogWrite: &Jlog.LogIoWrite{Msg: "rpc", Flag: "grpc"},
 		ErrorCall: errorOther,

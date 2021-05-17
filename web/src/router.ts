@@ -7,6 +7,7 @@ import Node from "./views/node/Node.vue";
 import NodeLink from "./views/node/NodeLink.vue";
 import NodeFunc from "./views/node/NodeFunc.vue";
 import NodeReport from "./views/node/NodeReport.vue";
+import NodeNotify from "./views/node/NodeNotify.vue";
 import NotFound from "./views/NotFound.vue";
 import {protoManage} from "./proto/manage"
 import {globals} from "./base/globals";
@@ -26,6 +27,7 @@ const router = createRouter({
                 {path: 'nodeLink', name: 'nodeLink', component: NodeLink},
                 {path: 'nodeFunc', name: 'nodeFunc', component: NodeFunc},
                 {path: 'nodeReport', name: 'nodeReport', component: NodeReport},
+                {path: 'nodeNotify', name: 'nodeNotify', component: NodeNotify},
                 {path: "notFound", name: "notFound", component: NotFound},
             ]
         },
@@ -106,10 +108,10 @@ export module routerPath {
 
     export function toNodeNotifyAll(){
         router.push({
-            name: "notFound",
+            name: "nodeNotify",
             query: {
-                pageSize: globals.globalsConfig.pageConfig.initSize,
-                pageNum:  globals.globalsConfig.pageConfig.initNum
+                // pageSize: globals.globalsConfig.pageConfig.initSize,
+                // pageNum:  globals.globalsConfig.pageConfig.initNum
             }
         }).then()
     }

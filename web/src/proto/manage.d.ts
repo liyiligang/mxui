@@ -45,7 +45,7 @@ export namespace protoManage {
         NodeReportFind = 705,
         NodeReportFindByID = 706,
         NodeReportValFind = 707,
-        NodeNotifyAdd = 801
+        NodeNotifyNew = 801
     }
 
     /** State enum. */
@@ -57,12 +57,10 @@ export namespace protoManage {
         StateUnknow = 4
     }
 
-    /** NoticeType enum. */
-    enum NoticeType {
-        NoticeTypeSuccess = 0,
-        NoticeTypeInfo = 1,
-        NoticeTypeWarn = 2,
-        NoticeTypeFail = 3
+    /** NotifySenderType enum. */
+    enum NotifySenderType {
+        NotifySenderTypeSystem = 0,
+        NotifySenderTypeNode = 1
     }
 
     /** HttpError enum. */
@@ -1808,17 +1806,11 @@ export namespace protoManage {
         /** NodeNotify SenderID */
         SenderID?: (number|null);
 
-        /** NodeNotify SenderName */
-        SenderName?: (string|null);
+        /** NodeNotify SenderType */
+        SenderType?: (protoManage.NotifySenderType|null);
 
-        /** NodeNotify MessageKey */
-        MessageKey?: (string|null);
-
-        /** NodeNotify MessageVal */
-        MessageVal?: (string|null);
-
-        /** NodeNotify UpdateTime */
-        UpdateTime?: (number|null);
+        /** NodeNotify Message */
+        Message?: (string|null);
 
         /** NodeNotify State */
         State?: (protoManage.State|null);
@@ -1839,17 +1831,11 @@ export namespace protoManage {
         /** NodeNotify SenderID. */
         public SenderID: number;
 
-        /** NodeNotify SenderName. */
-        public SenderName: string;
+        /** NodeNotify SenderType. */
+        public SenderType: protoManage.NotifySenderType;
 
-        /** NodeNotify MessageKey. */
-        public MessageKey: string;
-
-        /** NodeNotify MessageVal. */
-        public MessageVal: string;
-
-        /** NodeNotify UpdateTime. */
-        public UpdateTime: number;
+        /** NodeNotify Message. */
+        public Message: string;
 
         /** NodeNotify State. */
         public State: protoManage.State;

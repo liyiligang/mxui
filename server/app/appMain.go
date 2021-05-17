@@ -107,6 +107,6 @@ func (app *App) StopBaseServer() {
 func (app *App) initAppData() {
 	app.db.Gorm = app.gorm
 	app.data.DB = &app.db
+	app.data.Gateway = &app.gateway
 	app.request.Data = &app.data
-	app.gateway.Request = &app.request
 }

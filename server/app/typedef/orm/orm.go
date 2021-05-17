@@ -97,8 +97,9 @@ type NodeReportVal struct {
 type NodeNotify struct {
 	Base
 	SenderID  			int64	`gorm:"NOT NULL;"`
-	MessageKey     		string	`gorm:"NOT NULL;"`
-	MessageVal     		string	`gorm:"NOT NULL;"`
+	SenderType  		int64	`gorm:"NOT NULL;"`
+	Message     		string	`gorm:"NOT NULL;"`
+	State				int32	`gorm:"NOT NULL;"`
 }
 
 func InitOrmTable(db *gorm.DB) {

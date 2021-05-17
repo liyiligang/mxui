@@ -241,6 +241,19 @@ export module request {
         })
     }
 
+    export function reqNodeNotifyNew(req:protoManage.NodeNotify):Promise<protoManage.NodeNotify> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeNotify.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeNotifyNew, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.NodeNotify.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqNodeGroupByID(id: number):Promise<protoManage.NodeGroup> {
         return new Promise((resolve, reject)=>{
             let req = protoManage.NodeGroup.create({Base:protoManage.Base.create({ID:id})})

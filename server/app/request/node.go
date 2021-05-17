@@ -167,10 +167,10 @@ func (request *Request) ReqNodeNotifyUpdate(nodeID int64, message []byte) {
 		return
 	}
 
-	err = request.Data.NodeNotifyAdd(&nodeNotify)
-	if err != nil {
-		return
-	}
+	//err = request.Data.NodeNotifyAdd(&nodeNotify)
+	//if err != nil {
+	//	return
+	//}
 }
 
 //顶部链接信息查询
@@ -440,3 +440,21 @@ func (request *Request) ReqNodeFuncCallFindByID(userID int64, message []byte)([]
 	return pbByte, err
 }
 
+//请求节点通知
+func (request *Request) ReqNodeNotify(userID int64, message []byte)([]byte, error) {
+	req := protoManage.NodeNotify{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	req.SenderID = userID
+	err = request.Data.NodeNotifyNew(&req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}

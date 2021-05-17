@@ -61,7 +61,7 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} NodeReportFind=705 NodeReportFind value
      * @property {number} NodeReportFindByID=706 NodeReportFindByID value
      * @property {number} NodeReportValFind=707 NodeReportValFind value
-     * @property {number} NodeNotifyAdd=801 NodeNotifyAdd value
+     * @property {number} NodeNotifyNew=801 NodeNotifyNew value
      */
     protoManage.Order = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -106,7 +106,7 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[705] = "NodeReportFind"] = 705;
         values[valuesById[706] = "NodeReportFindByID"] = 706;
         values[valuesById[707] = "NodeReportValFind"] = 707;
-        values[valuesById[801] = "NodeNotifyAdd"] = 801;
+        values[valuesById[801] = "NodeNotifyNew"] = 801;
         return values;
     })();
 
@@ -131,20 +131,16 @@ export const protoManage = $root.protoManage = (() => {
     })();
 
     /**
-     * NoticeType enum.
-     * @name protoManage.NoticeType
+     * NotifySenderType enum.
+     * @name protoManage.NotifySenderType
      * @enum {number}
-     * @property {number} NoticeTypeSuccess=0 NoticeTypeSuccess value
-     * @property {number} NoticeTypeInfo=1 NoticeTypeInfo value
-     * @property {number} NoticeTypeWarn=2 NoticeTypeWarn value
-     * @property {number} NoticeTypeFail=3 NoticeTypeFail value
+     * @property {number} NotifySenderTypeSystem=0 NotifySenderTypeSystem value
+     * @property {number} NotifySenderTypeNode=1 NotifySenderTypeNode value
      */
-    protoManage.NoticeType = (function() {
+    protoManage.NotifySenderType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "NoticeTypeSuccess"] = 0;
-        values[valuesById[1] = "NoticeTypeInfo"] = 1;
-        values[valuesById[2] = "NoticeTypeWarn"] = 2;
-        values[valuesById[3] = "NoticeTypeFail"] = 3;
+        values[valuesById[0] = "NotifySenderTypeSystem"] = 0;
+        values[valuesById[1] = "NotifySenderTypeNode"] = 1;
         return values;
     })();
 
@@ -543,7 +539,7 @@ export const protoManage = $root.protoManage = (() => {
             case 707:
                 message.order = 707;
                 break;
-            case "NodeNotifyAdd":
+            case "NodeNotifyNew":
             case 801:
                 message.order = 801;
                 break;
@@ -992,7 +988,7 @@ export const protoManage = $root.protoManage = (() => {
             case 707:
                 message.order = 707;
                 break;
-            case "NodeNotifyAdd":
+            case "NodeNotifyNew":
             case 801:
                 message.order = 801;
                 break;
@@ -5398,10 +5394,8 @@ export const protoManage = $root.protoManage = (() => {
          * @interface INodeNotify
          * @property {protoManage.IBase|null} [Base] NodeNotify Base
          * @property {number|null} [SenderID] NodeNotify SenderID
-         * @property {string|null} [SenderName] NodeNotify SenderName
-         * @property {string|null} [MessageKey] NodeNotify MessageKey
-         * @property {string|null} [MessageVal] NodeNotify MessageVal
-         * @property {number|null} [UpdateTime] NodeNotify UpdateTime
+         * @property {protoManage.NotifySenderType|null} [SenderType] NodeNotify SenderType
+         * @property {string|null} [Message] NodeNotify Message
          * @property {protoManage.State|null} [State] NodeNotify State
          */
 
@@ -5437,36 +5431,20 @@ export const protoManage = $root.protoManage = (() => {
         NodeNotify.prototype.SenderID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * NodeNotify SenderName.
-         * @member {string} SenderName
+         * NodeNotify SenderType.
+         * @member {protoManage.NotifySenderType} SenderType
          * @memberof protoManage.NodeNotify
          * @instance
          */
-        NodeNotify.prototype.SenderName = "";
+        NodeNotify.prototype.SenderType = 0;
 
         /**
-         * NodeNotify MessageKey.
-         * @member {string} MessageKey
+         * NodeNotify Message.
+         * @member {string} Message
          * @memberof protoManage.NodeNotify
          * @instance
          */
-        NodeNotify.prototype.MessageKey = "";
-
-        /**
-         * NodeNotify MessageVal.
-         * @member {string} MessageVal
-         * @memberof protoManage.NodeNotify
-         * @instance
-         */
-        NodeNotify.prototype.MessageVal = "";
-
-        /**
-         * NodeNotify UpdateTime.
-         * @member {number} UpdateTime
-         * @memberof protoManage.NodeNotify
-         * @instance
-         */
-        NodeNotify.prototype.UpdateTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        NodeNotify.prototype.Message = "";
 
         /**
          * NodeNotify State.
@@ -5504,16 +5482,12 @@ export const protoManage = $root.protoManage = (() => {
                 $root.protoManage.Base.encode(message.Base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             if (message.SenderID != null && Object.hasOwnProperty.call(message, "SenderID"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int64(message.SenderID);
-            if (message.SenderName != null && Object.hasOwnProperty.call(message, "SenderName"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.SenderName);
-            if (message.MessageKey != null && Object.hasOwnProperty.call(message, "MessageKey"))
-                writer.uint32(/* id 4, wireType 2 =*/34).string(message.MessageKey);
-            if (message.MessageVal != null && Object.hasOwnProperty.call(message, "MessageVal"))
-                writer.uint32(/* id 5, wireType 2 =*/42).string(message.MessageVal);
-            if (message.UpdateTime != null && Object.hasOwnProperty.call(message, "UpdateTime"))
-                writer.uint32(/* id 6, wireType 0 =*/48).int64(message.UpdateTime);
+            if (message.SenderType != null && Object.hasOwnProperty.call(message, "SenderType"))
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.SenderType);
+            if (message.Message != null && Object.hasOwnProperty.call(message, "Message"))
+                writer.uint32(/* id 4, wireType 2 =*/34).string(message.Message);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.State);
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.State);
             return writer;
         };
 
@@ -5555,18 +5529,12 @@ export const protoManage = $root.protoManage = (() => {
                     message.SenderID = reader.int64();
                     break;
                 case 3:
-                    message.SenderName = reader.string();
+                    message.SenderType = reader.int32();
                     break;
                 case 4:
-                    message.MessageKey = reader.string();
+                    message.Message = reader.string();
                     break;
                 case 5:
-                    message.MessageVal = reader.string();
-                    break;
-                case 6:
-                    message.UpdateTime = reader.int64();
-                    break;
-                case 7:
                     message.State = reader.int32();
                     break;
                 default:
@@ -5612,18 +5580,17 @@ export const protoManage = $root.protoManage = (() => {
             if (message.SenderID != null && message.hasOwnProperty("SenderID"))
                 if (!$util.isInteger(message.SenderID) && !(message.SenderID && $util.isInteger(message.SenderID.low) && $util.isInteger(message.SenderID.high)))
                     return "SenderID: integer|Long expected";
-            if (message.SenderName != null && message.hasOwnProperty("SenderName"))
-                if (!$util.isString(message.SenderName))
-                    return "SenderName: string expected";
-            if (message.MessageKey != null && message.hasOwnProperty("MessageKey"))
-                if (!$util.isString(message.MessageKey))
-                    return "MessageKey: string expected";
-            if (message.MessageVal != null && message.hasOwnProperty("MessageVal"))
-                if (!$util.isString(message.MessageVal))
-                    return "MessageVal: string expected";
-            if (message.UpdateTime != null && message.hasOwnProperty("UpdateTime"))
-                if (!$util.isInteger(message.UpdateTime) && !(message.UpdateTime && $util.isInteger(message.UpdateTime.low) && $util.isInteger(message.UpdateTime.high)))
-                    return "UpdateTime: integer|Long expected";
+            if (message.SenderType != null && message.hasOwnProperty("SenderType"))
+                switch (message.SenderType) {
+                default:
+                    return "SenderType: enum value expected";
+                case 0:
+                case 1:
+                    break;
+                }
+            if (message.Message != null && message.hasOwnProperty("Message"))
+                if (!$util.isString(message.Message))
+                    return "Message: string expected";
             if (message.State != null && message.hasOwnProperty("State"))
                 switch (message.State) {
                 default:
@@ -5664,21 +5631,18 @@ export const protoManage = $root.protoManage = (() => {
                     message.SenderID = object.SenderID;
                 else if (typeof object.SenderID === "object")
                     message.SenderID = new $util.LongBits(object.SenderID.low >>> 0, object.SenderID.high >>> 0).toNumber();
-            if (object.SenderName != null)
-                message.SenderName = String(object.SenderName);
-            if (object.MessageKey != null)
-                message.MessageKey = String(object.MessageKey);
-            if (object.MessageVal != null)
-                message.MessageVal = String(object.MessageVal);
-            if (object.UpdateTime != null)
-                if ($util.Long)
-                    (message.UpdateTime = $util.Long.fromValue(object.UpdateTime)).unsigned = false;
-                else if (typeof object.UpdateTime === "string")
-                    message.UpdateTime = parseInt(object.UpdateTime, 10);
-                else if (typeof object.UpdateTime === "number")
-                    message.UpdateTime = object.UpdateTime;
-                else if (typeof object.UpdateTime === "object")
-                    message.UpdateTime = new $util.LongBits(object.UpdateTime.low >>> 0, object.UpdateTime.high >>> 0).toNumber();
+            switch (object.SenderType) {
+            case "NotifySenderTypeSystem":
+            case 0:
+                message.SenderType = 0;
+                break;
+            case "NotifySenderTypeNode":
+            case 1:
+                message.SenderType = 1;
+                break;
+            }
+            if (object.Message != null)
+                message.Message = String(object.Message);
             switch (object.State) {
             case "StateNot":
             case 0:
@@ -5724,14 +5688,8 @@ export const protoManage = $root.protoManage = (() => {
                     object.SenderID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.SenderID = options.longs === String ? "0" : 0;
-                object.SenderName = "";
-                object.MessageKey = "";
-                object.MessageVal = "";
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.UpdateTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.UpdateTime = options.longs === String ? "0" : 0;
+                object.SenderType = options.enums === String ? "NotifySenderTypeSystem" : 0;
+                object.Message = "";
                 object.State = options.enums === String ? "StateNot" : 0;
             }
             if (message.Base != null && message.hasOwnProperty("Base"))
@@ -5741,17 +5699,10 @@ export const protoManage = $root.protoManage = (() => {
                     object.SenderID = options.longs === String ? String(message.SenderID) : message.SenderID;
                 else
                     object.SenderID = options.longs === String ? $util.Long.prototype.toString.call(message.SenderID) : options.longs === Number ? new $util.LongBits(message.SenderID.low >>> 0, message.SenderID.high >>> 0).toNumber() : message.SenderID;
-            if (message.SenderName != null && message.hasOwnProperty("SenderName"))
-                object.SenderName = message.SenderName;
-            if (message.MessageKey != null && message.hasOwnProperty("MessageKey"))
-                object.MessageKey = message.MessageKey;
-            if (message.MessageVal != null && message.hasOwnProperty("MessageVal"))
-                object.MessageVal = message.MessageVal;
-            if (message.UpdateTime != null && message.hasOwnProperty("UpdateTime"))
-                if (typeof message.UpdateTime === "number")
-                    object.UpdateTime = options.longs === String ? String(message.UpdateTime) : message.UpdateTime;
-                else
-                    object.UpdateTime = options.longs === String ? $util.Long.prototype.toString.call(message.UpdateTime) : options.longs === Number ? new $util.LongBits(message.UpdateTime.low >>> 0, message.UpdateTime.high >>> 0).toNumber() : message.UpdateTime;
+            if (message.SenderType != null && message.hasOwnProperty("SenderType"))
+                object.SenderType = options.enums === String ? $root.protoManage.NotifySenderType[message.SenderType] : message.SenderType;
+            if (message.Message != null && message.hasOwnProperty("Message"))
+                object.Message = message.Message;
             if (message.State != null && message.hasOwnProperty("State"))
                 object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
             return object;

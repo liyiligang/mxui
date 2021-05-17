@@ -26,6 +26,9 @@ export module globals {
 			tokenKey:"userToken",
 			requestTimeout: 10000,
 		},
+		wsConfig:{
+			wsReconnectTime: 5000,
+		},
 		pageConfig:{
 			sizeList:[9, 21, 54, 108],
 			initSize:21,
@@ -62,6 +65,16 @@ export module globals {
 	// 	let tmpUint8Array = new Uint8Array(arr);
 	// 	return tmpUint8Array
 	// }
+
+	export function viewWarn(msg:string) {
+		ElMessage.warning(msg);
+		console.warn(msg)
+	}
+
+	export function viewError(msg:string) {
+		ElMessage.error(msg);
+		console.error(msg)
+	}
 
 	export function randomNum(lower:number, upper:number):number {
 		return Math.floor(Math.random() * (upper - lower)) + lower;

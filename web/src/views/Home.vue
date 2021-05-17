@@ -27,18 +27,31 @@ import Node from "./node/Node.vue";
 import NodeLink from "./node/NodeLink.vue";
 import NodeFunc from "./node/NodeFunc.vue";
 import NodeReport from "./node/NodeReport.vue";
+import NodeNotify from "./node/NodeNotify.vue";
+import {websocket} from "../base/websocket";
+import {protoManage} from "../proto/manage";
+import {globals} from "../base/globals";
 
 export default defineComponent ({
-  name: "Home",
-  components: {
-      Head,
-      Aside,
-      NodeGroup,
-      Node,
-      NodeLink,
-      NodeFunc,
-      NodeReport
-  }
+    name: "Home",
+    components: {
+        Head,
+        Aside,
+        NodeGroup,
+        Node,
+        NodeLink,
+        NodeFunc,
+        NodeReport,
+        NodeNotify
+    },
+    mounted() {
+        let msg = protoManage.Manager.create({
+            Token:globals.globalsData.token
+        })
+        let byte = protoManage.Manager.encode(msg).finish()
+        let str = globals.uint8ArrayToString(byte)
+        websocket.wsConnect("ws://localhost/ws?parameter="+str)
+    }
 })
 </script>
 
@@ -48,7 +61,7 @@ export default defineComponent ({
 .home{
     width: 100%;
     height: 100%;
-    overflow-x:hidden
+    overflow-x:hidden;
 }
 
 .homeView{
@@ -69,11 +82,13 @@ export default defineComponent ({
 .bodyView{
     width: 100%;
     min-height: 86.1%;
+    max-height: 86.1%;
 }
 
 .asideView{
     min-width: 19%;
     height: 100%;
+    overflow-y:scroll;
 }
 
 .asideDivider{
@@ -84,5 +99,6 @@ export default defineComponent ({
 .routerView{
     flex: auto;
     height: 100%;
+    overflow-y:scroll;
 }
 </style>
