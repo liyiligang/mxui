@@ -67,7 +67,7 @@ export module websocket {
 
     function receiver(msg:protoManage.Message){
         switch (msg.order) {
-            case protoManage.Order.NodeNotifyNew:
+            case protoManage.Order.NodeNotifyAdd:
                 nodeNotify(msg.message)
                 break
             default:

@@ -140,6 +140,9 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		case protoManage.Order_NodeReportValFind:
 			ansMsg, err = app.request.ReqNodeReportValFind(userID, req.Message)
 			break
+		case protoManage.Order_NodeNotifyFind:
+			ansMsg, err = app.request.ReqNodeNotifyFind(userID, req.Message)
+			break
 		case protoManage.Order_NodeTest:
 			ansMsg, err = app.request.ReqNodeTest(userID, req.Message)
 			break
@@ -225,7 +228,7 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 	case protoManage.Order_NodeReportUpdateVal:
 		app.request.ReqNodeReportValUpdate(id, res.Message)
 		break
-	case protoManage.Order_NodeNotifyNew:
+	case protoManage.Order_NodeNotifyAdd:
 		app.request.ReqNodeNotifyUpdate(id, res.Message)
 		break
 	default:

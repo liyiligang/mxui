@@ -241,12 +241,14 @@ export module request {
         })
     }
 
-    export function reqNodeNotifyNew(req:protoManage.NodeNotify):Promise<protoManage.NodeNotify> {
+    export function reqNodeNotifyList(filter:protoManage.Filter):Promise<protoManage.AnsNodeNotifyList> {
         return new Promise((resolve, reject)=>{
-            let msg = protoManage.NodeNotify.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeNotifyNew, message:msg}))
+            filter = checkFilterPara(filter)
+            let req = protoManage.ReqNodeNotifyList.create({filter:filter})
+            let msg = protoManage.ReqNodeNotifyList.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeNotifyFind, message:msg}))
                 .then((response) => {
-                    let ans = protoManage.NodeNotify.decode(response.message)
+                    let ans = protoManage.AnsNodeNotifyList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)

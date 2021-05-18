@@ -1,5 +1,5 @@
 <template>
-
+    <el-button class="loginButton" type="primary" round v-on:click="sendMsg()">发送</el-button>
 </template>
 
 <script lang="ts">
@@ -20,11 +20,11 @@ export default defineComponent ({
         const data = reactive<NodeNotifyInfo>({isLoading:false, msgType:"", msgState:"", msgData:""})
 
         function sendMsg(){
-            request.reqNodeNotifyNew(protoManage.NodeNotify.create({
-                SenderType:Number(data.msgType),
-                State:Number(data.msgState),
-                Message:data.msgData
+            request.reqNodeNotifyList(protoManage.Filter.create({
+                PageNum : 1,
+                PageSize: 10
             })).then((response) => {
+                console.log(response)
             }).catch(error => {}).finally(()=>{data.isLoading = false})
         }
 

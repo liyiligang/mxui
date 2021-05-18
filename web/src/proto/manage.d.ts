@@ -46,7 +46,8 @@ export namespace protoManage {
         NodeReportFind = 705,
         NodeReportFindByID = 706,
         NodeReportValFind = 707,
-        NodeNotifyNew = 801
+        NodeNotifyAdd = 801,
+        NodeNotifyFind = 802
     }
 
     /** State enum. */

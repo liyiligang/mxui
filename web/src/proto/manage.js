@@ -62,7 +62,8 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} NodeReportFind=705 NodeReportFind value
      * @property {number} NodeReportFindByID=706 NodeReportFindByID value
      * @property {number} NodeReportValFind=707 NodeReportValFind value
-     * @property {number} NodeNotifyNew=801 NodeNotifyNew value
+     * @property {number} NodeNotifyAdd=801 NodeNotifyAdd value
+     * @property {number} NodeNotifyFind=802 NodeNotifyFind value
      */
     protoManage.Order = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -108,7 +109,8 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[705] = "NodeReportFind"] = 705;
         values[valuesById[706] = "NodeReportFindByID"] = 706;
         values[valuesById[707] = "NodeReportValFind"] = 707;
-        values[valuesById[801] = "NodeNotifyNew"] = 801;
+        values[valuesById[801] = "NodeNotifyAdd"] = 801;
+        values[valuesById[802] = "NodeNotifyFind"] = 802;
         return values;
     })();
 
@@ -357,6 +359,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 706:
                 case 707:
                 case 801:
+                case 802:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -546,9 +549,13 @@ export const protoManage = $root.protoManage = (() => {
             case 707:
                 message.order = 707;
                 break;
-            case "NodeNotifyNew":
+            case "NodeNotifyAdd":
             case 801:
                 message.order = 801;
+                break;
+            case "NodeNotifyFind":
+            case 802:
+                message.order = 802;
                 break;
             }
             if (object.message != null)
@@ -808,6 +815,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 706:
                 case 707:
                 case 801:
+                case 802:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -1000,9 +1008,13 @@ export const protoManage = $root.protoManage = (() => {
             case 707:
                 message.order = 707;
                 break;
-            case "NodeNotifyNew":
+            case "NodeNotifyAdd":
             case 801:
                 message.order = 801;
+                break;
+            case "NodeNotifyFind":
+            case 802:
+                message.order = 802;
                 break;
             }
             if (object.message != null)

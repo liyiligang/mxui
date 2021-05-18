@@ -209,6 +209,25 @@ func OrmNodeReportValListToProtoNodeReportValList(ormNodeReportValList []orm.Nod
 	return protoNodeReportValList
 }
 
+//DBNodeNotify To PBNodeNotify
+func OrmNodeNotifyToProtoNodeNotify(ormNodeNotify *orm.NodeNotify, protoNodeNotify *protoManage.NodeNotify) {
+	OrmBaseToProtoBase(&ormNodeNotify.Base, &protoNodeNotify.Base)
+	protoNodeNotify.SenderID = ormNodeNotify.SenderID
+	protoNodeNotify.SenderType = protoManage.NotifySenderType(ormNodeNotify.SenderType)
+	protoNodeNotify.Message = ormNodeNotify.Message
+	protoNodeNotify.State = protoManage.State(ormNodeNotify.State)
+}
+
+//DBNodeNotifyList To PBNodeNotifyList
+func OrmNodeNotifyListToProtoNodeNotifyList(ormNodeNotifyList []orm.NodeNotify) []protoManage.NodeNotify{
+	var protoNodeNotifyList []protoManage.NodeNotify
+	for _ ,v := range ormNodeNotifyList {
+		val := protoManage.NodeNotify{}
+		OrmNodeNotifyToProtoNodeNotify(&v, &val)
+		protoNodeNotifyList = append(protoNodeNotifyList, val)
+	}
+	return protoNodeNotifyList
+}
 
 //DBStateCountList To PBStateCountList
 func OrmStateCountListToProtoStateCountList(ormStateCountList []orm.StateCount) []protoManage.StateCount {

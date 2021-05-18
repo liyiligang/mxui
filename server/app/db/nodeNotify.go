@@ -1,10 +1,27 @@
 package db
 
-import "github.com/liyiligang/manage/app/typedef/orm"
+import (
+	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/typedef/orm"
+	"github.com/pkg/errors"
+	"gorm.io/gorm"
+)
 
 //新增节点通知
 func (db *DB) AddNodeNotify(nodeNotify orm.NodeNotify) error {
 	return db.Gorm.Create(&nodeNotify).Error
+}
+
+//获取节点通知信息
+func (db *DB) FindNodeNotify(filter protoManage.Filter) ([]orm.NodeNotify, error) {
+	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
+	tx = db.SetFilter(tx, filter)
+	var nodeNotifyList []orm.NodeNotify
+	err := tx.Find(&nodeNotifyList).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nodeNotifyList, nil
+	}
+	return nodeNotifyList, err
 }
 
 //按节点ID查询节点通知

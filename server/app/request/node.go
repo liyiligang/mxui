@@ -440,19 +440,18 @@ func (request *Request) ReqNodeFuncCallFindByID(userID int64, message []byte)([]
 	return pbByte, err
 }
 
-//请求节点通知
-func (request *Request) ReqNodeNotify(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeNotify{}
+//节点通知查询
+func (request *Request) ReqNodeNotifyFind(userID int64, message []byte)([]byte, error) {
+	req := protoManage.ReqNodeNotifyList{}
 	err := req.Unmarshal(message)
 	if err != nil {
 		return nil, err
 	}
-	req.SenderID = userID
-	err = request.Data.NodeNotifyNew(&req)
+	ans, err := request.Data.NodeNotifyFind(&req)
 	if err != nil {
 		return nil, err
 	}
-	pbByte, err := req.Marshal()
+	pbByte, err := ans.Marshal()
 	if err != nil {
 		return nil, err
 	}

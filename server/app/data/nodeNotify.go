@@ -2,18 +2,19 @@
 
  import (
 	 "github.com/liyiligang/base/protoFiles/protoManage"
-	 "github.com/liyiligang/manage/app/check"
+	 "github.com/liyiligang/manage/app/convert"
  )
 
-//新增节点通知
-func (data *Data) NodeNotifyNew(protoNodeNotify *protoManage.NodeNotify) error {
-	if err := check.NodeNotifyCheck(protoNodeNotify); err != nil {
-		return err
+//节点通知查询
+func (data *Data) NodeNotifyFind(req *protoManage.ReqNodeNotifyList) (*protoManage.AnsNodeNotifyList, error) {
+	ormNotifyList, err := data.DB.FindNodeNotify(req.Filter)
+	if err != nil {
+		return nil, err
 	}
-	//return data.DB.AddNodeNotify(orm.NodeNotify{
-	//	SenderID: protoNodeNotify.SenderID,
-	//})
-	return  data.Gateway.WsSendOrBroadCastPB(protoNodeNotify.SenderID, protoManage.Order_NodeNotifyNew, protoNodeNotify)
+	protoNodeNotifyList := convert.OrmNodeNotifyListToProtoNodeNotifyList(ormNotifyList)
+	return &protoManage.AnsNodeNotifyList{
+		NodeNotifyList: protoNodeNotifyList,
+	}, nil
 }
 
 
