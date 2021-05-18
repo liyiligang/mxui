@@ -458,3 +458,21 @@ func (request *Request) ReqNodeNotify(userID int64, message []byte)([]byte, erro
 	}
 	return pbByte, err
 }
+
+//请求节点测试
+func (request *Request) ReqNodeTest(userID int64, message []byte)([]byte, error) {
+	req := protoManage.ReqNodeTest{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.NodeTest(userID, &req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}

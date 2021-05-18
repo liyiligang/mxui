@@ -16,6 +16,7 @@
             <el-menu-item class="submenuSpanTwo" index="2-3">方法</el-menu-item>
             <el-menu-item class="submenuSpanTwo" index="2-4">报告</el-menu-item>
             <el-menu-item class="submenuSpanTwo" index="2-5">通知</el-menu-item>
+            <el-menu-item class="submenuSpanTwo" index="2-6">测试</el-menu-item>
         </el-submenu>
     </el-menu>
 </template>
@@ -23,6 +24,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { routerPath } from "../router";
+import { globals } from "../base/globals";
 
 export default defineComponent ({
     name: "Aside",
@@ -53,8 +55,11 @@ export default defineComponent ({
                 case "2-5":
                     routerPath.toNodeNotifyAll()
                     break
+                case "2-6":
+                    routerPath.toNodeTestAll()
+                    break
                 default:
-                    console.log("错误的菜单选项")
+                    globals.viewError("错误的侧边栏菜单选项: " + key)
                     break
             }
         }

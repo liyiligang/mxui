@@ -254,6 +254,19 @@ export module request {
         })
     }
 
+    export function reqNodeTest(req:protoManage.ReqNodeTest):Promise<protoManage.AnsNodeTest> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.ReqNodeTest.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeTest, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.AnsNodeTest.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqNodeGroupByID(id: number):Promise<protoManage.NodeGroup> {
         return new Promise((resolve, reject)=>{
             let req = protoManage.NodeGroup.create({Base:protoManage.Base.create({ID:id})})

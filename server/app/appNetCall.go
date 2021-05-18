@@ -75,19 +75,22 @@ func (app *App) WebsocketError(text string, err error){
 }
 
 func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
+	var ansMsg []byte
+	var userID int64
+	var err error
+
 	req := protoManage.HttpMessage{}
-	err := req.Unmarshal(raw)
+	err = req.Unmarshal(raw)
 	if err != nil {
 		return nil, err, int(protoManage.HttpError_HttpErrorUnmarshal)
 	}
-	var ansMsg []byte
 	if req.Order == protoManage.Order_ManagerLogin{
 		ansMsg, err = app.request.ReqManagerLogin(0, req.Message)
 		if err != nil {
 			return nil, err, int(protoManage.HttpError_HttpErrorAuthInvalid)
 		}
 	}else {
-		userID, err := Jtoken.ParseToken(req.Token, config.NodeConfig.Token.Key)
+		userID, err = Jtoken.ParseToken(req.Token, config.NodeConfig.Token.Key)
 		if err != nil {
 			return nil, errors.New("请重新登录"), int(protoManage.HttpError_HttpErrorAuthInvalid)
 		}
@@ -137,12 +140,12 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		case protoManage.Order_NodeReportValFind:
 			ansMsg, err = app.request.ReqNodeReportValFind(userID, req.Message)
 			break
-		case protoManage.Order_NodeNotifyNew:
-			ansMsg, err = app.request.ReqNodeNotify(userID, req.Message)
+		case protoManage.Order_NodeTest:
+			ansMsg, err = app.request.ReqNodeTest(userID, req.Message)
 			break
 		default:
-			err = errors.New("指令错误")
-			Jlog.Warn("http指令错误", "消息", req)
+			err = errors.New("http指令错误")
+			Jlog.Error("http指令错误", "消息", req)
 		}
 	}
 	if err != nil {

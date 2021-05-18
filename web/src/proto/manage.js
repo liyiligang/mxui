@@ -22,6 +22,7 @@ export const protoManage = $root.protoManage = (() => {
      * @enum {number}
      * @property {number} Unknow=0 Unknow value
      * @property {number} TopLinkFind=1 TopLinkFind value
+     * @property {number} NodeTest=2 NodeTest value
      * @property {number} ManagerLogin=101 ManagerLogin value
      * @property {number} ManagerFind=102 ManagerFind value
      * @property {number} NodeGroupAdd=201 NodeGroupAdd value
@@ -67,6 +68,7 @@ export const protoManage = $root.protoManage = (() => {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Unknow"] = 0;
         values[valuesById[1] = "TopLinkFind"] = 1;
+        values[valuesById[2] = "NodeTest"] = 2;
         values[valuesById[101] = "ManagerLogin"] = 101;
         values[valuesById[102] = "ManagerFind"] = 102;
         values[valuesById[201] = "NodeGroupAdd"] = 201;
@@ -314,6 +316,7 @@ export const protoManage = $root.protoManage = (() => {
                     return "order: enum value expected";
                 case 0:
                 case 1:
+                case 2:
                 case 101:
                 case 102:
                 case 201:
@@ -382,6 +385,10 @@ export const protoManage = $root.protoManage = (() => {
             case "TopLinkFind":
             case 1:
                 message.order = 1;
+                break;
+            case "NodeTest":
+            case 2:
+                message.order = 2;
                 break;
             case "ManagerLogin":
             case 101:
@@ -760,6 +767,7 @@ export const protoManage = $root.protoManage = (() => {
                     return "order: enum value expected";
                 case 0:
                 case 1:
+                case 2:
                 case 101:
                 case 102:
                 case 201:
@@ -831,6 +839,10 @@ export const protoManage = $root.protoManage = (() => {
             case "TopLinkFind":
             case 1:
                 message.order = 1;
+                break;
+            case "NodeTest":
+            case 2:
+                message.order = 2;
                 break;
             case "ManagerLogin":
             case 101:
@@ -11397,6 +11409,876 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         return AnsNodeReportValList;
+    })();
+
+    protoManage.ReqNodeNotifyList = (function() {
+
+        /**
+         * Properties of a ReqNodeNotifyList.
+         * @memberof protoManage
+         * @interface IReqNodeNotifyList
+         * @property {protoManage.IFilter|null} [filter] ReqNodeNotifyList filter
+         */
+
+        /**
+         * Constructs a new ReqNodeNotifyList.
+         * @memberof protoManage
+         * @classdesc Represents a ReqNodeNotifyList.
+         * @implements IReqNodeNotifyList
+         * @constructor
+         * @param {protoManage.IReqNodeNotifyList=} [properties] Properties to set
+         */
+        function ReqNodeNotifyList(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ReqNodeNotifyList filter.
+         * @member {protoManage.IFilter|null|undefined} filter
+         * @memberof protoManage.ReqNodeNotifyList
+         * @instance
+         */
+        ReqNodeNotifyList.prototype.filter = null;
+
+        /**
+         * Creates a new ReqNodeNotifyList instance using the specified properties.
+         * @function create
+         * @memberof protoManage.ReqNodeNotifyList
+         * @static
+         * @param {protoManage.IReqNodeNotifyList=} [properties] Properties to set
+         * @returns {protoManage.ReqNodeNotifyList} ReqNodeNotifyList instance
+         */
+        ReqNodeNotifyList.create = function create(properties) {
+            return new ReqNodeNotifyList(properties);
+        };
+
+        /**
+         * Encodes the specified ReqNodeNotifyList message. Does not implicitly {@link protoManage.ReqNodeNotifyList.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.ReqNodeNotifyList
+         * @static
+         * @param {protoManage.IReqNodeNotifyList} message ReqNodeNotifyList message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeNotifyList.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.filter != null && Object.hasOwnProperty.call(message, "filter"))
+                $root.protoManage.Filter.encode(message.filter, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ReqNodeNotifyList message, length delimited. Does not implicitly {@link protoManage.ReqNodeNotifyList.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.ReqNodeNotifyList
+         * @static
+         * @param {protoManage.IReqNodeNotifyList} message ReqNodeNotifyList message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeNotifyList.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ReqNodeNotifyList message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.ReqNodeNotifyList
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.ReqNodeNotifyList} ReqNodeNotifyList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeNotifyList.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeNotifyList();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.filter = $root.protoManage.Filter.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ReqNodeNotifyList message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.ReqNodeNotifyList
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.ReqNodeNotifyList} ReqNodeNotifyList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeNotifyList.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ReqNodeNotifyList message.
+         * @function verify
+         * @memberof protoManage.ReqNodeNotifyList
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ReqNodeNotifyList.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.filter != null && message.hasOwnProperty("filter")) {
+                let error = $root.protoManage.Filter.verify(message.filter);
+                if (error)
+                    return "filter." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ReqNodeNotifyList message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.ReqNodeNotifyList
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.ReqNodeNotifyList} ReqNodeNotifyList
+         */
+        ReqNodeNotifyList.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.ReqNodeNotifyList)
+                return object;
+            let message = new $root.protoManage.ReqNodeNotifyList();
+            if (object.filter != null) {
+                if (typeof object.filter !== "object")
+                    throw TypeError(".protoManage.ReqNodeNotifyList.filter: object expected");
+                message.filter = $root.protoManage.Filter.fromObject(object.filter);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ReqNodeNotifyList message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.ReqNodeNotifyList
+         * @static
+         * @param {protoManage.ReqNodeNotifyList} message ReqNodeNotifyList
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ReqNodeNotifyList.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.filter = null;
+            if (message.filter != null && message.hasOwnProperty("filter"))
+                object.filter = $root.protoManage.Filter.toObject(message.filter, options);
+            return object;
+        };
+
+        /**
+         * Converts this ReqNodeNotifyList to JSON.
+         * @function toJSON
+         * @memberof protoManage.ReqNodeNotifyList
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ReqNodeNotifyList.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ReqNodeNotifyList;
+    })();
+
+    protoManage.AnsNodeNotifyList = (function() {
+
+        /**
+         * Properties of an AnsNodeNotifyList.
+         * @memberof protoManage
+         * @interface IAnsNodeNotifyList
+         * @property {Array.<protoManage.INodeNotify>|null} [NodeNotifyList] AnsNodeNotifyList NodeNotifyList
+         */
+
+        /**
+         * Constructs a new AnsNodeNotifyList.
+         * @memberof protoManage
+         * @classdesc Represents an AnsNodeNotifyList.
+         * @implements IAnsNodeNotifyList
+         * @constructor
+         * @param {protoManage.IAnsNodeNotifyList=} [properties] Properties to set
+         */
+        function AnsNodeNotifyList(properties) {
+            this.NodeNotifyList = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * AnsNodeNotifyList NodeNotifyList.
+         * @member {Array.<protoManage.INodeNotify>} NodeNotifyList
+         * @memberof protoManage.AnsNodeNotifyList
+         * @instance
+         */
+        AnsNodeNotifyList.prototype.NodeNotifyList = $util.emptyArray;
+
+        /**
+         * Creates a new AnsNodeNotifyList instance using the specified properties.
+         * @function create
+         * @memberof protoManage.AnsNodeNotifyList
+         * @static
+         * @param {protoManage.IAnsNodeNotifyList=} [properties] Properties to set
+         * @returns {protoManage.AnsNodeNotifyList} AnsNodeNotifyList instance
+         */
+        AnsNodeNotifyList.create = function create(properties) {
+            return new AnsNodeNotifyList(properties);
+        };
+
+        /**
+         * Encodes the specified AnsNodeNotifyList message. Does not implicitly {@link protoManage.AnsNodeNotifyList.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.AnsNodeNotifyList
+         * @static
+         * @param {protoManage.IAnsNodeNotifyList} message AnsNodeNotifyList message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeNotifyList.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.NodeNotifyList != null && message.NodeNotifyList.length)
+                for (let i = 0; i < message.NodeNotifyList.length; ++i)
+                    $root.protoManage.NodeNotify.encode(message.NodeNotifyList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified AnsNodeNotifyList message, length delimited. Does not implicitly {@link protoManage.AnsNodeNotifyList.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.AnsNodeNotifyList
+         * @static
+         * @param {protoManage.IAnsNodeNotifyList} message AnsNodeNotifyList message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeNotifyList.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an AnsNodeNotifyList message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.AnsNodeNotifyList
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.AnsNodeNotifyList} AnsNodeNotifyList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeNotifyList.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.AnsNodeNotifyList();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.NodeNotifyList && message.NodeNotifyList.length))
+                        message.NodeNotifyList = [];
+                    message.NodeNotifyList.push($root.protoManage.NodeNotify.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an AnsNodeNotifyList message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.AnsNodeNotifyList
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.AnsNodeNotifyList} AnsNodeNotifyList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeNotifyList.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an AnsNodeNotifyList message.
+         * @function verify
+         * @memberof protoManage.AnsNodeNotifyList
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        AnsNodeNotifyList.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.NodeNotifyList != null && message.hasOwnProperty("NodeNotifyList")) {
+                if (!Array.isArray(message.NodeNotifyList))
+                    return "NodeNotifyList: array expected";
+                for (let i = 0; i < message.NodeNotifyList.length; ++i) {
+                    let error = $root.protoManage.NodeNotify.verify(message.NodeNotifyList[i]);
+                    if (error)
+                        return "NodeNotifyList." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates an AnsNodeNotifyList message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.AnsNodeNotifyList
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.AnsNodeNotifyList} AnsNodeNotifyList
+         */
+        AnsNodeNotifyList.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.AnsNodeNotifyList)
+                return object;
+            let message = new $root.protoManage.AnsNodeNotifyList();
+            if (object.NodeNotifyList) {
+                if (!Array.isArray(object.NodeNotifyList))
+                    throw TypeError(".protoManage.AnsNodeNotifyList.NodeNotifyList: array expected");
+                message.NodeNotifyList = [];
+                for (let i = 0; i < object.NodeNotifyList.length; ++i) {
+                    if (typeof object.NodeNotifyList[i] !== "object")
+                        throw TypeError(".protoManage.AnsNodeNotifyList.NodeNotifyList: object expected");
+                    message.NodeNotifyList[i] = $root.protoManage.NodeNotify.fromObject(object.NodeNotifyList[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an AnsNodeNotifyList message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.AnsNodeNotifyList
+         * @static
+         * @param {protoManage.AnsNodeNotifyList} message AnsNodeNotifyList
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        AnsNodeNotifyList.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.NodeNotifyList = [];
+            if (message.NodeNotifyList && message.NodeNotifyList.length) {
+                object.NodeNotifyList = [];
+                for (let j = 0; j < message.NodeNotifyList.length; ++j)
+                    object.NodeNotifyList[j] = $root.protoManage.NodeNotify.toObject(message.NodeNotifyList[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this AnsNodeNotifyList to JSON.
+         * @function toJSON
+         * @memberof protoManage.AnsNodeNotifyList
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        AnsNodeNotifyList.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return AnsNodeNotifyList;
+    })();
+
+    protoManage.ReqNodeTest = (function() {
+
+        /**
+         * Properties of a ReqNodeTest.
+         * @memberof protoManage
+         * @interface IReqNodeTest
+         * @property {number|null} [ID] ReqNodeTest ID
+         * @property {number|null} [Type] ReqNodeTest Type
+         * @property {string|null} [Message] ReqNodeTest Message
+         * @property {protoManage.State|null} [State] ReqNodeTest State
+         */
+
+        /**
+         * Constructs a new ReqNodeTest.
+         * @memberof protoManage
+         * @classdesc Represents a ReqNodeTest.
+         * @implements IReqNodeTest
+         * @constructor
+         * @param {protoManage.IReqNodeTest=} [properties] Properties to set
+         */
+        function ReqNodeTest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ReqNodeTest ID.
+         * @member {number} ID
+         * @memberof protoManage.ReqNodeTest
+         * @instance
+         */
+        ReqNodeTest.prototype.ID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * ReqNodeTest Type.
+         * @member {number} Type
+         * @memberof protoManage.ReqNodeTest
+         * @instance
+         */
+        ReqNodeTest.prototype.Type = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * ReqNodeTest Message.
+         * @member {string} Message
+         * @memberof protoManage.ReqNodeTest
+         * @instance
+         */
+        ReqNodeTest.prototype.Message = "";
+
+        /**
+         * ReqNodeTest State.
+         * @member {protoManage.State} State
+         * @memberof protoManage.ReqNodeTest
+         * @instance
+         */
+        ReqNodeTest.prototype.State = 0;
+
+        /**
+         * Creates a new ReqNodeTest instance using the specified properties.
+         * @function create
+         * @memberof protoManage.ReqNodeTest
+         * @static
+         * @param {protoManage.IReqNodeTest=} [properties] Properties to set
+         * @returns {protoManage.ReqNodeTest} ReqNodeTest instance
+         */
+        ReqNodeTest.create = function create(properties) {
+            return new ReqNodeTest(properties);
+        };
+
+        /**
+         * Encodes the specified ReqNodeTest message. Does not implicitly {@link protoManage.ReqNodeTest.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.ReqNodeTest
+         * @static
+         * @param {protoManage.IReqNodeTest} message ReqNodeTest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeTest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.ID != null && Object.hasOwnProperty.call(message, "ID"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.ID);
+            if (message.Type != null && Object.hasOwnProperty.call(message, "Type"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.Type);
+            if (message.Message != null && Object.hasOwnProperty.call(message, "Message"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.Message);
+            if (message.State != null && Object.hasOwnProperty.call(message, "State"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.State);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ReqNodeTest message, length delimited. Does not implicitly {@link protoManage.ReqNodeTest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.ReqNodeTest
+         * @static
+         * @param {protoManage.IReqNodeTest} message ReqNodeTest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeTest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ReqNodeTest message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.ReqNodeTest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.ReqNodeTest} ReqNodeTest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeTest.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeTest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.ID = reader.int64();
+                    break;
+                case 2:
+                    message.Type = reader.int64();
+                    break;
+                case 3:
+                    message.Message = reader.string();
+                    break;
+                case 4:
+                    message.State = reader.int32();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ReqNodeTest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.ReqNodeTest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.ReqNodeTest} ReqNodeTest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeTest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ReqNodeTest message.
+         * @function verify
+         * @memberof protoManage.ReqNodeTest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ReqNodeTest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.ID != null && message.hasOwnProperty("ID"))
+                if (!$util.isInteger(message.ID) && !(message.ID && $util.isInteger(message.ID.low) && $util.isInteger(message.ID.high)))
+                    return "ID: integer|Long expected";
+            if (message.Type != null && message.hasOwnProperty("Type"))
+                if (!$util.isInteger(message.Type) && !(message.Type && $util.isInteger(message.Type.low) && $util.isInteger(message.Type.high)))
+                    return "Type: integer|Long expected";
+            if (message.Message != null && message.hasOwnProperty("Message"))
+                if (!$util.isString(message.Message))
+                    return "Message: string expected";
+            if (message.State != null && message.hasOwnProperty("State"))
+                switch (message.State) {
+                default:
+                    return "State: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
+            return null;
+        };
+
+        /**
+         * Creates a ReqNodeTest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.ReqNodeTest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.ReqNodeTest} ReqNodeTest
+         */
+        ReqNodeTest.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.ReqNodeTest)
+                return object;
+            let message = new $root.protoManage.ReqNodeTest();
+            if (object.ID != null)
+                if ($util.Long)
+                    (message.ID = $util.Long.fromValue(object.ID)).unsigned = false;
+                else if (typeof object.ID === "string")
+                    message.ID = parseInt(object.ID, 10);
+                else if (typeof object.ID === "number")
+                    message.ID = object.ID;
+                else if (typeof object.ID === "object")
+                    message.ID = new $util.LongBits(object.ID.low >>> 0, object.ID.high >>> 0).toNumber();
+            if (object.Type != null)
+                if ($util.Long)
+                    (message.Type = $util.Long.fromValue(object.Type)).unsigned = false;
+                else if (typeof object.Type === "string")
+                    message.Type = parseInt(object.Type, 10);
+                else if (typeof object.Type === "number")
+                    message.Type = object.Type;
+                else if (typeof object.Type === "object")
+                    message.Type = new $util.LongBits(object.Type.low >>> 0, object.Type.high >>> 0).toNumber();
+            if (object.Message != null)
+                message.Message = String(object.Message);
+            switch (object.State) {
+            case "StateNot":
+            case 0:
+                message.State = 0;
+                break;
+            case "StateNormal":
+            case 1:
+                message.State = 1;
+                break;
+            case "StateWarn":
+            case 2:
+                message.State = 2;
+                break;
+            case "StateError":
+            case 3:
+                message.State = 3;
+                break;
+            case "StateUnknow":
+            case 4:
+                message.State = 4;
+                break;
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ReqNodeTest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.ReqNodeTest
+         * @static
+         * @param {protoManage.ReqNodeTest} message ReqNodeTest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ReqNodeTest.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.ID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.ID = options.longs === String ? "0" : 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.Type = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.Type = options.longs === String ? "0" : 0;
+                object.Message = "";
+                object.State = options.enums === String ? "StateNot" : 0;
+            }
+            if (message.ID != null && message.hasOwnProperty("ID"))
+                if (typeof message.ID === "number")
+                    object.ID = options.longs === String ? String(message.ID) : message.ID;
+                else
+                    object.ID = options.longs === String ? $util.Long.prototype.toString.call(message.ID) : options.longs === Number ? new $util.LongBits(message.ID.low >>> 0, message.ID.high >>> 0).toNumber() : message.ID;
+            if (message.Type != null && message.hasOwnProperty("Type"))
+                if (typeof message.Type === "number")
+                    object.Type = options.longs === String ? String(message.Type) : message.Type;
+                else
+                    object.Type = options.longs === String ? $util.Long.prototype.toString.call(message.Type) : options.longs === Number ? new $util.LongBits(message.Type.low >>> 0, message.Type.high >>> 0).toNumber() : message.Type;
+            if (message.Message != null && message.hasOwnProperty("Message"))
+                object.Message = message.Message;
+            if (message.State != null && message.hasOwnProperty("State"))
+                object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
+            return object;
+        };
+
+        /**
+         * Converts this ReqNodeTest to JSON.
+         * @function toJSON
+         * @memberof protoManage.ReqNodeTest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ReqNodeTest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ReqNodeTest;
+    })();
+
+    protoManage.AnsNodeTest = (function() {
+
+        /**
+         * Properties of an AnsNodeTest.
+         * @memberof protoManage
+         * @interface IAnsNodeTest
+         */
+
+        /**
+         * Constructs a new AnsNodeTest.
+         * @memberof protoManage
+         * @classdesc Represents an AnsNodeTest.
+         * @implements IAnsNodeTest
+         * @constructor
+         * @param {protoManage.IAnsNodeTest=} [properties] Properties to set
+         */
+        function AnsNodeTest(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new AnsNodeTest instance using the specified properties.
+         * @function create
+         * @memberof protoManage.AnsNodeTest
+         * @static
+         * @param {protoManage.IAnsNodeTest=} [properties] Properties to set
+         * @returns {protoManage.AnsNodeTest} AnsNodeTest instance
+         */
+        AnsNodeTest.create = function create(properties) {
+            return new AnsNodeTest(properties);
+        };
+
+        /**
+         * Encodes the specified AnsNodeTest message. Does not implicitly {@link protoManage.AnsNodeTest.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.AnsNodeTest
+         * @static
+         * @param {protoManage.IAnsNodeTest} message AnsNodeTest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeTest.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified AnsNodeTest message, length delimited. Does not implicitly {@link protoManage.AnsNodeTest.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.AnsNodeTest
+         * @static
+         * @param {protoManage.IAnsNodeTest} message AnsNodeTest message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeTest.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an AnsNodeTest message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.AnsNodeTest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.AnsNodeTest} AnsNodeTest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeTest.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.AnsNodeTest();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an AnsNodeTest message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.AnsNodeTest
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.AnsNodeTest} AnsNodeTest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeTest.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an AnsNodeTest message.
+         * @function verify
+         * @memberof protoManage.AnsNodeTest
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        AnsNodeTest.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates an AnsNodeTest message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.AnsNodeTest
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.AnsNodeTest} AnsNodeTest
+         */
+        AnsNodeTest.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.AnsNodeTest)
+                return object;
+            return new $root.protoManage.AnsNodeTest();
+        };
+
+        /**
+         * Creates a plain object from an AnsNodeTest message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.AnsNodeTest
+         * @static
+         * @param {protoManage.AnsNodeTest} message AnsNodeTest
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        AnsNodeTest.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this AnsNodeTest to JSON.
+         * @function toJSON
+         * @memberof protoManage.AnsNodeTest
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        AnsNodeTest.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return AnsNodeTest;
     })();
 
     return protoManage;

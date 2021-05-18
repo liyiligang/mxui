@@ -28,6 +28,7 @@ import NodeLink from "./node/NodeLink.vue";
 import NodeFunc from "./node/NodeFunc.vue";
 import NodeReport from "./node/NodeReport.vue";
 import NodeNotify from "./node/NodeNotify.vue";
+import NodeTest from "./node/NodeTest.vue";
 import {websocket} from "../base/websocket";
 import {protoManage} from "../proto/manage";
 import {globals} from "../base/globals";
@@ -42,7 +43,8 @@ export default defineComponent ({
         NodeLink,
         NodeFunc,
         NodeReport,
-        NodeNotify
+        NodeNotify,
+        NodeTest
     },
     mounted() {
         let msg = protoManage.Manager.create({

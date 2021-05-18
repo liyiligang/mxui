@@ -71,7 +71,7 @@ export module websocket {
                 nodeNotify(msg.message)
                 break
             default:
-                globals.viewError("没有匹配的websocket指令: " + msg.order)
+                globals.viewError("错误的websocket指令: " + msg.order)
                 break
         }
     }

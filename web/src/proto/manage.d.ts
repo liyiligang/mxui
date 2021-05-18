@@ -6,6 +6,7 @@ export namespace protoManage {
     enum Order {
         Unknow = 0,
         TopLinkFind = 1,
+        NodeTest = 2,
         ManagerLogin = 101,
         ManagerFind = 102,
         NodeGroupAdd = 201,
@@ -4198,6 +4199,378 @@ export namespace protoManage {
 
         /**
          * Converts this AnsNodeReportValList to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a ReqNodeNotifyList. */
+    interface IReqNodeNotifyList {
+
+        /** ReqNodeNotifyList filter */
+        filter?: (protoManage.IFilter|null);
+    }
+
+    /** Represents a ReqNodeNotifyList. */
+    class ReqNodeNotifyList implements IReqNodeNotifyList {
+
+        /**
+         * Constructs a new ReqNodeNotifyList.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IReqNodeNotifyList);
+
+        /** ReqNodeNotifyList filter. */
+        public filter?: (protoManage.IFilter|null);
+
+        /**
+         * Creates a new ReqNodeNotifyList instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ReqNodeNotifyList instance
+         */
+        public static create(properties?: protoManage.IReqNodeNotifyList): protoManage.ReqNodeNotifyList;
+
+        /**
+         * Encodes the specified ReqNodeNotifyList message. Does not implicitly {@link protoManage.ReqNodeNotifyList.verify|verify} messages.
+         * @param message ReqNodeNotifyList message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IReqNodeNotifyList, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ReqNodeNotifyList message, length delimited. Does not implicitly {@link protoManage.ReqNodeNotifyList.verify|verify} messages.
+         * @param message ReqNodeNotifyList message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IReqNodeNotifyList, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ReqNodeNotifyList message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ReqNodeNotifyList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeNotifyList;
+
+        /**
+         * Decodes a ReqNodeNotifyList message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ReqNodeNotifyList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeNotifyList;
+
+        /**
+         * Verifies a ReqNodeNotifyList message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ReqNodeNotifyList message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ReqNodeNotifyList
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeNotifyList;
+
+        /**
+         * Creates a plain object from a ReqNodeNotifyList message. Also converts values to other types if specified.
+         * @param message ReqNodeNotifyList
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.ReqNodeNotifyList, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ReqNodeNotifyList to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of an AnsNodeNotifyList. */
+    interface IAnsNodeNotifyList {
+
+        /** AnsNodeNotifyList NodeNotifyList */
+        NodeNotifyList?: (protoManage.INodeNotify[]|null);
+    }
+
+    /** Represents an AnsNodeNotifyList. */
+    class AnsNodeNotifyList implements IAnsNodeNotifyList {
+
+        /**
+         * Constructs a new AnsNodeNotifyList.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IAnsNodeNotifyList);
+
+        /** AnsNodeNotifyList NodeNotifyList. */
+        public NodeNotifyList: protoManage.INodeNotify[];
+
+        /**
+         * Creates a new AnsNodeNotifyList instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AnsNodeNotifyList instance
+         */
+        public static create(properties?: protoManage.IAnsNodeNotifyList): protoManage.AnsNodeNotifyList;
+
+        /**
+         * Encodes the specified AnsNodeNotifyList message. Does not implicitly {@link protoManage.AnsNodeNotifyList.verify|verify} messages.
+         * @param message AnsNodeNotifyList message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IAnsNodeNotifyList, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AnsNodeNotifyList message, length delimited. Does not implicitly {@link protoManage.AnsNodeNotifyList.verify|verify} messages.
+         * @param message AnsNodeNotifyList message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IAnsNodeNotifyList, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AnsNodeNotifyList message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AnsNodeNotifyList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.AnsNodeNotifyList;
+
+        /**
+         * Decodes an AnsNodeNotifyList message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AnsNodeNotifyList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.AnsNodeNotifyList;
+
+        /**
+         * Verifies an AnsNodeNotifyList message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AnsNodeNotifyList message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AnsNodeNotifyList
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.AnsNodeNotifyList;
+
+        /**
+         * Creates a plain object from an AnsNodeNotifyList message. Also converts values to other types if specified.
+         * @param message AnsNodeNotifyList
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.AnsNodeNotifyList, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AnsNodeNotifyList to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a ReqNodeTest. */
+    interface IReqNodeTest {
+
+        /** ReqNodeTest ID */
+        ID?: (number|null);
+
+        /** ReqNodeTest Type */
+        Type?: (number|null);
+
+        /** ReqNodeTest Message */
+        Message?: (string|null);
+
+        /** ReqNodeTest State */
+        State?: (protoManage.State|null);
+    }
+
+    /** Represents a ReqNodeTest. */
+    class ReqNodeTest implements IReqNodeTest {
+
+        /**
+         * Constructs a new ReqNodeTest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IReqNodeTest);
+
+        /** ReqNodeTest ID. */
+        public ID: number;
+
+        /** ReqNodeTest Type. */
+        public Type: number;
+
+        /** ReqNodeTest Message. */
+        public Message: string;
+
+        /** ReqNodeTest State. */
+        public State: protoManage.State;
+
+        /**
+         * Creates a new ReqNodeTest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ReqNodeTest instance
+         */
+        public static create(properties?: protoManage.IReqNodeTest): protoManage.ReqNodeTest;
+
+        /**
+         * Encodes the specified ReqNodeTest message. Does not implicitly {@link protoManage.ReqNodeTest.verify|verify} messages.
+         * @param message ReqNodeTest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IReqNodeTest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ReqNodeTest message, length delimited. Does not implicitly {@link protoManage.ReqNodeTest.verify|verify} messages.
+         * @param message ReqNodeTest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IReqNodeTest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ReqNodeTest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ReqNodeTest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeTest;
+
+        /**
+         * Decodes a ReqNodeTest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ReqNodeTest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeTest;
+
+        /**
+         * Verifies a ReqNodeTest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ReqNodeTest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ReqNodeTest
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeTest;
+
+        /**
+         * Creates a plain object from a ReqNodeTest message. Also converts values to other types if specified.
+         * @param message ReqNodeTest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.ReqNodeTest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ReqNodeTest to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of an AnsNodeTest. */
+    interface IAnsNodeTest {
+    }
+
+    /** Represents an AnsNodeTest. */
+    class AnsNodeTest implements IAnsNodeTest {
+
+        /**
+         * Constructs a new AnsNodeTest.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IAnsNodeTest);
+
+        /**
+         * Creates a new AnsNodeTest instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AnsNodeTest instance
+         */
+        public static create(properties?: protoManage.IAnsNodeTest): protoManage.AnsNodeTest;
+
+        /**
+         * Encodes the specified AnsNodeTest message. Does not implicitly {@link protoManage.AnsNodeTest.verify|verify} messages.
+         * @param message AnsNodeTest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IAnsNodeTest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AnsNodeTest message, length delimited. Does not implicitly {@link protoManage.AnsNodeTest.verify|verify} messages.
+         * @param message AnsNodeTest message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IAnsNodeTest, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AnsNodeTest message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AnsNodeTest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.AnsNodeTest;
+
+        /**
+         * Decodes an AnsNodeTest message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AnsNodeTest
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.AnsNodeTest;
+
+        /**
+         * Verifies an AnsNodeTest message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AnsNodeTest message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AnsNodeTest
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.AnsNodeTest;
+
+        /**
+         * Creates a plain object from an AnsNodeTest message. Also converts values to other types if specified.
+         * @param message AnsNodeTest
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.AnsNodeTest, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AnsNodeTest to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
