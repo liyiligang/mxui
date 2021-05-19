@@ -138,12 +138,12 @@ export const protoManage = $root.protoManage = (() => {
      * NotifySenderType enum.
      * @name protoManage.NotifySenderType
      * @enum {number}
-     * @property {number} NotifySenderTypeSystem=0 NotifySenderTypeSystem value
+     * @property {number} NotifySenderTypeUser=0 NotifySenderTypeUser value
      * @property {number} NotifySenderTypeNode=1 NotifySenderTypeNode value
      */
     protoManage.NotifySenderType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "NotifySenderTypeSystem"] = 0;
+        values[valuesById[0] = "NotifySenderTypeUser"] = 0;
         values[valuesById[1] = "NotifySenderTypeNode"] = 1;
         return values;
     })();
@@ -5656,7 +5656,7 @@ export const protoManage = $root.protoManage = (() => {
                 else if (typeof object.SenderID === "object")
                     message.SenderID = new $util.LongBits(object.SenderID.low >>> 0, object.SenderID.high >>> 0).toNumber();
             switch (object.SenderType) {
-            case "NotifySenderTypeSystem":
+            case "NotifySenderTypeUser":
             case 0:
                 message.SenderType = 0;
                 break;
@@ -5712,7 +5712,7 @@ export const protoManage = $root.protoManage = (() => {
                     object.SenderID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.SenderID = options.longs === String ? "0" : 0;
-                object.SenderType = options.enums === String ? "NotifySenderTypeSystem" : 0;
+                object.SenderType = options.enums === String ? "NotifySenderTypeUser" : 0;
                 object.Message = "";
                 object.State = options.enums === String ? "StateNot" : 0;
             }
@@ -11621,7 +11621,9 @@ export const protoManage = $root.protoManage = (() => {
          * Properties of an AnsNodeNotifyList.
          * @memberof protoManage
          * @interface IAnsNodeNotifyList
+         * @property {number|null} [Length] AnsNodeNotifyList Length
          * @property {Array.<protoManage.INodeNotify>|null} [NodeNotifyList] AnsNodeNotifyList NodeNotifyList
+         * @property {Array.<protoManage.INode>|null} [NodeList] AnsNodeNotifyList NodeList
          */
 
         /**
@@ -11634,11 +11636,20 @@ export const protoManage = $root.protoManage = (() => {
          */
         function AnsNodeNotifyList(properties) {
             this.NodeNotifyList = [];
+            this.NodeList = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
+
+        /**
+         * AnsNodeNotifyList Length.
+         * @member {number} Length
+         * @memberof protoManage.AnsNodeNotifyList
+         * @instance
+         */
+        AnsNodeNotifyList.prototype.Length = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
          * AnsNodeNotifyList NodeNotifyList.
@@ -11647,6 +11658,14 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         AnsNodeNotifyList.prototype.NodeNotifyList = $util.emptyArray;
+
+        /**
+         * AnsNodeNotifyList NodeList.
+         * @member {Array.<protoManage.INode>} NodeList
+         * @memberof protoManage.AnsNodeNotifyList
+         * @instance
+         */
+        AnsNodeNotifyList.prototype.NodeList = $util.emptyArray;
 
         /**
          * Creates a new AnsNodeNotifyList instance using the specified properties.
@@ -11672,9 +11691,14 @@ export const protoManage = $root.protoManage = (() => {
         AnsNodeNotifyList.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
+            if (message.Length != null && Object.hasOwnProperty.call(message, "Length"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.Length);
             if (message.NodeNotifyList != null && message.NodeNotifyList.length)
                 for (let i = 0; i < message.NodeNotifyList.length; ++i)
-                    $root.protoManage.NodeNotify.encode(message.NodeNotifyList[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                    $root.protoManage.NodeNotify.encode(message.NodeNotifyList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            if (message.NodeList != null && message.NodeList.length)
+                for (let i = 0; i < message.NodeList.length; ++i)
+                    $root.protoManage.Node.encode(message.NodeList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -11710,9 +11734,17 @@ export const protoManage = $root.protoManage = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
+                    message.Length = reader.int64();
+                    break;
+                case 2:
                     if (!(message.NodeNotifyList && message.NodeNotifyList.length))
                         message.NodeNotifyList = [];
                     message.NodeNotifyList.push($root.protoManage.NodeNotify.decode(reader, reader.uint32()));
+                    break;
+                case 3:
+                    if (!(message.NodeList && message.NodeList.length))
+                        message.NodeList = [];
+                    message.NodeList.push($root.protoManage.Node.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -11749,6 +11781,9 @@ export const protoManage = $root.protoManage = (() => {
         AnsNodeNotifyList.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (message.Length != null && message.hasOwnProperty("Length"))
+                if (!$util.isInteger(message.Length) && !(message.Length && $util.isInteger(message.Length.low) && $util.isInteger(message.Length.high)))
+                    return "Length: integer|Long expected";
             if (message.NodeNotifyList != null && message.hasOwnProperty("NodeNotifyList")) {
                 if (!Array.isArray(message.NodeNotifyList))
                     return "NodeNotifyList: array expected";
@@ -11756,6 +11791,15 @@ export const protoManage = $root.protoManage = (() => {
                     let error = $root.protoManage.NodeNotify.verify(message.NodeNotifyList[i]);
                     if (error)
                         return "NodeNotifyList." + error;
+                }
+            }
+            if (message.NodeList != null && message.hasOwnProperty("NodeList")) {
+                if (!Array.isArray(message.NodeList))
+                    return "NodeList: array expected";
+                for (let i = 0; i < message.NodeList.length; ++i) {
+                    let error = $root.protoManage.Node.verify(message.NodeList[i]);
+                    if (error)
+                        return "NodeList." + error;
                 }
             }
             return null;
@@ -11773,6 +11817,15 @@ export const protoManage = $root.protoManage = (() => {
             if (object instanceof $root.protoManage.AnsNodeNotifyList)
                 return object;
             let message = new $root.protoManage.AnsNodeNotifyList();
+            if (object.Length != null)
+                if ($util.Long)
+                    (message.Length = $util.Long.fromValue(object.Length)).unsigned = false;
+                else if (typeof object.Length === "string")
+                    message.Length = parseInt(object.Length, 10);
+                else if (typeof object.Length === "number")
+                    message.Length = object.Length;
+                else if (typeof object.Length === "object")
+                    message.Length = new $util.LongBits(object.Length.low >>> 0, object.Length.high >>> 0).toNumber();
             if (object.NodeNotifyList) {
                 if (!Array.isArray(object.NodeNotifyList))
                     throw TypeError(".protoManage.AnsNodeNotifyList.NodeNotifyList: array expected");
@@ -11781,6 +11834,16 @@ export const protoManage = $root.protoManage = (() => {
                     if (typeof object.NodeNotifyList[i] !== "object")
                         throw TypeError(".protoManage.AnsNodeNotifyList.NodeNotifyList: object expected");
                     message.NodeNotifyList[i] = $root.protoManage.NodeNotify.fromObject(object.NodeNotifyList[i]);
+                }
+            }
+            if (object.NodeList) {
+                if (!Array.isArray(object.NodeList))
+                    throw TypeError(".protoManage.AnsNodeNotifyList.NodeList: array expected");
+                message.NodeList = [];
+                for (let i = 0; i < object.NodeList.length; ++i) {
+                    if (typeof object.NodeList[i] !== "object")
+                        throw TypeError(".protoManage.AnsNodeNotifyList.NodeList: object expected");
+                    message.NodeList[i] = $root.protoManage.Node.fromObject(object.NodeList[i]);
                 }
             }
             return message;
@@ -11799,12 +11862,30 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.arrays || options.defaults)
+            if (options.arrays || options.defaults) {
                 object.NodeNotifyList = [];
+                object.NodeList = [];
+            }
+            if (options.defaults)
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.Length = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.Length = options.longs === String ? "0" : 0;
+            if (message.Length != null && message.hasOwnProperty("Length"))
+                if (typeof message.Length === "number")
+                    object.Length = options.longs === String ? String(message.Length) : message.Length;
+                else
+                    object.Length = options.longs === String ? $util.Long.prototype.toString.call(message.Length) : options.longs === Number ? new $util.LongBits(message.Length.low >>> 0, message.Length.high >>> 0).toNumber() : message.Length;
             if (message.NodeNotifyList && message.NodeNotifyList.length) {
                 object.NodeNotifyList = [];
                 for (let j = 0; j < message.NodeNotifyList.length; ++j)
                     object.NodeNotifyList[j] = $root.protoManage.NodeNotify.toObject(message.NodeNotifyList[j], options);
+            }
+            if (message.NodeList && message.NodeList.length) {
+                object.NodeList = [];
+                for (let j = 0; j < message.NodeList.length; ++j)
+                    object.NodeList[j] = $root.protoManage.Node.toObject(message.NodeList[j], options);
             }
             return object;
         };

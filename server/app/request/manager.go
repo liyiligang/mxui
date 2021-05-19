@@ -18,7 +18,7 @@ func (request *Request) ReqWsTokenCheck(message []byte, addr string) (int64, err
 	}
 	userID, err := Jtoken.ParseToken(manager.Token, config.NodeConfig.Token.Key)
 	if err != nil {
-		return 0, errors.New("消息通知功能异常: websocket连接验证失败")
+		return 0, errors.New("websocket连接验证失败, 无效的token")
 	}
 	return userID, nil
 }

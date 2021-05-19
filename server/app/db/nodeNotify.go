@@ -24,6 +24,27 @@ func (db *DB) FindNodeNotify(filter protoManage.Filter) ([]orm.NodeNotify, error
 	return nodeNotifyList, err
 }
 
+//获取节点通知中节点ID对应的节点信息
+func (db *DB) FindNodeByNodeNotify(filter protoManage.Filter) ([]orm.Node, error) {
+	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
+	tx = db.SetFilter(tx, filter)
+	subQuery1 := tx.Model(&orm.NodeNotify{}).Where("senderType=?", protoManage.NotifySenderType_NotifySenderTypeNode)
+	subQuery2 := db.Gorm.Select("t.senderID").
+		Table("(?) as t", subQuery1)
+	var nodeList []orm.Node
+	err := db.Gorm.Where("id = any(?)", subQuery2).Find(&nodeList).Error
+	return nodeList, err
+}
+
+//获取节点通知计数
+func (db *DB) FindNodeNotifyCount(filter protoManage.Filter) (int64, error) {
+	tx := db.Gorm.Model(&orm.NodeNotify{})
+	tx = db.SetFilter(tx, filter)
+	var count int64
+	err := tx.Count(&count).Error
+	return count, err
+}
+
 //按节点ID查询节点通知
 func (db *DB) FindNodeNotifyByNodeID(nodeID int64, offset int, num int) ([]orm.NodeNotify, error) {
 	var nodeNotifyList []orm.NodeNotify

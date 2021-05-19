@@ -61,7 +61,7 @@ export namespace protoManage {
 
     /** NotifySenderType enum. */
     enum NotifySenderType {
-        NotifySenderTypeSystem = 0,
+        NotifySenderTypeUser = 0,
         NotifySenderTypeNode = 1
     }
 
@@ -4298,8 +4298,14 @@ export namespace protoManage {
     /** Properties of an AnsNodeNotifyList. */
     interface IAnsNodeNotifyList {
 
+        /** AnsNodeNotifyList Length */
+        Length?: (number|null);
+
         /** AnsNodeNotifyList NodeNotifyList */
         NodeNotifyList?: (protoManage.INodeNotify[]|null);
+
+        /** AnsNodeNotifyList NodeList */
+        NodeList?: (protoManage.INode[]|null);
     }
 
     /** Represents an AnsNodeNotifyList. */
@@ -4311,8 +4317,14 @@ export namespace protoManage {
          */
         constructor(properties?: protoManage.IAnsNodeNotifyList);
 
+        /** AnsNodeNotifyList Length. */
+        public Length: number;
+
         /** AnsNodeNotifyList NodeNotifyList. */
         public NodeNotifyList: protoManage.INodeNotify[];
+
+        /** AnsNodeNotifyList NodeList. */
+        public NodeList: protoManage.INode[];
 
         /**
          * Creates a new AnsNodeNotifyList instance using the specified properties.

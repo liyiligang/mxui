@@ -12,8 +12,20 @@ func (data *Data) NodeNotifyFind(req *protoManage.ReqNodeNotifyList) (*protoMana
 		return nil, err
 	}
 	protoNodeNotifyList := convert.OrmNodeNotifyListToProtoNodeNotifyList(ormNotifyList)
+
+	ormNodeList, err := data.DB.FindNodeByNodeNotify(req.Filter)
+	if err != nil {
+		return nil, err
+	}
+	protoNodeList := convert.OrmNodeListToProtoNodeList(ormNodeList)
+	count, err := data.DB.FindNodeNotifyCount(req.Filter)
+	if err != nil {
+		return nil, err
+	}
 	return &protoManage.AnsNodeNotifyList{
+		Length: count,
 		NodeNotifyList: protoNodeNotifyList,
+		NodeList: protoNodeList,
 	}, nil
 }
 
