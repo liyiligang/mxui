@@ -35,7 +35,7 @@ export default defineComponent ({
         const data = reactive<LoginInfo>({isLoad:false, username:"", password:""})
 
         onMounted(()=>{
-            let token = localStorage.getItem(globals.globalsConfig.httpConfig.tokenKey);
+            let token = globals.globalsData.token
             if (token != null && token != ""){
                 loginByToken(token)
             }

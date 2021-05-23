@@ -16,6 +16,20 @@
             </el-row>
         </el-row>
     </el-row>
+
+<!--    <el-row class="test1">-->
+<!--        <el-row class="test2">-->
+<!--            <el-row class="test3">-->
+<!--                <el-row class="test4">-->
+<!--                    <el-row class="test6"></el-row>-->
+<!--                </el-row>-->
+<!--                <el-row class="test5">-->
+<!--                    <el-row class="test7"></el-row>-->
+<!--                </el-row>-->
+<!--            </el-row>-->
+<!--        </el-row>-->
+<!--    </el-row>-->
+
 </template>
 
 <script lang="ts">
@@ -96,11 +110,50 @@ export default defineComponent ({
 .asideDivider{
     margin: 0px;
     height: 100%;
+    min-width: 1px;
 }
 
 .routerView{
     flex: auto;
     height: 100%;
     overflow-y:scroll;
+}
+
+.test1{
+    height: 100%;
+    width: 100%;
+}
+
+.test2{
+    flex:1;
+}
+
+.test3{
+    flex:1;
+    display: flex;
+    flex-direction:column;
+}
+
+.test4{
+    flex: auto;
+    height: 0;
+    overflow-y:scroll;
+}
+
+.test5{
+    flex: 0;
+    width: 100%;
+}
+
+.test6{
+    flex: 1 1 auto;
+    height: 2000px;
+    background: red;
+}
+
+.test7{
+    flex: 1;
+    height: 100px;
+    background:cornflowerblue;
 }
 </style>

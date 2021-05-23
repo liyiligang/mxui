@@ -9,6 +9,7 @@ import (
 	"github.com/liyiligang/base/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/typedef/config"
 	"github.com/pkg/errors"
+	"time"
 )
 
 func (app *App) WebsocketConnect(conn *Jweb.WebsocketConn) (interface{}, error) {
@@ -20,7 +21,7 @@ func (app *App) WebsocketConnected(conn *Jweb.WebsocketConn) error {
 	if err != nil {
 		return err
 	}
-	if app.gateway.WebsocketManage.IsExist(id) {
+	if app.gateway.WebsocketManage.IsExistDelayCheck(id, 500*time.Millisecond, 6) {
 		return errors.New("id:"+Jtool.Int64ToString(id)+"已存在")
 	}
 	err = app.request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
@@ -184,7 +185,7 @@ func (app *App) RpcStreamConnected(conn *Jrpc.RpcStream) error {
 	if err != nil {
 		return err
 	}
-	if app.gateway.RpcManage.IsExist(id) {
+	if app.gateway.RpcManage.IsExistDelayCheck(id, 500*time.Millisecond, 6) {
 		return errors.New("id:"+Jtool.Int64ToString(id)+"已存在")
 	}
 	err = app.request.ReqNodeOnline(id, conn.GetParm().RpcStreamClientMsg)

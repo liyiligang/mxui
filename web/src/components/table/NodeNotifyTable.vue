@@ -1,5 +1,5 @@
 <template>
-    <el-table :data="tableData" highlight-current-row height="520" v-elTableInfiniteScroll="tableLoad">
+    <el-table :data="tableData" height="100%" highlight-current-row v-elTableInfiniteScroll="tableLoad">
         <el-table-column label="编号" type="index" align="center" width="120"></el-table-column>
         <el-table-column label="通知者" align="center" width="220">
             <template #default="scope">
@@ -26,7 +26,7 @@
 
 
 <script lang="ts">
-import {defineComponent, onMounted, PropType} from "vue";
+import {defineComponent, PropType} from "vue";
 import {protoManage} from "../../proto/manage";
 import {globals} from "../../base/globals";
 import {convert} from "../../base/convert";
@@ -119,14 +119,6 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 @import "../../css/card.css";
-
-.NodeNotifyTableSenderName{
-
-}
-
-.NodeNotifyTableMessage{
-
-}
 
 </style>
 

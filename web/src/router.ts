@@ -112,8 +112,8 @@ export module routerPath {
         router.push({
             name: "nodeNotify",
             query: {
-                // pageSize: globals.globalsConfig.pageConfig.initSize,
-                // pageNum:  globals.globalsConfig.pageConfig.initNum
+                pageSize: globals.globalsConfig.pageConfig.initSize,
+                pageNum:  globals.globalsConfig.pageConfig.initNum
             }
         }).then()
     }
@@ -168,6 +168,15 @@ export module routerPath {
         if (filter.State != protoManage.State.StateNot){
             str += "&state="+filter.State
         }
+        if (filter.SenderID != 0){
+            str += "&senderID="+filter.SenderID
+        }
+        if (filter.SenderType != protoManage.NotifySenderType.NotifySenderTypeUnknow){
+            str += "&senderType="+filter.SenderType
+        }
+        if (filter.Message != ""){
+            str += "&message="+filter.Message
+        }
         return str
     }
 
@@ -183,6 +192,10 @@ export module routerPath {
     export function toNode(filter:protoManage.Filter){
         let filterStr = setFilterStr(filter)
         return "node" + filterStr
+    }
+    export function toNodeNotify(filter:protoManage.Filter){
+        let filterStr = setFilterStr(filter)
+        return "nodeNotify" + filterStr
     }
     export function toNodeLink(nodeID:number){
         return "nodeLink?sourceID="+nodeID+"&targetID="+nodeID+"&pageSize="+globals.globalsConfig.pageConfig.initSize+"&pageNum="+globals.globalsConfig.pageConfig.initNum

@@ -43,11 +43,20 @@ export module request {
         if (globals.isNull(filter.State)){
             filter.State = protoManage.State.StateNot
         }
+        if (globals.isNull(filter.SenderID)){
+            filter.SenderID = 0
+        }
+        if (globals.isNull(filter.SenderType)){
+            filter.SenderType = protoManage.NotifySenderType.NotifySenderTypeUnknow
+        }
+        if (globals.isNull(filter.Message)){
+            filter.Message = ""
+        }
         if (globals.isNull(filter.PageSize)){
-            filter.PageSize = 5
+            filter.PageSize = globals.globalsConfig.pageConfig.initSize
         }
         if (globals.isNull(filter.PageNum)){
-            filter.PageNum = 1
+            filter.PageNum = globals.globalsConfig.pageConfig.initNum
         }
         filter.PageNum-=1
         return filter

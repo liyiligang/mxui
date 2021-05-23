@@ -28,8 +28,8 @@ func (db *DB) FindNodeNotify(filter protoManage.Filter) ([]orm.NodeNotify, error
 func (db *DB) FindNodeByNodeNotify(filter protoManage.Filter) ([]orm.Node, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
-	subQuery1 := tx.Model(&orm.NodeNotify{}).Where("senderType=?", protoManage.NotifySenderType_NotifySenderTypeNode)
-	subQuery2 := db.Gorm.Select("t.senderID").
+	subQuery1 := tx.Model(&orm.NodeNotify{})
+	subQuery2 := db.Gorm.Select("t.senderID").Where("senderType=?", protoManage.NotifySenderType_NotifySenderTypeNode).
 		Table("(?) as t", subQuery1)
 	var nodeList []orm.Node
 	err := db.Gorm.Where("id = any(?)", subQuery2).Find(&nodeList).Error

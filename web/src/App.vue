@@ -9,19 +9,8 @@ import {globals} from "./base/globals";
 
 export default defineComponent ({
     name: 'App',
-    components: {
-    },
-    data() {
-        return {
-            appStyleObj: {
-                height: window.innerHeight + "px",
-                background: "#0C9A9A"
-            },
-            getCurrentComponentName: ""
-        }
-    },
     mounted() {
-        globals.globalsData.token = localStorage.getItem("userToken");
+        globals.globalsData.token = localStorage.getItem(globals.globalsConfig.httpConfig.tokenKey)
     }
 })
 </script>

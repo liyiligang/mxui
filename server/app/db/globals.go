@@ -52,6 +52,15 @@ func (db *DB) SetFilter(tx *gorm.DB, filter protoManage.Filter) *gorm.DB {
 	if filter.State != protoManage.State_StateNot {
 		tx.Where("state = ?", filter.State)
 	}
+	if filter.SenderID != 0 {
+		tx.Where("senderID = ?", filter.SenderID)
+	}
+	if filter.SenderType != protoManage.NotifySenderType_NotifySenderTypeUnknow {
+		tx.Where("senderType = ?", filter.SenderType)
+	}
+	if filter.Message != "" {
+		tx.Where("message like ?", "%"+filter.Message+"%")
+	}
 	return tx
 }
 

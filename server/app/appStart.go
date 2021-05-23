@@ -327,7 +327,8 @@ func (app *App) InitDBData(){
 	//nodeFuncLen := 10000
 	//nodeReportLen := 10000
 	//nodeFuncCallLen := 30
-	nodeReportValLen := 10000
+	//nodeReportValLen := 10000
+	nodeNotifyLen := 10000
 
 	//for i:=startNum; i<=nodeGroupLen; i++ {
 	//	app.dbAddNodeGroup(orm.NodeGroup{Base: orm.Base{ID: int64(i)}, Name: "节点组" +  strconv.Itoa(i)})
@@ -412,19 +413,43 @@ func (app *App) InitDBData(){
 	//	}
 	//}
 
-	for i:=startNum; i<=10; i++ {
-		for j := startNum; j<nodeReportValLen; j++  {
-			value, _ := Jtool.GetRandInt(0, 1000000)
-			state, _ := Jtool.GetRandInt(1, 5)
-			app.db.AddNodeReportVal(orm.NodeReportVal{
-				ReportID: int64(i),
-				Value: float64(value/1000),
-				State: int32(state),
-			})
-			timeF, _ := Jtool.GetRandInt(0, 1500)
-			time.Sleep(time.Duration(timeF) * time.Millisecond)
-		}
+	//for i:=startNum; i<=10; i++ {
+	//	for j := startNum; j<nodeReportValLen; j++  {
+	//		value, _ := Jtool.GetRandInt(0, 1000000)
+	//		state, _ := Jtool.GetRandInt(1, 5)
+	//		app.db.AddNodeReportVal(orm.NodeReportVal{
+	//			ReportID: int64(i),
+	//			Value: float64(value/1000),
+	//			State: int32(state),
+	//		})
+	//		timeF, _ := Jtool.GetRandInt(0, 1500)
+	//		time.Sleep(time.Duration(timeF) * time.Millisecond)
+	//	}
+	//}
+
+	for j := startNum; j<nodeNotifyLen; j++  {
+		nodeID, _ := Jtool.GetRandInt(1, 10000)
+		state, _ := Jtool.GetRandInt(1, 5)
+		app.db.AddNodeNotify(orm.NodeNotify{
+			SenderID: int64(nodeID),
+			SenderType: int64(protoManage.NotifySenderType_NotifySenderTypeNode),
+			Message: randChinese(1, 60),
+			State:int32(state),
+		})
+		timeF, _ := Jtool.GetRandInt(0, 1500)
+		time.Sleep(time.Duration(timeF) * time.Millisecond)
 	}
 
 	Jlog.Info("数据填充完毕")
+}
+
+
+func randChinese(min int, max int) string {
+	len, _ := Jtool.GetRandInt(min, max)
+	c := make([]rune, len)
+	for i := range c {
+		h ,_ := Jtool.GetRandInt(19968,40869)
+		c[i]=rune(int64(h))
+	}
+	return string(c)
 }

@@ -61,8 +61,9 @@ export namespace protoManage {
 
     /** NotifySenderType enum. */
     enum NotifySenderType {
-        NotifySenderTypeUser = 0,
-        NotifySenderTypeNode = 1
+        NotifySenderTypeUnknow = 0,
+        NotifySenderTypeUser = 1,
+        NotifySenderTypeNode = 2
     }
 
     /** HttpError enum. */
@@ -577,6 +578,15 @@ export namespace protoManage {
 
         /** Filter PageNum */
         PageNum?: (number|null);
+
+        /** Filter SenderID */
+        SenderID?: (number|null);
+
+        /** Filter SenderType */
+        SenderType?: (protoManage.NotifySenderType|null);
+
+        /** Filter Message */
+        Message?: (string|null);
     }
 
     /** Represents a Filter. */
@@ -629,6 +639,15 @@ export namespace protoManage {
 
         /** Filter PageNum. */
         public PageNum: number;
+
+        /** Filter SenderID. */
+        public SenderID: number;
+
+        /** Filter SenderType. */
+        public SenderType: protoManage.NotifySenderType;
+
+        /** Filter Message. */
+        public Message: string;
 
         /**
          * Creates a new Filter instance using the specified properties.

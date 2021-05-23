@@ -39,6 +39,9 @@ export module globals {
 			tablePageSize:50,
 			findReturnValRetryTime:1000,
 			findReturnValRetryCnt:5
+		},
+		cssConfig:{
+			nodeViewFramePageFix:true
 		}
 	}
 
@@ -130,7 +133,10 @@ export module globals {
 	}
 
 	export function isNull(para:any):boolean {
-		if (isNaN(para) || para === undefined || para === null){
+		if (para === 'undefined' || para === null){
+			return true
+		}
+		if (typeof para === 'number' && isNaN(para)){
 			return true
 		}
 		return false
