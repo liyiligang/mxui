@@ -168,11 +168,17 @@ export module routerPath {
         if (filter.State != protoManage.State.StateNot){
             str += "&state="+filter.State
         }
-        if (filter.SenderID != 0){
-            str += "&senderID="+filter.SenderID
+        if (filter.SenderName != ""){
+            str += "&senderName="+filter.SenderName
         }
         if (filter.SenderType != protoManage.NotifySenderType.NotifySenderTypeUnknow){
             str += "&senderType="+filter.SenderType
+        }
+        if (filter.SenderBeginTime != 0){
+            str += "&senderBeginTime="+filter.SenderBeginTime
+        }
+        if (filter.SenderEndTime != 0){
+            str += "&senderEndTime="+filter.SenderEndTime
         }
         if (filter.Message != ""){
             str += "&message="+filter.Message

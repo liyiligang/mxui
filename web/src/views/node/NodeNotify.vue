@@ -3,7 +3,8 @@
         <el-row class="nodeNotifyFilter" @keyup.enter.native="searchWithContent()">
             <el-button type="primary" icon="el-icon-search" v-on:click="searchWithContent()">搜索</el-button>
             <el-input class="nodeNotifySearchInput" v-model="data.search" placeholder="搜索内容" clearable @clear="searchWithContent()"></el-input>
-            <SelectFilter></SelectFilter>
+<!--            <SelectFilter></SelectFilter>-->
+            <NodeNotifyFormFilter></NodeNotifyFormFilter>
         </el-row>
         <el-row class="nodeNotifyFrame">
             <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
@@ -21,6 +22,7 @@ import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute, useRouter}
 import NodeViewFrame from "../../components/NodeViewFrame.vue"
 import NodeNotifyTable from "../../components/table/NodeNotifyTable.vue"
 import SelectFilter from "../../components/fifter/SelectFilter.vue"
+import NodeNotifyFormFilter from "../../components/fifter/NodeNotifyFormFilter.vue"
 import merge from "webpack-merge";
 import {globals} from "../../base/globals";
 
@@ -37,7 +39,8 @@ export default defineComponent ({
     components: {
         NodeViewFrame,
         NodeNotifyTable,
-        SelectFilter
+        SelectFilter,
+        NodeNotifyFormFilter
     },
     setup(){
         const data = reactive<NodeNotifyInfo>({isLoading:false, pageTotal:0, search:"",
@@ -65,7 +68,11 @@ export default defineComponent ({
             request.reqNodeNotifyList(protoManage.Filter.create({
                 PageSize:Number(route.query.pageSize),
                 PageNum:Number(route.query.pageNum),
-                Message:String(route.query.search)
+                SenderName:String(route.query.senderName),
+                SenderType:Number(route.query.senderType),
+                SenderBeginTime:Number(route.query.senderBeginTime),
+                SenderEndTime:Number(route.query.senderEndTime),
+                Message:String(route.query.search),
             })).then((response) => {
                 data.pageTotal = response.Length
                 data.nodeNotifyList.length = 0

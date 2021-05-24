@@ -579,11 +579,17 @@ export namespace protoManage {
         /** Filter PageNum */
         PageNum?: (number|null);
 
-        /** Filter SenderID */
-        SenderID?: (number|null);
+        /** Filter SenderName */
+        SenderName?: (string|null);
 
         /** Filter SenderType */
         SenderType?: (protoManage.NotifySenderType|null);
+
+        /** Filter SenderBeginTime */
+        SenderBeginTime?: (number|null);
+
+        /** Filter SenderEndTime */
+        SenderEndTime?: (number|null);
 
         /** Filter Message */
         Message?: (string|null);
@@ -640,11 +646,17 @@ export namespace protoManage {
         /** Filter PageNum. */
         public PageNum: number;
 
-        /** Filter SenderID. */
-        public SenderID: number;
+        /** Filter SenderName. */
+        public SenderName: string;
 
         /** Filter SenderType. */
         public SenderType: protoManage.NotifySenderType;
+
+        /** Filter SenderBeginTime. */
+        public SenderBeginTime: number;
+
+        /** Filter SenderEndTime. */
+        public SenderEndTime: number;
 
         /** Filter Message. */
         public Message: string;

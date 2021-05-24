@@ -1784,8 +1784,10 @@ export const protoManage = $root.protoManage = (() => {
          * @property {protoManage.State|null} [State] Filter State
          * @property {number|null} [PageSize] Filter PageSize
          * @property {number|null} [PageNum] Filter PageNum
-         * @property {number|null} [SenderID] Filter SenderID
+         * @property {string|null} [SenderName] Filter SenderName
          * @property {protoManage.NotifySenderType|null} [SenderType] Filter SenderType
+         * @property {number|null} [SenderBeginTime] Filter SenderBeginTime
+         * @property {number|null} [SenderEndTime] Filter SenderEndTime
          * @property {string|null} [Message] Filter Message
          */
 
@@ -1917,12 +1919,12 @@ export const protoManage = $root.protoManage = (() => {
         Filter.prototype.PageNum = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * Filter SenderID.
-         * @member {number} SenderID
+         * Filter SenderName.
+         * @member {string} SenderName
          * @memberof protoManage.Filter
          * @instance
          */
-        Filter.prototype.SenderID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        Filter.prototype.SenderName = "";
 
         /**
          * Filter SenderType.
@@ -1931,6 +1933,22 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         Filter.prototype.SenderType = 0;
+
+        /**
+         * Filter SenderBeginTime.
+         * @member {number} SenderBeginTime
+         * @memberof protoManage.Filter
+         * @instance
+         */
+        Filter.prototype.SenderBeginTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * Filter SenderEndTime.
+         * @member {number} SenderEndTime
+         * @memberof protoManage.Filter
+         * @instance
+         */
+        Filter.prototype.SenderEndTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
          * Filter Message.
@@ -1992,12 +2010,16 @@ export const protoManage = $root.protoManage = (() => {
                 writer.uint32(/* id 13, wireType 0 =*/104).int64(message.PageSize);
             if (message.PageNum != null && Object.hasOwnProperty.call(message, "PageNum"))
                 writer.uint32(/* id 14, wireType 0 =*/112).int64(message.PageNum);
-            if (message.SenderID != null && Object.hasOwnProperty.call(message, "SenderID"))
-                writer.uint32(/* id 15, wireType 0 =*/120).int64(message.SenderID);
+            if (message.SenderName != null && Object.hasOwnProperty.call(message, "SenderName"))
+                writer.uint32(/* id 15, wireType 2 =*/122).string(message.SenderName);
             if (message.SenderType != null && Object.hasOwnProperty.call(message, "SenderType"))
                 writer.uint32(/* id 16, wireType 0 =*/128).int32(message.SenderType);
+            if (message.SenderBeginTime != null && Object.hasOwnProperty.call(message, "SenderBeginTime"))
+                writer.uint32(/* id 17, wireType 0 =*/136).int64(message.SenderBeginTime);
+            if (message.SenderEndTime != null && Object.hasOwnProperty.call(message, "SenderEndTime"))
+                writer.uint32(/* id 18, wireType 0 =*/144).int64(message.SenderEndTime);
             if (message.Message != null && Object.hasOwnProperty.call(message, "Message"))
-                writer.uint32(/* id 17, wireType 2 =*/138).string(message.Message);
+                writer.uint32(/* id 19, wireType 2 =*/154).string(message.Message);
             return writer;
         };
 
@@ -2075,12 +2097,18 @@ export const protoManage = $root.protoManage = (() => {
                     message.PageNum = reader.int64();
                     break;
                 case 15:
-                    message.SenderID = reader.int64();
+                    message.SenderName = reader.string();
                     break;
                 case 16:
                     message.SenderType = reader.int32();
                     break;
                 case 17:
+                    message.SenderBeginTime = reader.int64();
+                    break;
+                case 18:
+                    message.SenderEndTime = reader.int64();
+                    break;
+                case 19:
                     message.Message = reader.string();
                     break;
                 default:
@@ -2168,9 +2196,9 @@ export const protoManage = $root.protoManage = (() => {
             if (message.PageNum != null && message.hasOwnProperty("PageNum"))
                 if (!$util.isInteger(message.PageNum) && !(message.PageNum && $util.isInteger(message.PageNum.low) && $util.isInteger(message.PageNum.high)))
                     return "PageNum: integer|Long expected";
-            if (message.SenderID != null && message.hasOwnProperty("SenderID"))
-                if (!$util.isInteger(message.SenderID) && !(message.SenderID && $util.isInteger(message.SenderID.low) && $util.isInteger(message.SenderID.high)))
-                    return "SenderID: integer|Long expected";
+            if (message.SenderName != null && message.hasOwnProperty("SenderName"))
+                if (!$util.isString(message.SenderName))
+                    return "SenderName: string expected";
             if (message.SenderType != null && message.hasOwnProperty("SenderType"))
                 switch (message.SenderType) {
                 default:
@@ -2180,6 +2208,12 @@ export const protoManage = $root.protoManage = (() => {
                 case 2:
                     break;
                 }
+            if (message.SenderBeginTime != null && message.hasOwnProperty("SenderBeginTime"))
+                if (!$util.isInteger(message.SenderBeginTime) && !(message.SenderBeginTime && $util.isInteger(message.SenderBeginTime.low) && $util.isInteger(message.SenderBeginTime.high)))
+                    return "SenderBeginTime: integer|Long expected";
+            if (message.SenderEndTime != null && message.hasOwnProperty("SenderEndTime"))
+                if (!$util.isInteger(message.SenderEndTime) && !(message.SenderEndTime && $util.isInteger(message.SenderEndTime.low) && $util.isInteger(message.SenderEndTime.high)))
+                    return "SenderEndTime: integer|Long expected";
             if (message.Message != null && message.hasOwnProperty("Message"))
                 if (!$util.isString(message.Message))
                     return "Message: string expected";
@@ -2316,15 +2350,8 @@ export const protoManage = $root.protoManage = (() => {
                     message.PageNum = object.PageNum;
                 else if (typeof object.PageNum === "object")
                     message.PageNum = new $util.LongBits(object.PageNum.low >>> 0, object.PageNum.high >>> 0).toNumber();
-            if (object.SenderID != null)
-                if ($util.Long)
-                    (message.SenderID = $util.Long.fromValue(object.SenderID)).unsigned = false;
-                else if (typeof object.SenderID === "string")
-                    message.SenderID = parseInt(object.SenderID, 10);
-                else if (typeof object.SenderID === "number")
-                    message.SenderID = object.SenderID;
-                else if (typeof object.SenderID === "object")
-                    message.SenderID = new $util.LongBits(object.SenderID.low >>> 0, object.SenderID.high >>> 0).toNumber();
+            if (object.SenderName != null)
+                message.SenderName = String(object.SenderName);
             switch (object.SenderType) {
             case "NotifySenderTypeUnknow":
             case 0:
@@ -2339,6 +2366,24 @@ export const protoManage = $root.protoManage = (() => {
                 message.SenderType = 2;
                 break;
             }
+            if (object.SenderBeginTime != null)
+                if ($util.Long)
+                    (message.SenderBeginTime = $util.Long.fromValue(object.SenderBeginTime)).unsigned = false;
+                else if (typeof object.SenderBeginTime === "string")
+                    message.SenderBeginTime = parseInt(object.SenderBeginTime, 10);
+                else if (typeof object.SenderBeginTime === "number")
+                    message.SenderBeginTime = object.SenderBeginTime;
+                else if (typeof object.SenderBeginTime === "object")
+                    message.SenderBeginTime = new $util.LongBits(object.SenderBeginTime.low >>> 0, object.SenderBeginTime.high >>> 0).toNumber();
+            if (object.SenderEndTime != null)
+                if ($util.Long)
+                    (message.SenderEndTime = $util.Long.fromValue(object.SenderEndTime)).unsigned = false;
+                else if (typeof object.SenderEndTime === "string")
+                    message.SenderEndTime = parseInt(object.SenderEndTime, 10);
+                else if (typeof object.SenderEndTime === "number")
+                    message.SenderEndTime = object.SenderEndTime;
+                else if (typeof object.SenderEndTime === "object")
+                    message.SenderEndTime = new $util.LongBits(object.SenderEndTime.low >>> 0, object.SenderEndTime.high >>> 0).toNumber();
             if (object.Message != null)
                 message.Message = String(object.Message);
             return message;
@@ -2412,12 +2457,18 @@ export const protoManage = $root.protoManage = (() => {
                     object.PageNum = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.PageNum = options.longs === String ? "0" : 0;
+                object.SenderName = "";
+                object.SenderType = options.enums === String ? "NotifySenderTypeUnknow" : 0;
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, false);
-                    object.SenderID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    object.SenderBeginTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
-                    object.SenderID = options.longs === String ? "0" : 0;
-                object.SenderType = options.enums === String ? "NotifySenderTypeUnknow" : 0;
+                    object.SenderBeginTime = options.longs === String ? "0" : 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.SenderEndTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.SenderEndTime = options.longs === String ? "0" : 0;
                 object.Message = "";
             }
             if (message.ID != null && message.hasOwnProperty("ID"))
@@ -2478,13 +2529,20 @@ export const protoManage = $root.protoManage = (() => {
                     object.PageNum = options.longs === String ? String(message.PageNum) : message.PageNum;
                 else
                     object.PageNum = options.longs === String ? $util.Long.prototype.toString.call(message.PageNum) : options.longs === Number ? new $util.LongBits(message.PageNum.low >>> 0, message.PageNum.high >>> 0).toNumber() : message.PageNum;
-            if (message.SenderID != null && message.hasOwnProperty("SenderID"))
-                if (typeof message.SenderID === "number")
-                    object.SenderID = options.longs === String ? String(message.SenderID) : message.SenderID;
-                else
-                    object.SenderID = options.longs === String ? $util.Long.prototype.toString.call(message.SenderID) : options.longs === Number ? new $util.LongBits(message.SenderID.low >>> 0, message.SenderID.high >>> 0).toNumber() : message.SenderID;
+            if (message.SenderName != null && message.hasOwnProperty("SenderName"))
+                object.SenderName = message.SenderName;
             if (message.SenderType != null && message.hasOwnProperty("SenderType"))
                 object.SenderType = options.enums === String ? $root.protoManage.NotifySenderType[message.SenderType] : message.SenderType;
+            if (message.SenderBeginTime != null && message.hasOwnProperty("SenderBeginTime"))
+                if (typeof message.SenderBeginTime === "number")
+                    object.SenderBeginTime = options.longs === String ? String(message.SenderBeginTime) : message.SenderBeginTime;
+                else
+                    object.SenderBeginTime = options.longs === String ? $util.Long.prototype.toString.call(message.SenderBeginTime) : options.longs === Number ? new $util.LongBits(message.SenderBeginTime.low >>> 0, message.SenderBeginTime.high >>> 0).toNumber() : message.SenderBeginTime;
+            if (message.SenderEndTime != null && message.hasOwnProperty("SenderEndTime"))
+                if (typeof message.SenderEndTime === "number")
+                    object.SenderEndTime = options.longs === String ? String(message.SenderEndTime) : message.SenderEndTime;
+                else
+                    object.SenderEndTime = options.longs === String ? $util.Long.prototype.toString.call(message.SenderEndTime) : options.longs === Number ? new $util.LongBits(message.SenderEndTime.low >>> 0, message.SenderEndTime.high >>> 0).toNumber() : message.SenderEndTime;
             if (message.Message != null && message.hasOwnProperty("Message"))
                 object.Message = message.Message;
             return object;

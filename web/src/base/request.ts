@@ -43,11 +43,17 @@ export module request {
         if (globals.isNull(filter.State)){
             filter.State = protoManage.State.StateNot
         }
-        if (globals.isNull(filter.SenderID)){
-            filter.SenderID = 0
+        if (globals.isNull(filter.SenderName)){
+            filter.SenderName = ""
         }
         if (globals.isNull(filter.SenderType)){
             filter.SenderType = protoManage.NotifySenderType.NotifySenderTypeUnknow
+        }
+        if (globals.isNull(filter.SenderBeginTime)){
+            filter.SenderBeginTime = 0
+        }
+        if (globals.isNull(filter.SenderEndTime)){
+            filter.SenderEndTime = 0
         }
         if (globals.isNull(filter.Message)){
             filter.Message = ""

@@ -81,7 +81,7 @@ export default defineComponent ({
 .pageViewFix{
     width: 100%;
     margin-top: 25px;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 </style>

@@ -52,11 +52,20 @@ func (db *DB) SetFilter(tx *gorm.DB, filter protoManage.Filter) *gorm.DB {
 	if filter.State != protoManage.State_StateNot {
 		tx.Where("state = ?", filter.State)
 	}
-	if filter.SenderID != 0 {
-		tx.Where("senderID = ?", filter.SenderID)
+	if filter.SenderName != "" {
+		tx.Where("(senderID = any(select id from node where name like ? and senderType = ?)) " +
+			"or (senderID = any(select id from manager where nickName like ? and senderType = ?))",
+			"%"+filter.SenderName+"%", protoManage.NotifySenderType_NotifySenderTypeNode,
+			"%"+filter.SenderName+"%", protoManage.NotifySenderType_NotifySenderTypeUser)
 	}
 	if filter.SenderType != protoManage.NotifySenderType_NotifySenderTypeUnknow {
 		tx.Where("senderType = ?", filter.SenderType)
+	}
+	if filter.SenderBeginTime != 0 {
+		tx.Where("UNIX_TIMESTAMP(updatedAt) >= ?", filter.SenderBeginTime)
+	}
+	if filter.SenderEndTime != 0 {
+		tx.Where("UNIX_TIMESTAMP(updatedAt) <= ?", filter.SenderEndTime)
 	}
 	if filter.Message != "" {
 		tx.Where("message like ?", "%"+filter.Message+"%")
