@@ -17,7 +17,7 @@ func (db *DB) FindNodeNotify(filter protoManage.Filter) ([]orm.NodeNotify, error
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
 	var nodeNotifyList []orm.NodeNotify
-	err := tx.Find(&nodeNotifyList).Error
+	err := tx.Order("id desc").Find(&nodeNotifyList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nodeNotifyList, nil
 	}
@@ -28,7 +28,7 @@ func (db *DB) FindNodeNotify(filter protoManage.Filter) ([]orm.NodeNotify, error
 func (db *DB) FindNodeByNodeNotify(filter protoManage.Filter) ([]orm.Node, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
-	subQuery1 := tx.Model(&orm.NodeNotify{})
+	subQuery1 := tx.Model(&orm.NodeNotify{}).Order("id desc")
 	subQuery2 := db.Gorm.Select("t.senderID").Where("senderType=?", protoManage.NotifySenderType_NotifySenderTypeNode).
 		Table("(?) as t", subQuery1)
 	var nodeList []orm.Node

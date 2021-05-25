@@ -46,6 +46,7 @@ import NodeTest from "./node/NodeTest.vue";
 import {websocket} from "../base/websocket";
 import {protoManage} from "../proto/manage";
 import {globals} from "../base/globals";
+import {convert} from "../base/convert";
 
 export default defineComponent ({
     name: "Home",
@@ -65,7 +66,7 @@ export default defineComponent ({
             Token:globals.globalsData.token
         })
         let byte = protoManage.Manager.encode(msg).finish()
-        let str = globals.uint8ArrayToString(byte)
+        let str = convert.uint8ArrayToString(byte)
         websocket.wsConnect("ws://localhost/ws?parameter="+str)
     }
 })

@@ -52,23 +52,6 @@ export module globals {
 		return  globalsData.managerList.get(id)
 	}
 
-	export function uint8ArrayToString(data: Uint8Array):string {
-		let dataString = "";
-		for (let i = 0; i < data.length; i++) {
-			dataString += String.fromCharCode(data[i]);
-		}
-		return dataString
-	}
-
-	// export function stringToUint8Array(str: string):Uint8Array {
-	// 	let arr = [];
-	// 	for (let i = 0, j = str.length; i < j; ++i) {
-	// 		arr.push(str.charCodeAt(i));
-	// 	}
-	// 	let tmpUint8Array = new Uint8Array(arr);
-	// 	return tmpUint8Array
-	// }
-
 	export function viewWarn(msg:string) {
 		ElMessage.warning(msg);
 		console.warn(msg)
@@ -97,23 +80,6 @@ export module globals {
 		let mf = new Date().getMinutes()<10 ? '0'+new Date().getMinutes() : new Date().getMinutes();
 		let ss = new Date().getSeconds()<10 ? '0'+new Date().getSeconds() : new Date().getSeconds();
 		return yy+'-'+mm+'-'+dd+' '+hh+':'+mf+':'+ss;
-	}
-
-	export function formatDate (timeStamp:number|undefined|null):string {
-		if (timeStamp == 0 || timeStamp==undefined){
-			return "0000-00-00 00:00:00"
-		}
-		function two(s:number){
-			return s<10?"0"+s:s;
-		}
-		let date = new Date(timeStamp)
-		let year = date.getFullYear();  //取得4位数的年份
-		let month = date.getMonth() + 1;  //取得日期中的月份，其中0表示1月，11表示12月
-		let day = date.getDate();      //返回日期月份中的天数（1到31）
-		let hour = date.getHours();     //返回日期中的小时数（0到23）
-		let minute = date.getMinutes(); //返回日期中的分钟数（0到59）
-		let second = date.getSeconds(); //返回日期中的秒数（0到59）
-		return year + "-" + two(month) + "-" + two(day) + " " + two(hour) + ":" + two(minute) + ":" + two(second);
 	}
 
 	export function isJson (json:string):boolean {

@@ -56,7 +56,7 @@ export default defineComponent ({
             return convert.getColorByState(props.tableData[index].State)
         }
         function getTime(index){
-            return globals.formatDate(props.tableData[index].Base?.UpdateTime)
+            return convert.timeStampToFormatDate(props.tableData[index].Base?.UpdateTime)
         }
         function tableLoad(){
             context.emit('tableLoad')

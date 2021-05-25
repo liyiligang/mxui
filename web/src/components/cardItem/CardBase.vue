@@ -1,13 +1,13 @@
 <template>
     <el-row class="baseView color-text-assist" type="flex" justify="space-between" align="middle">
-        <div>{{globals.formatDate(time)}}</div>
+        <div>{{convert.timeStampToFormatDate(time)}}</div>
         <div>{{id}}</div>
     </el-row>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {globals} from "../../base/globals";
+import {convert} from "../../base/convert";
 
 export default defineComponent ({
     name: "CardBase",
@@ -16,7 +16,7 @@ export default defineComponent ({
         time:Number
     },
     setup(){
-        return {globals}
+        return {convert}
     }
 })
 </script>

@@ -3,7 +3,7 @@
         <el-button class="cardReportValButton" type="text" @click="click">{{name}}</el-button>
         <div v-if=isValidState() :class="[stateColor]">{{"暂无"}}</div>
         <div v-else :class="[stateColor]">{{value}}</div>
-        <div class="cardReportValTime color-text-assist">{{globals.formatDate(time)}}</div>
+        <div class="cardReportValTime color-text-assist">{{convert.timeStampToFormatDate(time)}}</div>
     </el-row>
 </template>
 
@@ -41,7 +41,7 @@ export default defineComponent ({
         function isValidState():boolean {
            return prop.stateColor==convert.getColorByState(protoManage.State.StateNot)
         }
-        return {globals, request, protoManage, click, isValidState}
+        return {globals, convert, request, protoManage, click, isValidState}
     }
 })
 </script>

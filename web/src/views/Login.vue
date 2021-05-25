@@ -5,7 +5,7 @@
                 <img class="loginLogo" src="../assets/logo.png" alt="admin">
                 <el-input class="loginInput" v-model="data.username" placeholder="用户名" clearable></el-input>
                 <el-input class="loginInput" v-model="data.password" placeholder="密码" clearable show-password></el-input>
-                <el-button class="loginButton" type="primary" round v-on:click="loginByName()">登录</el-button>
+                <el-button class="loginButton" type="primary" round @click="loginByName()">登录</el-button>
             </el-row>
         </el-card>
     </el-row>

@@ -3,7 +3,7 @@
         <el-table-column label="编号" type="index" align="center" width="120"></el-table-column>
         <el-table-column label="通知者" align="center" width="220">
             <template #default="scope">
-                <div class="card-text-omit">{{getSenderName(scope.$index)}}</div>
+                <div>{{getSenderName(scope.$index)}}</div>
             </template>
         </el-table-column>
         <el-table-column label="通知类型" align="center" width="80">
@@ -13,7 +13,7 @@
         </el-table-column>
         <el-table-column label="消息" align="center">
             <template #default="scope">
-                <div class="card-text-omit" :class="[getStateColor(scope.$index)]">{{getMessage(scope.$index)}}</div>
+                <div :class="[getStateColor(scope.$index)]">{{getMessage(scope.$index)}}</div>
             </template>
         </el-table-column>
         <el-table-column label="日期" align="center" width="160">
@@ -105,7 +105,7 @@ export default defineComponent ({
         }
 
         function getTime(index){
-            return globals.formatDate(props.tableData[index].Base?.UpdateTime)
+            return convert.timeStampToFormatDate(props.tableData[index].Base?.UpdateTime)
         }
 
         function tableLoad(){
@@ -119,6 +119,14 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 @import "../../css/card.css";
+
+.NodeNotifyTableName{
+    text-align: left;
+}
+
+.NodeNotifyTableMessage{
+    text-align: left;
+}
 
 </style>
 

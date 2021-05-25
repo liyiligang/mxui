@@ -2,13 +2,13 @@
     <el-row class="cardFuncCall" type="flex" justify="space-between" align="middle">
         <el-button class="cardFuncCallButton" type="text" @click="click">{{name}}</el-button>
         <div :class="[stateColor]">{{state}}</div>
-        <div class="cardFuncCallTime color-text-assist">{{globals.formatDate(time)}}</div>
+        <div class="cardFuncCallTime color-text-assist">{{convert.timeStampToFormatDate(time)}}</div>
     </el-row>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
-import {globals} from "../../base/globals";
+import {convert} from "../../base/convert";
 export default defineComponent ({
     name: "CardFuncCall",
     emits: ['textClick'],
@@ -34,7 +34,7 @@ export default defineComponent ({
         function click(){
             context.emit('textClick')
         }
-        return {globals, click}
+        return {convert, click}
     }
 })
 </script>

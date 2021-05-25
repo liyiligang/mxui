@@ -1,10 +1,8 @@
 <template>
     <el-row class="nodeNotify">
-        <el-row class="nodeNotifyFilter" @keyup.enter.native="searchWithContent()">
-            <el-button type="primary" icon="el-icon-search" v-on:click="searchWithContent()">搜索</el-button>
-            <el-input class="nodeNotifySearchInput" v-model="data.search" placeholder="搜索内容" clearable @clear="searchWithContent()"></el-input>
-<!--            <SelectFilter></SelectFilter>-->
+        <el-row class="nodeNotifyFilter" type="flex" justify="end" align="middle">
             <NodeNotifyFormFilter></NodeNotifyFormFilter>
+            <NodeNotifyMessageFilter></NodeNotifyMessageFilter>
         </el-row>
         <el-row class="nodeNotifyFrame">
             <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
@@ -21,15 +19,14 @@ import {request} from "../../base/request";
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute, useRouter} from "vue-router";
 import NodeViewFrame from "../../components/NodeViewFrame.vue"
 import NodeNotifyTable from "../../components/table/NodeNotifyTable.vue"
-import SelectFilter from "../../components/fifter/SelectFilter.vue"
+import SelectFilter from "../../components/fifter/NodeNotifyMessageFilter.vue"
 import NodeNotifyFormFilter from "../../components/fifter/NodeNotifyFormFilter.vue"
-import merge from "webpack-merge";
-import {globals} from "../../base/globals";
+import NodeNotifyMessageFilter from "../../components/fifter/NodeNotifyMessageFilter.vue"
+
 
 interface NodeNotifyInfo {
     isLoading:boolean
     pageTotal:number
-    search:string
     nodeNotifyList:Array<protoManage.INodeNotify>
     nodeMap: Map<number, protoManage.INode>
 }
@@ -40,22 +37,13 @@ export default defineComponent ({
         NodeViewFrame,
         NodeNotifyTable,
         SelectFilter,
+        NodeNotifyMessageFilter,
         NodeNotifyFormFilter
     },
     setup(){
-        const data = reactive<NodeNotifyInfo>({isLoading:false, pageTotal:0, search:"",
-            nodeNotifyList:[], nodeMap:new Map<number, protoManage.INode>()})
+        const data = reactive<NodeNotifyInfo>({isLoading:false, pageTotal:0, nodeNotifyList:[],
+            nodeMap:new Map<number, protoManage.INode>()})
         const route = useRoute()
-        const router = useRouter()
-
-        function searchWithContent(){
-            let query = merge<any>(route.query, {'search':data.search,
-                'pageSize':globals.globalsConfig.pageConfig.initSize,
-                'pageNum':globals.globalsConfig.pageConfig.initNum})
-            router.push({
-                query:query
-            })
-        }
 
         onBeforeRouteUpdate(to => {
             initNodeNotify(to)
@@ -63,6 +51,7 @@ export default defineComponent ({
         onMounted(()=>{
             initNodeNotify(route)
         })
+
         function initNodeNotify(route:RouteLocationNormalizedLoaded){
             data.isLoading = true
             request.reqNodeNotifyList(protoManage.Filter.create({
@@ -72,7 +61,7 @@ export default defineComponent ({
                 SenderType:Number(route.query.senderType),
                 SenderBeginTime:Number(route.query.senderBeginTime),
                 SenderEndTime:Number(route.query.senderEndTime),
-                Message:String(route.query.search),
+                Message:String(route.query.senderMessage),
             })).then((response) => {
                 data.pageTotal = response.Length
                 data.nodeNotifyList.length = 0
@@ -88,7 +77,7 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{data.isLoading = false})
         }
 
-        return {data, searchWithContent}
+        return {data}
     }
 })
 </script>
@@ -98,23 +87,18 @@ export default defineComponent ({
 
 .nodeNotify{
     width: 100%;
-    /*height: 100%;*/
     flex-direction: column;
 }
 
 .nodeNotifyFilter{
-    height: 40px;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
+    padding-right: 18px;
     width: 100%;
 }
 
 .nodeNotifyFrame{
     width: 100%;
     flex:auto;
-}
-
-.nodeNotifySearchInput{
-    width: 300px;
 }
 
 .nodeNotifyTable{

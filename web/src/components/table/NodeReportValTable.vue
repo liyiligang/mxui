@@ -44,7 +44,7 @@ export default defineComponent ({
             return props.tableData[index].Value
         }
         function getTime(index){
-            return globals.formatDate(props.tableData[index].Base?.UpdateTime)
+            return convert.timeStampToFormatDate(props.tableData[index].Base?.UpdateTime)
         }
         function tableLoad(){
 

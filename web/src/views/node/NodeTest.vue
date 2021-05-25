@@ -2,7 +2,7 @@
     <el-input class="loginInput" v-model="data.msgType" placeholder="消息类型" clearable></el-input>
     <el-input class="loginInput" v-model="data.msgState" placeholder="消息状态" clearable></el-input>
     <el-input class="loginInput" v-model="data.msgData" placeholder="消息" clearable></el-input>
-    <el-button class="loginButton" type="primary" round v-on:click="sendMsg()">发送</el-button>
+    <el-button class="loginButton" type="primary" round @click="sendMsg()">发送</el-button>
 </template>
 
 <script lang="ts">
