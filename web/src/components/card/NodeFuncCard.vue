@@ -1,7 +1,7 @@
 <template>
     <el-card class="card">
         <template #header>
-            <CardName :color="convert.getColorByState(nodeFunc.State)" :name="nodeFunc.Name"></CardName>
+            <CardName :color="convert.getColorByState(nodeFunc.State)" :name="nodeFunc.Name" :id="nodeFunc.Base.ID"></CardName>
             <CardInfo  describe="级别" :name="convert.getNodeFuncStateName(nodeFunc.State)"
                        :name-color="convert.getColorByState(nodeFunc.State)"></CardInfo>
             <CardInfo  describe="方法" :name="nodeFunc.Func"></CardInfo>

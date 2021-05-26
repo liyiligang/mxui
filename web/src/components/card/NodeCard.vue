@@ -1,7 +1,7 @@
 <template>
     <el-card class="card">
         <template #header>
-            <CardName :color="convert.getColorByState(node.State)" :name="node.Name"></CardName>
+            <CardName :color="convert.getColorByState(node.State)" :name="node.Name" :id="node.Base.ID"></CardName>
             <CardInfo  describe="状态" :name="convert.getNodeStateName(node.State)"
                        :name-color="convert.getColorByState(node.State)"></CardInfo>
             <CardInfo  describe="集群" :name="nodeGroup.Name" :nameColor="convert.getColorByState(protoManage.State.StateNot)" :link=routerPath.toNodeGroup(protoManage.Filter.create({ID:node.GroupID}))></CardInfo>

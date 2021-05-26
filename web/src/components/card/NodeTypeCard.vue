@@ -1,7 +1,7 @@
 <template>
     <el-card class="card">
         <template #header>
-            <CardName :name="nodeType.Name"></CardName>
+            <CardName :name="nodeType.Name" :id="nodeType.Base.ID"></CardName>
             <CardBase :id="nodeType.Base.ID" :time="nodeType.Base.UpdateTime"></CardBase>
         </template>
         <cardState name="节点" :link=routerPath.toNode(protoManage.Filter.create({TypeID:nodeType.Base.ID}))

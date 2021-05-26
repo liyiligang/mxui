@@ -1,7 +1,7 @@
 <template>
     <el-card class="card">
         <template #header>
-            <CardName :color="convert.getColorByState(nodeReport.State)" :name="nodeReport.Name"></CardName>
+            <CardName :color="convert.getColorByState(nodeReport.State)" :name="nodeReport.Name" :id="nodeReport.Base.ID"></CardName>
             <CardInfo  describe="级别" :name="convert.getNodeReportStateName(nodeReport.State)"
                        :name-color="convert.getColorByState(nodeReport.State)"></CardInfo>
             <CardInfo  describe="标签" :name="nodeReport.Flag"></CardInfo>

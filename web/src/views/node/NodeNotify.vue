@@ -59,6 +59,7 @@ export default defineComponent ({
                 PageNum:Number(route.query.pageNum),
                 SenderName:String(route.query.senderName),
                 SenderType:Number(route.query.senderType),
+                State:Number(route.query.senderState),
                 SenderBeginTime:Number(route.query.senderBeginTime),
                 SenderEndTime:Number(route.query.senderEndTime),
                 Message:String(route.query.senderMessage),

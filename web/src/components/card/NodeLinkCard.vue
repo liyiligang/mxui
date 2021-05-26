@@ -1,6 +1,6 @@
 <template>
     <el-card class="card">
-        <CardName :color="convert.getColorByState(nodeLink.State)"
+        <CardName :color="convert.getColorByState(nodeLink.State)" :id="nodeLink.Base.ID"
                   :name="convert.getNodeLinkStateName(nodeLink.State)"></CardName>
         <CardInfo  describe="服务端" :name="targetNode.Name" :nameColor="convert.getColorByState(targetNode.State)" :link=routerPath.toNode(protoManage.Filter.create({ID:targetNode.Base.ID}))></CardInfo>
         <CardInfo  describe="客户端" :name="sourceNode.Name" :nameColor="convert.getColorByState(sourceNode.State)" :link=routerPath.toNode(protoManage.Filter.create({ID:sourceNode.Base.ID}))></CardInfo>

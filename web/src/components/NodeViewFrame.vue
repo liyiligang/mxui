@@ -68,6 +68,8 @@ export default defineComponent ({
 .slotViewPageFix{
     width: 100%;
     flex: auto;
+    justify-content: start;
+    align-content: start;
     height: 0;
     overflow-y:scroll;
 }

@@ -15,8 +15,8 @@ import {globals} from "../../base/globals";
 
 interface NodeNotifyMessageFilterInfo {
     senderMessage:string
-}
 
+}
 export default defineComponent ({
     name: "NodeNotifyMessageFilter",
     components: {
