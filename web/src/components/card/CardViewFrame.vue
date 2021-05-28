@@ -1,6 +1,6 @@
 <template>
-    <el-card class="card cardViewFrame">
-        <el-button v-if="isShowCloseButton()" class="cardViewFrameCloseButton"
+    <el-card class="card cardViewFrame" @mouseenter="mouseEnter" @mouseleave="mouseLevel">
+        <el-button v-show="isShowCloseButton()" class="cardViewFrameCloseButton"
                    plain icon="el-icon-close" @click="closeClick"></el-button>
         <el-row class="cardViewFrameBody">
             <slot name="body"></slot>
@@ -9,11 +9,11 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from "vue";
+import {defineComponent, PropType, reactive} from "vue";
 import {protoManage} from "../../proto/manage";
 
 interface CardViewFrameInfo {
-
+    isMouseHover:boolean
 }
 
 export default defineComponent ({
@@ -29,15 +29,27 @@ export default defineComponent ({
 
     },
     setup(props, context){
+
+        const data = reactive<CardViewFrameInfo>({isMouseHover:false})
+
         function isShowCloseButton():boolean {
-            return props.state == protoManage.State.StateUnknow
+            // return props.state != protoManage.State.StateUnknow
+            return data.isMouseHover
         }
 
         function closeClick(){
             context.emit('closeClick');
         }
 
-        return {isShowCloseButton, closeClick}
+        function mouseEnter(){
+           data.isMouseHover = true
+        }
+
+        function mouseLevel(){
+            data.isMouseHover = false
+        }
+
+        return {isShowCloseButton, closeClick, mouseEnter, mouseLevel}
     }
 })
 </script>
