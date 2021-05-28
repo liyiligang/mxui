@@ -53,6 +53,7 @@ export default defineComponent ({
 @import "../../css/card.css";
 
 .cardState{
+    width: 100%;
     margin-top: 5px;
     font-size: 14px;
     flex-wrap:nowrap;

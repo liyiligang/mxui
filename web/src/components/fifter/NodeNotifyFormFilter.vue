@@ -1,6 +1,6 @@
 <template>
     <el-popover placement="bottom" trigger="manual" :width="288" v-model:visible="data.show">
-        <el-form :model="data.formData" label-width="auto" ref="nodeNotifyFilterForm" size="medium">
+        <el-form :model="data.formData" label-width="70px" ref="nodeNotifyFilterForm" size="medium">
             <el-form-item label="起始时间" prop="senderBeginTime">
                 <el-date-picker
                     v-model="data.formData.senderBeginTime"
@@ -34,7 +34,7 @@
                     <el-option label="错误" :value="protoManage.State.StateError"></el-option>
                 </el-select>
             </el-form-item>
-            <el-form-item>
+            <el-form-item label-width="0px">
                 <el-row class="NodeNotifyFormDutyButtonRow" type="flex" justify="space-around" align="middle">
                     <el-button size="medium" type="primary" @click="finish">完成</el-button>
                     <el-button size="medium" @click="cancel">取消</el-button>

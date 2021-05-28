@@ -43,6 +43,7 @@ export default defineComponent ({
 @import "../../css/color.css";
 
 .cardFuncCall{
+    width: 100%;
     font-size: 14px;
 }
 

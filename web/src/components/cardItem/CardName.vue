@@ -1,7 +1,7 @@
 <template>
     <el-row class="cardName" type="flex" justify="start" align="middle">
-        <el-tooltip :disabled="data.showTooltip"  effect="dark"
-                    :content="name" placement="bottom">
+        <el-tooltip :popper-class="data.tooltipClass" :disabled="data.showTooltip"
+                    effect="light" :content="name" placement="bottom">
             <router-link v-if="link!==undefined" class="card-text-omit card-link" :class="[color]" :to=link>
                 <div :id="'cardNameDiv' + id">{{name}}</div>
             </router-link>
@@ -12,9 +12,11 @@
 
 <script lang="ts">
 import {defineComponent, onMounted, reactive} from "vue";
+import {globals} from "../../base/globals";
 
 interface CardNameInfo {
     showTooltip:boolean
+    tooltipClass:string
 }
 
 export default defineComponent ({
@@ -35,45 +37,26 @@ export default defineComponent ({
         link:String
     },
     setup(props){
-
-        const data = reactive<CardNameInfo>({showTooltip:false})
-
+        const data = reactive<CardNameInfo>({showTooltip:false, tooltipClass:props.color+" cardNameTooltip"})
         onMounted(() => {
             let divDom = document.getElementById('cardNameDiv' + props.id)
-            data.showTooltip = !isEllipsis(divDom)
+            data.showTooltip = !globals.isEllipsis(divDom)
         });
-
-        function isEllipsis(dom) {
-            let checkDom = dom.cloneNode(), parent, flag;
-            checkDom.style.width = dom.offsetWidth + 'px';
-            checkDom.style.height = dom.offsetHeight + 'px';
-            checkDom.style.overflow = 'auto';
-            checkDom.style.position = 'absolute';
-            checkDom.style.zIndex = -1;
-            checkDom.style.opacity = 0;
-            checkDom.style.whiteSpace = "nowrap";
-            checkDom.innerHTML = dom.innerHTML;
-            parent = dom.parentNode;
-            parent.appendChild(checkDom);
-            flag = checkDom.scrollWidth > checkDom.offsetWidth;
-            parent.removeChild(checkDom);
-            return flag;
-        }
-
         return {data}
     }
 })
 </script>
 
-<style scoped>
+<style>
 @import "../../css/color.css";
 @import "../../css/card.css";
 .cardName{
+    width: 100%;
     font-size: 18px;
     flex-wrap:nowrap;
 }
 
 .cardNameTooltip{
-
+    width: 260px;
 }
 </style>

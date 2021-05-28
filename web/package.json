@@ -2,8 +2,8 @@
   "name": "manageWebClient",
   "version": "0.0.0",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "dev": "vite"
   },
   "dependencies": {
     "@vue/composition-api": "^1.0.0-rc.1",
@@ -14,7 +14,7 @@
     "es6-promise": "^4.2.8",
     "jsoneditor": "^9.2.0",
     "protobufjs": "^6.10.2",
-    "vue": "^3.0.4",
+    "vue": "^3.0.5",
     "vue-echarts": "^6.0.0-rc.4",
     "vue-json-editor": "^1.4.3",
     "vue-native-websocket-vue3": "^3.1.0",
@@ -24,9 +24,10 @@
   },
   "devDependencies": {
     "@types/jsoneditor": "^8.6.0",
-    "@vue/cli-plugin-router": "^4.5.11",
-    "@vue/cli-plugin-typescript": "^4.5.11",
+    "@vue/cli-plugin-router": "^5.0.0-beta.1",
+    "@vue/cli-plugin-typescript": "^5.0.0-beta.1",
     "@vue/compiler-sfc": "^3.0.4",
+    "typescript": "~4.1.5",
     "vite": "^1.0.0-rc.13"
   }
 }

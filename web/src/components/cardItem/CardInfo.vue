@@ -41,6 +41,7 @@ export default defineComponent ({
 @import "../../css/color.css";
 @import "../../css/card.css";
 .cardInfo{
+    width: 100%;
     margin-top: 3px;
     font-size: 14px;
     flex-wrap:nowrap;
