@@ -16,6 +16,11 @@ export module globals {
 	// 	height: 50
 	// }
 
+	export interface UserSetting {
+		isPageFix:boolean
+	}
+
+
 	export let globalsData = {
 		token:"",
 		managerList:new Map<number, protoManage.IManager>()
@@ -39,9 +44,6 @@ export module globals {
 			tablePageSize:50,
 			findReturnValRetryTime:1000,
 			findReturnValRetryCnt:5
-		},
-		cssConfig:{
-			nodeViewFramePageFix:true
 		}
 	}
 
@@ -82,23 +84,6 @@ export module globals {
 		return yy+'-'+mm+'-'+dd+' '+hh+':'+mf+':'+ss;
 	}
 
-	export function isJson (json:string):boolean {
-		if (typeof json == 'string') {
-			try {
-				let obj=JSON.parse(json);
-				if(typeof obj == 'object' && obj ){
-					return true;
-				}else{
-					return false;
-				}
-			} catch(e) {
-				return false;
-			}
-		}
-		return false;
-	}
-
-
 	export function isEllipsis(dom:any):boolean {
 		let checkDom = dom.cloneNode(), parent, flag;
 		checkDom.style.width = dom.offsetWidth + 'px';
@@ -124,6 +109,22 @@ export module globals {
 			return true
 		}
 		return false
+	}
+
+	export function isJson (json:string):boolean {
+		if (typeof json == 'string') {
+			try {
+				let obj=JSON.parse(json);
+				if(typeof obj == 'object' && obj ){
+					return true;
+				}else{
+					return false;
+				}
+			} catch(e) {
+				return false;
+			}
+		}
+		return false;
 	}
 
 	export function getJson (json:string):string|object {

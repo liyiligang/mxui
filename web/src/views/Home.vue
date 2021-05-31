@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import {defineComponent, onMounted, provide, reactive, watch} from "vue";
 import Head from "../components/Head.vue";
 import Aside from "../components/Aside.vue";
 import NodeGroup from "./node/NodeGroup.vue";
@@ -47,6 +47,7 @@ import {websocket} from "../base/websocket";
 import {protoManage} from "../proto/manage";
 import {globals} from "../base/globals";
 import {convert} from "../base/convert";
+import {request} from "../base/request";
 
 export default defineComponent ({
     name: "Home",
@@ -61,13 +62,44 @@ export default defineComponent ({
         NodeNotify,
         NodeTest
     },
-    mounted() {
-        let msg = protoManage.Manager.create({
-            Token:globals.globalsData.token
+    setup() {
+        onMounted(()=>{
+            initWs()
+            getManagerInfo()
         })
-        let byte = protoManage.Manager.encode(msg).finish()
-        let str = convert.uint8ArrayToString(byte)
-        websocket.wsConnect("ws://localhost/ws?parameter="+str)
+
+        function initWs(){
+            let msg = protoManage.Manager.create({
+                Token:globals.globalsData.token
+            })
+            let byte = protoManage.Manager.encode(msg).finish()
+            let str = convert.uint8ArrayToString(byte)
+            websocket.wsConnect("ws://localhost/ws?parameter="+str)
+        }
+
+        function getManagerInfo(){
+            request.reqManagerByID(protoManage.Manager.create({})).then((response) => {
+                parseUserSetting(response.Setting)
+            }).catch(error => {}).finally(()=>{})
+        }
+
+        //用戶设置
+        let userSettingObj:globals.UserSetting = {isPageFix:false}
+        const userSetting = reactive(userSettingObj)
+        provide<globals.UserSetting>('userSetting', userSetting)
+        function parseUserSetting(data:string){
+            if (globals.isJson(data)){
+                userSettingObj = JSON.parse(data)
+                userSetting.isPageFix = userSettingObj.isPageFix
+            }
+
+            watch(() => userSetting, (newValue) => {
+                let str = JSON.stringify(newValue)
+                request.reqManagerUpdateSetting(protoManage.Manager.create({
+                    Setting:str
+                })).then((response) => {}).catch(error => {}).finally(()=>{})
+            },{deep:true})
+        }
     }
 })
 </script>

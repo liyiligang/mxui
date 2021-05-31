@@ -81,6 +81,32 @@ export module request {
         })
     }
 
+    export function reqManagerByID(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerFindByID, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqManagerUpdateSetting(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdateSetting, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqTopLinkList():Promise<protoManage.AnsTopLinkList> {
         return new Promise((resolve, reject)=>{
             let req = protoManage.ReqTopLinkList.create({})

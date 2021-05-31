@@ -9,6 +9,8 @@ export namespace protoManage {
         NodeTest = 2,
         ManagerLogin = 101,
         ManagerFind = 102,
+        ManagerFindByID = 103,
+        ManagerUpdateSetting = 104,
         NodeGroupAdd = 201,
         NodeGroupDel = 202,
         NodeGroupFind = 203,
@@ -750,6 +752,12 @@ export namespace protoManage {
         /** Manager Token */
         Token?: (string|null);
 
+        /** Manager Setting */
+        Setting?: (string|null);
+
+        /** Manager Level */
+        Level?: (number|null);
+
         /** Manager State */
         State?: (protoManage.State|null);
     }
@@ -777,6 +785,12 @@ export namespace protoManage {
 
         /** Manager Token. */
         public Token: string;
+
+        /** Manager Setting. */
+        public Setting: string;
+
+        /** Manager Level. */
+        public Level: number;
 
         /** Manager State. */
         public State: protoManage.State;

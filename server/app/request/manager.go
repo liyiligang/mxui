@@ -58,3 +58,39 @@ func (request *Request) ReqManagerFind(userID int64, message []byte)([]byte, err
 	}
 	return pbByte, err
 }
+
+//管理员信息查询按ID
+func (request *Request) ReqManagerFindByID(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerFindByID(userID, &req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
+//更新管理员设置
+func (request *Request) ReqManagerUpdateSetting(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerSettingUpdate(userID, &req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}

@@ -16,6 +16,8 @@ func OrmBaseToProtoBase(ormBase *orm.Base, protoBase *protoManage.Base) {
 func OrmManagerToProtoManager(ormManager *orm.Manager, protoManager *protoManage.Manager)  {
 	OrmBaseToProtoBase(&ormManager.Base, &protoManager.Base)
 	protoManager.NickName = ormManager.NickName
+	protoManager.Setting = ormManager.Setting
+	protoManager.Level = ormManager.Level
 	protoManager.State = protoManage.State(ormManager.State)
 }
 

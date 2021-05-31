@@ -4,7 +4,7 @@
         <el-row type="flex" justify="end" align="middle">
             <el-link v-for="i in data.topLinkList" class="head-link" type="primary" :underline="false" :href="i.Url" target="_blank">{{i.Name}}</el-link>
             <el-divider class="head-divider" direction="vertical"></el-divider>
-            <el-button class="head-button" icon="el-icon-setting" @click="settingClick()" circle plain></el-button>
+            <SettingButton></SettingButton>
         </el-row>
     </el-row>
 </template>
@@ -14,6 +14,7 @@ import {defineComponent, onMounted, reactive} from "vue";
 import {request} from "../base/request";
 import {globals} from "../base/globals";
 import {protoManage} from "../proto/manage";
+import SettingButton from "./setting/SettingButton.vue";
 
 interface HeadInfo {
     topLinkList: protoManage.ITopLink[]
@@ -22,7 +23,7 @@ interface HeadInfo {
 export default defineComponent ({
     name: "Head",
     components: {
-
+        SettingButton
     },
     setup(){
         const data = reactive<HeadInfo>({topLinkList:[]})
@@ -30,9 +31,6 @@ export default defineComponent ({
             reqTopLinkList()
             reqManagerList()
         })
-        function settingClick(){
-
-        }
         function reqTopLinkList(){
             request.reqTopLinkList().then((response) => {
                 data.topLinkList = response.TopLinkList
@@ -49,7 +47,7 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{})
         }
 
-        return {data, settingClick}
+        return {data}
     }
 })
 </script>
@@ -73,10 +71,5 @@ export default defineComponent ({
     margin-left: 10px;
     margin-right: 30px;
     height: 22px;
-}
-.head-button{
-    border:0px;
-    font-size:30px;
-    margin-right: 10px;
 }
 </style>

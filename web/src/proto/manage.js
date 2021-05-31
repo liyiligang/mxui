@@ -25,6 +25,8 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} NodeTest=2 NodeTest value
      * @property {number} ManagerLogin=101 ManagerLogin value
      * @property {number} ManagerFind=102 ManagerFind value
+     * @property {number} ManagerFindByID=103 ManagerFindByID value
+     * @property {number} ManagerUpdateSetting=104 ManagerUpdateSetting value
      * @property {number} NodeGroupAdd=201 NodeGroupAdd value
      * @property {number} NodeGroupDel=202 NodeGroupDel value
      * @property {number} NodeGroupFind=203 NodeGroupFind value
@@ -72,6 +74,8 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[2] = "NodeTest"] = 2;
         values[valuesById[101] = "ManagerLogin"] = 101;
         values[valuesById[102] = "ManagerFind"] = 102;
+        values[valuesById[103] = "ManagerFindByID"] = 103;
+        values[valuesById[104] = "ManagerUpdateSetting"] = 104;
         values[valuesById[201] = "NodeGroupAdd"] = 201;
         values[valuesById[202] = "NodeGroupDel"] = 202;
         values[valuesById[203] = "NodeGroupFind"] = 203;
@@ -323,6 +327,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 2:
                 case 101:
                 case 102:
+                case 103:
+                case 104:
                 case 201:
                 case 202:
                 case 203:
@@ -402,6 +408,14 @@ export const protoManage = $root.protoManage = (() => {
             case "ManagerFind":
             case 102:
                 message.order = 102;
+                break;
+            case "ManagerFindByID":
+            case 103:
+                message.order = 103;
+                break;
+            case "ManagerUpdateSetting":
+            case 104:
+                message.order = 104;
                 break;
             case "NodeGroupAdd":
             case 201:
@@ -779,6 +793,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 2:
                 case 101:
                 case 102:
+                case 103:
+                case 104:
                 case 201:
                 case 202:
                 case 203:
@@ -861,6 +877,14 @@ export const protoManage = $root.protoManage = (() => {
             case "ManagerFind":
             case 102:
                 message.order = 102;
+                break;
+            case "ManagerFindByID":
+            case 103:
+                message.order = 103;
+                break;
+            case "ManagerUpdateSetting":
+            case 104:
+                message.order = 104;
                 break;
             case "NodeGroupAdd":
             case 201:
@@ -2573,6 +2597,8 @@ export const protoManage = $root.protoManage = (() => {
          * @property {string|null} [Password] Manager Password
          * @property {string|null} [NickName] Manager NickName
          * @property {string|null} [Token] Manager Token
+         * @property {string|null} [Setting] Manager Setting
+         * @property {number|null} [Level] Manager Level
          * @property {protoManage.State|null} [State] Manager State
          */
 
@@ -2632,6 +2658,22 @@ export const protoManage = $root.protoManage = (() => {
         Manager.prototype.Token = "";
 
         /**
+         * Manager Setting.
+         * @member {string} Setting
+         * @memberof protoManage.Manager
+         * @instance
+         */
+        Manager.prototype.Setting = "";
+
+        /**
+         * Manager Level.
+         * @member {number} Level
+         * @memberof protoManage.Manager
+         * @instance
+         */
+        Manager.prototype.Level = 0;
+
+        /**
          * Manager State.
          * @member {protoManage.State} State
          * @memberof protoManage.Manager
@@ -2673,8 +2715,12 @@ export const protoManage = $root.protoManage = (() => {
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.NickName);
             if (message.Token != null && Object.hasOwnProperty.call(message, "Token"))
                 writer.uint32(/* id 5, wireType 2 =*/42).string(message.Token);
+            if (message.Setting != null && Object.hasOwnProperty.call(message, "Setting"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.Setting);
+            if (message.Level != null && Object.hasOwnProperty.call(message, "Level"))
+                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.Level);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.State);
+                writer.uint32(/* id 8, wireType 0 =*/64).int32(message.State);
             return writer;
         };
 
@@ -2725,6 +2771,12 @@ export const protoManage = $root.protoManage = (() => {
                     message.Token = reader.string();
                     break;
                 case 6:
+                    message.Setting = reader.string();
+                    break;
+                case 7:
+                    message.Level = reader.int32();
+                    break;
+                case 8:
                     message.State = reader.int32();
                     break;
                 default:
@@ -2779,6 +2831,12 @@ export const protoManage = $root.protoManage = (() => {
             if (message.Token != null && message.hasOwnProperty("Token"))
                 if (!$util.isString(message.Token))
                     return "Token: string expected";
+            if (message.Setting != null && message.hasOwnProperty("Setting"))
+                if (!$util.isString(message.Setting))
+                    return "Setting: string expected";
+            if (message.Level != null && message.hasOwnProperty("Level"))
+                if (!$util.isInteger(message.Level))
+                    return "Level: integer expected";
             if (message.State != null && message.hasOwnProperty("State"))
                 switch (message.State) {
                 default:
@@ -2818,6 +2876,10 @@ export const protoManage = $root.protoManage = (() => {
                 message.NickName = String(object.NickName);
             if (object.Token != null)
                 message.Token = String(object.Token);
+            if (object.Setting != null)
+                message.Setting = String(object.Setting);
+            if (object.Level != null)
+                message.Level = object.Level | 0;
             switch (object.State) {
             case "StateNot":
             case 0:
@@ -2862,6 +2924,8 @@ export const protoManage = $root.protoManage = (() => {
                 object.Password = "";
                 object.NickName = "";
                 object.Token = "";
+                object.Setting = "";
+                object.Level = 0;
                 object.State = options.enums === String ? "StateNot" : 0;
             }
             if (message.Base != null && message.hasOwnProperty("Base"))
@@ -2874,6 +2938,10 @@ export const protoManage = $root.protoManage = (() => {
                 object.NickName = message.NickName;
             if (message.Token != null && message.hasOwnProperty("Token"))
                 object.Token = message.Token;
+            if (message.Setting != null && message.hasOwnProperty("Setting"))
+                object.Setting = message.Setting;
+            if (message.Level != null && message.hasOwnProperty("Level"))
+                object.Level = message.Level;
             if (message.State != null && message.hasOwnProperty("State"))
                 object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
             return object;

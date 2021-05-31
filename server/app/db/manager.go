@@ -32,6 +32,12 @@ func (db *DB) UpdateManagerState(manager orm.Manager) (*orm.Base, error) {
 	return &manager.Base, err
 }
 
+//按ID更新管理员设置
+func (db *DB) UpdateManagerSetting(manager orm.Manager) (*orm.Base, error) {
+	err := db.Gorm.Model(&manager).Update("Setting", manager.Setting).Error
+	return &manager.Base, err
+}
+
 //获取管理员
 func (db *DB) FindManager() ([]orm.Manager, error) {
 	var ormManagerList []orm.Manager

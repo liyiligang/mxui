@@ -27,6 +27,8 @@ type Manager struct {
 	Password  			string	`gorm:"NOT NULL;"`
 	NickName     		string	`gorm:"UNIQUE;"`
 	Token     			string	`gorm:"UNIQUE; SIZE:1024;"`
+	Setting          	string  `gorm:"NOT NULL;"`
+	Level          		int32   `gorm:"NOT NULL;"`
 	State				int32 	`gorm:"NOT NULL;"`
 }
 

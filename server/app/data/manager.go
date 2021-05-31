@@ -65,9 +65,29 @@ func (data *Data) ManagerFind(req protoManage.ReqManagerList) (*protoManage.AnsM
 	return &protoManage.AnsManagerList{ManagerList: protoManager}, nil
 }
 
+//查找管理员信息按ID
+func (data *Data) ManagerFindByID(userID int64, manager *protoManage.Manager) error {
+	ormManager, err := data.DB.FindManagerByID(orm.Manager{Base:orm.Base{ID: userID}})
+	if err != nil {
+		return err
+	}
+	convert.OrmManagerToProtoManager(ormManager, manager)
+	return nil
+}
+
 //更新管理员状态
 func (data *Data) ManagerStateUpdate(protoManager *protoManage.Manager) error {
 	ormBase, err := data.DB.UpdateManagerState(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID}, State: int32(protoManager.State)})
+	if err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
+	return nil
+}
+
+//更新管理员设置
+func (data *Data) ManagerSettingUpdate(userID int64, protoManager *protoManage.Manager) error {
+	ormBase, err := data.DB.UpdateManagerSetting(orm.Manager{Base: orm.Base{ID: userID}, Setting: protoManager.Setting})
 	if err != nil {
 		return err
 	}
