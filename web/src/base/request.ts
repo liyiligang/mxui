@@ -121,6 +121,58 @@ export module request {
         })
     }
 
+    export function reqTopLinkByID(req:protoManage.TopLink):Promise<protoManage.TopLink> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.TopLink.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.TopLinkFindByID, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.TopLink.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqTopLinkAdd(req:protoManage.TopLink):Promise<protoManage.TopLink> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.TopLink.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.TopLinkAdd, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.TopLink.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqTopLinkDel(req:protoManage.TopLink):Promise<protoManage.TopLink> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.TopLink.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.TopLinkDel, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.TopLink.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqTopLinkUpdate(req:protoManage.TopLink):Promise<protoManage.TopLink> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.TopLink.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.TopLinkUpdate, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.TopLink.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqManagerList():Promise<protoManage.AnsManagerList> {
         return new Promise((resolve, reject)=>{
             let req = protoManage.ReqManagerList.create({})

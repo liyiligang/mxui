@@ -1,6 +1,6 @@
 <template>
     <el-dropdown trigger="click" @command="handleCommand">
-        <el-button class="settingButton" icon="el-icon-setting" @click="data.show=true" plain></el-button>
+        <el-button class="settingButton" icon="el-icon-setting" @click="data.dropdownShow=true" plain></el-button>
         <template #dropdown>
             <el-dropdown-menu>
                 <el-dropdown-item :command="DropdownFlag.System">{{DropdownFlag.System}}</el-dropdown-item>
@@ -9,53 +9,48 @@
             </el-dropdown-menu>
         </template>
     </el-dropdown>
-    <el-dialog
-        v-model="data.dialogVisible"
-        width="860px"
-        top="10vh"
-        destroy-on-close>
-        <template v-slot:title>
-            <span class="settingDialogTitle color-text-normal">{{data.dropdownFlag}}</span>
-        </template>
-        <SystemSet></SystemSet>
-    </el-dialog>
+    <SystemSet v-if="data.systemSetVisible == true" :dialogTitle="DropdownFlag.System"  v-model:dialogModel="data.systemSetVisible"></SystemSet>
+    <TopMenuSet v-if="data.topMenuSetVisible == true" :dialogTitle="DropdownFlag.Top"  v-model:dialogModel="data.topMenuSetVisible"></TopMenuSet>
 </template>
 
 <script lang="ts">
 import {defineComponent, reactive} from "vue";
 import SystemSet from "./SystemSet.vue";
+import TopMenuSet from "./TopMenuSet.vue";
 
 enum DropdownFlag {
 	System = "系统设置",
     User = "用户设置",
-    Top = "顶部设置"
+    Top = "顶栏设置"
 }
 
 interface SettingButtonInfo {
-    show:boolean
-    dialogVisible:boolean
-    dropdownFlag:DropdownFlag
+    dropdownShow:boolean
+    systemSetVisible:boolean
+    topMenuSetVisible:boolean
 }
 
 export default defineComponent ({
     name: "SettingButton",
     components: {
-        SystemSet
+        SystemSet,
+        TopMenuSet
     },
     setup(){
 
-        const data = reactive<SettingButtonInfo>({show:false, dialogVisible:false,
-            dropdownFlag:DropdownFlag.System})
+        const data = reactive<SettingButtonInfo>({dropdownShow:false, systemSetVisible:false,
+            topMenuSetVisible:false})
 
         function handleCommand(command){
-            data.dropdownFlag = command
-            data.dialogVisible = true
             switch (command) {
                 case DropdownFlag.System:
+                    console.log(data.systemSetVisible)
+                    data.systemSetVisible = true
                     break
                 case DropdownFlag.User:
                     break
                 case DropdownFlag.Top:
+                    data.topMenuSetVisible = true
                     break
             }
         }
@@ -72,9 +67,5 @@ export default defineComponent ({
     padding: 0px;
     font-size:30px;
     margin-right: 15px;
-}
-
-.settingDialogTitle{
-    font-size: 18px;
 }
 </style>

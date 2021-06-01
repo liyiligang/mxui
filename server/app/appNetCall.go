@@ -108,6 +108,18 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		case protoManage.Order_TopLinkFind:
 			ansMsg, err = app.request.ReqTopLinkFind(userID, req.Message)
 			break
+		case protoManage.Order_TopLinkFindByID:
+			ansMsg, err = app.request.ReqTopLinkFindByID(userID, req.Message)
+			break
+		case protoManage.Order_TopLinkAdd:
+			ansMsg, err = app.request.ReqTopLinkAdd(userID, req.Message)
+			break
+		case protoManage.Order_TopLinkDel:
+			ansMsg, err = app.request.ReqTopLinkDel(userID, req.Message)
+			break
+		case protoManage.Order_TopLinkUpdate:
+			ansMsg, err = app.request.ReqTopLinkUpdate(userID, req.Message)
+			break
 		case protoManage.Order_NodeGroupFind:
 			ansMsg, err = app.request.ReqNodeGroupFind(userID, req.Message)
 			break

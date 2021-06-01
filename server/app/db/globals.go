@@ -2,19 +2,11 @@ package db
 
 import (
 	"github.com/liyiligang/base/protoFiles/protoManage"
-	"github.com/liyiligang/manage/app/typedef/orm"
 	"gorm.io/gorm"
 )
 
 type DB struct {
 	Gorm              *gorm.DB
-}
-
-//获取顶部链接
-func (db *DB) FindTopLink() ([]orm.TopLink, error) {
-	var ormTopLinkList []orm.TopLink
-	err := db.Gorm.Find(&ormTopLinkList).Error
-	return ormTopLinkList, err
 }
 
 //设置过滤器参数

@@ -22,7 +22,11 @@ export const protoManage = $root.protoManage = (() => {
      * @enum {number}
      * @property {number} Unknow=0 Unknow value
      * @property {number} TopLinkFind=1 TopLinkFind value
-     * @property {number} NodeTest=2 NodeTest value
+     * @property {number} TopLinkFindByID=2 TopLinkFindByID value
+     * @property {number} TopLinkAdd=3 TopLinkAdd value
+     * @property {number} TopLinkDel=4 TopLinkDel value
+     * @property {number} TopLinkUpdate=5 TopLinkUpdate value
+     * @property {number} NodeTest=6 NodeTest value
      * @property {number} ManagerLogin=101 ManagerLogin value
      * @property {number} ManagerFind=102 ManagerFind value
      * @property {number} ManagerFindByID=103 ManagerFindByID value
@@ -71,7 +75,11 @@ export const protoManage = $root.protoManage = (() => {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Unknow"] = 0;
         values[valuesById[1] = "TopLinkFind"] = 1;
-        values[valuesById[2] = "NodeTest"] = 2;
+        values[valuesById[2] = "TopLinkFindByID"] = 2;
+        values[valuesById[3] = "TopLinkAdd"] = 3;
+        values[valuesById[4] = "TopLinkDel"] = 4;
+        values[valuesById[5] = "TopLinkUpdate"] = 5;
+        values[valuesById[6] = "NodeTest"] = 6;
         values[valuesById[101] = "ManagerLogin"] = 101;
         values[valuesById[102] = "ManagerFind"] = 102;
         values[valuesById[103] = "ManagerFindByID"] = 103;
@@ -325,6 +333,10 @@ export const protoManage = $root.protoManage = (() => {
                 case 0:
                 case 1:
                 case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
                 case 101:
                 case 102:
                 case 103:
@@ -397,9 +409,25 @@ export const protoManage = $root.protoManage = (() => {
             case 1:
                 message.order = 1;
                 break;
-            case "NodeTest":
+            case "TopLinkFindByID":
             case 2:
                 message.order = 2;
+                break;
+            case "TopLinkAdd":
+            case 3:
+                message.order = 3;
+                break;
+            case "TopLinkDel":
+            case 4:
+                message.order = 4;
+                break;
+            case "TopLinkUpdate":
+            case 5:
+                message.order = 5;
+                break;
+            case "NodeTest":
+            case 6:
+                message.order = 6;
                 break;
             case "ManagerLogin":
             case 101:
@@ -791,6 +819,10 @@ export const protoManage = $root.protoManage = (() => {
                 case 0:
                 case 1:
                 case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
                 case 101:
                 case 102:
                 case 103:
@@ -866,9 +898,25 @@ export const protoManage = $root.protoManage = (() => {
             case 1:
                 message.order = 1;
                 break;
-            case "NodeTest":
+            case "TopLinkFindByID":
             case 2:
                 message.order = 2;
+                break;
+            case "TopLinkAdd":
+            case 3:
+                message.order = 3;
+                break;
+            case "TopLinkDel":
+            case 4:
+                message.order = 4;
+                break;
+            case "TopLinkUpdate":
+            case 5:
+                message.order = 5;
+                break;
+            case "NodeTest":
+            case 6:
+                message.order = 6;
                 break;
             case "ManagerLogin":
             case 101:

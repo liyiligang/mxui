@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive} from "vue";
+import {defineComponent, onMounted, reactive, ref, provide} from "vue";
 import {request} from "../base/request";
 import {globals} from "../base/globals";
 import {protoManage} from "../proto/manage";
@@ -47,6 +47,11 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{})
         }
 
+        //顶栏刷新
+        const topLinkListUpdate = () => {
+            reqTopLinkList()
+        }
+        provide('topLinkListUpdate', topLinkListUpdate)
         return {data}
     }
 })

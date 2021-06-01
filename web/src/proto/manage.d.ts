@@ -6,7 +6,11 @@ export namespace protoManage {
     enum Order {
         Unknow = 0,
         TopLinkFind = 1,
-        NodeTest = 2,
+        TopLinkFindByID = 2,
+        TopLinkAdd = 3,
+        TopLinkDel = 4,
+        TopLinkUpdate = 5,
+        NodeTest = 6,
         ManagerLogin = 101,
         ManagerFind = 102,
         ManagerFindByID = 103,

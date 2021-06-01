@@ -173,24 +173,6 @@ func (request *Request) ReqNodeNotifyUpdate(nodeID int64, message []byte) {
 	//}
 }
 
-//顶部链接信息查询
-func (request *Request) ReqTopLinkFind(userID int64, message []byte)([]byte, error){
-	req := protoManage.ReqTopLinkList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.TopLinkFind(req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
 //节点组信息查询
 func (request *Request) ReqNodeGroupFind(userID int64, message []byte)([]byte, error) {
 	req := protoManage.ReqNodeGroupList{}

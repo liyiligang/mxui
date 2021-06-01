@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, provide, reactive, watch} from "vue";
+import {defineComponent, onMounted, provide, reactive, ref, watch} from "vue";
 import Head from "../components/Head.vue";
 import Aside from "../components/Aside.vue";
 import NodeGroup from "./node/NodeGroup.vue";
@@ -48,6 +48,7 @@ import {protoManage} from "../proto/manage";
 import {globals} from "../base/globals";
 import {convert} from "../base/convert";
 import {request} from "../base/request";
+import {watchEffect} from "@vue/composition-api";
 
 export default defineComponent ({
     name: "Home",
