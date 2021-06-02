@@ -3,23 +3,23 @@
     flex-direction:row;
     flex-wrap:wrap;
     justify-content: center;
-    align-content: start;
+    align-content: flex-start;
 }
 
 .flex-row-start-start{
     display: flex;
     flex-direction:row;
     flex-wrap:wrap;
-    justify-content: start;
-    align-content: start;
+    justify-content: flex-start;
+    align-content: flex-start;
 }
 
 .flex-row-start-start-nowrap{
     display: flex;
     flex-direction:row;
     flex-wrap:nowrap;
-    justify-content: start;
-    align-content: start;
+    justify-content: flex-start;
+    align-content: flex-start;
 }
 
 .flex-row-center-between{

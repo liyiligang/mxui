@@ -1,9 +1,11 @@
 <template>
     <el-row class="head" type="flex" justify="space-between" align="middle">
-        <img class="head-logo" src="../assets/logo.png" alt="admin">
-        <el-row type="flex" justify="end" align="middle">
-            <el-link v-for="i in data.topLinkList" class="head-link" type="primary" :underline="false" :href="i.Url" target="_blank">{{i.Name}}</el-link>
-            <el-divider class="head-divider" direction="vertical"></el-divider>
+        <img class="headLogo" src="../assets/logo.png" alt="admin">
+        <el-row class="headContentRow" type="flex" justify="end" align="middle">
+            <el-row class="headLinkRow">
+                <el-link v-for="i in data.topLinkList" class="headLink" type="primary" :underline="false" :href="i.Url" target="_blank">{{i.Name}}</el-link>
+            </el-row>
+            <el-divider class="headDivider" direction="vertical"></el-divider>
             <SettingButton></SettingButton>
         </el-row>
     </el-row>
@@ -61,18 +63,38 @@ export default defineComponent ({
 .head{
     width: 100%;
     height: 100%;
+    flex-wrap: nowrap;
 }
 
-.head-logo{
+.headLogo{
     width: 150px;
 }
 
-.head-link{
-    font-size: 18px;
-    margin-right: 30px;
+.headContentRow{
+    flex-wrap: nowrap;
+    height: 100%;
+    flex: auto;
 }
 
-.head-divider{
+.headLinkRow{
+    width: 0;
+    height: 100%;
+    flex: auto;
+    flex-wrap: nowrap;
+    flex-direction: row-reverse;
+    align-content: center;
+    white-space: nowrap;
+    overflow-x:scroll;
+    margin-left: 10px;
+}
+
+.headLink{
+    font-size: 18px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+
+.headDivider{
     margin-left: 10px;
     margin-right: 30px;
     height: 22px;

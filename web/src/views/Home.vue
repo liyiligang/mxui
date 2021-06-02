@@ -121,7 +121,7 @@ export default defineComponent ({
 
 .headView{
     width: 100%;
-    min-height: 12%;
+    height: 12%;
 }
 
 .headDivider{

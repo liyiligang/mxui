@@ -2,6 +2,7 @@ package data
 
 import (
 	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/check"
 	"github.com/liyiligang/manage/app/convert"
 	"github.com/liyiligang/manage/app/typedef/orm"
 )
@@ -28,6 +29,9 @@ func (data *Data) TopLinkFindByID(protoTopLink *protoManage.TopLink) error {
 
 //新增顶部链接信息
 func (data *Data) TopLinkAdd(protoTopLink *protoManage.TopLink) error {
+	if err := check.TopLinkCheck(protoTopLink); err != nil {
+		return err
+	}
 	ormTopLink := orm.TopLink{Name: protoTopLink.Name,
 		Url:protoTopLink.Url, State: int32(protoTopLink.State)}
 	err := data.DB.AddTopLink(&ormTopLink)
@@ -51,6 +55,9 @@ func (data *Data) TopLinkDel(protoTopLink *protoManage.TopLink) error {
 
 //更新顶部链接信息
 func (data *Data) TopLinkUpdate(protoTopLink *protoManage.TopLink) error {
+	if err := check.TopLinkCheck(protoTopLink); err != nil {
+		return err
+	}
 	ormTopLink := orm.TopLink{Base: orm.Base{ID: protoTopLink.Base.ID},
 		Name: protoTopLink.Name, Url: protoTopLink.Url, State: int32(protoTopLink.State)}
 	err := data.DB.UpdateTopLink(&ormTopLink)

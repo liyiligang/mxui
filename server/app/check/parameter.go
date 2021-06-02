@@ -30,6 +30,16 @@ func ManagerCheck(protoManager *protoManage.Manager) error {
 	return nil
 }
 
+func TopLinkCheck(protoTopLink *protoManage.TopLink) error {
+	if protoTopLink.Name == "" {
+		return errors.New("名称不能为空值")
+	}
+	if protoTopLink.Url == "" {
+		return errors.New("链接Url不能为空值")
+	}
+	return nil
+}
+
 func NodeGroupCheck(protoNodeGroup *protoManage.NodeGroup) error {
 	if protoNodeGroup.Name == "" {
 		return NameIsEmpty(constant.ConstNodeGroupStr)

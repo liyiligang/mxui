@@ -1,6 +1,6 @@
 <template>
     <el-table
-        ref="table" :data="tableData" @current-change="tableSelect"
+        ref="funcCallTable" :data="tableData" @current-change="tableSelect"
         v-elTableInfiniteScroll="tableLoad" height="432" highlight-current-row>
         <el-table-column label="编号" type="index" align="center" width="80"></el-table-column>
         <el-table-column label="调用者" align="center">
@@ -65,12 +65,12 @@ export default defineComponent ({
             context.emit('tableSelect', row, oldRow)
         }
 
-        const table = ref<typeof ElTable>(ElTable);
+        const funcCallTable = ref<typeof ElTable>(ElTable);
         function tableSetCurrentRow(row:protoManage.INodeFuncCall){
-            table.value.setCurrentRow(row)
+            funcCallTable.value.setCurrentRow(row)
         }
         return {tableLoad, tableSetCurrentRow, tableSelect, getTime,
-            getState, getStateColor, getManagerNickName, table}
+            getState, getStateColor, getManagerNickName, funcCallTable}
     }
 })
 </script>

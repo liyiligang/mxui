@@ -47,7 +47,7 @@ export default defineComponent ({
 })
 </script>
 
-<style>
+<style scoped>
 @import "../../css/color.css";
 @import "../../css/card.css";
 .cardName{
@@ -55,7 +55,10 @@ export default defineComponent ({
     font-size: 18px;
     flex-wrap:nowrap;
 }
+</style>
 
+<style>
+@import "../../css/color.css";
 .cardNameTooltip{
     width: 260px;
 }
