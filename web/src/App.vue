@@ -11,7 +11,7 @@ export default defineComponent ({
     name: 'App',
     setup() {
         onMounted(()=>{
-            globals.globalsData.token = localStorage.getItem(globals.globalsConfig.httpConfig.tokenKey)
+            globals.globalsData.token = localStorage.getItem(globals.globalsConfig.localStorageKey.token)
         })
     }
 })

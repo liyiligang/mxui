@@ -27,9 +27,12 @@ export module globals {
 	}
 
 	export let globalsConfig = {
+		localStorageKey:{
+			token:"token",
+			autoLogin:"autoLogin"
+		},
 		httpConfig:{
-			tokenKey:"userToken",
-			requestTimeout: 10000,
+			requestTimeout: 10000
 		},
 		wsConfig:{
 			wsReconnectTime: 5000,

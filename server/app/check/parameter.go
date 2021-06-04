@@ -21,11 +21,14 @@ func BaseIDCheck(checkID int64, nodeID int64) error {
 }
 
 func ManagerCheck(protoManager *protoManage.Manager) error {
+	if protoManager.NickName == "" {
+		return errors.New("昵称不能为空值")
+	}
 	if protoManager.Name == "" {
 		return errors.New("用户名不能为空值")
 	}
 	if protoManager.Password == "" {
-		return errors.New("用户名密码不能为空值")
+		return errors.New("密码不能为空值")
 	}
 	return nil
 }

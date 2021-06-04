@@ -68,6 +68,19 @@ export module request {
         return filter
     }
 
+    export function reqManagerAdd(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerAdd, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqManagerLogin(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
@@ -444,9 +457,12 @@ export module request {
             case protoManage.HttpError.HttpErrorUnmarshal:
                 ElMessage.error("数据解析失败（" + str+"）");
                 break
-            case protoManage.HttpError.HttpErrorAuthInvalid:
-                ElMessage.error("身份验证失败（" + str+"）");
-                localStorage.removeItem(globals.globalsConfig.httpConfig.tokenKey)
+            case protoManage.HttpError.HttpErrorRegister:
+                ElMessage.error("注册失败（" + str+"）");
+                break
+            case protoManage.HttpError.HttpErrorLogin:
+                ElMessage.error("登录失败（" + str+"）");
+                localStorage.removeItem(globals.globalsConfig.localStorageKey.token)
                 routerPath.toLogin()
                 break
             case protoManage.HttpError.HttpErrorRequest:

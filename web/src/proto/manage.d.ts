@@ -12,9 +12,10 @@ export namespace protoManage {
         TopLinkUpdate = 5,
         NodeTest = 6,
         ManagerLogin = 101,
-        ManagerFind = 102,
-        ManagerFindByID = 103,
-        ManagerUpdateSetting = 104,
+        ManagerAdd = 102,
+        ManagerFind = 103,
+        ManagerFindByID = 104,
+        ManagerUpdateSetting = 105,
         NodeGroupAdd = 201,
         NodeGroupDel = 202,
         NodeGroupFind = 203,
@@ -77,8 +78,9 @@ export namespace protoManage {
         HttpErrorNull = 0,
         HttpErrorMarshal = 601,
         HttpErrorUnmarshal = 602,
-        HttpErrorRequest = 603,
-        HttpErrorAuthInvalid = 604
+        HttpErrorRegister = 603,
+        HttpErrorLogin = 604,
+        HttpErrorRequest = 605
     }
 
     /** Properties of a Message. */

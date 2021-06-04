@@ -8,37 +8,39 @@
         <template v-slot:title>
             <span class="card-dialog-title color-text-normal">{{dialogTitle}}</span>
         </template>
-        <el-row class="TopMenuSetTable">
-            <el-table :data="data.topLinkList" ref="topMenuSetTable" height="100%" highlight-current-row>
-                <el-table-column label="编号" type="index" align="center" width="50"></el-table-column>
-                <el-table-column label="名称" align="center" width="120">
-                    <template #default="scope">
-                        <el-input v-if="isEditing(scope.$index)" size="small" ref="funcNameInput" v-model="scope.row.Name" placeholder="名称"></el-input>
-                        <div v-else>{{scope.row.Name}}</div>
-                    </template>
-                </el-table-column>
-                <el-table-column label="链接" align="center">
-                    <template #default="scope">
-                        <el-input v-if="isEditing(scope.$index)" size="small" ref="funcNameInput" v-model="scope.row.Url" placeholder="链接"></el-input>
-                        <el-link v-else :href="scope.row.Url" target="_blank" :underline="false">{{scope.row.Url}}</el-link>
-                    </template>
-                </el-table-column>
-                <el-table-column label="操作" align="center" width="100">
-                    <template #default="scope">
-                        <el-row v-if="isEditing(scope.$index)">
-                            <el-button size="mini" type="success" icon="el-icon-check" circle @click="updateTopLink(scope.$index)"/>
-                            <el-button size="mini" type="danger" icon="el-icon-close" circle @click="cancelTopLink(scope.$index)"/>
-                        </el-row>
-                        <el-row v-else>
-                            <el-button size="mini" type="primary" icon="el-icon-edit" circle @click="editTopLink(scope.$index)"/>
-                            <el-button size="mini" type="danger" icon="el-icon-minus" circle @click="delTopLink(scope.$index)"/>
-                        </el-row>
-                    </template>
-                </el-table-column>
-            </el-table>
-        </el-row>
-        <el-row type="flex" justify="center" align="middle">
-            <el-button class="TopMenuSetAddButton" :disabled="data.topLinkAddFlag" type="primary" icon="el-icon-plus" circle @click="newTopLink"></el-button>
+        <el-row v-loading="data.topLinkLoading">
+            <el-row class="topMenuSetTable">
+                <el-table :data="data.topLinkList" ref="topMenuSetTable" height="100%" highlight-current-row>
+                    <el-table-column label="编号" type="index" align="center" width="50"></el-table-column>
+                    <el-table-column label="名称" align="center" width="120">
+                        <template #default="scope">
+                            <el-input v-if="isEditing(scope.$index)" size="small" ref="funcNameInput" v-model="scope.row.Name" placeholder="名称"></el-input>
+                            <div v-else>{{scope.row.Name}}</div>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="链接" align="center">
+                        <template #default="scope">
+                            <el-input v-if="isEditing(scope.$index)" size="small" ref="funcNameInput" v-model="scope.row.Url" placeholder="链接"></el-input>
+                            <el-link v-else :href="scope.row.Url" target="_blank" :underline="false">{{scope.row.Url}}</el-link>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="操作" align="center" width="100">
+                        <template #default="scope">
+                            <el-row v-if="isEditing(scope.$index)">
+                                <el-button size="mini" type="success" icon="el-icon-check" circle @click="updateTopLink(scope.$index)"/>
+                                <el-button size="mini" type="danger" icon="el-icon-close" circle @click="cancelTopLink(scope.$index)"/>
+                            </el-row>
+                            <el-row v-else>
+                                <el-button size="mini" type="primary" icon="el-icon-edit" circle @click="editTopLink(scope.$index)"/>
+                                <el-button size="mini" type="danger" icon="el-icon-minus" circle @click="delTopLink(scope.$index)"/>
+                            </el-row>
+                        </template>
+                    </el-table-column>
+                </el-table>
+            </el-row>
+            <el-row class="topMenuSetAddButtonRow" type="flex" justify="center" align="middle">
+                <el-button :disabled="data.topLinkAddFlag" type="primary" icon="el-icon-plus" circle @click="newTopLink"></el-button>
+            </el-row>
         </el-row>
     </el-dialog>
 </template>
@@ -57,6 +59,7 @@ interface TopMenuSetInfo {
     topLinkList: Array<protoManage.ITopLink>
     topLinkEditList:Array<TopLinkEditInfo>
     topLinkAddFlag:boolean
+    topLinkLoading:boolean
 }
 
 export default defineComponent ({
@@ -77,7 +80,7 @@ export default defineComponent ({
 
     },
     setup(props, context){
-        const data = reactive<TopMenuSetInfo>({topLinkList:[], topLinkEditList:[], topLinkAddFlag:false})
+        const data = reactive<TopMenuSetInfo>({topLinkList:[], topLinkEditList:[], topLinkAddFlag:false, topLinkLoading:true})
 
         onMounted(()=>{
             initTopLink()
@@ -90,7 +93,7 @@ export default defineComponent ({
                     let topLinkEditInfo:TopLinkEditInfo = {isEdit:false}
                     data.topLinkEditList.push(topLinkEditInfo)
                 }
-            }).catch(error => {}).finally(()=>{})
+            }).catch(error => {}).finally(()=>{data.topLinkLoading = false})
         }
 
         function editTopLink(index){
@@ -169,14 +172,13 @@ export default defineComponent ({
 @import "../../css/color.css";
 @import "../../css/card.css";
 
-.TopMenuSetTable{
+.topMenuSetTable{
     width: 100%;
     height: 420px;
 }
 
-.TopMenuSetAddButton{
-    margin-top: 15px;
-    padding: 0px;
+.topMenuSetAddButtonRow{
+    margin-top: 12px;
+    width: 100%;
 }
-
 </style>

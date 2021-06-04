@@ -88,12 +88,17 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 	if req.Order == protoManage.Order_ManagerLogin{
 		ansMsg, err = app.request.ReqManagerLogin(0, req.Message)
 		if err != nil {
-			return nil, err, int(protoManage.HttpError_HttpErrorAuthInvalid)
+			return nil, err, int(protoManage.HttpError_HttpErrorLogin)
+		}
+	}else if req.Order == protoManage.Order_ManagerAdd {
+		ansMsg, err = app.request.ReqManagerAdd(userID, req.Message)
+		if err != nil {
+			return nil, err, int(protoManage.HttpError_HttpErrorRegister)
 		}
 	}else {
 		userID, err = Jtoken.ParseToken(req.Token, config.NodeConfig.Token.Key)
 		if err != nil {
-			return nil, errors.New("请重新登录"), int(protoManage.HttpError_HttpErrorAuthInvalid)
+			return nil, errors.New("身份验证失败"), int(protoManage.HttpError_HttpErrorRequest)
 		}
 		switch req.Order {
 		case protoManage.Order_ManagerFind:

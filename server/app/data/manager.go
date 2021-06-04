@@ -3,6 +3,7 @@ package data
 import (
 	"github.com/liyiligang/base/component/Jtoken"
 	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/check"
 	"github.com/liyiligang/manage/app/convert"
 	"github.com/liyiligang/manage/app/typedef/config"
 	"github.com/liyiligang/manage/app/typedef/orm"
@@ -11,14 +12,25 @@ import (
 	"time"
 )
 
+//新增管理员
+func (data *Data) ManagerAdd(protoManager *protoManage.Manager) error {
+	if err := check.ManagerCheck(protoManager); err != nil {
+		return err
+	}
+	if err := data.DB.IsExistManagerByUserName(orm.Manager{Name: protoManager.Name}); err != nil{
+		return err
+	}
+	if err := data.DB.IsExistManagerByNickName(orm.Manager{NickName: protoManager.NickName}); err != nil{
+		return err
+	}
+	return data.DB.AddManager(orm.Manager{NickName: protoManager.NickName, Name:protoManager.Name,
+		Password: protoManager.Password})
+}
+
+
 //更新管理员token
 func (data *Data) ManagerTokenUpdate(protoManager *protoManage.Manager) error {
-	tokenConfig := Jtoken.TokenConfig{
-		Key:           config.NodeConfig.Token.Key,
-		UserID:        int64(protoManager.Base.ID),
-		StartDuration: time.Duration(config.NodeConfig.Token.StartDuration) * time.Hour,
-		StopDuration:  time.Duration(config.NodeConfig.Token.StopDuration) * time.Hour}
-	protoManager.Token = Jtoken.GetToken(tokenConfig)
+	protoManager.Token = data.ManagerGetTokenByID(protoManager.Base.ID)
 	_, err := data.DB.UpdateManagerToken(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID}, Token: protoManager.Token})
 	if err != nil {
 		return err
@@ -43,7 +55,7 @@ func (data *Data) ManagerLogin(manager *protoManage.Manager) error {
 			return err
 		}
 	}else {
-		ormManager, err = data.DB.FindManagerByUserName(orm.Manager{Name: manager.Name, Password: manager.Password})
+		ormManager, err = data.DB.FindManagerByUserNameAndPassword(orm.Manager{Name: manager.Name, Password: manager.Password})
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
 				return errors.New("用户名或密码不正确")
@@ -93,4 +105,13 @@ func (data *Data) ManagerSettingUpdate(userID int64, protoManager *protoManage.M
 	}
 	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
 	return nil
+}
+
+func (data *Data) ManagerGetTokenByID(userID int64) string {
+	tokenConfig := Jtoken.TokenConfig{
+		Key:           config.NodeConfig.Token.Key,
+		UserID:        userID,
+		StartDuration: time.Duration(config.NodeConfig.Token.StartDuration) * time.Hour,
+		StopDuration:  time.Duration(config.NodeConfig.Token.StopDuration) * time.Hour}
+	 return Jtoken.GetToken(tokenConfig)
 }

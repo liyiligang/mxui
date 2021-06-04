@@ -28,9 +28,10 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} TopLinkUpdate=5 TopLinkUpdate value
      * @property {number} NodeTest=6 NodeTest value
      * @property {number} ManagerLogin=101 ManagerLogin value
-     * @property {number} ManagerFind=102 ManagerFind value
-     * @property {number} ManagerFindByID=103 ManagerFindByID value
-     * @property {number} ManagerUpdateSetting=104 ManagerUpdateSetting value
+     * @property {number} ManagerAdd=102 ManagerAdd value
+     * @property {number} ManagerFind=103 ManagerFind value
+     * @property {number} ManagerFindByID=104 ManagerFindByID value
+     * @property {number} ManagerUpdateSetting=105 ManagerUpdateSetting value
      * @property {number} NodeGroupAdd=201 NodeGroupAdd value
      * @property {number} NodeGroupDel=202 NodeGroupDel value
      * @property {number} NodeGroupFind=203 NodeGroupFind value
@@ -81,9 +82,10 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[5] = "TopLinkUpdate"] = 5;
         values[valuesById[6] = "NodeTest"] = 6;
         values[valuesById[101] = "ManagerLogin"] = 101;
-        values[valuesById[102] = "ManagerFind"] = 102;
-        values[valuesById[103] = "ManagerFindByID"] = 103;
-        values[valuesById[104] = "ManagerUpdateSetting"] = 104;
+        values[valuesById[102] = "ManagerAdd"] = 102;
+        values[valuesById[103] = "ManagerFind"] = 103;
+        values[valuesById[104] = "ManagerFindByID"] = 104;
+        values[valuesById[105] = "ManagerUpdateSetting"] = 105;
         values[valuesById[201] = "NodeGroupAdd"] = 201;
         values[valuesById[202] = "NodeGroupDel"] = 202;
         values[valuesById[203] = "NodeGroupFind"] = 203;
@@ -169,16 +171,18 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} HttpErrorNull=0 HttpErrorNull value
      * @property {number} HttpErrorMarshal=601 HttpErrorMarshal value
      * @property {number} HttpErrorUnmarshal=602 HttpErrorUnmarshal value
-     * @property {number} HttpErrorRequest=603 HttpErrorRequest value
-     * @property {number} HttpErrorAuthInvalid=604 HttpErrorAuthInvalid value
+     * @property {number} HttpErrorRegister=603 HttpErrorRegister value
+     * @property {number} HttpErrorLogin=604 HttpErrorLogin value
+     * @property {number} HttpErrorRequest=605 HttpErrorRequest value
      */
     protoManage.HttpError = (function() {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "HttpErrorNull"] = 0;
         values[valuesById[601] = "HttpErrorMarshal"] = 601;
         values[valuesById[602] = "HttpErrorUnmarshal"] = 602;
-        values[valuesById[603] = "HttpErrorRequest"] = 603;
-        values[valuesById[604] = "HttpErrorAuthInvalid"] = 604;
+        values[valuesById[603] = "HttpErrorRegister"] = 603;
+        values[valuesById[604] = "HttpErrorLogin"] = 604;
+        values[valuesById[605] = "HttpErrorRequest"] = 605;
         return values;
     })();
 
@@ -341,6 +345,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 102:
                 case 103:
                 case 104:
+                case 105:
                 case 201:
                 case 202:
                 case 203:
@@ -433,17 +438,21 @@ export const protoManage = $root.protoManage = (() => {
             case 101:
                 message.order = 101;
                 break;
-            case "ManagerFind":
+            case "ManagerAdd":
             case 102:
                 message.order = 102;
                 break;
-            case "ManagerFindByID":
+            case "ManagerFind":
             case 103:
                 message.order = 103;
                 break;
-            case "ManagerUpdateSetting":
+            case "ManagerFindByID":
             case 104:
                 message.order = 104;
+                break;
+            case "ManagerUpdateSetting":
+            case 105:
+                message.order = 105;
                 break;
             case "NodeGroupAdd":
             case 201:
@@ -827,6 +836,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 102:
                 case 103:
                 case 104:
+                case 105:
                 case 201:
                 case 202:
                 case 203:
@@ -922,17 +932,21 @@ export const protoManage = $root.protoManage = (() => {
             case 101:
                 message.order = 101;
                 break;
-            case "ManagerFind":
+            case "ManagerAdd":
             case 102:
                 message.order = 102;
                 break;
-            case "ManagerFindByID":
+            case "ManagerFind":
             case 103:
                 message.order = 103;
                 break;
-            case "ManagerUpdateSetting":
+            case "ManagerFindByID":
             case 104:
                 message.order = 104;
+                break;
+            case "ManagerUpdateSetting":
+            case 105:
+                message.order = 105;
                 break;
             case "NodeGroupAdd":
             case 201:

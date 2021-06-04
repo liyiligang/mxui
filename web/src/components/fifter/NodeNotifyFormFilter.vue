@@ -44,7 +44,7 @@
         </el-form>
         <template #reference>
             <el-button :class="data.filterButtonColor" class="NodeNotifyFormFilterButton" plain
-                       icon="el-icon-scissors" @click="data.show = true"></el-button>
+                       icon="el-icon-set-up" @click="data.show = true"></el-button>
         </template>
     </el-popover>
 </template>

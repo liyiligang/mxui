@@ -23,6 +23,24 @@ func (request *Request) ReqWsTokenCheck(message []byte, addr string) (int64, err
 	return userID, nil
 }
 
+//管理员注册
+func (request *Request) ReqManagerAdd(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerAdd(&req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
 //管理员登录
 func (request *Request) ReqManagerLogin(userID int64, message []byte)([]byte, error){
 	req := protoManage.Manager{}

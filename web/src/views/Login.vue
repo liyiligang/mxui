@@ -5,10 +5,15 @@
                 <img class="loginLogo" src="../assets/logo.png" alt="admin">
                 <el-input class="loginInput" v-model="data.username" placeholder="用户名" clearable></el-input>
                 <el-input class="loginInput" v-model="data.password" placeholder="密码" clearable show-password></el-input>
-                <el-button class="loginButton" type="primary" round @click="loginByName()">登录</el-button>
+                <el-button class="loginButton" size="medium" type="primary" round @click="loginByName">登录</el-button>
+                <el-row class="loginToolRow" type="flex" justify="space-between" align="middle">
+                    <el-checkbox v-model="data.isAutoLogin" @change="autoLoginChanged">自动登录</el-checkbox>
+                    <el-button type="text" @click="register">注册帐号</el-button>
+                </el-row>
             </el-row>
         </el-card>
     </el-row>
+    <Register v-model:dialogModel="data.registerVisible"></Register>
 </template>
 
 <script lang="ts">
@@ -18,10 +23,13 @@ import {globals} from "../base/globals"
 import {request} from "../base/request"
 import {routerPath} from '../router'
 import {ElMessage} from "element-plus";
+import Register from "./Register.vue";
 
 
 interface LoginInfo {
-    isLoad:boolean
+    isLoad:boolean,
+    isAutoLogin:boolean,
+    registerVisible:boolean
     username: string,
     password: string,
 }
@@ -29,14 +37,20 @@ interface LoginInfo {
 export default defineComponent ({
     name: "Login",
     components: {
-
+        Register
     },
     setup(){
-        const data = reactive<LoginInfo>({isLoad:false, username:"", password:""})
+        const data = reactive<LoginInfo>({isLoad:false, isAutoLogin:false, username:"",
+            password:"", registerVisible:false})
 
         onMounted(()=>{
             let token = globals.globalsData.token
-            if (token != null && token != ""){
+            data.isAutoLogin = true
+            let isAutoLogin = localStorage.getItem(globals.globalsConfig.localStorageKey.autoLogin)
+            if (isAutoLogin == null){
+                data.isAutoLogin = false
+            }
+            if (token != null && token != "" && data.isAutoLogin){
                 loginByToken(token)
             }
         })
@@ -44,7 +58,7 @@ export default defineComponent ({
         function loginFinish(manager:protoManage.Manager){
             ElMessage.success("登录成功");
             globals.globalsData.token = manager.Token
-            localStorage.setItem(globals.globalsConfig.httpConfig.tokenKey,  manager.Token);
+            localStorage.setItem(globals.globalsConfig.localStorageKey.token,  manager.Token);
             routerPath.toGroupAll()
         }
 
@@ -66,7 +80,20 @@ export default defineComponent ({
                 loginFinish(response)
             }).catch(error => {}).finally(()=>{data.isLoad = false})
         }
-        return {data, loginByName}
+
+        function autoLoginChanged(val:boolean){
+            if (val){
+                localStorage.setItem(globals.globalsConfig.localStorageKey.autoLogin, String(val));
+            }else{
+                localStorage.removeItem(globals.globalsConfig.localStorageKey.autoLogin);
+            }
+        }
+
+        function register(){
+            data.registerVisible = true
+        }
+
+        return {data, loginByName, register, autoLoginChanged}
     }
 })
 </script>
@@ -79,7 +106,7 @@ export default defineComponent ({
 }
 
 .loginCard {
-    width: 260px;
+    width: 280px;
 }
 
 .loginLogo{
@@ -91,8 +118,13 @@ export default defineComponent ({
     margin-top: 15px;
 }
 .loginButton {
-    margin-top: 35px;
+    margin-top: 25px;
     margin-bottom: 15px;
-    width: 100px;
+    width: 80px;
 }
+
+.loginToolRow {
+    width: 100%;
+}
+
 </style>

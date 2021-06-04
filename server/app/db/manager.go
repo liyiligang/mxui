@@ -1,9 +1,18 @@
 package db
 
-import "github.com/liyiligang/manage/app/typedef/orm"
+import (
+	"github.com/liyiligang/manage/app/typedef/orm"
+	"github.com/pkg/errors"
+	"gorm.io/gorm"
+)
 
-//查找管理员(账号)
-func (db *DB) FindManagerByUserName(manager orm.Manager) (*orm.Manager, error) {
+//新增管理员
+func (db *DB) AddManager(manager orm.Manager) error {
+	return db.Gorm.Create(&manager).Error
+}
+
+//查找管理员(账号密码)
+func (db *DB) FindManagerByUserNameAndPassword(manager orm.Manager) (*orm.Manager, error) {
 	err := db.Gorm.Where("Name = ? and Password = ?", manager.Name, manager.Password).First(&manager).Error
 	return &manager, err
 }
@@ -18,6 +27,30 @@ func (db *DB) FindManagerByToken(manager orm.Manager) (*orm.Manager, error) {
 func (db *DB) FindManagerByID(manager orm.Manager) (*orm.Manager, error) {
 	err := db.Gorm.First(&manager, manager.ID).Error
 	return &manager, err
+}
+
+//查找管理员帐号是否存在
+func (db *DB) IsExistManagerByUserName(manager orm.Manager) error {
+	err := db.Gorm.Where("Name = ?", manager.Name).First(&manager).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil
+		}
+		return err
+	}
+	return errors.New("用户名已经被注册")
+}
+
+//查找管理员昵称是否存在
+func (db *DB) IsExistManagerByNickName(manager orm.Manager) error {
+	err := db.Gorm.Where("NickName = ?", manager.NickName).First(&manager).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return nil
+		}
+		return err
+	}
+	return errors.New("用户昵称已经被注册")
 }
 
 //按ID更新管理员token
