@@ -20,7 +20,7 @@ func BaseIDCheck(checkID int64, nodeID int64) error {
 	return nil
 }
 
-func ManagerCheck(protoManager *protoManage.Manager) error {
+func ManagerAddCheck(protoManager *protoManage.Manager) error {
 	if protoManager.NickName == "" {
 		return errors.New("昵称不能为空值")
 	}
@@ -29,6 +29,19 @@ func ManagerCheck(protoManager *protoManage.Manager) error {
 	}
 	if protoManager.Password == "" {
 		return errors.New("密码不能为空值")
+	}
+	return nil
+}
+
+func ManagerUpdatePasswordCheck(protoManager *protoManage.Manager) error {
+	if protoManager.Token == "" {
+		return errors.New("原密码不能为空值")
+	}
+	if protoManager.Password == "" {
+		return errors.New("密码不能为空值")
+	}
+	if protoManager.Password == protoManager.Token {
+		return errors.New("原密码与新密码相同")
 	}
 	return nil
 }

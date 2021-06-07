@@ -65,6 +65,12 @@ func (db *DB) UpdateManagerState(manager orm.Manager) (*orm.Base, error) {
 	return &manager.Base, err
 }
 
+//按ID更新管理员密码
+func (db *DB) UpdateManagerPassword(manager orm.Manager) (*orm.Base, error) {
+	err := db.Gorm.Model(&manager).Update("Password", manager.Password).Error
+	return &manager.Base, err
+}
+
 //按ID更新管理员设置
 func (db *DB) UpdateManagerSetting(manager orm.Manager) (*orm.Base, error) {
 	err := db.Gorm.Model(&manager).Update("Setting", manager.Setting).Error

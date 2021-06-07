@@ -44,7 +44,7 @@ export default defineComponent ({
             password:"", registerVisible:false})
 
         onMounted(()=>{
-            let token = globals.globalsData.token
+            let token = globals.globalsData.manager.Token
             data.isAutoLogin = true
             let isAutoLogin = localStorage.getItem(globals.globalsConfig.localStorageKey.autoLogin)
             if (isAutoLogin == null){
@@ -57,7 +57,7 @@ export default defineComponent ({
 
         function loginFinish(manager:protoManage.Manager){
             ElMessage.success("登录成功");
-            globals.globalsData.token = manager.Token
+            globals.globalsData.manager = protoManage.Manager.create(manager)
             localStorage.setItem(globals.globalsConfig.localStorageKey.token,  manager.Token);
             routerPath.toGroupAll()
         }

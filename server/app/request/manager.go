@@ -95,6 +95,24 @@ func (request *Request) ReqManagerFindByID(userID int64, message []byte)([]byte,
 	return pbByte, err
 }
 
+//更新管理员密码
+func (request *Request) ReqManagerUpdatePassword(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerPasswordUpdate(userID, &req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
 //更新管理员设置
 func (request *Request) ReqManagerUpdateSetting(userID int64, message []byte)([]byte, error){
 	req := protoManage.Manager{}

@@ -1,5 +1,7 @@
 import {ElMessage} from "element-plus";
 import {protoManage} from "../proto/manage";
+import {routerPath} from "../router";
+import {reactive} from "vue";
 
 export module globals {
 	// export enum BlockType {
@@ -15,16 +17,6 @@ export module globals {
 	// 	width: 50,
 	// 	height: 50
 	// }
-
-	export interface UserSetting {
-		isPageFix:boolean
-	}
-
-
-	export let globalsData = {
-		token:"",
-		managerList:new Map<number, protoManage.IManager>()
-	}
 
 	export let globalsConfig = {
 		localStorageKey:{
@@ -47,7 +39,17 @@ export module globals {
 			tablePageSize:50,
 			findReturnValRetryTime:1000,
 			findReturnValRetryCnt:5
+		},
+		userInitSetting:{
+			isPageFix: false,
+			autoUpdateInterval: 10
 		}
+	}
+
+	export let globalsData = {
+		manager:protoManage.Manager.create(),
+		managerList:new Map<number, protoManage.IManager>(),
+		managerSetting:reactive(globals.globalsConfig.userInitSetting)
 	}
 
 	export function getManagerByID(id: number|undefined|null):protoManage.IManager|undefined {
@@ -55,6 +57,12 @@ export module globals {
 			return protoManage.Manager.create()
 		}
 		return  globalsData.managerList.get(id)
+	}
+
+	export function reLogin() {
+		globals.globalsData.manager = protoManage.Manager.create()
+		localStorage.removeItem(globals.globalsConfig.localStorageKey.token)
+		routerPath.toLogin()
 	}
 
 	export function viewWarn(msg:string) {
@@ -112,6 +120,16 @@ export module globals {
 			return true
 		}
 		return false
+	}
+
+	export function isPositiveIntWithStr(str:string):boolean {
+		let t = /^\+?[1-9][0-9]*$/;　　
+		return t.test(str);
+	}
+
+	export function isNoNegativeIntWithStr(str:string):boolean {
+		let t = /^\d+$/;
+		return t.test(str);
 	}
 
 	export function isJson (json:string):boolean {

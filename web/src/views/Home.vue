@@ -33,7 +33,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, provide, reactive, ref, watch} from "vue";
+import {defineComponent, onMounted, reactive, watch} from "vue";
 import Head from "../components/Head.vue";
 import Aside from "../components/Aside.vue";
 import NodeGroup from "./node/NodeGroup.vue";
@@ -48,7 +48,9 @@ import {protoManage} from "../proto/manage";
 import {globals} from "../base/globals";
 import {convert} from "../base/convert";
 import {request} from "../base/request";
-import {watchEffect} from "@vue/composition-api";
+import {refresh} from "../base/refresh";
+import {ElMessage} from "element-plus";
+
 
 export default defineComponent ({
     name: "Home",
@@ -66,40 +68,33 @@ export default defineComponent ({
     setup() {
         onMounted(()=>{
             initWs()
-            getManagerInfo()
+            initUserSetting()
         })
 
         function initWs(){
             let msg = protoManage.Manager.create({
-                Token:globals.globalsData.token
+                Token:globals.globalsData.manager.Token
             })
             let byte = protoManage.Manager.encode(msg).finish()
             let str = convert.uint8ArrayToString(byte)
             websocket.wsConnect("ws://localhost/ws?parameter="+str)
         }
 
-        function getManagerInfo(){
+        function initUserSetting(){
             request.reqManagerByID(protoManage.Manager.create({})).then((response) => {
-                parseUserSetting(response.Setting)
+                let data = response.Setting
+                if (globals.isJson(data)){
+                    globals.globalsData.managerSetting = reactive(JSON.parse(data))
+                    watch(() => globals.globalsData.managerSetting, (newValue) => {
+                        request.reqManagerUpdateSetting(protoManage.Manager.create({
+                            Setting:JSON.stringify(newValue)
+                        })).then((response) => {}).catch(error => {}).finally(()=>{})
+                    },{deep:true})
+                    refresh.watchAutoRefresh()
+                }else{
+                    ElMessage.error("用户配置解析失败, 将使用默认配置")
+                }
             }).catch(error => {}).finally(()=>{})
-        }
-
-        //用戶设置
-        let userSettingObj:globals.UserSetting = {isPageFix:false}
-        const userSetting = reactive(userSettingObj)
-        provide<globals.UserSetting>('userSetting', userSetting)
-        function parseUserSetting(data:string){
-            if (globals.isJson(data)){
-                userSettingObj = JSON.parse(data)
-                userSetting.isPageFix = userSettingObj.isPageFix
-            }
-
-            watch(() => userSetting, (newValue) => {
-                let str = JSON.stringify(newValue)
-                request.reqManagerUpdateSetting(protoManage.Manager.create({
-                    Setting:str
-                })).then((response) => {}).catch(error => {}).finally(()=>{})
-            },{deep:true})
         }
     }
 })

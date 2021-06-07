@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, onMounted, PropType} from "vue";
+import {defineComponent, reactive, onMounted, onUnmounted, PropType, getCurrentInstance} from "vue";
 import {protoManage} from "../../proto/manage"
 import {request} from "../../base/request"
 import NodeGroupCard from "../../components/card/NodeGroupCard.vue"
@@ -16,7 +16,7 @@ import Empty from "../../components/Empty.vue"
 import Load from "../../components/Load.vue"
 import NodeViewFrame from "../../components/NodeViewFrame.vue"
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
-import {globals} from "../../base/globals";
+import {refresh} from "../../base/refresh";
 
 interface NodeGroupInfo {
     nodeGroupList:protoManage.INodeGroup[]
@@ -36,10 +36,10 @@ export default defineComponent ({
     },
     setup(){
         const data = reactive<NodeGroupInfo>({
-            nodeGroupList:[],
-            nodeStateCountMap: new Map<number, protoManage.IStateCount>(),
+            nodeGroupList:[], nodeStateCountMap: new Map<number, protoManage.IStateCount>(),
             pageTotal:0, isLoading:false})
         const route = useRoute()
+        const instance = getCurrentInstance()
 
         onBeforeRouteUpdate(to => {
             initNodeGroup(to)
@@ -47,23 +47,29 @@ export default defineComponent ({
         onMounted(()=>{
             initNodeGroup(route)
         })
+        onUnmounted(()=>{
+            refresh.closeAutoRefresh(instance?.uid)
+        })
         function initNodeGroup(route:RouteLocationNormalizedLoaded){
             data.isLoading = true
-            request.reqNodeGroupList(protoManage.Filter.create({
-                ID:Number(route.query.id),
-                Name:String(route.query.name),
-                PageSize:Number(route.query.pageSize),
-                PageNum:Number(route.query.pageNum)
-            })).then((response) => {
-                data.pageTotal = response.Length
-                data.nodeGroupList = response.NodeGroupList
-                data.nodeStateCountMap.clear()
-                for (let i = 0; i < response.NodeStateCountList.length; i++){
-                    let key = Number(response.NodeStateCountList[i].ID)
-                    let val = response.NodeStateCountList[i]
-                    data.nodeStateCountMap.set(key, val)
-                }
-            }).catch(error => {}).finally(()=>{data.isLoading = false})
+            let getNodeGroupList = ()=>{
+                request.reqNodeGroupList(protoManage.Filter.create({
+                    ID:Number(route.query.id),
+                    Name:String(route.query.name),
+                    PageSize:Number(route.query.pageSize),
+                    PageNum:Number(route.query.pageNum)
+                })).then((response) => {
+                    data.pageTotal = response.Length
+                    data.nodeGroupList = response.NodeGroupList
+                    data.nodeStateCountMap.clear()
+                    for (let i = 0; i < response.NodeStateCountList.length; i++){
+                        let key = Number(response.NodeStateCountList[i].ID)
+                        let val = response.NodeStateCountList[i]
+                        data.nodeStateCountMap.set(key, val)
+                    }
+                }).catch(error => {}).finally(()=>{data.isLoading = false})
+            }
+            refresh.openAutoRefresh(instance?.uid, getNodeGroupList)
         }
         return {data}
     }

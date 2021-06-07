@@ -44,7 +44,6 @@ export default defineComponent ({
         function handleCommand(command){
             switch (command) {
                 case DropdownFlag.System:
-                    console.log(data.systemSetVisible)
                     data.systemSetVisible = true
                     break
                 case DropdownFlag.User:

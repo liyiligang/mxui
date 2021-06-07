@@ -16,7 +16,7 @@
                 <el-select class="tableReportValSelect" v-model="data.selectValue" @change="selectChanged"
                            filterable allow-create :disabled="data.loading"
                            default-first-option placeholder="请输入请求数目">
-                    <el-option v-for="item in data.selectOptions" :key="item.value" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="item in data.selectOptions" :key="item.label" :label="item.label" :value="item.value"></el-option>
                 </el-select>
             </el-row>
         </el-row>
@@ -26,10 +26,12 @@
 <script lang="ts">
 import {defineComponent, reactive, onMounted} from "vue";
 import {protoManage} from "../../proto/manage";
+import {globals} from "../../base/globals";
 import NodeReportValTable from "../../components/table/NodeReportValTable.vue"
 import Line from "../../components/echarts/Line.vue"
 import Empty from "../../components/Empty.vue"
 import {request} from "../../base/request";
+import {ElMessage} from "element-plus";
 
 interface NodeReportValInfo {
     loading: boolean
@@ -37,7 +39,6 @@ interface NodeReportValInfo {
     nodeReportValList:protoManage.INodeFuncCall[]
     selectValue:string
     selectOptions: Array<{value:string, label: string}>
-
 }
 
 export default defineComponent ({
@@ -78,6 +79,10 @@ export default defineComponent ({
         }
 
         function selectChanged() {
+            if (!globals.isPositiveIntWithStr(data.selectValue)){
+                ElMessage.error("请输入一个正整数");
+                return
+            }
             reqNodeReportValList()
         }
 

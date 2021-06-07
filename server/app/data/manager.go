@@ -14,7 +14,7 @@ import (
 
 //新增管理员
 func (data *Data) ManagerAdd(protoManager *protoManage.Manager) error {
-	if err := check.ManagerCheck(protoManager); err != nil {
+	if err := check.ManagerAddCheck(protoManager); err != nil {
 		return err
 	}
 	if err := data.DB.IsExistManagerByUserName(orm.Manager{Name: protoManager.Name}); err != nil{
@@ -84,6 +84,26 @@ func (data *Data) ManagerFindByID(userID int64, manager *protoManage.Manager) er
 		return err
 	}
 	convert.OrmManagerToProtoManager(ormManager, manager)
+	return nil
+}
+
+//更新管理员密码
+func (data *Data) ManagerPasswordUpdate(userID int64, protoManager *protoManage.Manager) error {
+	if err := check.ManagerUpdatePasswordCheck(protoManager); err != nil {
+		return err
+	}
+	ormManager, err := data.DB.FindManagerByID(orm.Manager{Base:orm.Base{ID: userID}})
+	if err != nil {
+		return err
+	}
+	if ormManager.Password != protoManager.Token {
+		return errors.New("原密码不正确")
+	}
+	ormBase, err := data.DB.UpdateManagerPassword(orm.Manager{Base: orm.Base{ID: userID}, Password: protoManager.Password})
+	if err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
 	return nil
 }
 

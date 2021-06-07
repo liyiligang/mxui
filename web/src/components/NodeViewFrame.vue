@@ -2,11 +2,11 @@
     <Load v-if="isLoading"></Load>
     <el-row v-else class="frameView">
         <Empty v-if="pageTotal<=0"></Empty>
-        <el-row v-else :class="[userSetting.isPageFix ? 'mainViewPageFix' : 'mainView']" class="flex-row-center-between">
-            <el-row :class="[userSetting.isPageFix ? 'slotViewPageFix' : 'slotView']">
+        <el-row v-else :class="[globals.globalsData.managerSetting.isPageFix ? 'mainViewPageFix' : 'mainView']" class="flex-row-center-between">
+            <el-row :class="[globals.globalsData.managerSetting.isPageFix ? 'slotViewPageFix' : 'slotView']">
                 <slot>暂无数据</slot>
             </el-row>
-            <el-row :class="[userSetting.isPageFix ? 'pageViewFix' : 'pageView']" class="flex-row-center-start">
+            <el-row :class="[globals.globalsData.managerSetting.isPageFix ? 'pageViewFix' : 'pageView']" class="flex-row-center-start">
                 <Page :pageTotal="pageTotal"></Page>
             </el-row>
         </el-row>
@@ -14,7 +14,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, inject, PropType, reactive} from "vue";
+import {defineComponent, PropType} from "vue";
 import Page from "../components/Page.vue"
 import Empty from "../components/Empty.vue"
 import Load from "../components/Load.vue"
@@ -36,8 +36,7 @@ export default defineComponent ({
         Load
     },
     setup(){
-        const userSetting = inject<globals.UserSetting>('userSetting')
-        return {globals, userSetting}
+        return {globals}
     }
 })
 </script>

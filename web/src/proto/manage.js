@@ -31,7 +31,8 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} ManagerAdd=102 ManagerAdd value
      * @property {number} ManagerFind=103 ManagerFind value
      * @property {number} ManagerFindByID=104 ManagerFindByID value
-     * @property {number} ManagerUpdateSetting=105 ManagerUpdateSetting value
+     * @property {number} ManagerUpdatePassword=105 ManagerUpdatePassword value
+     * @property {number} ManagerUpdateSetting=106 ManagerUpdateSetting value
      * @property {number} NodeGroupAdd=201 NodeGroupAdd value
      * @property {number} NodeGroupDel=202 NodeGroupDel value
      * @property {number} NodeGroupFind=203 NodeGroupFind value
@@ -85,7 +86,8 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[102] = "ManagerAdd"] = 102;
         values[valuesById[103] = "ManagerFind"] = 103;
         values[valuesById[104] = "ManagerFindByID"] = 104;
-        values[valuesById[105] = "ManagerUpdateSetting"] = 105;
+        values[valuesById[105] = "ManagerUpdatePassword"] = 105;
+        values[valuesById[106] = "ManagerUpdateSetting"] = 106;
         values[valuesById[201] = "NodeGroupAdd"] = 201;
         values[valuesById[202] = "NodeGroupDel"] = 202;
         values[valuesById[203] = "NodeGroupFind"] = 203;
@@ -346,6 +348,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 103:
                 case 104:
                 case 105:
+                case 106:
                 case 201:
                 case 202:
                 case 203:
@@ -450,9 +453,13 @@ export const protoManage = $root.protoManage = (() => {
             case 104:
                 message.order = 104;
                 break;
-            case "ManagerUpdateSetting":
+            case "ManagerUpdatePassword":
             case 105:
                 message.order = 105;
+                break;
+            case "ManagerUpdateSetting":
+            case 106:
+                message.order = 106;
                 break;
             case "NodeGroupAdd":
             case 201:
@@ -837,6 +844,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 103:
                 case 104:
                 case 105:
+                case 106:
                 case 201:
                 case 202:
                 case 203:
@@ -944,9 +952,13 @@ export const protoManage = $root.protoManage = (() => {
             case 104:
                 message.order = 104;
                 break;
-            case "ManagerUpdateSetting":
+            case "ManagerUpdatePassword":
             case 105:
                 message.order = 105;
+                break;
+            case "ManagerUpdateSetting":
+            case 106:
+                message.order = 106;
                 break;
             case "NodeGroupAdd":
             case 201:

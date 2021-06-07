@@ -107,6 +107,19 @@ export module request {
         })
     }
 
+    export function reqManagerUpdatePassword(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdatePassword, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqManagerUpdateSetting(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
@@ -419,7 +432,7 @@ export module request {
 
     export function httpRequest(req:protoManage.HttpMessage):Promise<protoManage.HttpMessage> {
         return new Promise((resolve, reject)=>{
-            req.token = globals.globalsData.token
+            req.token = globals.globalsData.manager.Token
             let buf = protoManage.HttpMessage.encode(req).finish()
             let blob = new Blob([buf], {type: 'buffer'});
 
@@ -462,8 +475,7 @@ export module request {
                 break
             case protoManage.HttpError.HttpErrorLogin:
                 ElMessage.error("登录失败（" + str+"）");
-                localStorage.removeItem(globals.globalsConfig.localStorageKey.token)
-                routerPath.toLogin()
+                globals.reLogin()
                 break
             case protoManage.HttpError.HttpErrorRequest:
                 ElMessage.error("请求错误（" + str+"）");
