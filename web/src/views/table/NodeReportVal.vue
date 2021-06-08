@@ -12,11 +12,17 @@
                     </el-tab-pane>
                 </el-tabs>
             </el-row>
-            <el-row class="tableReportValFooterView" type="flex" justify="center" align="middle">
-                <el-select class="tableReportValSelect" v-model="data.selectValue" @change="selectChanged"
+            <el-row class="tableReportValFooterView" type="flex" justify="space-around" align="middle">
+                <el-select class="tableReportValSelect" v-model="data.selectGetCountValue" @change="selectGetCountChanged"
                            filterable allow-create :disabled="data.loading"
                            default-first-option placeholder="请输入请求数目">
-                    <el-option v-for="item in data.selectOptions" :key="item.label" :label="item.label" :value="item.value"></el-option>
+                    <el-option v-for="i in data.selectGetCountOptions" :key="i" :label="getCountSelectLabel(i)" :value="i"></el-option>
+                </el-select>
+                <el-button class="refreshButton" :disabled="data.loading" @click="refreshButtonClick">刷新</el-button>
+                <el-select class="tableReportValSelect" v-model="data.selectAutoRefreshValue" @change="selectAutoRefreshChanged"
+                           filterable allow-create :disabled="data.loading"
+                           default-first-option placeholder="请输入自动刷新时间">
+                    <el-option v-for="i in data.selectAutoRefreshOptions" :key="i" :label="autoRefreshSelectLabel(i)" :value="i"></el-option>
                 </el-select>
             </el-row>
         </el-row>
@@ -24,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, onMounted} from "vue";
+import {defineComponent, reactive, onMounted, getCurrentInstance, onUnmounted} from "vue";
 import {protoManage} from "../../proto/manage";
 import {globals} from "../../base/globals";
 import NodeReportValTable from "../../components/table/NodeReportValTable.vue"
@@ -32,13 +38,16 @@ import Line from "../../components/echarts/Line.vue"
 import Empty from "../../components/Empty.vue"
 import {request} from "../../base/request";
 import {ElMessage} from "element-plus";
+import {refresh} from "../../base/refresh";
 
 interface NodeReportValInfo {
     loading: boolean
     tabActiveName:string
     nodeReportValList:protoManage.INodeFuncCall[]
-    selectValue:string
-    selectOptions: Array<{value:string, label: string}>
+    selectGetCountValue:string
+    selectGetCountOptions: Array<string>
+    selectAutoRefreshValue:string
+    selectAutoRefreshOptions: Array<string>
 }
 
 export default defineComponent ({
@@ -56,41 +65,70 @@ export default defineComponent ({
     },
     setup(props){
         const data = reactive<NodeReportValInfo>({loading:false, tabActiveName:"line",
-            nodeReportValList:[], selectValue:"100", selectOptions:[{value: '100', label: '100'},
-                {value: '500', label: '500'}, {value: '1000', label: '1000'},
-                {value: '5000', label: '5000'}, {value: '10000', label: '10000'}]})
+            nodeReportValList:[], selectGetCountValue:"100", selectGetCountOptions:["50", "100", "200", "500", "1000"],
+            selectAutoRefreshValue:"10", selectAutoRefreshOptions:["2", "5", "10", "30", "0"]})
+        const instance = getCurrentInstance()
 
         onMounted(()=>{
             reqNodeReportValList()
         })
-
+        onUnmounted(()=>{
+            refresh.removeUserAutoRefresh(instance?.uid)
+        })
         function reqNodeReportValList(){
             data.loading = true
-            request.reqNodeReportValList(protoManage.Filter.create({
-                ReportID:Number(props.nodeReport.Base?.ID),
-                PageSize:Number(data.selectValue),
-                PageNum:Number(1)
-            })).then((response) => {
-                data.nodeReportValList.length = 0
-                for (let i = 0; i < response.NodeReportValList.length; i++){
-                    data.nodeReportValList.push(response.NodeReportValList[i])
-                }
-            }).catch(error => {}).finally(()=>{data.loading = false})
+            let getNodeReportValList = ()=>{
+                request.reqNodeReportValList(protoManage.Filter.create({
+                    ReportID:Number(props.nodeReport.Base?.ID),
+                    PageSize:Number(data.selectGetCountValue),
+                    PageNum:Number(1)
+                })).then((response) => {
+                    data.nodeReportValList.length = 0
+                    for (let i = 0; i < response.NodeReportValList.length; i++){
+                        data.nodeReportValList.push(response.NodeReportValList[i])
+                    }
+                }).catch(error => {}).finally(()=>{data.loading = false})
+            }
+            refresh.addUserAutoRefresh(instance?.uid, Number(data.selectAutoRefreshValue), getNodeReportValList)
         }
 
-        function selectChanged() {
-            if (!globals.isPositiveIntWithStr(data.selectValue)){
+        function getCountSelectLabel(val:string){
+            return val+"条"
+        }
+
+        function autoRefreshSelectLabel(val:string){
+            if (val == "0"){
+                return "关闭"
+            }
+            return val+"秒/次"
+        }
+
+        function refreshButtonClick(){
+            reqNodeReportValList()
+        }
+
+        function selectGetCountChanged() {
+            if (!globals.isPositiveIntWithStr(data.selectGetCountValue)){
                 ElMessage.error("请输入一个正整数");
                 return
             }
             reqNodeReportValList()
         }
 
+        function selectAutoRefreshChanged() {
+            if (!globals.isNoNegativeIntWithStr(data.selectAutoRefreshValue)){
+                ElMessage.error("请输入一个非负整数");
+                return
+            }
+            refresh.updateUserAutoRefresh(instance?.uid, Number(data.selectAutoRefreshValue), true)
+        }
+
         function tabClick(tab, event) {
 
         }
 
-        return {data, tabClick, selectChanged}
+        return {data, tabClick, selectGetCountChanged, selectAutoRefreshChanged, getCountSelectLabel, autoRefreshSelectLabel,
+            refreshButtonClick}
     }
 })
 </script>
@@ -122,5 +160,12 @@ export default defineComponent ({
 
 .tableReportValSelect{
     width: 150px;
+}
+
+.refreshButton{
+    /*border:0px;*/
+    /*padding: 0px;*/
+    /*font-size:30px;*/
+    /*margin-right: 15px;*/
 }
 </style>

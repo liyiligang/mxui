@@ -6,16 +6,19 @@
         </el-row>
         <el-row class="nodeNotifyFrame">
             <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-                <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList" :nodeMap="data.nodeMap" ></NodeNotifyTable>
+                <el-row class="nodeNotifyTableRow">
+                    <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList" :nodeMap="data.nodeMap" ></NodeNotifyTable>
+                </el-row>
             </NodeViewFrame>
         </el-row>
     </el-row>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive} from "vue";
+import {defineComponent, getCurrentInstance, onMounted, onUnmounted, reactive} from "vue";
 import {protoManage} from "../../proto/manage";
 import {request} from "../../base/request";
+import {refresh} from "../../base/refresh";
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute, useRouter} from "vue-router";
 import NodeViewFrame from "../../components/NodeViewFrame.vue"
 import NodeNotifyTable from "../../components/table/NodeNotifyTable.vue"
@@ -44,6 +47,7 @@ export default defineComponent ({
         const data = reactive<NodeNotifyInfo>({isLoading:false, pageTotal:0, nodeNotifyList:[],
             nodeMap:new Map<number, protoManage.INode>()})
         const route = useRoute()
+        const instance = getCurrentInstance()
 
         onBeforeRouteUpdate(to => {
             initNodeNotify(to)
@@ -51,31 +55,36 @@ export default defineComponent ({
         onMounted(()=>{
             initNodeNotify(route)
         })
-
+        onUnmounted(()=>{
+            refresh.removeGlobalAutoRefresh(instance?.uid)
+        })
         function initNodeNotify(route:RouteLocationNormalizedLoaded){
             data.isLoading = true
-            request.reqNodeNotifyList(protoManage.Filter.create({
-                PageSize:Number(route.query.pageSize),
-                PageNum:Number(route.query.pageNum),
-                SenderName:String(route.query.senderName),
-                SenderType:Number(route.query.senderType),
-                State:Number(route.query.senderState),
-                SenderBeginTime:Number(route.query.senderBeginTime),
-                SenderEndTime:Number(route.query.senderEndTime),
-                Message:String(route.query.senderMessage),
-            })).then((response) => {
-                data.pageTotal = response.Length
-                data.nodeNotifyList.length = 0
-                for (let i = 0; i < response.NodeNotifyList.length; i++){
-                    data.nodeNotifyList.push(response.NodeNotifyList[i])
-                }
-                data.nodeMap.clear()
-                for (let i = 0; i < response.NodeList.length; i++){
-                    let key = Number(response.NodeList[i].Base?.ID)
-                    let val = response.NodeList[i]
-                    data.nodeMap.set(key, val)
-                }
-            }).catch(error => {}).finally(()=>{data.isLoading = false})
+            let getNodeNotifyList = ()=>{
+                request.reqNodeNotifyList(protoManage.Filter.create({
+                    PageSize:Number(route.query.pageSize),
+                    PageNum:Number(route.query.pageNum),
+                    SenderName:String(route.query.senderName),
+                    SenderType:Number(route.query.senderType),
+                    State:Number(route.query.senderState),
+                    SenderBeginTime:Number(route.query.senderBeginTime),
+                    SenderEndTime:Number(route.query.senderEndTime),
+                    Message:String(route.query.senderMessage),
+                })).then((response) => {
+                    data.pageTotal = response.Length
+                    data.nodeNotifyList.length = 0
+                    for (let i = 0; i < response.NodeNotifyList.length; i++){
+                        data.nodeNotifyList.push(response.NodeNotifyList[i])
+                    }
+                    data.nodeMap.clear()
+                    for (let i = 0; i < response.NodeList.length; i++){
+                        let key = Number(response.NodeList[i].Base?.ID)
+                        let val = response.NodeList[i]
+                        data.nodeMap.set(key, val)
+                    }
+                }).catch(error => {}).finally(()=>{data.isLoading = false})
+            }
+            refresh.addGlobalAutoRefresh(instance?.uid, getNodeNotifyList)
         }
 
         return {data}
@@ -98,6 +107,13 @@ export default defineComponent ({
 }
 
 .nodeNotifyFrame{
+    width: 100%;
+    flex:auto;
+    height: 0;
+    overflow-y:scroll;
+}
+
+.nodeNotifyTableRow{
     width: 100%;
     flex:auto;
 }

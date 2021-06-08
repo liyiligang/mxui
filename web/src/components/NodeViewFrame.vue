@@ -2,11 +2,11 @@
     <Load v-if="isLoading"></Load>
     <el-row v-else class="frameView">
         <Empty v-if="pageTotal<=0"></Empty>
-        <el-row v-else :class="[globals.globalsData.managerSetting.isPageFix ? 'mainViewPageFix' : 'mainView']" class="flex-row-center-between">
-            <el-row :class="[globals.globalsData.managerSetting.isPageFix ? 'slotViewPageFix' : 'slotView']">
+        <el-row v-else :class="[globals.globalsData.managerSetting.setting.isPageFix ? 'mainViewPageFix' : 'mainView']" class="flex-row-center-between">
+            <el-row :class="[globals.globalsData.managerSetting.setting.isPageFix ? 'slotViewPageFix' : 'slotView']">
                 <slot>暂无数据</slot>
             </el-row>
-            <el-row :class="[globals.globalsData.managerSetting.isPageFix ? 'pageViewFix' : 'pageView']" class="flex-row-center-start">
+            <el-row :class="[globals.globalsData.managerSetting.setting.isPageFix ? 'pageViewFix' : 'pageView']" class="flex-row-center-start">
                 <Page :pageTotal="pageTotal"></Page>
             </el-row>
         </el-row>

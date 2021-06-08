@@ -84,13 +84,14 @@ export default defineComponent ({
             request.reqManagerByID(protoManage.Manager.create({})).then((response) => {
                 let data = response.Setting
                 if (globals.isJson(data)){
-                    globals.globalsData.managerSetting = reactive(JSON.parse(data))
-                    watch(() => globals.globalsData.managerSetting, (newValue) => {
+                    let setting = JSON.parse(data)
+                    globals.globalsData.managerSetting.setting = setting
+                    watch(() => globals.globalsData.managerSetting.setting, (newValue) => {
                         request.reqManagerUpdateSetting(protoManage.Manager.create({
                             Setting:JSON.stringify(newValue)
                         })).then((response) => {}).catch(error => {}).finally(()=>{})
                     },{deep:true})
-                    refresh.watchAutoRefresh()
+                    refresh.watchGlobalAutoRefresh()
                 }else{
                     ElMessage.error("用户配置解析失败, 将使用默认配置")
                 }

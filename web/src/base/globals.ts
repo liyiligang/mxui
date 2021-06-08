@@ -49,7 +49,7 @@ export module globals {
 	export let globalsData = {
 		manager:protoManage.Manager.create(),
 		managerList:new Map<number, protoManage.IManager>(),
-		managerSetting:reactive(globals.globalsConfig.userInitSetting)
+		managerSetting:reactive({setting:globals.globalsConfig.userInitSetting})
 	}
 
 	export function getManagerByID(id: number|undefined|null):protoManage.IManager|undefined {

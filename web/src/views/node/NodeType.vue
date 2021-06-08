@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, onMounted, PropType} from "vue";
+import {defineComponent, reactive, onMounted, PropType, getCurrentInstance, onUnmounted} from "vue";
 import {protoManage} from "../../proto/manage"
 import {request} from "../../base/request"
 import NodeTypeCard from "../../components/card/NodeTypeCard.vue"
@@ -16,7 +16,7 @@ import Empty from "../../components/Empty.vue"
 import Load from "../../components/Load.vue"
 import NodeViewFrame from "../../components/NodeViewFrame.vue"
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
-import {globals} from "../../base/globals";
+import {refresh} from "../../base/refresh";
 
 interface NodeTypeInfo {
     nodeTypeList:protoManage.INodeType[]
@@ -40,6 +40,7 @@ export default defineComponent ({
             nodeStateCountMap: new Map<number, protoManage.IStateCount>(),
             pageTotal:0, isLoading:false})
         const route = useRoute()
+        const instance = getCurrentInstance()
 
         onBeforeRouteUpdate(to => {
             initNodeType(to)
@@ -47,23 +48,29 @@ export default defineComponent ({
         onMounted(()=>{
             initNodeType(route)
         })
+        onUnmounted(()=>{
+            refresh.removeGlobalAutoRefresh(instance?.uid)
+        })
         function initNodeType(route:RouteLocationNormalizedLoaded){
             data.isLoading = true
-            request.reqNodeTypeList(protoManage.Filter.create({
-                ID:Number(route.query.id),
-                Name:String(route.query.name),
-                PageSize:Number(route.query.pageSize),
-                PageNum:Number(route.query.pageNum)
-            })).then((response) => {
-                data.pageTotal = response.Length
-                data.nodeTypeList = response.NodeTypeList
-                data.nodeStateCountMap.clear()
-                for (let i = 0; i < response.NodeStateCountList.length; i++){
-                    let key = Number(response.NodeStateCountList[i].ID)
-                    let val = response.NodeStateCountList[i]
-                    data.nodeStateCountMap.set(key, val)
-                }
-            }).catch(error => {}).finally(()=>{data.isLoading = false})
+            let getNodeTypeList = ()=>{
+                request.reqNodeTypeList(protoManage.Filter.create({
+                    ID:Number(route.query.id),
+                    Name:String(route.query.name),
+                    PageSize:Number(route.query.pageSize),
+                    PageNum:Number(route.query.pageNum)
+                })).then((response) => {
+                    data.pageTotal = response.Length
+                    data.nodeTypeList = response.NodeTypeList
+                    data.nodeStateCountMap.clear()
+                    for (let i = 0; i < response.NodeStateCountList.length; i++){
+                        let key = Number(response.NodeStateCountList[i].ID)
+                        let val = response.NodeStateCountList[i]
+                        data.nodeStateCountMap.set(key, val)
+                    }
+                }).catch(error => {}).finally(()=>{data.isLoading = false})
+            }
+            refresh.addGlobalAutoRefresh(instance?.uid, getNodeTypeList)
         }
         return {data}
     }

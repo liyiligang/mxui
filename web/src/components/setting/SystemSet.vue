@@ -10,7 +10,7 @@
         </template>
         <el-row class="SystemSetRow" type="flex" justify="start" align="middle">
             <div>固定分页：</div>
-            <el-switch v-model="globals.globalsData.managerSetting.isPageFix"
+            <el-switch v-model="globals.globalsData.managerSetting.setting.isPageFix"
                        active-color="#13ce66" inactive-color="#ff4949"></el-switch>
         </el-row>
         <el-row class="SystemSetRow" type="flex" justify="start" align="middle">

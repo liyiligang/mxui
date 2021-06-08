@@ -7,37 +7,38 @@ export module refresh {
         call: (...args: any[]) => void
         parameter:any[]
     }
-    let autoRefreshMap:Map<number, AutoRefreshHandle> = new Map<number, AutoRefreshHandle>()
+    let globalAutoRefreshMap:Map<number, AutoRefreshHandle> = new Map<number, AutoRefreshHandle>()
+    let userAutoRefreshMap:Map<number, AutoRefreshHandle> = new Map<number, AutoRefreshHandle>()
 
-    export function watchAutoRefresh() {
-        updateAutoRefresh(false)
-        watch(() => globals.globalsData.managerSetting.autoUpdateInterval, () => {
-            updateAutoRefresh(true)
+    export function watchGlobalAutoRefresh() {
+        updateAllGlobalAutoRefresh(false)
+        watch(() => globals.globalsData.managerSetting.setting.autoUpdateInterval, () => {
+            updateAllGlobalAutoRefresh(true)
         })
     }
 
-    export function openAutoRefresh(uid:number|undefined, callback: (...args: any[]) => void, ...args: any[]) {
+    export function addGlobalAutoRefresh(uid:number|undefined, callback: (...args: any[]) => void, ...args: any[]) {
         if (callback == null){
             return
         }
         if (uid == undefined){
             return
         }
-        closeAutoRefresh(uid)
-        if (globals.globalsData.managerSetting.autoUpdateInterval != 0){
+        removeGlobalAutoRefresh(uid)
+        if (globals.globalsData.managerSetting.setting.autoUpdateInterval != 0){
             callback(...args)
-            let t = setInterval(callback, globals.globalsData.managerSetting.autoUpdateInterval*1000, ...args)
-            autoRefreshMap.set(uid, {timeout:t, call:callback, parameter:args})
+            let t = setInterval(callback, globals.globalsData.managerSetting.setting.autoUpdateInterval*1000, ...args)
+            globalAutoRefreshMap.set(uid, {timeout:t, call:callback, parameter:args})
         }
     }
 
-    export function updateAutoRefresh(immediately:boolean) {
-        autoRefreshMap.forEach(function(value, key){
-            updateAutoRefreshWithUid(key, value, immediately)
+    export function updateAllGlobalAutoRefresh(immediately:boolean) {
+        globalAutoRefreshMap.forEach(function(value, key){
+            updateGlobalAutoRefresh(key, value, immediately)
         });
     }
 
-    export function updateAutoRefreshWithUid(uid:number|undefined, handle:AutoRefreshHandle, immediately:boolean) {
+    export function updateGlobalAutoRefresh(uid:number|undefined, handle:AutoRefreshHandle, immediately:boolean) {
         if (uid == undefined){
             return
         }
@@ -45,24 +46,81 @@ export module refresh {
             return
         }
         clearInterval(handle.timeout)
-        if (globals.globalsData.managerSetting.autoUpdateInterval != 0){
+        if (globals.globalsData.managerSetting.setting.autoUpdateInterval != 0){
             if (immediately){
                 handle.call(...handle.parameter)
             }
-            let t = setInterval(handle.call, globals.globalsData.managerSetting.autoUpdateInterval*1000, ...handle.parameter)
+            let t = setInterval(handle.call, globals.globalsData.managerSetting.setting.autoUpdateInterval*1000, ...handle.parameter)
             handle.timeout = t
         }
     }
 
-    export function closeAutoRefresh(uid:number|undefined) {
+    export function removeGlobalAutoRefresh(uid:number|undefined) {
         if (uid == undefined){
             return
         }
-        let handle = autoRefreshMap.get(uid)
+        let handle = globalAutoRefreshMap.get(uid)
         if (handle == undefined){
             return
         }
         clearInterval(handle.timeout)
-        autoRefreshMap.delete(uid)
+        globalAutoRefreshMap.delete(uid)
+    }
+
+
+    export function addUserAutoRefresh(uid:number|undefined, time:number, callback: (...args: any[]) => void, ...args: any[]) {
+        if (callback == null){
+            return
+        }
+        if (uid == undefined){
+            return
+        }
+        removeUserAutoRefresh(uid)
+        if (time != 0){
+            callback(...args)
+            let t = setInterval(callback, time*1000, ...args)
+            userAutoRefreshMap.set(uid, {timeout:t, call:callback, parameter:args})
+        }
+    }
+
+    export function updateUserAutoRefresh(uid:number|undefined, time:number, immediately:boolean) {
+        if (uid == undefined){
+            return
+        }
+        let handle = userAutoRefreshMap.get(uid)
+        if (handle == undefined){
+            return
+        }
+        clearInterval(handle.timeout)
+        if (time != 0){
+            if (immediately){
+                handle.call(...handle.parameter)
+            }
+            let t = setInterval(handle.call, time*1000, ...handle.parameter)
+            handle.timeout = t
+        }
+    }
+
+    export function execUserRefresh(uid:number|undefined) {
+        if (uid == undefined){
+            return
+        }
+        let handle = userAutoRefreshMap.get(uid)
+        if (handle == undefined){
+            return
+        }
+        handle.call(...handle.parameter)
+    }
+
+    export function removeUserAutoRefresh(uid:number|undefined) {
+        if (uid == undefined){
+            return
+        }
+        let handle = userAutoRefreshMap.get(uid)
+        if (handle == undefined){
+            return
+        }
+        clearInterval(handle.timeout)
+        userAutoRefreshMap.delete(uid)
     }
 }

@@ -9,10 +9,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, onMounted, watch} from "vue";
+import {defineComponent, reactive, onMounted, getCurrentInstance, onUnmounted} from "vue";
 import {protoManage} from "../../proto/manage"
 import {request} from "../../base/request"
-import {globals} from "../../base/globals"
+import {refresh} from "../../base/refresh";
 import NodeCard from "../../components/card/NodeCard.vue"
 import Page from "../../components/Page.vue"
 import Empty from "../../components/Empty.vue"
@@ -53,6 +53,7 @@ export default defineComponent ({
             pageTotal:0,
             isLoading:false})
         const route = useRoute()
+        const instance = getCurrentInstance()
 
         onBeforeRouteUpdate(to => {
             initNode(to)
@@ -60,22 +61,27 @@ export default defineComponent ({
         onMounted(()=>{
             initNode(route)
         })
-
+        onUnmounted(()=>{
+            refresh.removeGlobalAutoRefresh(instance?.uid)
+        })
         function initNode(route:RouteLocationNormalizedLoaded){
             data.isLoading = true
-            request.reqNodeList(protoManage.Filter.create({
-                ID:Number(route.query.id),
-                GroupID:Number(route.query.groupID),
-                TypeID:Number(route.query.typeID),
-                Name:String(route.query.name),
-                State:Number(route.query.state),
-                PageSize:Number(route.query.pageSize),
-                PageNum:Number(route.query.pageNum)
-            })).then((response) => {
-                data.pageTotal = response.Length
-                data.nodeList = response.NodeList
-                listToMap(response)
-            }).catch(error => {}).finally(()=>{data.isLoading = false})
+            let getNodeList = ()=>{
+                request.reqNodeList(protoManage.Filter.create({
+                    ID:Number(route.query.id),
+                    GroupID:Number(route.query.groupID),
+                    TypeID:Number(route.query.typeID),
+                    Name:String(route.query.name),
+                    State:Number(route.query.state),
+                    PageSize:Number(route.query.pageSize),
+                    PageNum:Number(route.query.pageNum)
+                })).then((response) => {
+                    data.pageTotal = response.Length
+                    data.nodeList = response.NodeList
+                    listToMap(response)
+                }).catch(error => {}).finally(()=>{data.isLoading = false})
+            }
+            refresh.addGlobalAutoRefresh(instance?.uid, getNodeList)
         }
 
         function listToMap(response:protoManage.AnsNodeList){

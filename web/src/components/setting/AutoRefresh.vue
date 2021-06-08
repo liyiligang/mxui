@@ -22,7 +22,7 @@ export default defineComponent ({
     },
 
     setup(){
-        const data = reactive<AutoRefreshInfo>({selectValue:getSelectLabel(String(globals.globalsData.managerSetting.autoUpdateInterval)),
+        const data = reactive<AutoRefreshInfo>({selectValue:getSelectLabel(String(globals.globalsData.managerSetting.setting.autoUpdateInterval)),
             selectOptions:["2", "5", "10", "30", "60", "0"]})
 
         function getSelectLabel(val:string){
@@ -37,7 +37,7 @@ export default defineComponent ({
                 ElMessage.error("请输入一个非负整数");
                 return
             }
-            globals.globalsData.managerSetting.autoUpdateInterval = Number(data.selectValue)
+            globals.globalsData.managerSetting.setting.autoUpdateInterval = Number(data.selectValue)
         }
         return {data, selectChanged, getSelectLabel}
     }
