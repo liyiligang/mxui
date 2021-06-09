@@ -30,6 +30,7 @@ interface NodeInfo {
     nodeReportStateCountMap: Map<number, protoManage.IStateCount>
     pageTotal:number
     isLoading:boolean
+    refreshFlag:number
 }
 
 export default defineComponent ({
@@ -50,8 +51,7 @@ export default defineComponent ({
             nodeLinkTargetStateCountMap: new Map<number, protoManage.IStateCount>(),
             nodeFuncStateCountMap: new Map<number, protoManage.IStateCount>(),
             nodeReportStateCountMap: new Map<number, protoManage.IStateCount>(),
-            pageTotal:0,
-            isLoading:false})
+            pageTotal:0, isLoading:false, refreshFlag:0})
         const route = useRoute()
         const instance = getCurrentInstance()
 
@@ -65,8 +65,9 @@ export default defineComponent ({
             refresh.removeGlobalAutoRefresh(instance?.uid)
         })
         function initNode(route:RouteLocationNormalizedLoaded){
+            data.refreshFlag++
             data.isLoading = true
-            let getNodeList = ()=>{
+            let getNodeList = (flag:number)=>{
                 request.reqNodeList(protoManage.Filter.create({
                     ID:Number(route.query.id),
                     GroupID:Number(route.query.groupID),
@@ -76,12 +77,20 @@ export default defineComponent ({
                     PageSize:Number(route.query.pageSize),
                     PageNum:Number(route.query.pageNum)
                 })).then((response) => {
+                    if (flag != data.refreshFlag){
+                        return
+                    }
                     data.pageTotal = response.Length
                     data.nodeList = response.NodeList
                     listToMap(response)
-                }).catch(error => {}).finally(()=>{data.isLoading = false})
+                }).catch(error => {}).finally(()=>{
+                    if (flag != data.refreshFlag){
+                        return
+                    }
+                    data.isLoading = false
+                })
             }
-            refresh.addGlobalAutoRefresh(instance?.uid, getNodeList)
+            refresh.addGlobalAutoRefresh(instance?.uid, getNodeList, data.refreshFlag)
         }
 
         function listToMap(response:protoManage.AnsNodeList){

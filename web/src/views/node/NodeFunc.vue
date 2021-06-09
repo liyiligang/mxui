@@ -24,6 +24,7 @@ interface NodeFuncInfo {
     nodeFuncCallMap: Map<number, protoManage.INodeFuncCall>
     pageTotal:number
     isLoading:boolean
+    refreshFlag:number
 }
 
 export default defineComponent ({
@@ -37,7 +38,7 @@ export default defineComponent ({
     },
     setup(){
         const data = reactive<NodeFuncInfo>({nodeFuncList:[], nodeMap:new Map<number, protoManage.INode>(),
-            nodeFuncCallMap:new Map<number, protoManage.INodeFuncCall>(), pageTotal:0, isLoading:false})
+            nodeFuncCallMap:new Map<number, protoManage.INodeFuncCall>(), pageTotal:0, isLoading:false, refreshFlag:0})
         const route = useRoute()
         const instance = getCurrentInstance()
 
@@ -51,8 +52,9 @@ export default defineComponent ({
             refresh.removeGlobalAutoRefresh(instance?.uid)
         })
         function initNodeFunc(route:RouteLocationNormalizedLoaded){
+            data.refreshFlag++
             data.isLoading = true
-            let getNodeFuncList = ()=>{
+            let getNodeFuncList = (flag:number)=>{
                 request.reqNodeFuncList(protoManage.Filter.create({
                     ID:Number(route.query.id),
                     NodeID:Number(route.query.nodeID),
@@ -61,6 +63,9 @@ export default defineComponent ({
                     PageSize:Number(route.query.pageSize),
                     PageNum:Number(route.query.pageNum)
                 })).then((response) => {
+                    if (flag != data.refreshFlag){
+                        return
+                    }
                     data.pageTotal = response.Length
                     data.nodeFuncList = response.NodeFuncList
                     data.nodeMap.clear()
@@ -75,9 +80,14 @@ export default defineComponent ({
                         let val = response.NodeFuncCallList[i]
                         data.nodeFuncCallMap.set(key, val)
                     }
-                }).catch(error => {}).finally(()=>{data.isLoading = false})
+                }).catch(error => {}).finally(()=>{
+                    if (flag != data.refreshFlag){
+                        return
+                    }
+                    data.isLoading = false
+                })
             }
-            refresh.addGlobalAutoRefresh(instance?.uid, getNodeFuncList)
+            refresh.addGlobalAutoRefresh(instance?.uid, getNodeFuncList, data.refreshFlag)
         }
         return {data}
     }

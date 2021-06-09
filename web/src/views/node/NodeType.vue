@@ -23,6 +23,7 @@ interface NodeTypeInfo {
     nodeStateCountMap: Map<number, protoManage.IStateCount>
     pageTotal:number
     isLoading:boolean
+    refreshFlag:number
 }
 
 export default defineComponent ({
@@ -35,10 +36,8 @@ export default defineComponent ({
         NodeViewFrame
     },
     setup(){
-        const data = reactive<NodeTypeInfo>({
-            nodeTypeList:[],
-            nodeStateCountMap: new Map<number, protoManage.IStateCount>(),
-            pageTotal:0, isLoading:false})
+        const data = reactive<NodeTypeInfo>({nodeTypeList:[], nodeStateCountMap: new Map<number, protoManage.IStateCount>(),
+            pageTotal:0, isLoading:false, refreshFlag:0})
         const route = useRoute()
         const instance = getCurrentInstance()
 
@@ -52,14 +51,18 @@ export default defineComponent ({
             refresh.removeGlobalAutoRefresh(instance?.uid)
         })
         function initNodeType(route:RouteLocationNormalizedLoaded){
+            data.refreshFlag++
             data.isLoading = true
-            let getNodeTypeList = ()=>{
+            let getNodeTypeList = (flag:number)=>{
                 request.reqNodeTypeList(protoManage.Filter.create({
                     ID:Number(route.query.id),
                     Name:String(route.query.name),
                     PageSize:Number(route.query.pageSize),
                     PageNum:Number(route.query.pageNum)
                 })).then((response) => {
+                    if (flag != data.refreshFlag){
+                        return
+                    }
                     data.pageTotal = response.Length
                     data.nodeTypeList = response.NodeTypeList
                     data.nodeStateCountMap.clear()
@@ -68,9 +71,14 @@ export default defineComponent ({
                         let val = response.NodeStateCountList[i]
                         data.nodeStateCountMap.set(key, val)
                     }
-                }).catch(error => {}).finally(()=>{data.isLoading = false})
+                }).catch(error => {}).finally(()=>{
+                    if (flag != data.refreshFlag){
+                        return
+                    }
+                    data.isLoading = false
+                })
             }
-            refresh.addGlobalAutoRefresh(instance?.uid, getNodeTypeList)
+            refresh.addGlobalAutoRefresh(instance?.uid, getNodeTypeList, data.refreshFlag)
         }
         return {data}
     }

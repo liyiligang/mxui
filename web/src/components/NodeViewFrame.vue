@@ -60,7 +60,6 @@ export default defineComponent ({
     flex-direction:column;
 }
 
-
 .slotView{
     width: 100%;
 }

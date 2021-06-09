@@ -25,8 +25,8 @@ export module refresh {
             return
         }
         removeGlobalAutoRefresh(uid)
+        callback(...args)
         if (globals.globalsData.managerSetting.setting.autoUpdateInterval != 0){
-            callback(...args)
             let t = setInterval(callback, globals.globalsData.managerSetting.setting.autoUpdateInterval*1000, ...args)
             globalAutoRefreshMap.set(uid, {timeout:t, call:callback, parameter:args})
         }
@@ -76,8 +76,8 @@ export module refresh {
             return
         }
         removeUserAutoRefresh(uid)
+        callback(...args)
         if (time != 0){
-            callback(...args)
             let t = setInterval(callback, time*1000, ...args)
             userAutoRefreshMap.set(uid, {timeout:t, call:callback, parameter:args})
         }

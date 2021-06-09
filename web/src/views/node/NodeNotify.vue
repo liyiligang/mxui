@@ -5,11 +5,15 @@
             <NodeNotifyMessageFilter></NodeNotifyMessageFilter>
         </el-row>
         <el-row class="nodeNotifyFrame">
-            <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-                <el-row class="nodeNotifyTableRow">
-                    <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList" :nodeMap="data.nodeMap" ></NodeNotifyTable>
-                </el-row>
+            <NodeViewFrame v-if="globals.globalsData.managerSetting.setting.isPageFix" :pageTotal="data.pageTotal" :isLoading="data.isLoading">
+                <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList" :nodeMap="data.nodeMap" ></NodeNotifyTable>
             </NodeViewFrame>
+            
+<!--            <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">-->
+<!--                <el-row v-if="globals.globalsData.managerSetting.setting.isPageFix" class="nodeNotifyTableRow">-->
+<!--                    <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList" :nodeMap="data.nodeMap" ></NodeNotifyTable>-->
+<!--                </el-row>-->
+<!--            </NodeViewFrame>-->
         </el-row>
     </el-row>
 </template>
@@ -19,6 +23,7 @@ import {defineComponent, getCurrentInstance, onMounted, onUnmounted, reactive} f
 import {protoManage} from "../../proto/manage";
 import {request} from "../../base/request";
 import {refresh} from "../../base/refresh";
+import {globals} from "../../base/globals";
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute, useRouter} from "vue-router";
 import NodeViewFrame from "../../components/NodeViewFrame.vue"
 import NodeNotifyTable from "../../components/table/NodeNotifyTable.vue"
@@ -28,10 +33,11 @@ import NodeNotifyMessageFilter from "../../components/fifter/NodeNotifyMessageFi
 
 
 interface NodeNotifyInfo {
-    isLoading:boolean
-    pageTotal:number
     nodeNotifyList:Array<protoManage.INodeNotify>
     nodeMap: Map<number, protoManage.INode>
+    pageTotal:number
+    isLoading:boolean
+    refreshFlag:number
 }
 
 export default defineComponent ({
@@ -44,8 +50,8 @@ export default defineComponent ({
         NodeNotifyFormFilter
     },
     setup(){
-        const data = reactive<NodeNotifyInfo>({isLoading:false, pageTotal:0, nodeNotifyList:[],
-            nodeMap:new Map<number, protoManage.INode>()})
+        const data = reactive<NodeNotifyInfo>({nodeNotifyList:[], nodeMap:new Map<number, protoManage.INode>(),
+            isLoading:false, pageTotal:0, refreshFlag:0})
         const route = useRoute()
         const instance = getCurrentInstance()
 
@@ -59,8 +65,9 @@ export default defineComponent ({
             refresh.removeGlobalAutoRefresh(instance?.uid)
         })
         function initNodeNotify(route:RouteLocationNormalizedLoaded){
+            data.refreshFlag++
             data.isLoading = true
-            let getNodeNotifyList = ()=>{
+            let getNodeNotifyList = (flag:number)=>{
                 request.reqNodeNotifyList(protoManage.Filter.create({
                     PageSize:Number(route.query.pageSize),
                     PageNum:Number(route.query.pageNum),
@@ -71,6 +78,9 @@ export default defineComponent ({
                     SenderEndTime:Number(route.query.senderEndTime),
                     Message:String(route.query.senderMessage),
                 })).then((response) => {
+                    if (flag != data.refreshFlag){
+                        return
+                    }
                     data.pageTotal = response.Length
                     data.nodeNotifyList.length = 0
                     for (let i = 0; i < response.NodeNotifyList.length; i++){
@@ -82,12 +92,17 @@ export default defineComponent ({
                         let val = response.NodeList[i]
                         data.nodeMap.set(key, val)
                     }
-                }).catch(error => {}).finally(()=>{data.isLoading = false})
+                }).catch(error => {}).finally(()=>{
+                    if (flag != data.refreshFlag){
+                        return
+                    }
+                    data.isLoading = false
+                })
             }
-            refresh.addGlobalAutoRefresh(instance?.uid, getNodeNotifyList)
+            refresh.addGlobalAutoRefresh(instance?.uid, getNodeNotifyList, data.refreshFlag)
         }
 
-        return {data}
+        return {data, globals}
     }
 })
 </script>
@@ -122,5 +137,4 @@ export default defineComponent ({
     width: 99%;
     margin-left: 0.5%;
 }
-
 </style>

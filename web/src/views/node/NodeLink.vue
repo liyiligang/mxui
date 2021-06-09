@@ -22,6 +22,7 @@ interface NodeLinkInfo {
     nodeMap: Map<number, protoManage.INode>
     pageTotal:number
     isLoading:boolean
+    refreshFlag:number
 }
 
 export default defineComponent ({
@@ -34,7 +35,8 @@ export default defineComponent ({
         NodeViewFrame
     },
     setup(){
-        const data = reactive<NodeLinkInfo>({nodeLinkList:[], nodeMap:new Map<number, protoManage.INode>(), pageTotal:0, isLoading:false})
+        const data = reactive<NodeLinkInfo>({nodeLinkList:[], nodeMap:new Map<number, protoManage.INode>(),
+            pageTotal:0, isLoading:false, refreshFlag:0})
         const route = useRoute()
         const instance = getCurrentInstance()
 
@@ -48,8 +50,9 @@ export default defineComponent ({
             refresh.removeGlobalAutoRefresh(instance?.uid)
         })
         function initNodeLink(route:RouteLocationNormalizedLoaded){
+            data.refreshFlag++
             data.isLoading = true
-            let getNodeLinkList = ()=>{
+            let getNodeLinkList = (flag:number)=>{
                 request.reqNodeLinkList(protoManage.Filter.create({
                     ID:Number(route.query.id),
                     SourceID:Number(route.query.sourceID),
@@ -58,6 +61,9 @@ export default defineComponent ({
                     PageSize:Number(route.query.pageSize),
                     PageNum:Number(route.query.pageNum)
                 })).then((response) => {
+                    if (flag != data.refreshFlag){
+                        return
+                    }
                     data.pageTotal = response.Length
                     data.nodeLinkList = response.NodeLinkList
                     data.nodeMap.clear()
@@ -66,9 +72,14 @@ export default defineComponent ({
                         let val = response.NodeList[i]
                         data.nodeMap.set(key, val)
                     }
-                }).catch(error => {}).finally(()=>{data.isLoading = false})
+                }).catch(error => {}).finally(()=>{
+                    if (flag != data.refreshFlag){
+                        return
+                    }
+                    data.isLoading = false
+                })
             }
-            refresh.addGlobalAutoRefresh(instance?.uid, getNodeLinkList)
+            refresh.addGlobalAutoRefresh(instance?.uid, getNodeLinkList, data.refreshFlag)
         }
         return {data}
     }
