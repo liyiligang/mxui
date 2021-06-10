@@ -119,14 +119,10 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 @import "../../css/card.css";
-
-.NodeNotifyTableName{
-    text-align: left;
-}
-
-.NodeNotifyTableMessage{
-    text-align: left;
-}
-
 </style>
 
+<style>
+.el-table__body-wrapper {
+    overflow-y: hidden !important;
+}
+</style>

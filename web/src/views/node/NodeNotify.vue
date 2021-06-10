@@ -5,15 +5,11 @@
             <NodeNotifyMessageFilter></NodeNotifyMessageFilter>
         </el-row>
         <el-row class="nodeNotifyFrame">
-            <NodeViewFrame v-if="globals.globalsData.managerSetting.setting.isPageFix" :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-                <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList" :nodeMap="data.nodeMap" ></NodeNotifyTable>
+            <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
+                <el-row class="nodeNotifyTableRow">
+                    <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList" :nodeMap="data.nodeMap" ></NodeNotifyTable>
+                </el-row>
             </NodeViewFrame>
-            
-<!--            <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">-->
-<!--                <el-row v-if="globals.globalsData.managerSetting.setting.isPageFix" class="nodeNotifyTableRow">-->
-<!--                    <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList" :nodeMap="data.nodeMap" ></NodeNotifyTable>-->
-<!--                </el-row>-->
-<!--            </NodeViewFrame>-->
         </el-row>
     </el-row>
 </template>

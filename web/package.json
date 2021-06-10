@@ -10,7 +10,7 @@
     "axios": "^0.21.1",
     "echarts": "^5.1.0",
     "el-table-infinite-scroll": "^1.0.10",
-    "element-plus": "^1.0.1-beta.27",
+    "element-plus": "^1.0.2-beta.46",
     "es6-promise": "^4.2.8",
     "jsoneditor": "^9.2.0",
     "protobufjs": "^6.10.2",
