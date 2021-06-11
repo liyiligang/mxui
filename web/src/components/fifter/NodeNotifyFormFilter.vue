@@ -179,7 +179,7 @@ export default defineComponent ({
 
 .NodeNotifyFormFilterButton{
     padding: 0px;
-    margin-right: 6px;
+    margin-left: 9px;
     border:0px;
     font-size:28px;
 }

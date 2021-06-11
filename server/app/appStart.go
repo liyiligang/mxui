@@ -433,7 +433,7 @@ func (app *App) InitDBData(){
 		app.db.AddNodeNotify(orm.NodeNotify{
 			SenderID: int64(nodeID),
 			SenderType: int64(protoManage.NotifySenderType_NotifySenderTypeNode),
-			Message: randChinese(1, 60),
+			Message: Jtool.GetRandChinese(1, 60),
 			State:int32(state),
 		})
 		timeF, _ := Jtool.GetRandInt(0, 1500)
@@ -443,13 +443,18 @@ func (app *App) InitDBData(){
 	Jlog.Info("数据填充完毕")
 }
 
-
-func randChinese(min int, max int) string {
-	len, _ := Jtool.GetRandInt(min, max)
-	c := make([]rune, len)
-	for i := range c {
-		h ,_ := Jtool.GetRandInt(19968,40869)
-		c[i]=rune(int64(h))
-	}
-	return string(c)
+func (app *App) nodeNotifyAddTest(){
+	go func() {
+		for  {
+			nodeID, _ := Jtool.GetRandInt(1, 10000)
+			state, _ := Jtool.GetRandInt(1, 5)
+			app.data.NodeNotifyAdd(&protoManage.NodeNotify{
+				SenderID: int64(nodeID),
+				SenderType: protoManage.NotifySenderType_NotifySenderTypeNode,
+				Message: Jtool.GetRandChinese(2, 20),
+				State: protoManage.State(state),
+			})
+			time.Sleep(2*time.Second)
+		}
+	}()
 }

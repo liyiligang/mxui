@@ -21,6 +21,9 @@ func (app *App) WebsocketConnected(conn *Jweb.WebsocketConn) error {
 	if err != nil {
 		return err
 	}
+
+	Jlog.Info("进入 websocket", "id", id)
+
 	if app.gateway.WebsocketManage.IsExistDelayCheck(id, 500*time.Millisecond, 6) {
 		return errors.New("id:"+Jtool.Int64ToString(id)+"已存在")
 	}
@@ -40,6 +43,9 @@ func (app *App) WebsocketClose(conn *Jweb.WebsocketConn, code int, text string) 
 		Jlog.Warn("websocket连接关闭错误", "err", err)
 		return
 	}
+
+	Jlog.Info("进入 websocket 关闭", "id", id)
+
 	app.request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
 		State: protoManage.State_StateUnknow})
 	app.gateway.WebsocketManage.Delete(id)
@@ -256,7 +262,7 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 		app.request.ReqNodeReportValUpdate(id, res.Message)
 		break
 	case protoManage.Order_NodeNotifyAdd:
-		app.request.ReqNodeNotifyUpdate(id, res.Message)
+		app.request.ReqNodeNotifyAdd(id, res.Message)
 		break
 	default:
 		Jlog.Warn("rpc 指令错误", "消息", res)

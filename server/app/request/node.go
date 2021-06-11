@@ -154,23 +154,14 @@ func (request *Request) ReqNodeReportValUpdate(nodeID int64, message []byte) {
 	}
 }
 
-//节点通知更新
-func (request *Request) ReqNodeNotifyUpdate(nodeID int64, message []byte) {
+//节点通知增加
+func (request *Request) ReqNodeNotifyAdd(nodeID int64, message []byte) {
 	nodeNotify := protoManage.NodeNotify{}
 	err := nodeNotify.Unmarshal(message)
 	if err != nil {
 		return
 	}
-
-	err = check.BaseIDCheck(nodeNotify.SenderID, nodeID)
-	if err != nil {
-		return
-	}
-
-	//err = request.Data.NodeNotifyAdd(&nodeNotify)
-	//if err != nil {
-	//	return
-	//}
+	request.Data.NodeNotifyAdd(&nodeNotify)
 }
 
 //节点组信息查询

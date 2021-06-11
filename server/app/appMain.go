@@ -74,6 +74,7 @@ func InitServer() {
 	}
 	app.initAppData()
 	//app.InitDBData()
+	//app.nodeNotifyAddTest()
 	Jlog.Info("服务已经全部启动")
 }
 

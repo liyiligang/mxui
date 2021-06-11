@@ -5,6 +5,7 @@ import {globals} from "../base/globals";
 export let ws:WebSocket|null = null
 export let reconnectCnt = 0
 export let wsUserError = 4000
+export let notifyOffset = 80
 
 export module websocket {
     export function wsConnect(addr:string) {
@@ -105,7 +106,8 @@ export module websocket {
             ElNotification({
                 title: "节点：" + msg.SenderID,
                 message: msg.Message,
-                type: 'info'
+                type: 'info',
+                offset: notifyOffset
             })
         }else{
             ElMessage.info(msg.Message)
@@ -117,7 +119,8 @@ export module websocket {
             ElNotification({
                 title: "节点：" + msg.SenderID,
                 message: msg.Message,
-                type: 'success'
+                type: 'success',
+                offset: notifyOffset
             })
         }else{
             ElMessage.success(msg.Message)
@@ -129,7 +132,8 @@ export module websocket {
             ElNotification({
                 title: "节点：" + msg.SenderID,
                 message: msg.Message,
-                type: 'warning'
+                type: 'warning',
+                offset: notifyOffset
             })
         }else{
             ElMessage.warning(msg.Message)
@@ -141,7 +145,8 @@ export module websocket {
             ElNotification({
                 title: "节点：" + msg.SenderID,
                 message: msg.Message,
-                type: 'error'
+                type: 'error',
+                offset: notifyOffset
             })
         }else{
             ElMessage.error(msg.Message)

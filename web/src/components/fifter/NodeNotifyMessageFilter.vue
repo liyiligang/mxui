@@ -2,7 +2,7 @@
     <el-row class="nodeNotifyMessage" @keyup.enter.native="searchWithContent()">
         <el-input class="nodeNotifyMessageInput" v-model="data.senderMessage"
                   placeholder="搜索内容" clearable @clear="searchWithContent()">
-            <template #prepend>
+            <template #append>
                 <el-button icon="el-icon-search" @click="searchWithContent()"></el-button>
             </template>
         </el-input>
@@ -59,7 +59,8 @@ export default defineComponent ({
 <style scoped>
 
 .nodeNotifyMessage{
-   flex-wrap: nowrap;
+    margin-left: 5px;
+    flex-wrap: nowrap;
 }
 
 .nodeNotifyMessageInput{
