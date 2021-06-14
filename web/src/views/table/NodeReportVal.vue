@@ -13,17 +13,21 @@
                 </el-tabs>
             </el-row>
             <el-row class="tableReportValFooterView" type="flex" justify="space-around" align="middle">
-                <el-select class="tableReportValSelect" v-model="data.selectGetCountValue" @change="selectGetCountChanged"
-                           filterable allow-create :disabled="data.loading"
-                           default-first-option placeholder="请输入请求数目">
-                    <el-option v-for="i in data.selectGetCountOptions" :key="i" :label="getCountSelectLabel(i)" :value="i"></el-option>
-                </el-select>
+                <el-row type="flex" justify="center" align="middle">
+                    <div class="color-text-normal">请求数量：</div>
+                    <el-select class="tableReportValSelect" v-model="data.selectGetCountValue" @change="selectGetCountChanged"
+                               :disabled="data.loading" default-first-option placeholder="请输入请求数目">
+                        <el-option v-for="i in data.selectGetCountOptions" :key="i" :label="getCountSelectLabel(i)" :value="i"></el-option>
+                    </el-select>
+                </el-row>
                 <el-button class="refreshButton" :disabled="data.loading" @click="refreshButtonClick">刷新</el-button>
-                <el-select class="tableReportValSelect" v-model="data.selectAutoRefreshValue" @change="selectAutoRefreshChanged"
-                           filterable allow-create :disabled="data.loading"
-                           default-first-option placeholder="请输入自动刷新时间">
-                    <el-option v-for="i in data.selectAutoRefreshOptions" :key="i" :label="autoRefreshSelectLabel(i)" :value="i"></el-option>
-                </el-select>
+                <el-row type="flex" justify="center" align="middle">
+                    <div class="color-text-normal">自动刷新：</div>
+                    <el-select class="tableReportValSelect" v-model="data.selectAutoRefreshValue" @change="selectAutoRefreshChanged"
+                               :disabled="data.loading" default-first-option placeholder="请输入自动刷新时间">
+                        <el-option v-for="i in data.selectAutoRefreshOptions" :key="i" :label="autoRefreshSelectLabel(i)" :value="i"></el-option>
+                    </el-select>
+                </el-row>
             </el-row>
         </el-row>
     </el-row>
@@ -134,6 +138,7 @@ export default defineComponent ({
 </script>
 
 <style scoped>
+@import "../../css/color.css";
 
 .tableReportValBodyEmpty{
     width: 100%;

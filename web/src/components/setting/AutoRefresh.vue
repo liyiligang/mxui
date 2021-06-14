@@ -1,6 +1,6 @@
 <template>
     <el-select class="autoRefreshInfoSelect" v-model="data.selectValue" @change="selectChanged"
-               filterable allow-create default-first-option placeholder="请输入自动刷新时间">
+               default-first-option placeholder="请输入自动刷新时间">
         <el-option v-for="i in data.selectOptions" :key="getSelectLabel(i)" :label="getSelectLabel(i)" :value="i"></el-option>
     </el-select>
 </template>
@@ -29,7 +29,7 @@ export default defineComponent ({
             if (val == "0") {
                 return "关闭"
             }
-            return val+"s"
+            return val+"秒/次"
         }
 
         function selectChanged (){
