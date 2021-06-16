@@ -1,30 +1,37 @@
 <template>
-    <el-menu class="menu" @select="menuSelect" default-active="1-1">
+    <el-menu class="menu" @select="menuSelect" :default-active="data.activeName" :default-openeds="data.activeSubMenu">
         <el-submenu index="1">
             <template #title>
-                <span class="submenuSpanOne">维度</span>
+                <span class="submenuSpanOne">分组</span>
             </template>
-            <el-menu-item class="submenuSpanTwo" index="1-1" >集群</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" index="1-2" >服务</el-menu-item>
+            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeGroup" >集群</el-menu-item>
+            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeType" >服务</el-menu-item>
         </el-submenu>
         <el-submenu index="2">
             <template #title>
                 <span class="submenuSpanOne">功能</span>
             </template>
-            <el-menu-item class="submenuSpanTwo" index="2-1">节点</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" index="2-2">连接</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" index="2-3">方法</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" index="2-4">报告</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" index="2-5">通知</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" index="2-6">测试</el-menu-item>
+            <el-menu-item class="submenuSpanTwo" :index="routerName.node">节点</el-menu-item>
+            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeLink">连接</el-menu-item>
+            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeFunc">方法</el-menu-item>
+            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeReport">报告</el-menu-item>
+            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeNotify">通知</el-menu-item>
+            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeTest">测试</el-menu-item>
         </el-submenu>
     </el-menu>
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
-import { routerPath } from "../router";
+import {defineComponent, onMounted, reactive} from "vue";
+import { routerPath, routerName } from "../router";
 import { globals } from "../base/globals";
+import {useRoute} from "vue-router";
+import {protoManage} from "../proto/manage";
+
+interface AsideInfo {
+    activeName:""
+    activeSubMenu:[]
+}
 
 export default defineComponent ({
     name: "Aside",
@@ -32,33 +39,36 @@ export default defineComponent ({
 
     },
     setup(){
-
-
+        const data = reactive<AsideInfo>({activeName:routerName.nodeGroup, activeSubMenu:["1", "2"]})
+        const route = useRoute()
+        onMounted(()=>{
+            data.activeName = route.name
+        })
 
         function menuSelect(key:string, keyPath:string){
             switch (key) {
-                case "1-1":
+                case routerName.nodeGroup:
                     routerPath.toGroupAll()
                     break
-                case "1-2":
+                case routerName.nodeType:
                     routerPath.toTypeAll()
                     break
-                case "2-1":
+                case routerName.node:
                     routerPath.toNodeAll()
                     break
-                case "2-2":
+                case routerName.nodeLink:
                     routerPath.toNodeLinkAll()
                     break
-                case "2-3":
+                case routerName.nodeFunc:
                     routerPath.toNodeFuncAll()
                     break
-                case "2-4":
+                case routerName.nodeReport:
                     routerPath.toNodeReportAll()
                     break
-                case "2-5":
+                case routerName.nodeNotify:
                     routerPath.toNodeNotifyAll()
                     break
-                case "2-6":
+                case routerName.nodeTest:
                     routerPath.toNodeTestAll()
                     break
                 default:
@@ -66,7 +76,7 @@ export default defineComponent ({
                     break
             }
         }
-        return {menuSelect}
+        return {data, menuSelect, routerName}
     }
 })
 </script>

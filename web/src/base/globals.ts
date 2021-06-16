@@ -17,7 +17,6 @@ export module globals {
 	// 	width: 50,
 	// 	height: 50
 	// }
-
 	export let globalsConfig = {
 		localStorageKey:{
 			token:"token",

@@ -13,6 +13,17 @@ import NotFound from "./views/NotFound.vue";
 import {protoManage} from "./proto/manage"
 import {globals} from "./base/globals";
 
+export const routerName = {
+    nodeGroup:"nodeGroup",
+    nodeType:"nodeType",
+    node:"node",
+    nodeLink:"nodeLink",
+    nodeFunc:"nodeFunc",
+    nodeReport:"nodeReport",
+    nodeNotify:"nodeNotify",
+    nodeTest:"nodeTest"
+}
+
 const router = createRouter({
     history:createWebHistory(),
     routes: [
@@ -22,14 +33,14 @@ const router = createRouter({
             name:"home",
             component: Home,
             children: [
-                {path: 'nodeGroup', name: 'nodeGroup', component: NodeGroup},
-                {path: 'nodeType', name: 'nodeType', component: NodeType},
-                {path: 'node', name: 'node', component: Node},
-                {path: 'nodeLink', name: 'nodeLink', component: NodeLink},
-                {path: 'nodeFunc', name: 'nodeFunc', component: NodeFunc},
-                {path: 'nodeReport', name: 'nodeReport', component: NodeReport},
-                {path: 'nodeNotify', name: 'nodeNotify', component: NodeNotify},
-                {path: 'nodeTest', name: 'nodeTest', component: NodeTest},
+                {path: routerName.nodeGroup, name: routerName.nodeGroup, component: NodeGroup},
+                {path: routerName.nodeType, name: routerName.nodeType, component: NodeType},
+                {path: routerName.node, name: routerName.node, component: Node},
+                {path: routerName.nodeLink, name: routerName.nodeLink, component: NodeLink},
+                {path: routerName.nodeFunc, name: routerName.nodeFunc, component: NodeFunc},
+                {path: routerName.nodeReport, name: routerName.nodeReport, component: NodeReport},
+                {path: routerName.nodeNotify, name: routerName.nodeNotify, component: NodeNotify},
+                {path: routerName.nodeTest, name: routerName.nodeTest, component: NodeTest},
             ]
         },
         {path: "/notFound", name: "notFound", component: NotFound}
@@ -53,7 +64,7 @@ export module routerPath {
     }
     export function toGroupAll(){
         router.push({
-            name: "nodeGroup",
+            name: routerName.nodeGroup,
             query: {
                 pageSize: globals.globalsConfig.pageConfig.initSize,
                 pageNum:  globals.globalsConfig.pageConfig.initNum
@@ -63,7 +74,7 @@ export module routerPath {
 
     export function toTypeAll(){
         router.push({
-            name: "nodeType",
+            name: routerName.nodeType,
             query: {
                 pageSize: globals.globalsConfig.pageConfig.initSize,
                 pageNum:  globals.globalsConfig.pageConfig.initNum
@@ -73,7 +84,7 @@ export module routerPath {
 
     export function toNodeAll(){
         router.push({
-            name: "node",
+            name: routerName.node,
             query: {
                 pageSize: globals.globalsConfig.pageConfig.initSize,
                 pageNum:  globals.globalsConfig.pageConfig.initNum
@@ -83,7 +94,7 @@ export module routerPath {
 
     export function toNodeLinkAll(){
         router.push({
-            name: "nodeLink",
+            name: routerName.nodeLink,
             query: {
                 pageSize: globals.globalsConfig.pageConfig.initSize,
                 pageNum:  globals.globalsConfig.pageConfig.initNum
@@ -93,7 +104,7 @@ export module routerPath {
 
     export function toNodeFuncAll(){
         router.push({
-            name: "nodeFunc",
+            name: routerName.nodeFunc,
             query: {
                 pageSize: globals.globalsConfig.pageConfig.initSize,
                 pageNum:  globals.globalsConfig.pageConfig.initNum
@@ -103,7 +114,7 @@ export module routerPath {
 
     export function toNodeReportAll(){
         router.push({
-            name: "nodeReport",
+            name: routerName.nodeReport,
             query: {
                 pageSize: globals.globalsConfig.pageConfig.initSize,
                 pageNum:  globals.globalsConfig.pageConfig.initNum
@@ -113,7 +124,7 @@ export module routerPath {
 
     export function toNodeNotifyAll(){
         router.push({
-            name: "nodeNotify",
+            name: routerName.nodeNotify,
             query: {
                 pageSize: globals.globalsConfig.pageConfig.initSize,
                 pageNum:  globals.globalsConfig.pageConfig.initNum
@@ -123,7 +134,7 @@ export module routerPath {
 
     export function toNodeTestAll(){
         router.push({
-            name: "nodeTest",
+            name: routerName.nodeTest,
             query: {
                 // pageSize: globals.globalsConfig.pageConfig.initSize,
                 // pageNum:  globals.globalsConfig.pageConfig.initNum
@@ -192,19 +203,19 @@ export module routerPath {
 
     export function toNodeGroup(filter:protoManage.Filter){
         let filterStr = setFilterStr(filter)
-        return "nodeGroup"+filterStr
+        return routerName.nodeGroup + filterStr
     }
     export function toNodeType(filter:protoManage.Filter){
         let filterStr = setFilterStr(filter)
-        return "nodeType"+filterStr
+        return routerName.nodeType + filterStr
     }
     export function toNode(filter:protoManage.Filter){
         let filterStr = setFilterStr(filter)
-        return "node" + filterStr
+        return routerName.node + filterStr
     }
     export function toNodeNotify(filter:protoManage.Filter){
         let filterStr = setFilterStr(filter)
-        return "nodeNotify" + filterStr
+        return routerName.nodeNotify + filterStr
     }
     export function toNodeLink(nodeID:number){
         return "nodeLink?sourceID="+nodeID+"&targetID="+nodeID+"&pageSize="+globals.globalsConfig.pageConfig.initSize+"&pageNum="+globals.globalsConfig.pageConfig.initNum
