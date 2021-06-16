@@ -3,7 +3,7 @@ import {globals} from "./globals";
 
 export module refresh {
     interface AutoRefreshHandle {
-        timeout: NodeJS.Timeout
+        timeout: NodeJS.Timeout|null
         call: (...args: any[]) => void
         parameter:any[]
     }
@@ -26,9 +26,10 @@ export module refresh {
         }
         removeGlobalAutoRefresh(uid)
         callback(...args)
+        let handle:AutoRefreshHandle = {timeout:null, call:callback, parameter:args}
+        globalAutoRefreshMap.set(uid, handle)
         if (globals.globalsData.managerSetting.setting.autoUpdateInterval != 0){
-            let t = setInterval(callback, globals.globalsData.managerSetting.setting.autoUpdateInterval*1000, ...args)
-            globalAutoRefreshMap.set(uid, {timeout:t, call:callback, parameter:args})
+            handle.timeout = setInterval(callback, globals.globalsData.managerSetting.setting.autoUpdateInterval*1000, ...args)
         }
     }
 
@@ -45,7 +46,7 @@ export module refresh {
         if (handle == undefined){
             return
         }
-        clearInterval(handle.timeout)
+        clearHandleTimeout(handle)
         if (globals.globalsData.managerSetting.setting.autoUpdateInterval != 0){
             if (immediately){
                 handle.call(...handle.parameter)
@@ -63,7 +64,7 @@ export module refresh {
         if (handle == undefined){
             return
         }
-        clearInterval(handle.timeout)
+        clearHandleTimeout(handle)
         globalAutoRefreshMap.delete(uid)
     }
 
@@ -77,9 +78,10 @@ export module refresh {
         }
         removeUserAutoRefresh(uid)
         callback(...args)
+        let handle:AutoRefreshHandle = {timeout:null, call:callback, parameter:args}
+        userAutoRefreshMap.set(uid, handle)
         if (time != 0){
-            let t = setInterval(callback, time*1000, ...args)
-            userAutoRefreshMap.set(uid, {timeout:t, call:callback, parameter:args})
+            handle.timeout = setInterval(callback, time*1000, ...args)
         }
     }
 
@@ -91,7 +93,7 @@ export module refresh {
         if (handle == undefined){
             return
         }
-        clearInterval(handle.timeout)
+        clearHandleTimeout(handle)
         if (time != 0){
             if (immediately){
                 handle.call(...handle.parameter)
@@ -120,7 +122,14 @@ export module refresh {
         if (handle == undefined){
             return
         }
-        clearInterval(handle.timeout)
+        clearHandleTimeout(handle)
         userAutoRefreshMap.delete(uid)
+    }
+
+    export function clearHandleTimeout(handle:AutoRefreshHandle) {
+        if (handle.timeout != null){
+            clearInterval(handle.timeout)
+            handle.timeout = null
+        }
     }
 }

@@ -14,7 +14,7 @@
             </el-row>
             <el-row class="tableReportValFooterView" type="flex" justify="space-around" align="middle">
                 <el-row type="flex" justify="center" align="middle">
-                    <div class="color-text-normal">请求数量：</div>
+                    <div class="color-text-normal">结果集：</div>
                     <el-select class="tableReportValSelect" v-model="data.selectGetCountValue" @change="selectGetCountChanged"
                                :disabled="data.loading" default-first-option placeholder="请输入请求数目">
                         <el-option v-for="i in data.selectGetCountOptions" :key="i" :label="getCountSelectLabel(i)" :value="i"></el-option>
@@ -70,7 +70,7 @@ export default defineComponent ({
     setup(props){
         const data = reactive<NodeReportValInfo>({loading:false, tabActiveName:"line",
             nodeReportValList:[], selectGetCountValue:"100", selectGetCountOptions:["50", "100", "200", "500", "1000"],
-            selectAutoRefreshValue:"10", selectAutoRefreshOptions:["2", "5", "10", "30", "0"]})
+            selectAutoRefreshValue:"0", selectAutoRefreshOptions:["2", "5", "10", "30", "0"]})
         const instance = getCurrentInstance()
 
         onMounted(()=>{

@@ -1,5 +1,5 @@
 <template>
-    <el-select class="autoRefreshInfoSelect" v-model="data.selectValue" @change="selectChanged"
+    <el-select class="autoRefreshInfoSelect" size="small" v-model="data.selectValue" @change="selectChanged"
                default-first-option placeholder="请输入自动刷新时间">
         <el-option v-for="i in data.selectOptions" :key="getSelectLabel(i)" :label="getSelectLabel(i)" :value="i"></el-option>
     </el-select>

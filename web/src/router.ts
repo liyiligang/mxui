@@ -30,19 +30,22 @@ const router = createRouter({
                 {path: 'nodeReport', name: 'nodeReport', component: NodeReport},
                 {path: 'nodeNotify', name: 'nodeNotify', component: NodeNotify},
                 {path: 'nodeTest', name: 'nodeTest', component: NodeTest},
-                {path: "notFound", name: "notFound", component: NotFound},
             ]
         },
-        // {path: "/404", name: "notFound", component: NotFound},
-        // {path: "*", redirect: "/404"}
+        {path: "/notFound", name: "notFound", component: NotFound}
     ]
 })
 
-
+router.beforeEach((to, from, next) => {
+    if (to.matched.length ===0) {
+        next('/notFound')
+    } else {
+        next();
+    }
+});
 
 export module routerPath {
 
-    import Filter = protoManage.Filter;
     export function toLogin(){
         router.push({
             name: "login"
