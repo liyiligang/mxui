@@ -29,15 +29,17 @@ type App struct {
 }
 
 //服务初始化
-func InitServer() {
+func InitServer() (*App, error) {
 	app := App{AppTypeName: commonConst.ManageServerName}
 	app.InitDiscovery()
 	app.InitLogServer()
 	if err := app.InitBaseServer(); err != nil {
 		app.StopBaseServer()
+		return nil, err
 	}
 	app.initAppData()
 	Jlog.Info("服务已经全部启动")
+	return &app, nil
 }
 
 func (app *App) InitBaseServer() error {
