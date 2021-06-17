@@ -8,28 +8,28 @@ import (
 )
 
 //新增节点方法
-func (db *DB) AddNodeFunc(nodeFunc orm.NodeFunc) error {
+func (db *Server) AddNodeFunc(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Create(&nodeFunc).Error
 }
 
 //删除节点方法
-func (db *DB) DelNodeFunc(nodeFunc orm.NodeFunc) error {
+func (db *Server) DelNodeFunc(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Delete(nodeFunc).Error
 }
 
 //按节点ID删除所有节点方法
-func (db *DB) DelAllNodeFuncByNodeID(nodeFunc orm.NodeFunc) error {
+func (db *Server) DelAllNodeFuncByNodeID(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Where("nodeID = ?", nodeFunc.NodeID).Delete(orm.NodeFunc{}).Error
 }
 
 //按ID更新指定节点方法名
-func (db *DB) UpdateNodeFuncNameByID(nodeFunc orm.NodeFunc) error {
+func (db *Server) UpdateNodeFuncNameByID(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Model(&nodeFunc).
 		Updates(map[string]interface{}{"name": nodeFunc.Name}).Error
 }
 
 //获取节点方法信息
-func (db *DB) FindNodeFunc(filter protoManage.Filter) ([]orm.NodeFunc, error) {
+func (db *Server) FindNodeFunc(filter protoManage.Filter) ([]orm.NodeFunc, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
 	var nodeFuncList []orm.NodeFunc
@@ -41,7 +41,7 @@ func (db *DB) FindNodeFunc(filter protoManage.Filter) ([]orm.NodeFunc, error) {
 }
 
 //获取节点方法计数
-func (db *DB) FindNodeFuncCount(filter protoManage.Filter) (int64, error) {
+func (db *Server) FindNodeFuncCount(filter protoManage.Filter) (int64, error) {
 	tx := db.Gorm.Model(&orm.NodeFunc{})
 	tx = db.SetFilter(tx, filter)
 	var count int64
@@ -50,7 +50,7 @@ func (db *DB) FindNodeFuncCount(filter protoManage.Filter) (int64, error) {
 }
 
 //获取节点方法状态统计
-func (db *DB) FindNodeFuncStateCount(filter protoManage.Filter) ([]orm.StateCount, error) {
+func (db *Server) FindNodeFuncStateCount(filter protoManage.Filter) ([]orm.StateCount, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
 	subQuery1 := tx.Model(&orm.Node{})
@@ -66,7 +66,7 @@ func (db *DB) FindNodeFuncStateCount(filter protoManage.Filter) ([]orm.StateCoun
 }
 
 //获取节点方法中节点ID对应的节点信息
-func (db *DB) FindNodeByNodeFunc(filter protoManage.Filter) ([]orm.Node, error) {
+func (db *Server) FindNodeByNodeFunc(filter protoManage.Filter) ([]orm.Node, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
 	subQuery1 := tx.Model(&orm.NodeFunc{})
@@ -78,25 +78,25 @@ func (db *DB) FindNodeByNodeFunc(filter protoManage.Filter) ([]orm.Node, error) 
 }
 
 //按ID获取指定节点方法
-func (db *DB) FindNodeFuncByID(nodeFunc orm.NodeFunc) (*orm.NodeFunc, error) {
+func (db *Server) FindNodeFuncByID(nodeFunc orm.NodeFunc) (*orm.NodeFunc, error) {
 	err := db.Gorm.First(&nodeFunc, nodeFunc.ID).Error
 	return &nodeFunc, err
 }
 
 //按名称获取指定节点方法
-func (db *DB) FindNodeFuncByName(nodeFunc orm.NodeFunc) (*orm.NodeFunc, error) {
+func (db *Server) FindNodeFuncByName(nodeFunc orm.NodeFunc) (*orm.NodeFunc, error) {
 	err := db.Gorm.Where("name = ? and nodeID = ?", nodeFunc.Name, nodeFunc.NodeID).First(&nodeFunc).Error
 	return &nodeFunc, err
 }
 
 //新增节点方法调用
-func (db *DB) AddNodeFuncCall(nodeFuncCall orm.NodeFuncCall) (*orm.Base, error) {
+func (db *Server) AddNodeFuncCall(nodeFuncCall orm.NodeFuncCall) (*orm.Base, error) {
 	err := db.Gorm.Create(&nodeFuncCall).Error
 	return &nodeFuncCall.Base, err
 }
 
 //按ID更新节点方法调用
-func (db *DB) UpdateNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) error {
+func (db *Server) UpdateNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) error {
 	err := db.Gorm.Model(&nodeFuncCall).
 		Updates(map[string]interface{}{
 			"returnVal": nodeFuncCall.ReturnVal,
@@ -105,7 +105,7 @@ func (db *DB) UpdateNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) error {
 }
 
 //获取节点方法调用信息
-func (db *DB) FindNodeFuncCall(filter protoManage.Filter) ([]orm.NodeFuncCall, error) {
+func (db *Server) FindNodeFuncCall(filter protoManage.Filter) ([]orm.NodeFuncCall, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
 	var NodeFuncCallList []orm.NodeFuncCall
@@ -117,13 +117,13 @@ func (db *DB) FindNodeFuncCall(filter protoManage.Filter) ([]orm.NodeFuncCall, e
 }
 
 //按ID获取指定节点方法调用
-func (db *DB) FindNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) (*orm.NodeFuncCall, error) {
+func (db *Server) FindNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) (*orm.NodeFuncCall, error) {
 	err := db.Gorm.First(&nodeFuncCall, nodeFuncCall.ID).Error
 	return &nodeFuncCall, err
 }
 
 //获取节点方法调用中节点方法ID对应的最后一次调用信息
-func (db *DB) FindLastNodeFuncCallByNodeFunc(filter protoManage.Filter) ([]orm.NodeFuncCall, error) {
+func (db *Server) FindLastNodeFuncCallByNodeFunc(filter protoManage.Filter) ([]orm.NodeFuncCall, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
 	subQuery1 := tx.Model(&orm.NodeFunc{})

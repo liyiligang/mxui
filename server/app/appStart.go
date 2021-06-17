@@ -29,8 +29,8 @@ import (
 )
 
 //初始化服务发现
-func (app *App) initDiscovery() {
-	if app.discovery.Init(Jdiscovery.DiscoveryInitConfig{
+func (app *App) InitDiscovery() {
+	if app.Discovery.Init(Jdiscovery.DiscoveryInitConfig{
 		EtcdAddr:       config.LocalConfig.Etcd.EtcdAddr,
 		ConnectTimeout: config.LocalConfig.Etcd.ConnectWaitTime,
 		RequestTimeout: config.LocalConfig.Etcd.RequestTimeout,
@@ -40,8 +40,8 @@ func (app *App) initDiscovery() {
 	log.Println("发现服务初始化成功")
 }
 
-func (app *App) initLogServer(){
-	data, err := app.discovery.GetConfig("/"+ config.LocalConfig.Node.NodeGroup+"/"+ config.LocalConfig.Etcd.ConfigKey.Log)
+func (app *App) InitLogServer(){
+	data, err := app.Discovery.GetConfig("/"+ config.LocalConfig.Node.NodeGroup+"/"+ config.LocalConfig.Etcd.ConfigKey.Log)
 	if err != nil {
 		log.Fatal("读取线上配置失败: ", err)
 	}
@@ -57,7 +57,7 @@ func (app *App) initLogServer(){
 		MaxAge:     config.LogConfig.Zap.MaxAge,
 		InitialFields: map[string]interface{}{
 			"@nodeGroup":    config.LocalConfig.Node.NodeGroup,
-			"@nodeTypeName": app.appTypeName,
+			"@nodeTypeName": app.AppTypeName,
 			"@nodeName":     config.LocalConfig.Node.NodeName,
 		}})
 
@@ -68,7 +68,7 @@ func (app *App) initLogServer(){
 }
 
 func (app *App) ParseConfig(config interface{}, configKey string) error {
-	data, err := app.discovery.GetConfig(configKey)
+	data, err := app.Discovery.GetConfig(configKey)
 	if err != nil {
 		Jlog.Error("读取线上配置失败", "err", err)
 		return err
@@ -82,7 +82,7 @@ func (app *App) ParseConfig(config interface{}, configKey string) error {
 	return nil
 }
 
-func (app *App) initConfig() error {
+func (app *App) InitConfig() error {
 	if err := app.ParseConfig(&config.DBConfig, "/"+config.LocalConfig.Node.NodeGroup+"/"+config.LocalConfig.Etcd.ConfigKey.DB); err != nil {
 		return err
 	}
@@ -93,7 +93,7 @@ func (app *App) initConfig() error {
 		return err
 	}
 	if err := app.ParseConfig(&config.NodeConfig, "/"+config.LocalConfig.Node.NodeGroup+"/"+
-		config.LocalConfig.Etcd.ConfigKey.Node+string(app.appTypeName)+"/"+
+		config.LocalConfig.Etcd.ConfigKey.Node+string(app.AppTypeName)+"/"+
 		config.LocalConfig.Node.NodeName+"/config"); err != nil {
 		return err
 	}
@@ -111,7 +111,7 @@ func (app *App) initConfig() error {
 }
 
 //启动orm服务
-func (app *App) initDBServer() error {
+func (app *App) InitDBServer() error {
 	db, err := Jorm.GormInit(Jorm.OrmInitConfig{
 		SqlDsn:      config.DBConfig.Mysql.Account + config.NodeConfig.DB.Name + config.DBConfig.Mysql.Set,
 		MaxKeepConn: config.DBConfig.Mysql.MaxKeepConn,
@@ -124,16 +124,16 @@ func (app *App) initDBServer() error {
 		Jlog.Error("连接数据库" + config.NodeConfig.DB.Name + "失败", "errorBox:", err)
 		return err
 	}
-	app.gorm = db
+	app.DBServer.Gorm = db
 	Jlog.Info("数据库服务初始化成功")
 	return nil
 }
 
-func (app *App) stopDBServer() error {
-	if app.gorm == nil {
+func (app *App) StopDBServer() error {
+	if app.DBServer.Gorm == nil {
 		return nil
 	}
-	db, err := app.gorm.DB()
+	db, err := app.DBServer.Gorm.DB()
 	if err != nil {
 		Jlog.Error("数据库服务关闭失败", "err", err)
 		return err
@@ -147,7 +147,7 @@ func (app *App) stopDBServer() error {
 }
 
 //启动web服务
-func (app *App) initWebServer() error {
+func (app *App) InitWebServer() error {
 	publicKeyPath, err := Jtool.CreateSysTmpFile("*.pem", []byte(config.HttpCert.Key.PublicKeyByte))
 	if err != nil {
 		Jlog.Error("Web服务初始化失败", "errorBox:", err)
@@ -194,17 +194,17 @@ func (app *App) initWebServer() error {
 		RouteCall:      routeFunc,
 		ErrorCall:      errorOther,
 	})
-	app.httpServer = httpServer
+	app.HttpServer = httpServer
 	Jlog.Info("Web服务初始化成功")
 	return nil
 }
 
 //优雅关闭http服务
-func (app *App) gracefulStopWebServer() error {
-	if app.httpServer == nil {
+func (app *App) GracefulStopWebServer() error {
+	if app.HttpServer == nil {
 		return nil
 	}
-	if err := app.httpServer.Shutdown(context.Background()); err != nil {
+	if err := app.HttpServer.Shutdown(context.Background()); err != nil {
 		Jlog.Error("Web服务优雅关闭失败", "err", err)
 		return err
 	}
@@ -212,11 +212,11 @@ func (app *App) gracefulStopWebServer() error {
 }
 
 //立即关闭http服务
-func (app *App) stopWebServer() error {
-	if app.httpServer == nil {
+func (app *App) StopWebServer() error {
+	if app.HttpServer == nil {
 		return nil
 	}
-	if err := app.httpServer.Close(); err != nil {
+	if err := app.HttpServer.Close(); err != nil {
 		Jlog.Error("Web强制关闭失败", "err", err)
 		return err
 	}
@@ -224,7 +224,7 @@ func (app *App) stopWebServer() error {
 }
 
 //启动rpc服务
-func (app *App) initRpcServer() error {
+func (app *App) InitRpcServer() error {
 	publicKeyPath, err := Jtool.CreateSysTmpFile("*.pem", []byte(config.GrpcCert.Key.PublicKeyByte))
 	if err != nil {
 		Jlog.Error("Rpc服务初始化失败", "errorBox:", err)
@@ -249,33 +249,33 @@ func (app *App) initRpcServer() error {
 		ErrorCall: errorOther,
 	})
 
-	app.rpcServer = s
+	app.RpcServer = s
 	Jlog.Info("Rpc服务初始化成功")
 	return nil
 }
 
 //优雅关闭rpc服务
-func (app *App) gracefulStopRpcServer() error {
-	if app.rpcServer == nil {
+func (app *App) GracefulStopRpcServer() error {
+	if app.RpcServer == nil {
 		return nil
 	}
-	app.rpcServer.GracefulStop()
+	app.RpcServer.GracefulStop()
 	return nil
 }
 
 //立即关闭rpc服务
-func (app *App) stopRpcServer() error {
-	if app.rpcServer == nil {
+func (app *App) StopRpcServer() error {
+	if app.RpcServer == nil {
 		return nil
 	}
-	app.rpcServer.Stop()
+	app.RpcServer.Stop()
 	return nil
 }
 
 //获取节点key
 func (app *App) getNodeKey() string {
 	return "/"+ config.LocalConfig.Node.NodeGroup+"/服务"+"/"+
-		string(app.appTypeName)+"/"+ config.LocalConfig.Node.NodeName+"/node"
+		string(app.AppTypeName)+"/"+ config.LocalConfig.Node.NodeName+"/node"
 }
 
 //注册节点
@@ -283,7 +283,7 @@ func (app *App) registerNode() error {
 	nodeData := commonConst.CommonNodeData{
 		NodeID:       commonConst.ManageNodeID,
 		NodeTypeID:   commonConst.ManageNodeTypeID,
-		NodeTypeName: app.appTypeName,
+		NodeTypeName: app.AppTypeName,
 		NodeName:     config.LocalConfig.Node.NodeName,
 		NodeGroup:    config.LocalConfig.Node.NodeGroup,
 		NodeState:    int32(protoManage.State_StateNormal),
@@ -296,7 +296,7 @@ func (app *App) registerNode() error {
 		Jlog.Info("节点服务注册失败")
 		return err
 	}
-	err = app.discovery.RegisterNode(&Jdiscovery.DiscoveryNode{
+	err = app.Discovery.RegisterNode(&Jdiscovery.DiscoveryNode{
 		NodeKey: app.getNodeKey(),
 		NodeData: byte,
 		NodeKeepLive: 60,
@@ -311,150 +311,10 @@ func (app *App) registerNode() error {
 
 //注销节点
 func (app *App) unRegisterNode() error {
-	return app.discovery.UnRegisterNode(app.getNodeKey())
+	return app.Discovery.UnRegisterNode(app.getNodeKey())
 }
 
+//错误回调
 func errorOther(str string, keysAndValues ...interface{}){
 	Jlog.Error(str, keysAndValues)
-}
-
-func (app *App) InitDBData(){
-	startNum := 1
-	//nodeGroupLen := 100
-	//nodeTypeLen := 10
-	//nodeLen := 10000
-	//nodeLinkLen := 10000
-	//nodeFuncLen := 10000
-	//nodeReportLen := 10000
-	//nodeFuncCallLen := 30
-	//nodeReportValLen := 10000
-	nodeNotifyLen := 10000
-
-	//for i:=startNum; i<=nodeGroupLen; i++ {
-	//	app.dbAddNodeGroup(orm.NodeGroup{Base: orm.Base{ID: int64(i)}, Name: "节点组" +  strconv.Itoa(i)})
-	//}
-	//
-	//for i:=startNum; i<=nodeTypeLen; i++ {
-	//	app.dbAddNodeType(orm.NodeType{Base: orm.Base{ID: int64(i)}, Name: "节点类型" +  strconv.Itoa(i)})
-	//}
-	//
-	//for i:=startNum; i<=nodeLen; i++ {
-	//	groupID, _ := Jtool.GetRandInt(startNum, nodeGroupLen)
-	//	typeID, _ := Jtool.GetRandInt(startNum, nodeTypeLen)
-	//	state, _ := Jtool.GetRandInt(0, 5)
-	//	app.dbAddNode(orm.Node{
-	//		Base: orm.Base{ID: int64(i)},
-	//		Name: "节点" +  strconv.Itoa(i),
-	//		GroupID: int64(groupID),
-	//		TypeID: int64(typeID),
-	//		State: int32(state),
-	//	})
-	//}
-	//
-	//for i:=startNum; i<=nodeLinkLen; i++ {
-	//	sourceID, _ := Jtool.GetRandInt(startNum, nodeLen)
-	//	targetID, _ := Jtool.GetRandInt(startNum, nodeLen)
-	//	state, _ := Jtool.GetRandInt(0, 5)
-	//	app.dbAddNodeLink(orm.NodeLink{
-	//		Base: orm.Base{ID: int64(i)},
-	//		SourceID: int64(sourceID),
-	//		TargetID: int64(targetID),
-	//		State: int32(state),
-	//	})
-	//}
-	//
-	//for i:=startNum; i<=nodeFuncLen; i++ {
-	//	nodeID, _ := Jtool.GetRandInt(startNum, nodeLen)
-	//	state, _ := Jtool.GetRandInt(0, 5)
-	//	app.dbAddNodeFunc(orm.NodeFunc{
-	//		Base: orm.Base{ID: int64(i)},
-	//		NodeID: int64(nodeID),
-	//		Name: "节点方法" +  strconv.Itoa(i),
-	//		Func: "func(" +  strconv.Itoa(i) + "){}",
-	//		State: int32(state),
-	//	})
-	//}
-	//
-	//for i:=startNum; i<=nodeReportLen; i++ {
-	//	nodeID, _ := Jtool.GetRandInt(startNum, nodeLen)
-	//	state, _ := Jtool.GetRandInt(0, 5)
-	//	app.dbAddNodeReport(orm.NodeReport{
-	//		Base: orm.Base{ID: int64(i)},
-	//		NodeID: int64(nodeID),
-	//		Name: "节点报告" +  strconv.Itoa(i),
-	//		Flag: "报告标签" +  strconv.Itoa(i),
-	//		State: int32(state),
-	//	})
-	//}
-	//
-	//for i:=startNum; i<=nodeReportLen; i++ {
-	//	nodeID, _ := Jtool.GetRandInt(startNum, nodeLen)
-	//	state, _ := Jtool.GetRandInt(0, 5)
-	//	app.dbAddNodeReport(orm.NodeReport{
-	//		Base: orm.Base{ID: int64(i)},
-	//		NodeID: int64(nodeID),
-	//		Name: "节点报告" +  strconv.Itoa(i),
-	//		Flag: "报告标签" +  strconv.Itoa(i),
-	//		State: int32(state),
-	//	})
-	//}
-
-	//for i:=startNum; i<=nodeReportLen; i++ {
-	//	for j := startNum; j<nodeFuncCallLen; j++  {
-	//		nodeID, _ := Jtool.GetRandInt(startNum, nodeLen)
-	//		state, _ := Jtool.GetRandInt(0, 5)
-	//		app.dbAddNodeReport(orm.NodeReport{
-	//			Base: orm.Base{ID: int64(i)},
-	//			NodeID: int64(nodeID),
-	//			Name: "节点报告" +  strconv.Itoa(i),
-	//			Flag: "报告标签" +  strconv.Itoa(i),
-	//			State: int32(state),
-	//		})
-	//	}
-	//}
-
-	//for i:=startNum; i<=10; i++ {
-	//	for j := startNum; j<nodeReportValLen; j++  {
-	//		value, _ := Jtool.GetRandInt(0, 1000000)
-	//		state, _ := Jtool.GetRandInt(1, 5)
-	//		app.db.AddNodeReportVal(orm.NodeReportVal{
-	//			ReportID: int64(i),
-	//			Value: float64(value/1000),
-	//			State: int32(state),
-	//		})
-	//		timeF, _ := Jtool.GetRandInt(0, 1500)
-	//		time.Sleep(time.Duration(timeF) * time.Millisecond)
-	//	}
-	//}
-
-	for j := startNum; j<nodeNotifyLen; j++  {
-		nodeID, _ := Jtool.GetRandInt(1, 10000)
-		state, _ := Jtool.GetRandInt(1, 5)
-		app.db.AddNodeNotify(orm.NodeNotify{
-			SenderID: int64(nodeID),
-			SenderType: int64(protoManage.NotifySenderType_NotifySenderTypeNode),
-			Message: Jtool.GetRandChinese(1, 60),
-			State:int32(state),
-		})
-		timeF, _ := Jtool.GetRandInt(0, 1500)
-		time.Sleep(time.Duration(timeF) * time.Millisecond)
-	}
-
-	Jlog.Info("数据填充完毕")
-}
-
-func (app *App) nodeNotifyAddTest(){
-	go func() {
-		for  {
-			nodeID, _ := Jtool.GetRandInt(1, 10000)
-			state, _ := Jtool.GetRandInt(1, 5)
-			app.data.NodeNotifyAdd(&protoManage.NodeNotify{
-				SenderID: int64(nodeID),
-				SenderType: protoManage.NotifySenderType_NotifySenderTypeNode,
-				Message: Jtool.GetRandChinese(2, 20),
-				State: protoManage.State(state),
-			})
-			time.Sleep(2*time.Second)
-		}
-	}()
 }

@@ -5,12 +5,12 @@ import (
 	"gorm.io/gorm"
 )
 
-type DB struct {
+type Server struct {
 	Gorm              *gorm.DB
 }
 
 //设置过滤器参数
-func (db *DB) SetFilter(tx *gorm.DB, filter protoManage.Filter) *gorm.DB {
+func (db *Server) SetFilter(tx *gorm.DB, filter protoManage.Filter) *gorm.DB {
 	if filter.ID != 0 {
 		tx.Where("id = ?", filter.ID)
 	}

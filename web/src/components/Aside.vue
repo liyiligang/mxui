@@ -29,8 +29,8 @@ import {useRoute} from "vue-router";
 import {protoManage} from "../proto/manage";
 
 interface AsideInfo {
-    activeName:""
-    activeSubMenu:[]
+    activeName:String
+    activeSubMenu:Array<String>
 }
 
 export default defineComponent ({
@@ -42,7 +42,10 @@ export default defineComponent ({
         const data = reactive<AsideInfo>({activeName:routerName.nodeGroup, activeSubMenu:["1", "2"]})
         const route = useRoute()
         onMounted(()=>{
-            data.activeName = route.name
+            if (route.name == null){
+                return``
+            }
+            data.activeName = route.name.toString()
         })
 
         function menuSelect(key:string, keyPath:string){

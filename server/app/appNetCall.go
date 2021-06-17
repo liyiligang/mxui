@@ -13,32 +13,32 @@ import (
 )
 
 func (app *App) WebsocketConnect(conn *Jweb.WebsocketConn) (interface{}, error) {
-	return app.request.ReqWsTokenCheck([]byte(conn.GetParm().WsClientMsg), conn.GetParm().WsClientAddr)
+	return app.Request.ReqWsTokenCheck([]byte(conn.GetParm().WsClientMsg), conn.GetParm().WsClientAddr)
 }
 
 func (app *App) WebsocketConnected(conn *Jweb.WebsocketConn) error {
-	id, err := app.gateway.WsGetID(conn.GetBindVal())
+	id, err := app.Gateway.WsGetID(conn.GetBindVal())
 	if err != nil {
 		return err
 	}
 
 	Jlog.Info("进入 websocket", "id", id)
 
-	if app.gateway.WebsocketManage.IsExistDelayCheck(id, 500*time.Millisecond, 6) {
+	if app.Gateway.WebsocketManage.IsExistDelayCheck(id, 500*time.Millisecond, 6) {
 		return errors.New("id:"+Jtool.Int64ToString(id)+"已存在")
 	}
-	err = app.request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
+	err = app.Request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
 		State: protoManage.State_StateNormal})
 	if err != nil {
 		return err
 	}
-	app.gateway.WebsocketManage.Store(id, conn)
+	app.Gateway.WebsocketManage.Store(id, conn)
 	Jlog.Info("websocket已连接", "id", id)
 	return nil
 }
 
 func (app *App) WebsocketClose(conn *Jweb.WebsocketConn, code int, text string) {
-	id, err := app.gateway.WsGetID(conn.GetBindVal())
+	id, err := app.Gateway.WsGetID(conn.GetBindVal())
 	if err != nil {
 		Jlog.Warn("websocket连接关闭错误", "err", err)
 		return
@@ -46,14 +46,14 @@ func (app *App) WebsocketClose(conn *Jweb.WebsocketConn, code int, text string) 
 
 	Jlog.Info("进入 websocket 关闭", "id", id)
 
-	app.request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
+	app.Request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
 		State: protoManage.State_StateUnknow})
-	app.gateway.WebsocketManage.Delete(id)
+	app.Gateway.WebsocketManage.Delete(id)
 	Jlog.Info("websocket连接已关闭", "id", id)
 }
 
 func (app *App) WebsocketReceiver(conn *Jweb.WebsocketConn, message *[]byte) {
-	id, err := app.gateway.WsGetID(conn.GetBindVal())
+	id, err := app.Gateway.WsGetID(conn.GetBindVal())
 	if err != nil {
 		Jlog.Warn("websocket数据接收错误", "err", err)
 		return
@@ -66,7 +66,7 @@ func (app *App) WebsocketReceiver(conn *Jweb.WebsocketConn, message *[]byte) {
 	}
 	switch res.Order {
 	case protoManage.Order_NodeUpdateState:
-		app.request.ReqNodeStateUpdate(id, res.Message)
+		app.Request.ReqNodeStateUpdate(id, res.Message)
 	break
 	default:
 		Jlog.Warn("websocket指令错误", "消息", res)
@@ -92,12 +92,12 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		return nil, err, int(protoManage.HttpError_HttpErrorUnmarshal)
 	}
 	if req.Order == protoManage.Order_ManagerLogin{
-		ansMsg, err = app.request.ReqManagerLogin(0, req.Message)
+		ansMsg, err = app.Request.ReqManagerLogin(0, req.Message)
 		if err != nil {
 			return nil, err, int(protoManage.HttpError_HttpErrorLogin)
 		}
 	}else if req.Order == protoManage.Order_ManagerAdd {
-		ansMsg, err = app.request.ReqManagerAdd(userID, req.Message)
+		ansMsg, err = app.Request.ReqManagerAdd(userID, req.Message)
 		if err != nil {
 			return nil, err, int(protoManage.HttpError_HttpErrorRegister)
 		}
@@ -108,76 +108,76 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		}
 		switch req.Order {
 		case protoManage.Order_ManagerFind:
-			ansMsg, err = app.request.ReqManagerFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqManagerFind(userID, req.Message)
 			break
 		case protoManage.Order_ManagerFindByID:
-			ansMsg, err = app.request.ReqManagerFindByID(userID, req.Message)
+			ansMsg, err = app.Request.ReqManagerFindByID(userID, req.Message)
 			break
 		case protoManage.Order_ManagerUpdatePassword:
-			ansMsg, err = app.request.ReqManagerUpdatePassword(userID, req.Message)
+			ansMsg, err = app.Request.ReqManagerUpdatePassword(userID, req.Message)
 			break
 		case protoManage.Order_ManagerUpdateSetting:
-			ansMsg, err = app.request.ReqManagerUpdateSetting(userID, req.Message)
+			ansMsg, err = app.Request.ReqManagerUpdateSetting(userID, req.Message)
 			break
 		case protoManage.Order_TopLinkFind:
-			ansMsg, err = app.request.ReqTopLinkFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqTopLinkFind(userID, req.Message)
 			break
 		case protoManage.Order_TopLinkFindByID:
-			ansMsg, err = app.request.ReqTopLinkFindByID(userID, req.Message)
+			ansMsg, err = app.Request.ReqTopLinkFindByID(userID, req.Message)
 			break
 		case protoManage.Order_TopLinkAdd:
-			ansMsg, err = app.request.ReqTopLinkAdd(userID, req.Message)
+			ansMsg, err = app.Request.ReqTopLinkAdd(userID, req.Message)
 			break
 		case protoManage.Order_TopLinkDel:
-			ansMsg, err = app.request.ReqTopLinkDel(userID, req.Message)
+			ansMsg, err = app.Request.ReqTopLinkDel(userID, req.Message)
 			break
 		case protoManage.Order_TopLinkUpdate:
-			ansMsg, err = app.request.ReqTopLinkUpdate(userID, req.Message)
+			ansMsg, err = app.Request.ReqTopLinkUpdate(userID, req.Message)
 			break
 		case protoManage.Order_NodeGroupFind:
-			ansMsg, err = app.request.ReqNodeGroupFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeGroupFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeTypeFind:
-			ansMsg, err = app.request.ReqNodeTypeFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeTypeFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeFind:
-			ansMsg, err = app.request.ReqNodeFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeLinkFind:
-			ansMsg, err = app.request.ReqNodeLinkFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeLinkFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeFuncFind:
-			ansMsg, err = app.request.ReqNodeFuncFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeFuncFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeReportFind:
-			ansMsg, err = app.request.ReqNodeReportFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeReportFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeGroupFindByID:
-			ansMsg, err = app.request.ReqNodeGroupFindByID(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeGroupFindByID(userID, req.Message)
 			break
 		case protoManage.Order_NodeTypeFindByID:
-			ansMsg, err = app.request.ReqNodeTypeFindByID(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeTypeFindByID(userID, req.Message)
 			break
 		case protoManage.Order_NodeFindByID:
-			ansMsg, err = app.request.ReqNodeFindByID(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeFindByID(userID, req.Message)
 			break
 		case protoManage.Order_NodeFuncCallReq:
-			ansMsg, err = app.request.ReqNodeFuncCall(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeFuncCall(userID, req.Message)
 			break
 		case protoManage.Order_NodeFuncCallFind:
-			ansMsg, err = app.request.ReqNodeFuncCallFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeFuncCallFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeFuncCallFindByID:
-			ansMsg, err = app.request.ReqNodeFuncCallFindByID(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeFuncCallFindByID(userID, req.Message)
 			break
 		case protoManage.Order_NodeReportValFind:
-			ansMsg, err = app.request.ReqNodeReportValFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeReportValFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeNotifyFind:
-			ansMsg, err = app.request.ReqNodeNotifyFind(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeNotifyFind(userID, req.Message)
 			break
 		case protoManage.Order_NodeTest:
-			ansMsg, err = app.request.ReqNodeTest(userID, req.Message)
+			ansMsg, err = app.Request.ReqNodeTest(userID, req.Message)
 			break
 		default:
 			err = errors.New("http指令错误")
@@ -204,7 +204,7 @@ func (app *App) RpcChannel(request protoManage.RpcEngine_RpcChannelServer) (err 
 }
 
 func (app *App) RpcStreamConnect(conn *Jrpc.RpcStream) (interface{}, error) {
-	id, header, err := app.request.ReqNodeLogin(conn.GetParm().RpcClientMsg, conn.GetParm().RpcClientAddr)
+	id, header, err := app.Request.ReqNodeLogin(conn.GetParm().RpcClientMsg, conn.GetParm().RpcClientAddr)
 	conn.SetRpcStreamServerHeader(header)
 	if err != nil {
 		return 0, err
@@ -213,35 +213,35 @@ func (app *App) RpcStreamConnect(conn *Jrpc.RpcStream) (interface{}, error) {
 }
 
 func (app *App) RpcStreamConnected(conn *Jrpc.RpcStream) error {
-	id, err := app.gateway.RpcGetID(conn.GetBindVal())
+	id, err := app.Gateway.RpcGetID(conn.GetBindVal())
 	if err != nil {
 		return err
 	}
-	if app.gateway.RpcManage.IsExistDelayCheck(id, 500*time.Millisecond, 6) {
+	if app.Gateway.RpcManage.IsExistDelayCheck(id, 500*time.Millisecond, 6) {
 		return errors.New("id:"+Jtool.Int64ToString(id)+"已存在")
 	}
-	err = app.request.ReqNodeOnline(id, conn.GetParm().RpcStreamClientMsg)
+	err = app.Request.ReqNodeOnline(id, conn.GetParm().RpcStreamClientMsg)
 	if err != nil {
 		return err
 	}
-	app.gateway.RpcManage.Store(id, conn)
+	app.Gateway.RpcManage.Store(id, conn)
 	Jlog.Info("rpc已连接", "id", id)
 	return nil
 }
 
 func (app *App) RpcStreamClose(conn *Jrpc.RpcStream) {
-	id, err := app.gateway.RpcGetID(conn.GetBindVal())
+	id, err := app.Gateway.RpcGetID(conn.GetBindVal())
 	if err != nil {
 		Jlog.Warn("rpc连接关闭错误", "err", err)
 		return
 	}
-	app.request.ReqNodeOffline(id)
-	app.gateway.RpcManage.Delete(conn.GetBindVal())
+	app.Request.ReqNodeOffline(id)
+	app.Gateway.RpcManage.Delete(conn.GetBindVal())
 	Jlog.Info("rpc连接已关闭", "id", id)
 }
 
 func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
-	id, err := app.gateway.RpcGetID(conn.GetBindVal())
+	id, err := app.Gateway.RpcGetID(conn.GetBindVal())
 	if err != nil {
 		Jlog.Warn("rpc数据接收错误", "err", err)
 		return
@@ -250,19 +250,19 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 
 	switch res.Order {
 	case protoManage.Order_NodeUpdateState:
-		app.request.ReqNodeStateUpdate(id, res.Message)
+		app.Request.ReqNodeStateUpdate(id, res.Message)
 		break
 	case protoManage.Order_NodeLinkUpdateState:
-		app.request.ReqNodeLinkStateUpdate(id, res.Message)
+		app.Request.ReqNodeLinkStateUpdate(id, res.Message)
 		break
 	case protoManage.Order_NodeFuncUpdateDesc:
-		app.request.ReqNodeFuncDescUpdate(id, res.Message)
+		app.Request.ReqNodeFuncDescUpdate(id, res.Message)
 		break
 	case protoManage.Order_NodeReportUpdateVal:
-		app.request.ReqNodeReportValUpdate(id, res.Message)
+		app.Request.ReqNodeReportValUpdate(id, res.Message)
 		break
 	case protoManage.Order_NodeNotifyAdd:
-		app.request.ReqNodeNotifyAdd(id, res.Message)
+		app.Request.ReqNodeNotifyAdd(id, res.Message)
 		break
 	default:
 		Jlog.Warn("rpc 指令错误", "消息", res)

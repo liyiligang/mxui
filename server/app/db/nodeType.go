@@ -8,17 +8,17 @@ import (
 )
 
 //新增节点类型
-func (db *DB) AddNodeType(nodeType orm.NodeType) error {
+func (db *Server) AddNodeType(nodeType orm.NodeType) error {
 	return db.Gorm.Create(&nodeType).Error
 }
 
 //删除节点类型
-func (db *DB) DelNodeType(nodeType orm.NodeType) error {
+func (db *Server) DelNodeType(nodeType orm.NodeType) error {
 	return db.Gorm.Delete(&nodeType).Error
 }
 
 //获取节点类型信息
-func (db *DB) FindNodeType(filter protoManage.Filter) ([]orm.NodeType, error) {
+func (db *Server) FindNodeType(filter protoManage.Filter) ([]orm.NodeType, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
 	var nodeTypeList []orm.NodeType
@@ -30,7 +30,7 @@ func (db *DB) FindNodeType(filter protoManage.Filter) ([]orm.NodeType, error) {
 }
 
 //获取节点类型计数
-func (db *DB) FindNodeTypeCount(filter protoManage.Filter) (int64, error) {
+func (db *Server) FindNodeTypeCount(filter protoManage.Filter) (int64, error) {
 	tx := db.Gorm.Model(&orm.NodeType{})
 	tx = db.SetFilter(tx, filter)
 	var count int64
@@ -39,13 +39,13 @@ func (db *DB) FindNodeTypeCount(filter protoManage.Filter) (int64, error) {
 }
 
 //按ID获取指定节点类型
-func (db *DB) FindNodeTypeByID(nodeType orm.NodeType) (*orm.NodeType, error) {
+func (db *Server) FindNodeTypeByID(nodeType orm.NodeType) (*orm.NodeType, error) {
 	err := db.Gorm.Where("id = ?", nodeType.ID).First(&nodeType).Error
 	return &nodeType, err
 }
 
 //按名称获取指定节点类型
-func (db *DB) FindNodeTypeByName(nodeType orm.NodeType) (*orm.NodeType, error) {
+func (db *Server) FindNodeTypeByName(nodeType orm.NodeType) (*orm.NodeType, error) {
 	err := db.Gorm.Where("name = ?", nodeType.Name).First(&nodeType).Error
 	return &nodeType, err
 }

@@ -6,7 +6,7 @@ import (
 )
 
 type Data struct {
-	DB              *db.DB
+	DB				*db.Server
 	Gateway			*gateway.Gateway
 }
 

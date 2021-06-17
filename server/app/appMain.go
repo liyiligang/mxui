@@ -14,81 +14,43 @@ import (
 	"github.com/liyiligang/manage/app/gateway"
 	"github.com/liyiligang/manage/app/request"
 	"google.golang.org/grpc"
-	"gorm.io/gorm"
 	"net/http"
 )
 
 type App struct {
-	appTypeName     commonConst.NodeTypeName
-	httpServer      *http.Server
-	rpcServer       *grpc.Server
-	gorm            *gorm.DB
-	db				db.DB
-	data            data.Data
-	request			request.Request
-	gateway			gateway.Gateway
-	discovery 		Jdiscovery.Discovery
-	receiver        chan appMessage
-}
-
-type appAnsChan struct {
-	id  int32
-	val interface{}
-	err error
-}
-
-type appMessage struct {
-	ID      int32
-	MsgType commonConst.OrderType
-	Msg     interface{}
-	ansChan chan appAnsChan
-	addr    string
-}
-
-func (app *App) distributor() {
-	app.receiver = make(chan appMessage, 256)
-	for {
-		select {
-		case appMsg := <-app.receiver:
-			switch appMsg.MsgType {
-			case commonConst.WebsocketOrder:
-				break
-			case commonConst.RpcServerOrder:
-				break
-			default:
-				Jlog.Warn("消息类型错误", "消息", appMsg)
-				break
-			}
-		}
-	}
+	AppTypeName     commonConst.NodeTypeName
+	HttpServer      *http.Server
+	RpcServer       *grpc.Server
+	DBServer		db.Server
+	Data            data.Data
+	Request			request.Request
+	Gateway			gateway.Gateway
+	Discovery 		Jdiscovery.Discovery
 }
 
 //服务初始化
 func InitServer() {
-	app := App{appTypeName: commonConst.ManageServerName}
-	app.initDiscovery()
-	app.initLogServer()
-	go app.distributor()
+	app := App{AppTypeName: commonConst.ManageServerName}
+	app.InitDiscovery()
+	app.InitLogServer()
 	if err := app.InitBaseServer(); err != nil {
 		app.StopBaseServer()
 	}
 	app.initAppData()
-	//app.InitDBData()
-	//app.nodeNotifyAddTest()
 	Jlog.Info("服务已经全部启动")
 }
 
 func (app *App) InitBaseServer() error {
-	if err :=  app.initConfig(); err != nil {
+	if err :=  app.InitConfig(); err != nil {
 		return err
 	}
-	if err :=  app.initDBServer(); err != nil {
+	if err :=  app.InitDBServer(); err != nil {
 		return err
 	}
-	if err := app.initWebServer(); err != nil {
+	if err := app.InitWebServer(); err != nil {
 		return err
 	}
-	if err := app.initRpcServer(); err != nil {
+	if err := app.InitRpcServer(); err != nil {
 		return err
 	}
 	if err := app.registerNode(); err != nil {
@@ -99,15 +61,14 @@ func (app *App) InitBaseServer() error {
 }
 
 func (app *App) StopBaseServer() {
-	app.stopDBServer()
-	app.stopWebServer()
-	app.stopRpcServer()
+	app.StopDBServer()
+	app.StopWebServer()
+	app.StopRpcServer()
 	Jlog.Info("组件已经全部停止")
 }
 
 func (app *App) initAppData() {
-	app.db.Gorm = app.gorm
-	app.data.DB = &app.db
-	app.data.Gateway = &app.gateway
-	app.request.Data = &app.data
+	app.Data.DB = &app.DBServer
+	app.Data.Gateway = &app.Gateway
+	app.Request.Data = &app.Data
 }
