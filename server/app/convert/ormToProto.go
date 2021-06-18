@@ -2,7 +2,7 @@ package convert
 
 import (
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/typedef/orm"
 )
 
@@ -28,7 +28,7 @@ func OrmManagerNickNameToProtoManagerNickName(ormManager *orm.Manager, protoMana
 }
 
 //DBManagerNickNameList To PBManagerNickNameList
-func OrmManagerNickNameListToProtoManagerNickNameList(ormManagerList []orm.Manager) []protoManage.Manager  {
+func OrmManagerNickNameListToProtoManagerNickNameList(ormManagerList []orm.Manager) []protoManage.Manager {
 	var protoManagerList []protoManage.Manager
 	for _ ,v := range ormManagerList {
 		val := protoManage.Manager{}
@@ -47,7 +47,7 @@ func OrmTopLinkToProtoTopLink(ormTopLink *orm.TopLink, protoTopLink *protoManage
 }
 
 //DBTopLinkList To PBTopLinkList
-func OrmTopLinkListToProtoTopLinkList(ormTopLinkList []orm.TopLink) []protoManage.TopLink  {
+func OrmTopLinkListToProtoTopLinkList(ormTopLinkList []orm.TopLink) []protoManage.TopLink {
 	var protoTopLinkList []protoManage.TopLink
 	for _ ,v := range ormTopLinkList {
 		val := protoManage.TopLink{}
@@ -64,7 +64,7 @@ func OrmNodeGroupToProtoNodeGroup(ormNodeGroup *orm.NodeGroup, protoNodeGroup *p
 }
 
 //DBNodeGroupList To PBNodeGroupList
-func OrmNodeGroupListToProtoNodeGroupList(ormNodeGroupList []orm.NodeGroup) []protoManage.NodeGroup{
+func OrmNodeGroupListToProtoNodeGroupList(ormNodeGroupList []orm.NodeGroup) []protoManage.NodeGroup {
 	var protoNodeGroupList []protoManage.NodeGroup
 	for _ ,v := range ormNodeGroupList {
 		val := protoManage.NodeGroup{}
@@ -81,7 +81,7 @@ func OrmNodeTypeToProtoNodeType(ormNodeType *orm.NodeType, protoNodeType *protoM
 }
 
 //DBNodeTypeList To PBNodeTypeList
-func OrmNodeTypeListToProtoNodeTypeList(ormNodeTypeList []orm.NodeType) []protoManage.NodeType{
+func OrmNodeTypeListToProtoNodeTypeList(ormNodeTypeList []orm.NodeType) []protoManage.NodeType {
 	var protoNodeTypeList []protoManage.NodeType
 	for _ ,v := range ormNodeTypeList {
 		val := protoManage.NodeType{}
@@ -101,7 +101,7 @@ func OrmNodeToProtoNode(ormNode *orm.Node, protoNode *protoManage.Node) {
 }
 
 //DBNodeList To PBNodeList
-func OrmNodeListToProtoNodeList(ormNodeList []orm.Node) []protoManage.Node{
+func OrmNodeListToProtoNodeList(ormNodeList []orm.Node) []protoManage.Node {
 	var protoNodeList []protoManage.Node
 	for _ ,v := range ormNodeList {
 		val := protoManage.Node{}
@@ -120,7 +120,7 @@ func OrmNodeLinkToProtoNodeLink(ormNodeLink *orm.NodeLink, protoNodeLink *protoM
 }
 
 //DBNodeLinkList To PBNodeLinkList
-func OrmNodeLinkListToProtoNodeLinkList(ormNodeLinkList []orm.NodeLink) []protoManage.NodeLink{
+func OrmNodeLinkListToProtoNodeLinkList(ormNodeLinkList []orm.NodeLink) []protoManage.NodeLink {
 	var protoNodeLinkList []protoManage.NodeLink
 	for _ ,v := range ormNodeLinkList {
 		val := protoManage.NodeLink{}
@@ -140,7 +140,7 @@ func OrmNodeFuncToProtoNodeFunc(ormNodeFunc *orm.NodeFunc, protoNodeFunc *protoM
 }
 
 //DBNodeFuncList To PBNodeFuncList
-func OrmNodeFuncListToProtoNodeFuncList(ormNodeFuncList []orm.NodeFunc) []protoManage.NodeFunc{
+func OrmNodeFuncListToProtoNodeFuncList(ormNodeFuncList []orm.NodeFunc) []protoManage.NodeFunc {
 	var protoNodeFuncList []protoManage.NodeFunc
 	for _ ,v := range ormNodeFuncList {
 		val := protoManage.NodeFunc{}
@@ -182,7 +182,7 @@ func OrmNodeReportToProtoNodeReport(ormNodeReport *orm.NodeReport, protoNodeRepo
 }
 
 //DBNodeReportList To PBNodeReportList
-func OrmNodeReportListToProtoNodeReportList(ormNodeReportList []orm.NodeReport) []protoManage.NodeReport{
+func OrmNodeReportListToProtoNodeReportList(ormNodeReportList []orm.NodeReport) []protoManage.NodeReport {
 	var protoNodeReportList []protoManage.NodeReport
 	for _ ,v := range ormNodeReportList {
 		val := protoManage.NodeReport{}
@@ -221,7 +221,7 @@ func OrmNodeNotifyToProtoNodeNotify(ormNodeNotify *orm.NodeNotify, protoNodeNoti
 }
 
 //DBNodeNotifyList To PBNodeNotifyList
-func OrmNodeNotifyListToProtoNodeNotifyList(ormNodeNotifyList []orm.NodeNotify) []protoManage.NodeNotify{
+func OrmNodeNotifyListToProtoNodeNotifyList(ormNodeNotifyList []orm.NodeNotify) []protoManage.NodeNotify {
 	var protoNodeNotifyList []protoManage.NodeNotify
 	for _ ,v := range ormNodeNotifyList {
 		val := protoManage.NodeNotify{}

@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"

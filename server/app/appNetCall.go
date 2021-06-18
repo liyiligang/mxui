@@ -6,7 +6,7 @@ import (
 	"github.com/liyiligang/base/component/Jtoken"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
-	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/typedef/config"
 	"github.com/pkg/errors"
 	"time"
@@ -91,7 +91,7 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 	if err != nil {
 		return nil, err, int(protoManage.HttpError_HttpErrorUnmarshal)
 	}
-	if req.Order == protoManage.Order_ManagerLogin{
+	if req.Order == protoManage.Order_ManagerLogin {
 		ansMsg, err = app.Request.ReqManagerLogin(0, req.Message)
 		if err != nil {
 			return nil, err, int(protoManage.HttpError_HttpErrorLogin)
@@ -102,7 +102,7 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 			return nil, err, int(protoManage.HttpError_HttpErrorRegister)
 		}
 	}else {
-		userID, err = Jtoken.ParseToken(req.Token, config.NodeConfig.Token.Key)
+		userID, err = Jtoken.ParseToken(req.Token, config.LocalConfig.Token.Key)
 		if err != nil {
 			return nil, errors.New("身份验证失败"), int(protoManage.HttpError_HttpErrorRequest)
 		}

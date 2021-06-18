@@ -2,9 +2,9 @@ package data
 
 import (
 	"github.com/liyiligang/base/component/Jtoken"
-	"github.com/liyiligang/base/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/check"
 	"github.com/liyiligang/manage/app/convert"
+	"github.com/liyiligang/manage/app/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/typedef/config"
 	"github.com/liyiligang/manage/app/typedef/orm"
 	"github.com/pkg/errors"
@@ -43,7 +43,7 @@ func (data *Data) ManagerLogin(manager *protoManage.Manager) error {
 	var ormManager *orm.Manager
 	var err error
 	if manager.Token != "" {
-		userID, err := Jtoken.ParseToken(manager.Token, config.NodeConfig.Token.Key)
+		userID, err := Jtoken.ParseToken(manager.Token, config.LocalConfig.Token.Key)
 		if err != nil {
 			return errors.New("token已失效, 请使用账户密码登录")
 		}
@@ -129,9 +129,9 @@ func (data *Data) ManagerSettingUpdate(userID int64, protoManager *protoManage.M
 
 func (data *Data) ManagerGetTokenByID(userID int64) string {
 	tokenConfig := Jtoken.TokenConfig{
-		Key:           config.NodeConfig.Token.Key,
+		Key:           config.LocalConfig.Token.Key,
 		UserID:        userID,
-		StartDuration: time.Duration(config.NodeConfig.Token.StartDuration) * time.Hour,
-		StopDuration:  time.Duration(config.NodeConfig.Token.StopDuration) * time.Hour}
+		StartDuration: time.Duration(config.LocalConfig.Token.StartDuration) * time.Hour,
+		StopDuration:  time.Duration(config.LocalConfig.Token.StopDuration) * time.Hour}
 	 return Jtoken.GetToken(tokenConfig)
 }

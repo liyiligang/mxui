@@ -4,14 +4,54 @@ Debug = true
 NodeGroup = '测试服'
 NodeName = '管控中心'
 
+[Log]
+Path = '../store/log/app.log'
+MaxSize =  200      # 每个日志文件保存的最大尺寸 单位：M
+MaxNum = 1000       # 最多保存多少个日志文件
+MaxAge = 30         # 日志文件最多保存多少天
+
+[Token]
+Key = 'ChYzvtt8ixVbM%Eo'    #Token密钥
+StartDuration = 0           #Token多久后生效(小时, 0:立即生效)
+StopDuration = 1000         #Token生效后多久后失效(小时, 0:立即失效)
+
+[IP]
+PublicIP = ''               #本机公网IP, 空为自动获取
+PrivateIP = ''              #本机内网IP, 空为自动获取
+
+[DB]
+Name = 'manage'
+Account = 'root:p5KtKI3^@tcp(116.62.58.166:3306)/'
+Set = '?charset=utf8mb4&parseTime=True&loc=Local'
+MaxConn =  0            #最大连接数, 0表示不限制
+MaxKeepConn = 2         #最大保持连接数(长连接)
+MaxLifeTime = 21        #数据库请求超时时间(秒, 0:表示立即拒绝请求)
+
+[Grpc]
+ListenAddr = ':899'
+PublicKeyPath = '../store/cert/grpc/public.pem'
+PrivateKeyPath = '../store/cert/grpc/private.key'
+
+[Http]
+UseHttps = false
+ListenAddr = '0.0.0.0:80'
+
+[Http.Https]
+RedirectAddr = '0.0.0.0:80'       #将http重定向至https
+PublicKeyPath = '../store/cert/https/public.pem'
+PrivateKeyPath = '../store/cert/https/private.key'
+
+[Http.WebSocket]
+ReadWaitTime = 0     #读请求超时时间(秒, 0:永远超时, 负数: 立即超时)
+WriteWaitTime = 5    #写请求超时时间(秒, 0:永远超时, 负数: 立即超时)
+PingWaitTime = 0     #Ping请求超时时间(秒, 0:永远超时, 负数: 立即超时)
+PongWaitTime = 0     #Pong请求超时时间(秒, 0:永远超时, 负数: 立即超时)
+
+[Http.StaticFiles]
+WebManagePath = '../../../bin/web/'
+
 [Etcd]
 EtcdAddr = '116.62.58.166:2379'
 ConnectWaitTime = 5     #连接超时时间(秒, 0:永远不超时, 负数: 立即超时)
 RequestTimeout = 5      #请求超时时间(秒, 0:永远不超时, 负数: 立即超时)
 
-[Etcd.ConfigKey]
-Log = '配置/公共配置/日志/log'
-DB = '配置/公共配置/数据库/mysql'
-GrpcCert = '配置/公共配置/证书/grpc'
-HttpCert = '配置/公共配置/证书/http'
-Node = '配置/节点配置/'

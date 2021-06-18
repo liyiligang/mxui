@@ -2,7 +2,7 @@ package check
 
 import (
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/typedef/constant"
 	"github.com/pkg/errors"
 	"unicode/utf8"

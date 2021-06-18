@@ -22,16 +22,16 @@ type App struct {
 	HttpServer      *http.Server
 	RpcServer       *grpc.Server
 	DBServer		db.Server
+	Discovery 		*Jdiscovery.Discovery
 	Data            data.Data
 	Request			request.Request
 	Gateway			gateway.Gateway
-	Discovery 		Jdiscovery.Discovery
 }
 
 //服务初始化
 func InitServer() (*App, error) {
 	app := App{AppTypeName: commonConst.ManageServerName}
-	app.InitDiscovery()
+	app.InitConfig()
 	app.InitLogServer()
 	if err := app.InitBaseServer(); err != nil {
 		app.StopBaseServer()
@@ -43,9 +43,6 @@ func InitServer() (*App, error) {
 }
 
 func (app *App) InitBaseServer() error {
-	if err :=  app.InitConfig(); err != nil {
-		return err
-	}
 	if err :=  app.InitDBServer(); err != nil {
 		return err
 	}
@@ -53,6 +50,9 @@ func (app *App) InitBaseServer() error {
 		return err
 	}
 	if err := app.InitRpcServer(); err != nil {
+		return err
+	}
+	if err := app.InitDiscovery(); err != nil {
 		return err
 	}
 	if err := app.registerNode(); err != nil {
@@ -66,6 +66,8 @@ func (app *App) StopBaseServer() {
 	app.StopDBServer()
 	app.StopWebServer()
 	app.StopRpcServer()
+	app.unRegisterNode()
+	app.StopDiscovery()
 	Jlog.Info("组件已经全部停止")
 }
 

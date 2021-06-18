@@ -3,7 +3,7 @@ package request
 import (
 	"github.com/liyiligang/base/component/Jtoken"
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/typedef/config"
 	"github.com/pkg/errors"
 )
@@ -16,7 +16,7 @@ func (request *Request) ReqWsTokenCheck(message []byte, addr string) (int64, err
 	if err != nil {
 		return 0, err
 	}
-	userID, err := Jtoken.ParseToken(manager.Token, config.NodeConfig.Token.Key)
+	userID, err := Jtoken.ParseToken(manager.Token, config.LocalConfig.Token.Key)
 	if err != nil {
 		return 0, errors.New("websocket连接验证失败, 无效的token")
 	}

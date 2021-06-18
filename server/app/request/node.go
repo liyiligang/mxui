@@ -1,8 +1,8 @@
 package request
 
 import (
-	"github.com/liyiligang/base/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/check"
+	"github.com/liyiligang/manage/app/protoFiles/protoManage"
 )
 
 //节点登录

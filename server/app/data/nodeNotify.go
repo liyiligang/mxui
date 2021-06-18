@@ -2,9 +2,9 @@
 
  import (
 	 "github.com/liyiligang/base/commonConst"
-	 "github.com/liyiligang/base/protoFiles/protoManage"
 	 "github.com/liyiligang/manage/app/check"
 	 "github.com/liyiligang/manage/app/convert"
+	 "github.com/liyiligang/manage/app/protoFiles/protoManage"
 	 "github.com/liyiligang/manage/app/typedef/orm"
  )
 

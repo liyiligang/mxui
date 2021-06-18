@@ -18,43 +18,37 @@ import (
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
-	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/typedef/config"
 	"github.com/liyiligang/manage/app/typedef/orm"
 	"google.golang.org/grpc"
 	"log"
 	"os"
-	"reflect"
 	"time"
 )
 
-//初始化服务发现
-func (app *App) InitDiscovery() {
-	if app.Discovery.Init(Jdiscovery.DiscoveryInitConfig{
-		EtcdAddr:       config.LocalConfig.Etcd.EtcdAddr,
-		ConnectTimeout: config.LocalConfig.Etcd.ConnectWaitTime,
-		RequestTimeout: config.LocalConfig.Etcd.RequestTimeout,
-	}) != nil {
-		log.Fatal("发现服务初始化失败")
+func (app *App) InitConfig(){
+	configPath := ""
+	if len(os.Args) > 1 {
+		configPath = os.Args[1]
 	}
-	log.Println("发现服务初始化成功")
+	Jconfig.ReadConfigFromPath(&config.LocalConfig, configPath)
+
+	if config.LocalConfig.IP.PublicIP == ""{
+		config.LocalConfig.IP.PublicIP = Jtool.GetPublicIP()
+	}
+	if config.LocalConfig.IP.PrivateIP == ""{
+		config.LocalConfig.IP.PrivateIP = Jtool.GetPrivateIP()
+	}
 }
 
 func (app *App) InitLogServer(){
-	data, err := app.Discovery.GetConfig("/"+ config.LocalConfig.Node.NodeGroup+"/"+ config.LocalConfig.Etcd.ConfigKey.Log)
-	if err != nil {
-		log.Fatal("读取线上配置失败: ", err)
-	}
-	err = Jconfig.ReadConfigFromByte(&config.LogConfig, data)
-	if err != nil {
-		log.Fatal("线上配置文件 LogConfig" + " 解析失败: ", err)
-	}
-	err = Jlog.LogInit(Jlog.LogInitConfig{
+	err := Jlog.LogInit(Jlog.LogInitConfig{
 		Debug:      config.LocalConfig.Debug,
-		LocalPath:  config.LogConfig.Zap.Path,
-		MaxSize:    config.LogConfig.Zap.MaxSize,
-		MaxBackups: config.LogConfig.Zap.MaxNum,
-		MaxAge:     config.LogConfig.Zap.MaxAge,
+		LocalPath:  config.LocalConfig.Log.Path,
+		MaxSize:    config.LocalConfig.Log.MaxSize,
+		MaxBackups: config.LocalConfig.Log.MaxNum,
+		MaxAge:     config.LocalConfig.Log.MaxAge,
 		InitialFields: map[string]interface{}{
 			"@nodeGroup":    config.LocalConfig.Node.NodeGroup,
 			"@nodeTypeName": app.AppTypeName,
@@ -67,61 +61,18 @@ func (app *App) InitLogServer(){
 	Jlog.Info("日志服务初始化成功")
 }
 
-func (app *App) ParseConfig(config interface{}, configKey string) error {
-	data, err := app.Discovery.GetConfig(configKey)
-	if err != nil {
-		Jlog.Error("读取线上配置失败", "err", err)
-		return err
-	}
-	err = Jconfig.ReadConfigFromByte(config, data)
-	configName := reflect.TypeOf(config).Elem().Name()
-	if err != nil {
-		Jlog.Error("线上配置文件 "+configName+" 解析失败", "err", err)
-		return err
-	}
-	return nil
-}
-
-func (app *App) InitConfig() error {
-	if err := app.ParseConfig(&config.DBConfig, "/"+config.LocalConfig.Node.NodeGroup+"/"+config.LocalConfig.Etcd.ConfigKey.DB); err != nil {
-		return err
-	}
-	if err := app.ParseConfig(&config.GrpcCert, "/"+config.LocalConfig.Node.NodeGroup+"/"+config.LocalConfig.Etcd.ConfigKey.GrpcCert); err != nil {
-		return err
-	}
-	if err := app.ParseConfig(&config.HttpCert, "/"+config.LocalConfig.Node.NodeGroup+"/"+config.LocalConfig.Etcd.ConfigKey.HTTPCert); err != nil {
-		return err
-	}
-	if err := app.ParseConfig(&config.NodeConfig, "/"+config.LocalConfig.Node.NodeGroup+"/"+
-		config.LocalConfig.Etcd.ConfigKey.Node+string(app.AppTypeName)+"/"+
-		config.LocalConfig.Node.NodeName+"/config"); err != nil {
-		return err
-	}
-
-	if config.NodeConfig.IP.PublicIP == ""{
-		config.NodeConfig.IP.PublicIP = Jtool.GetPublicIP()
-	}
-
-	if config.NodeConfig.IP.PrivateIP == ""{
-		config.NodeConfig.IP.PrivateIP = Jtool.GetPrivateIP()
-	}
-
-	Jlog.Info("线上配置初始化成功")
-	return nil
-}
-
 //启动orm服务
 func (app *App) InitDBServer() error {
 	db, err := Jorm.GormInit(Jorm.OrmInitConfig{
-		SqlDsn:      config.DBConfig.Mysql.Account + config.NodeConfig.DB.Name + config.DBConfig.Mysql.Set,
-		MaxKeepConn: config.DBConfig.Mysql.MaxKeepConn,
-		MaxConn:     config.DBConfig.Mysql.MaxConn,
-		MaxLifetime: time.Duration(config.DBConfig.Mysql.MaxLifeTime) * time.Second,
+		SqlDsn:      config.LocalConfig.DB.Account + config.LocalConfig.DB.Name + config.LocalConfig.DB.Set,
+		MaxKeepConn: config.LocalConfig.DB.MaxKeepConn,
+		MaxConn:     config.LocalConfig.DB.MaxConn,
+		MaxLifetime: time.Duration(config.LocalConfig.DB.MaxLifeTime) * time.Second,
 		LogWrite:    &Jlog.LogIoWrite{Msg: "DB", Flag: "gorm"},
 		TableCheck:  orm.InitOrmTable,
 	})
 	if err != nil {
-		Jlog.Error("连接数据库" + config.NodeConfig.DB.Name + "失败", "errorBox:", err)
+		Jlog.Error("连接数据库" + config.LocalConfig.DB.Name + "失败", "errorBox:", err)
 		return err
 	}
 	app.DBServer.Gorm = db
@@ -148,24 +99,11 @@ func (app *App) StopDBServer() error {
 
 //启动web服务
 func (app *App) InitWebServer() error {
-	publicKeyPath, err := Jtool.CreateSysTmpFile("*.pem", []byte(config.HttpCert.Key.PublicKeyByte))
-	if err != nil {
-		Jlog.Error("Web服务初始化失败", "errorBox:", err)
-		return err
-	}
-	privateKeyPath, err := Jtool.CreateSysTmpFile("*.key", []byte(config.HttpCert.Key.PrivateKeyByte))
-	if err != nil {
-		Jlog.Error("Web服务初始化失败", "errorBox:", err)
-		return err
-	}
-	defer os.Remove(publicKeyPath)
-	defer os.Remove(privateKeyPath)
-
 	websocketConfig := Jweb.WebsocketConfig{
-		WriteWaitTime: time.Duration(config.WebSocketConfig.WebSocket.WriteWaitTime) * time.Second,
-		ReadWaitTime:  time.Duration(config.WebSocketConfig.WebSocket.ReadWaitTime) * time.Second,
-		PingWaitTime:  time.Duration(config.WebSocketConfig.WebSocket.PingWaitTime) * time.Second,
-		PongWaitTime:  time.Duration(config.WebSocketConfig.WebSocket.PongWaitTime) * time.Second,
+		WriteWaitTime: time.Duration(config.LocalConfig.HTTP.WebSocket.WriteWaitTime) * time.Second,
+		ReadWaitTime:  time.Duration(config.LocalConfig.HTTP.WebSocket.ReadWaitTime) * time.Second,
+		PingWaitTime:  time.Duration(config.LocalConfig.HTTP.WebSocket.PingWaitTime) * time.Second,
+		PongWaitTime:  time.Duration(config.LocalConfig.HTTP.WebSocket.PongWaitTime) * time.Second,
 		Call:          app,
 	}
 
@@ -185,12 +123,12 @@ func (app *App) InitWebServer() error {
 
 	httpServer := Jweb.WebInit(Jweb.WebInitConfig{
 		Debug:          config.LocalConfig.Debug,
-		Addr:           config.NodeConfig.HTTP.ListenAddr,
-		IsHttps:        config.NodeConfig.HTTP.UseHTTPS,
-		RedirectAddr:   config.NodeConfig.HTTP.RedirectAddr,
+		Addr:           config.LocalConfig.HTTP.ListenAddr,
+		IsHttps:        config.LocalConfig.HTTP.UseHTTPS,
+		RedirectAddr:   config.LocalConfig.HTTP.HTTPS.RedirectAddr,
 		LogWrite:       &Jlog.LogIoWrite{Msg: "web", Flag: "gin"},
-		PublicKeyPath:  publicKeyPath,
-		PrivateKeyPath: privateKeyPath,
+		PublicKeyPath:  config.LocalConfig.HTTP.HTTPS.PublicKeyPath,
+		PrivateKeyPath: config.LocalConfig.HTTP.HTTPS.PrivateKeyPath,
 		RouteCall:      routeFunc,
 		ErrorCall:      errorOther,
 	})
@@ -225,23 +163,10 @@ func (app *App) StopWebServer() error {
 
 //启动rpc服务
 func (app *App) InitRpcServer() error {
-	publicKeyPath, err := Jtool.CreateSysTmpFile("*.pem", []byte(config.GrpcCert.Key.PublicKeyByte))
-	if err != nil {
-		Jlog.Error("Rpc服务初始化失败", "errorBox:", err)
-		return err
-	}
-	privateKeyPath, err := Jtool.CreateSysTmpFile("*.key", []byte(config.GrpcCert.Key.PrivateKeyByte))
-	if err != nil {
-		Jlog.Error("Rpc服务初始化失败", "errorBox:", err)
-		return err
-	}
-	defer os.Remove(publicKeyPath)
-	defer os.Remove(privateKeyPath)
-
 	s, err := Jrpc.GrpcServerInit(Jrpc.RpcInitConfig{
-		Addr:           config.NodeConfig.Grpc.ListenAddr,
-		PublicKeyPath:  publicKeyPath,
-		PrivateKeyPath: privateKeyPath,
+		Addr:           config.LocalConfig.Grpc.ListenAddr,
+		PublicKeyPath:  config.LocalConfig.Grpc.PublicKeyPath,
+		PrivateKeyPath: config.LocalConfig.Grpc.PrivateKeyPath,
 		RegisterCall: func(s *grpc.Server) {
 			protoManage.RegisterRpcEngineServer(s, app)
 		},
@@ -251,7 +176,7 @@ func (app *App) InitRpcServer() error {
 
 	app.RpcServer = s
 	Jlog.Info("Rpc服务初始化成功")
-	return nil
+	return err
 }
 
 //优雅关闭rpc服务
@@ -272,14 +197,33 @@ func (app *App) StopRpcServer() error {
 	return nil
 }
 
-//获取节点key
-func (app *App) getNodeKey() string {
-	return "/"+ config.LocalConfig.Node.NodeGroup+"/服务"+"/"+
-		string(app.AppTypeName)+"/"+ config.LocalConfig.Node.NodeName+"/node"
+//初始化服务发现
+func (app *App) InitDiscovery() error {
+	if config.LocalConfig.Etcd.EtcdAddr == "" {
+		return nil
+	}
+	discovery, err := Jdiscovery.DiscoveryInit(Jdiscovery.DiscoveryInitConfig{
+		EtcdAddr:       config.LocalConfig.Etcd.EtcdAddr,
+		ConnectTimeout: config.LocalConfig.Etcd.ConnectWaitTime,
+		RequestTimeout: config.LocalConfig.Etcd.RequestTimeout,
+	})
+	app.Discovery = discovery
+	Jlog.Info("发现服务初始化成功")
+	return err
+}
+
+func (app *App) StopDiscovery() error {
+	if app.Discovery == nil {
+		return nil
+	}
+	return 	app.Discovery.Client.Close()
 }
 
 //注册节点
 func (app *App) registerNode() error {
+	if app.Discovery == nil {
+		return nil
+	}
 	nodeData := commonConst.CommonNodeData{
 		NodeID:       commonConst.ManageNodeID,
 		NodeTypeID:   commonConst.ManageNodeTypeID,
@@ -287,9 +231,9 @@ func (app *App) registerNode() error {
 		NodeName:     config.LocalConfig.Node.NodeName,
 		NodeGroup:    config.LocalConfig.Node.NodeGroup,
 		NodeState:    int32(protoManage.State_StateNormal),
-		PublicAddr:   config.NodeConfig.IP.PublicIP,
-		PrivateAddr:  config.NodeConfig.IP.PrivateIP,
-		GrpcPort:     Jtool.GetPortFromAddr(config.NodeConfig.Grpc.ListenAddr),
+		PublicAddr:   config.LocalConfig.IP.PublicIP,
+		PrivateAddr:  config.LocalConfig.IP.PrivateIP,
+		GrpcPort:     Jtool.GetPortFromAddr(config.LocalConfig.Grpc.ListenAddr),
 	}
 	byte, err := json.Marshal(nodeData)
 	if err != nil {
@@ -311,10 +255,20 @@ func (app *App) registerNode() error {
 
 //注销节点
 func (app *App) unRegisterNode() error {
+	if app.Discovery == nil {
+		return nil
+	}
 	return app.Discovery.UnRegisterNode(app.getNodeKey())
+}
+
+//获取节点key
+func (app *App) getNodeKey() string {
+	return "/"+ config.LocalConfig.Node.NodeGroup+"/服务"+"/"+
+		string(app.AppTypeName)+"/"+ config.LocalConfig.Node.NodeName+"/node"
 }
 
 //错误回调
 func errorOther(str string, keysAndValues ...interface{}){
 	Jlog.Error(str, keysAndValues)
 }
+

@@ -1,17 +1,17 @@
 package data
 
 import (
-	"github.com/liyiligang/base/protoFiles/protoManage"
+	"github.com/liyiligang/manage/app/protoFiles/protoManage"
 	"github.com/liyiligang/manage/app/typedef/orm"
 )
 
 //请求节点测试
 func (data *Data) NodeTest(userID int64, protoNodeTest *protoManage.ReqNodeTest) error {
 	protoNodeNotify := protoManage.NodeNotify{
-		SenderID:             userID,
-		SenderType:           protoManage.NotifySenderType(protoNodeTest.Type),
-		Message:              protoNodeTest.Message,
-		State:                protoNodeTest.State,
+		SenderID:   userID,
+		SenderType: protoManage.NotifySenderType(protoNodeTest.Type),
+		Message:    protoNodeTest.Message,
+		State:      protoNodeTest.State,
 	}
 
 	data.DB.AddNodeNotify(orm.NodeNotify{
