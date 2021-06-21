@@ -29,10 +29,10 @@ func (gateway *Gateway) WsSendOrBroadCastData(userID int64, order protoManage.Or
 	return errors.WithMessage(err, "websocket错误")
 }
 
-func (gateway *Gateway) WsCloseClient(userID interface{}) {
+func (gateway *Gateway) WsCloseClient(userID interface{}, msg string) {
 	conn, ok := gateway.WebsocketManage.Load(userID)
 	if ok {
-		err := conn.(*Jweb.WebsocketConn).Close()
+		err := conn.(*Jweb.WebsocketConn).Close(msg)
 		if err != nil {
 			Jlog.Warn("wsCloseClient 关闭客户端失败", "userID", userID, "errorBox", err)
 		}

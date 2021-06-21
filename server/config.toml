@@ -28,9 +28,9 @@ MaxKeepConn = 2         #最大保持连接数(长连接)
 MaxLifeTime = 21        #数据库请求超时时间(秒, 0:表示立即拒绝请求)
 
 [Grpc]
-ListenAddr = ':899'
-PublicKeyPath = '../store/cert/grpc/public.pem'
-PrivateKeyPath = '../store/cert/grpc/private.key'
+ListenAddr = ':888'
+PublicKeyPath = '../store/cert/grpc/server_cert.pem'
+PrivateKeyPath = '../store/cert/grpc/server_key.pem'
 
 [Http]
 UseHttps = false

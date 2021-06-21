@@ -21,11 +21,8 @@ func (app *App) WebsocketConnected(conn *Jweb.WebsocketConn) error {
 	if err != nil {
 		return err
 	}
-
-	Jlog.Info("进入 websocket", "id", id)
-
-	if app.Gateway.WebsocketManage.IsExistDelayCheck(id, 500*time.Millisecond, 6) {
-		return errors.New("id:"+Jtool.Int64ToString(id)+"已存在")
+	if app.Gateway.WebsocketManage.IsExist(id) {
+		app.Gateway.WsCloseClient(id, "您的账户在别处登录")
 	}
 	err = app.Request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
 		State: protoManage.State_StateNormal})
@@ -40,12 +37,8 @@ func (app *App) WebsocketConnected(conn *Jweb.WebsocketConn) error {
 func (app *App) WebsocketClose(conn *Jweb.WebsocketConn, code int, text string) {
 	id, err := app.Gateway.WsGetID(conn.GetBindVal())
 	if err != nil {
-		Jlog.Warn("websocket连接关闭错误", "err", err)
 		return
 	}
-
-	Jlog.Info("进入 websocket 关闭", "id", id)
-
 	app.Request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
 		State: protoManage.State_StateUnknow})
 	app.Gateway.WebsocketManage.Delete(id)

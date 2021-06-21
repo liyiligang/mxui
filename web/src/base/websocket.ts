@@ -4,7 +4,7 @@ import {globals} from "../base/globals";
 
 export let ws:WebSocket|null = null
 export let reconnectCnt = 0
-export let wsUserError = 4000
+export let websocketCloseByServer = 4000
 export let notifyOffset = 80
 
 export module websocket {
@@ -47,13 +47,15 @@ export module websocket {
                 ElMessage.error("网络连接已断开: "+ev.reason + '(' + ev.code + ')');
             }
             console.warn("websocket连接关闭: ", ev);
-            if (ev.code != wsUserError){
+            if (ev.code != websocketCloseByServer){
                 wsReconnect()
+            }else{
+                globals.reLogin()
             }
         }
 
         function onError(ev: Event) {
-            console.error("websocket连接错误: ", ev);
+            console.error("websocket连接错误: ", ev);m
         }
 
         function onMessage(ev: MessageEvent) {

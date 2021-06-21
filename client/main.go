@@ -5,9 +5,8 @@
 
 package main
 
-import (
-	"fmt"
-)
+import "github.com/liyiligang/manage/client/app"
+
 func main() {
-	fmt.Println("aa")
+	app.InitClient()
 }

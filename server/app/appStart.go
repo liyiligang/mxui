@@ -163,9 +163,11 @@ func (app *App) StopWebServer() error {
 
 //启动rpc服务
 func (app *App) InitRpcServer() error {
-	s, err := Jrpc.GrpcServerInit(Jrpc.RpcInitConfig{
-		Addr:           config.LocalConfig.Grpc.ListenAddr,
-		PublicKeyPath:  config.LocalConfig.Grpc.PublicKeyPath,
+	s, err := Jrpc.GrpcServerInit(Jrpc.RpcServerConfig{
+		RpcBaseConfig:Jrpc.RpcBaseConfig{
+			Addr:           config.LocalConfig.Grpc.ListenAddr,
+			PublicKeyPath:  config.LocalConfig.Grpc.PublicKeyPath,
+		},
 		PrivateKeyPath: config.LocalConfig.Grpc.PrivateKeyPath,
 		RegisterCall: func(s *grpc.Server) {
 			protoManage.RegisterRpcEngineServer(s, app)
