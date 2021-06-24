@@ -19,10 +19,10 @@ func InitManageClient(config Jrpc.RpcClientConfig) (*manageClient, error) {
 		return nil, err
 	}
 	client.engine = protoManage.NewRpcEngineClient(conn)
-	//err = client.initManageClientStream()
-	//if err != nil {
-	//	return nil, err
-	//}
+	err = client.initManageClientStream()
+	if err != nil {
+		return nil, err
+	}
 	return client, nil
 }
 

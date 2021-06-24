@@ -14,7 +14,12 @@ func (data *Data) NodeAdd(protoNode *protoManage.Node) error {
 	if err := check.NodeCheck(protoNode); err != nil {
 		return err
 	}
-	return data.DB.AddNode(orm.Node{GroupID: protoNode.GroupID, TypeID:protoNode.TypeID, Name: protoNode.Name})
+	ormNode := &orm.Node{Name: protoNode.Name, GroupID: protoNode.GroupID, TypeID: protoNode.TypeID}
+	if err := data.DB.AddNode(ormNode); err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(&ormNode.Base, &protoNode.Base)
+	return nil
 }
 
 //删除节点

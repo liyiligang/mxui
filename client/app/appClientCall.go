@@ -6,6 +6,7 @@
 package app
 
 import (
+	"fmt"
 	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
@@ -22,7 +23,26 @@ func (client *manageClient) RpcStreamConnect(stream *Jrpc.RpcStream) (interface{
 }
 
 func (client *manageClient) RpcStreamConnected(stream *Jrpc.RpcStream) error {
+	client.setRpcStream(stream)
+	err := client.nodeOnline(stream.GetParm().RpcStreamServerHeader)
+	if err != nil{
+		return err
+	}
 
+	err = client.NodeLinkUpdate(15, protoManage.State_StateError)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = client.RegisterNodeFunc("临界实验", client.testFunc)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = client.RegisterNodeReport("临界报告", client.testReport, 1)
+	if err != nil {
+		fmt.Println(err)
+	}
 	return nil
 }
 
@@ -34,6 +54,7 @@ func (client *manageClient) RpcStreamClose(stream *Jrpc.RpcStream) {
 	//		Jlog.Error("管控中心重连失败", "err:", err.Error())
 	//	}
 	//}()
+	fmt.Println("rpc 已关闭")
 }
 
 func (client *manageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv interface{}) {
@@ -52,5 +73,5 @@ func (client *manageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv inter
 }
 
 func (client *manageClient) RpcStreamError(text string, err error) {
-	Jlog.Warn(text, "err", err)
+	fmt.Println("rpc 错误：", text, err)
 }

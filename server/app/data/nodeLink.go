@@ -14,11 +14,13 @@ func (data *Data) NodeLinkAdd(protoNodeLink *protoManage.NodeLink) error {
 	if err := check.NodeLinkCheck(protoNodeLink); err != nil {
 		return err
 	}
-	return data.DB.AddNodeLink(orm.NodeLink{
-		SourceID: protoNodeLink.SourceID,
-		TargetID: protoNodeLink.TargetID,
-		State: int32(protoNodeLink.State),
-	})
+	ormNodeLink := &orm.NodeLink{SourceID: protoNodeLink.SourceID,
+		TargetID: protoNodeLink.TargetID, State: int32(protoNodeLink.State)}
+	if err := data.DB.AddNodeLink(ormNodeLink); err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(&ormNodeLink.Base, &protoNodeLink.Base)
+	return nil
 }
 
 //删除节点连接
@@ -37,8 +39,8 @@ func (data *Data) NodeLinkFindByID(protoNodeLink *protoManage.NodeLink) error {
 }
 
 //按目标ID查询节点连接
-func (data *Data) NodeLinkFindByNodeID(protoNodeLink *protoManage.NodeLink) error {
-	ormNodeLink, err :=data.DB.FindNodeLinkByNodeID(orm.NodeLink{SourceID: protoNodeLink.SourceID, TargetID: protoNodeLink.TargetID})
+func (data *Data) NodeLinkFindByIndex(protoNodeLink *protoManage.NodeLink) error {
+	ormNodeLink, err :=data.DB.FindNodeLinkByIndex(orm.NodeLink{SourceID: protoNodeLink.SourceID, TargetID: protoNodeLink.TargetID})
 	if err != nil {
 		return err
 	}
@@ -47,8 +49,8 @@ func (data *Data) NodeLinkFindByNodeID(protoNodeLink *protoManage.NodeLink) erro
 }
 
 //按目标ID查询节点连接ID
-func (data *Data) NodeLinkFindIDByNodeID(protoNodeLink *protoManage.NodeLink) error {
-	ormNodeLink, err :=data.DB.FindNodeLinkByNodeID(orm.NodeLink{SourceID: protoNodeLink.SourceID, TargetID: protoNodeLink.TargetID})
+func (data *Data) NodeLinkFindIDByIndex(protoNodeLink *protoManage.NodeLink) error {
+	ormNodeLink, err :=data.DB.FindNodeLinkByIndex(orm.NodeLink{SourceID: protoNodeLink.SourceID, TargetID: protoNodeLink.TargetID})
 	if err != nil {
 		return err
 	}
@@ -56,9 +58,9 @@ func (data *Data) NodeLinkFindIDByNodeID(protoNodeLink *protoManage.NodeLink) er
 	return nil
 }
 
-//按节点ID更新节点连接状态或者新增节点连接
-func (data *Data) NodeLinkStateUpdateOrAddByNodeID(protoNodeLink *protoManage.NodeLink) error {
-	err := data.NodeLinkFindIDByNodeID(protoNodeLink)
+//更新或者新增节点连接
+func (data *Data) NodeLinkUpdateOrAdd(protoNodeLink *protoManage.NodeLink) error {
+	err := data.NodeLinkFindIDByIndex(protoNodeLink)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return data.NodeLinkAdd(protoNodeLink)

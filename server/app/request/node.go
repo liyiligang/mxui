@@ -49,29 +49,29 @@ func (request *Request) ReqNodeOnline(nodeID int64, message []byte) error {
 		request.Data.NodeStateUpdate(&reqNodeOnline.Node)
 	}
 
-	for _, v := range reqNodeOnline.NodeLinkList {
-		err = check.BaseIDCheck(v.SourceID, nodeID)
-		if err != nil {
-			return err
-		}
-		request.Data.NodeLinkStateUpdateOrAddByNodeID(&v)
-	}
+	//for _, v := range reqNodeOnline.NodeLinkList {
+	//	err = check.BaseIDCheck(v.SourceID, nodeID)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	request.Data.NodeLinkStateUpdateOrAddByNodeID(&v)
+	//}
+	//
+	//for _, v := range reqNodeOnline.NodeFuncList {
+	//	err = check.BaseIDCheck(v.NodeID, nodeID)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	request.Data.NodeFuncDescUpdateOrAddByName(&v)
+	//}
 
-	for _, v := range reqNodeOnline.NodeFuncList {
-		err = check.BaseIDCheck(v.NodeID, nodeID)
-		if err != nil {
-			return err
-		}
-		request.Data.NodeFuncDescUpdateOrAddByName(&v)
-	}
-
-	for _, v := range reqNodeOnline.NodeReportList {
-		err = check.BaseIDCheck(v.NodeID, nodeID)
-		if err != nil {
-			return err
-		}
-		request.Data.NodeReportValUpdateOrAddByName(&v)
-	}
+	//for _, v := range reqNodeOnline.NodeReportList {
+	//	err = check.BaseIDCheck(v.NodeID, nodeID)
+	//	if err != nil {
+	//		return err
+	//	}
+	//	request.Data.NodeReportValUpdateOrAddByName(&v)
+	//}
 	return nil
 }
 
@@ -97,109 +97,6 @@ func (request *Request) ReqNodeStateUpdate(nodeID int64, message []byte) {
 	request.Data.NodeStateUpdate(&node)
 }
 
-//节点连接状态更新
-func (request *Request) ReqNodeLinkStateUpdate(nodeID int64, message []byte) {
-	nodeLink := protoManage.NodeLink{}
-	err := nodeLink.Unmarshal(message)
-	if err != nil {
-		return
-	}
-
-	err = check.BaseIDCheck(nodeLink.SourceID, nodeID)
-	if err != nil {
-		return
-	}
-
-	err = request.Data.NodeLinkStateUpdateOrAddByNodeID(&nodeLink)
-	if err != nil {
-		return
-	}
-}
-
-//节点方法描述更新
-func (request *Request) ReqNodeFuncDescUpdate(nodeID int64, message []byte) {
-	nodeFunc := protoManage.NodeFunc{}
-	err := nodeFunc.Unmarshal(message)
-	if err != nil {
-		return
-	}
-
-	err = check.BaseIDCheck(nodeFunc.NodeID, nodeID)
-	if err != nil {
-		return
-	}
-
-	err = request.Data.NodeFuncDescUpdateOrAddByName(&nodeFunc)
-	if err != nil {
-		return
-	}
-}
-
-//节点报告值更新
-func (request *Request) ReqNodeReportValUpdate(nodeID int64, message []byte) {
-	nodeReport := protoManage.NodeReport{}
-	err := nodeReport.Unmarshal(message)
-	if err != nil {
-		return
-	}
-
-	err = check.BaseIDCheck(nodeReport.NodeID, nodeID)
-	if err != nil {
-		return
-	}
-
-	err = request.Data.NodeReportValUpdateOrAddByName(&nodeReport)
-	if err != nil {
-		return
-	}
-}
-
-//节点通知增加
-func (request *Request) ReqNodeNotifyAdd(nodeID int64, message []byte) {
-	nodeNotify := protoManage.NodeNotify{}
-	err := nodeNotify.Unmarshal(message)
-	if err != nil {
-		return
-	}
-	request.Data.NodeNotifyAdd(&nodeNotify)
-}
-
-//节点组信息查询
-func (request *Request) ReqNodeGroupFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeGroupList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.NodeGroupFind(req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//节点类型信息查询
-func (request *Request) ReqNodeTypeFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeTypeList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.NodeTypeFind(req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
 //节点信息查询
 func (request *Request) ReqNodeFind(userID int64, message []byte)([]byte, error) {
 	req := protoManage.ReqNodeList{}
@@ -218,132 +115,6 @@ func (request *Request) ReqNodeFind(userID int64, message []byte)([]byte, error)
 	return pbByte, err
 }
 
-//节点连接信息查询
-func (request *Request) ReqNodeLinkFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeLinkList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.NodeLinkFind(req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//节点方法查询
-func (request *Request) ReqNodeFuncFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeFuncList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.NodeFuncFind(req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//节点方法调用查询
-func (request *Request) ReqNodeFuncCallFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeFuncCallList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.NodeFuncCallFind(req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//节点报告查询
-func (request *Request) ReqNodeReportFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeReportList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.NodeReportFind(req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//节点报告值查询
-func (request *Request) ReqNodeReportValFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeReportValList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.NodeReportValFind(req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//获取节点组按ID
-func (request *Request) ReqNodeGroupFindByID(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeGroup{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeGroupFindByID(&req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//获取节点类型按ID
-func (request *Request) ReqNodeTypeFindByID(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeType{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeTypeFindByID(&req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
 //获取节点按ID
 func (request *Request) ReqNodeFindByID(userID int64, message []byte)([]byte, error) {
 	req := protoManage.Node{}
@@ -356,75 +127,6 @@ func (request *Request) ReqNodeFindByID(userID int64, message []byte)([]byte, er
 		return nil, err
 	}
 	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//请求节点方法调用
-func (request *Request) ReqNodeFuncCall(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeFuncCall{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	req.NodeFuncCall.ManagerID = userID
-	err = request.Data.NodeFuncCallReq(&req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.NodeFuncCall.Base.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//回复节点方法调用
-func (request *Request) ansNodeFuncCall(nodeID int64, message []byte) error {
-	ans := protoManage.AnsNodeFuncCall{}
-	err := ans.Unmarshal(message)
-	if err != nil {
-		return err
-	}
-	err = request.Data.NodeFuncCallAns(&ans)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-//获取节点方法调用按ID
-func (request *Request) ReqNodeFuncCallFindByID(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeFuncCall{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeFuncCallFindByID(&req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//节点通知查询
-func (request *Request) ReqNodeNotifyFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeNotifyList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.NodeNotifyFind(&req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
 	if err != nil {
 		return nil, err
 	}

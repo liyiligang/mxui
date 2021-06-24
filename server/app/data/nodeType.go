@@ -14,7 +14,12 @@ func (data *Data) NodeTypeAdd(protoNodeType *protoManage.NodeType) error {
 	if err := check.NodeTypeCheck(protoNodeType); err != nil {
 		return err
 	}
-	return data.DB.AddNodeType(orm.NodeType{Name: protoNodeType.Name})
+	ormNodeType := &orm.NodeType{Name: protoNodeType.Name}
+	if err := data.DB.AddNodeType(ormNodeType); err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(&ormNodeType.Base, &protoNodeType.Base)
+	return nil
 }
 
 //删除节点类型

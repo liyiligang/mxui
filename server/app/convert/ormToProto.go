@@ -175,8 +175,8 @@ func OrmNodeFuncCallListToProtoNodeFuncCallList(ormNodeFuncCallList []orm.NodeFu
 func OrmNodeReportToProtoNodeReport(ormNodeReport *orm.NodeReport, protoNodeReport *protoManage.NodeReport)  {
 	OrmBaseToProtoBase(&ormNodeReport.Base, &protoNodeReport.Base)
 	protoNodeReport.NodeID = ormNodeReport.NodeID
-	protoNodeReport.Flag = ormNodeReport.Flag
 	protoNodeReport.Name = ormNodeReport.Name
+	protoNodeReport.Func = ormNodeReport.Func
 	protoNodeReport.State = protoManage.State(ormNodeReport.State)
 	//protoNodeReport.Value = ormNodeReport.Value
 }

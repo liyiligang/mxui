@@ -8,8 +8,8 @@ import (
 )
 
 //新增节点报告
-func (db *Server) AddNodeReport(nodeReport orm.NodeReport) error {
-	return db.Gorm.Create(&nodeReport).Error
+func (db *Server) AddNodeReport(nodeReport *orm.NodeReport) error {
+	return db.Gorm.Create(nodeReport).Error
 }
 
 //新增节点报告值
@@ -26,6 +26,12 @@ func (db *Server) DelNodeReport(nodeReport orm.NodeReport) error {
 //按节点ID删除所有节点报告
 func (db *Server) DelAllNodeReportByNodeID(nodeReport orm.NodeReport) error {
 	return db.Gorm.Where("nodeID = ?", nodeReport.NodeID).Delete(orm.NodeReport{}).Error
+}
+
+//按ID更新指定节点报告信息
+func (db *Server) UpdateNodeReportInfo(nodeReport orm.NodeReport) error {
+	return db.Gorm.Model(&nodeReport).Updates(map[string]interface{}{
+		"func": nodeReport.Func}).Error
 }
 
 //按ID更新指定节点报告值
@@ -115,8 +121,8 @@ func (db *Server) FindNodeReportByID(nodeReport orm.NodeReport) (*orm.NodeReport
 }
 
 //按名称获取指定节点报告
-func (db *Server) FindNodeReportByName(nodeReport orm.NodeReport) (*orm.NodeReport, error) {
-	err := db.Gorm.Where("name = ? and flag = ? and nodeID = ?",
-		nodeReport.Name, nodeReport.Flag, nodeReport.NodeID).First(&nodeReport).Error
+func (db *Server) FindNodeReportByIndex(nodeReport orm.NodeReport) (*orm.NodeReport, error) {
+	err := db.Gorm.Where("nodeID = ? and name = ?",
+		nodeReport.NodeID, nodeReport.Name).First(&nodeReport).Error
 	return &nodeReport, err
 }

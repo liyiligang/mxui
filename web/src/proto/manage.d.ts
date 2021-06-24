@@ -303,6 +303,34 @@ export namespace protoManage {
         public static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): RpcEngine;
 
         /**
+         * Calls RegisterNodeFunc.
+         * @param request NodeFunc message or plain object
+         * @param callback Node-style callback called with the error, if any, and NodeFunc
+         */
+        public registerNodeFunc(request: protoManage.INodeFunc, callback: protoManage.RpcEngine.RegisterNodeFuncCallback): void;
+
+        /**
+         * Calls RegisterNodeFunc.
+         * @param request NodeFunc message or plain object
+         * @returns Promise
+         */
+        public registerNodeFunc(request: protoManage.INodeFunc): Promise<protoManage.NodeFunc>;
+
+        /**
+         * Calls RegisterNodeReport.
+         * @param request NodeReport message or plain object
+         * @param callback Node-style callback called with the error, if any, and NodeReport
+         */
+        public registerNodeReport(request: protoManage.INodeReport, callback: protoManage.RpcEngine.RegisterNodeReportCallback): void;
+
+        /**
+         * Calls RegisterNodeReport.
+         * @param request NodeReport message or plain object
+         * @returns Promise
+         */
+        public registerNodeReport(request: protoManage.INodeReport): Promise<protoManage.NodeReport>;
+
+        /**
          * Calls RpcChannel.
          * @param request Message message or plain object
          * @param callback Node-style callback called with the error, if any, and Message
@@ -318,6 +346,20 @@ export namespace protoManage {
     }
 
     namespace RpcEngine {
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#registerNodeFunc}.
+         * @param error Error, if any
+         * @param [response] NodeFunc
+         */
+        type RegisterNodeFuncCallback = (error: (Error|null), response?: protoManage.NodeFunc) => void;
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#registerNodeReport}.
+         * @param error Error, if any
+         * @param [response] NodeReport
+         */
+        type RegisterNodeReportCallback = (error: (Error|null), response?: protoManage.NodeReport) => void;
 
         /**
          * Callback as used by {@link protoManage.RpcEngine#rpcChannel}.
@@ -1638,11 +1680,11 @@ export namespace protoManage {
         /** NodeReport NodeID */
         NodeID?: (number|null);
 
-        /** NodeReport Flag */
-        Flag?: (string|null);
-
         /** NodeReport Name */
         Name?: (string|null);
+
+        /** NodeReport Func */
+        Func?: (string|null);
 
         /** NodeReport State */
         State?: (protoManage.State|null);
@@ -1663,11 +1705,11 @@ export namespace protoManage {
         /** NodeReport NodeID. */
         public NodeID: number;
 
-        /** NodeReport Flag. */
-        public Flag: string;
-
         /** NodeReport Name. */
         public Name: string;
+
+        /** NodeReport Func. */
+        public Func: string;
 
         /** NodeReport State. */
         public State: protoManage.State;

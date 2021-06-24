@@ -21,6 +21,7 @@ import CardState from "../cardItem/CardState.vue"
 import {routerPath} from "../../router";
 import {request} from "../../base/request";
 import {protoManage} from "../../proto/manage"
+import {defaultVal} from "../../base/defaultVal";
 
 interface NodeGroupCardInfo {
     nodeStateCount:protoManage.IStateCount
@@ -29,7 +30,10 @@ interface NodeGroupCardInfo {
 export default defineComponent ({
     name: "NodeGroupCard",
     props:{
-        nodeGroup:Object as PropType<protoManage.NodeGroup>,
+        nodeGroup:{
+            type: protoManage.NodeGroup,
+            default: defaultVal.getDefaultProtoNodeGroup()
+        },
         nodeStateCount:Object as PropType<protoManage.IStateCount>,
     },
     components: {

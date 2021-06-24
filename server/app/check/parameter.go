@@ -125,17 +125,17 @@ func NodeReportCheck(protoNodeReport *protoManage.NodeReport) error {
 	if protoNodeReport.NodeID == 0 {
 		return  IdIsZero(constant.ConstNodeStr)
 	}
-	if protoNodeReport.Flag == "" {
-		return NameIsEmpty(constant.ConstNodeReportStr + "标签")
-	}
 	if protoNodeReport.Name == "" {
 		return NameIsEmpty(constant.ConstNodeReportStr)
 	}
-	if utf8.RuneCountInString(protoNodeReport.Flag) > ConstStringLimitMaxLength {
-		return NameIsTooLong(constant.ConstNodeReportStr, ConstStringLimitMaxLength)
+	if protoNodeReport.Func == "" {
+		return NameIsEmpty(constant.ConstNodeReportStr +"函数")
 	}
 	if utf8.RuneCountInString(protoNodeReport.Name) > ConstStringLimitMaxLength {
 		return NameIsTooLong(constant.ConstNodeReportStr+"标签", ConstStringLimitMaxLength)
+	}
+	if utf8.RuneCountInString(protoNodeReport.Func) > ConstStringLimitMaxLength {
+		return NameIsTooLong(constant.ConstNodeReportStr, ConstStringLimitMaxLength)
 	}
 	return nil
 }

@@ -68,7 +68,7 @@ type NodeFunc struct {
 	Base
 	NodeID       		int64	`gorm:"NOT NULL; UNIQUE_INDEX:NodeFuncIndex;"`
 	Name 				string	`gorm:"NOT NULL; UNIQUE_INDEX:NodeFuncIndex;"`
-	Func     			string	`gorm:"NOT NULL; UNIQUE_INDEX:NodeFuncIndex;"`
+	Func     			string	`gorm:"NOT NULL;"`
 	State				int32	`gorm:"NOT NULL;"`
 }
 
@@ -84,8 +84,8 @@ type NodeFuncCall struct {
 type NodeReport struct {
 	Base
 	NodeID       		int64 	`gorm:"NOT NULL; UNIQUE_INDEX:NodeReportIndex;"`
-	Flag     			string	`gorm:"NOT NULL; UNIQUE_INDEX:NodeReportIndex;"`
 	Name     			string	`gorm:"NOT NULL; UNIQUE_INDEX:NodeReportIndex;"`
+	Func     			string	`gorm:"NOT NULL;"`
 	State				int32	`gorm:"NOT NULL;"`
 }
 

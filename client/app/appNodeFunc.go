@@ -1,0 +1,38 @@
+// Copyright 2021 The Authors. All rights reserved.
+// Author: liyiligang
+// Date: 2021/06/23 15:52
+// Description:
+
+package app
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+)
+
+type CallFuncDef func(string) string
+
+func (client *manageClient) RegisterNodeFunc(name string, callFunc CallFuncDef) error {
+	if callFunc == nil {
+		return errors.New("callFunc is nil")
+	}
+	node, err := client.GetNode()
+	if err != nil {
+		return err
+	}
+	callName := client.getFuncName(callFunc)
+	nodeFunc := protoManage.NodeFunc{NodeID: node.Base.ID, Name: name, Func: callName}
+	ctx := context.Background()
+	resNodeFunc, err := client.engine.RegisterNodeFunc(ctx, &nodeFunc)
+	if err != nil {
+		return err
+	}
+	fmt.Println("注册方法成功: ", resNodeFunc)
+	return nil
+}
+
+func (client *manageClient) testFunc(str string) string {
+	return ""
+}

@@ -14,11 +14,13 @@ func (data *Data) NodeReportAdd(protoNodeReport *protoManage.NodeReport) error {
 	if err := check.NodeReportCheck(protoNodeReport); err != nil {
 		return err
 	}
-	return data.DB.AddNodeReport(orm.NodeReport{
-		NodeID: protoNodeReport.NodeID,
-		Flag: protoNodeReport.Flag,
-		Name: protoNodeReport.Name,
-	})
+	ormNodeReport := &orm.NodeReport{NodeID: protoNodeReport.NodeID, Name: protoNodeReport.Name,
+		Func: protoNodeReport.Func, State: int32(protoManage.State_StateNormal)}
+	if err := data.DB.AddNodeReport(ormNodeReport); err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(&ormNodeReport.Base, &protoNodeReport.Base)
+	return nil
 }
 
 //删除节点报告
@@ -40,17 +42,16 @@ func (data *Data) NodeReportValUpdate(protoNodeReportVal *protoManage.NodeReport
 	})
 }
 
-//按节点报告名更新节点报告值或者新增节点报告
-func (data *Data) NodeReportValUpdateOrAddByName(protoNodeReport *protoManage.NodeReport) error {
-	err := data.NodeReportFindIDByName(protoNodeReport)
+//更新或者新增节点报告
+func (data *Data) NodeReportUpdateOrAdd(protoNodeReport *protoManage.NodeReport) error {
+	err := data.NodeReportFindIDByIndex(protoNodeReport)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return data.NodeReportAdd(protoNodeReport)
 		}
 		return err
 	}
-	//return app.nodeReportValUpdate(protoNodeReport)
-	return nil
+	return data.NodeReportInfoUpdate(protoNodeReport)
 }
 
 //按ID查询节点报告
@@ -64,8 +65,9 @@ func (data *Data) NodeReportFindByID(protoNodeReport *protoManage.NodeReport) er
 }
 
 //按名称查询节点报告ID
-func (data *Data) NodeReportFindIDByName(protoNodeReport *protoManage.NodeReport) error {
-	ormNodeReport, err :=data.DB.FindNodeReportByName(orm.NodeReport{Flag: protoNodeReport.Flag, Name: protoNodeReport.Name, NodeID: protoNodeReport.NodeID})
+func (data *Data) NodeReportFindIDByIndex(protoNodeReport *protoManage.NodeReport) error {
+	ormNodeReport, err :=data.DB.FindNodeReportByIndex(orm.NodeReport{
+		NodeID: protoNodeReport.NodeID, Name: protoNodeReport.Name})
 	if err != nil {
 		return err
 	}
@@ -98,6 +100,12 @@ func (data *Data) NodeReportFind(req protoManage.ReqNodeReportList) (*protoManag
 		NodeList: protoNodeList, NodeReportValList: protoNodeReportVal, Length:count}, nil
 }
 
+//更新节点报告信息
+func (data *Data) NodeReportInfoUpdate(protoNodeReport *protoManage.NodeReport) error {
+	return data.DB.UpdateNodeReportInfo(orm.NodeReport{Base: orm.Base{ID: protoNodeReport.Base.ID},
+		Func: protoNodeReport.Func})
+}
+
 //查找节点报告值信息
 func (data *Data) NodeReportValFind(req protoManage.ReqNodeReportValList) (*protoManage.AnsNodeReportValList, error) {
 	ormReportValList, err := data.DB.FindNodeReportVal(req.Filter)
@@ -107,3 +115,4 @@ func (data *Data) NodeReportValFind(req protoManage.ReqNodeReportValList) (*prot
 	protoNodeReportValList := convert.OrmNodeReportValListToProtoNodeReportValList(ormReportValList)
 	return &protoManage.AnsNodeReportValList{NodeReportValList: protoNodeReportValList}, nil
 }
+

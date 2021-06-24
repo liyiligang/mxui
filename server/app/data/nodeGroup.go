@@ -14,7 +14,12 @@ func (data *Data) NodeGroupAdd(protoNodeGroup *protoManage.NodeGroup) error {
 	if err := check.NodeGroupCheck(protoNodeGroup); err != nil {
 		return err
 	}
-	return data.DB.AddNodeGroup(orm.NodeGroup{Name: protoNodeGroup.Name})
+	ormNodeGroup := &orm.NodeGroup{Name: protoNodeGroup.Name}
+	if err := data.DB.AddNodeGroup(ormNodeGroup); err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(&ormNodeGroup.Base, &protoNodeGroup.Base)
+	return nil
 }
 
 //删除节点组

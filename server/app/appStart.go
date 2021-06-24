@@ -245,7 +245,7 @@ func (app *App) registerNode() error {
 	err = app.Discovery.RegisterNode(&Jdiscovery.DiscoveryNode{
 		NodeKey: app.getNodeKey(),
 		NodeData: byte,
-		NodeKeepLive: 60,
+		NodeKeepLive: 5,
 	})
 	if err != nil {
 		Jlog.Info("节点服务注册失败")

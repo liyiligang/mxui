@@ -37,13 +37,13 @@ func InitApp(){
 
 func MakeNodeGroupData(num int){
 	for i:=0; i < num; i++ {
-		appServer.DBServer.AddNodeGroup(orm.NodeGroup{Name: "节点组" +  strconv.Itoa(i+1)})
+		appServer.DBServer.AddNodeGroup(&orm.NodeGroup{Name: "节点组" +  strconv.Itoa(i+1)})
 	}
 }
 
 func MakeNodeTypeData(num int){
 	for i:=0; i<=num; i++ {
-		appServer.DBServer.AddNodeType(orm.NodeType{Name: "节点类型" +  strconv.Itoa(i+1)})
+		appServer.DBServer.AddNodeType(&orm.NodeType{Name: "节点类型" +  strconv.Itoa(i+1)})
 	}
 }
 
@@ -52,7 +52,7 @@ func MakeNodeData(num int, nodeGroupLen int, nodeTypeLen int){
 		groupID, _ := Jtool.GetRandInt(1, nodeGroupLen)
 		typeID, _ := Jtool.GetRandInt(1, nodeTypeLen)
 		state, _ := Jtool.GetRandInt(0, 5)
-		appServer.DBServer.AddNode(orm.Node{
+		appServer.DBServer.AddNode(&orm.Node{
 			Name: "节点类型" +  strconv.Itoa(i+1),
 			GroupID: int64(groupID),
 			TypeID: int64(typeID),

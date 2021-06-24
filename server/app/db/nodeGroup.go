@@ -8,8 +8,8 @@ import (
 )
 
 //新增节点组
-func (db *Server) AddNodeGroup(nodeGroup orm.NodeGroup) error {
-	return db.Gorm.Create(&nodeGroup).Error
+func (db *Server) AddNodeGroup(nodeGroup *orm.NodeGroup) error {
+	return db.Gorm.Create(nodeGroup).Error
 }
 
 //删除节点组

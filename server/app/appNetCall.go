@@ -1,6 +1,7 @@
 package app
 
 import (
+	"context"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/base/component/Jtoken"
@@ -188,6 +189,22 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 	return pbByte, err, int(protoManage.HttpError_HttpErrorNull)
 }
 
+func (app *App) RegisterNodeFunc(ctx context.Context, nodeFunc *protoManage.NodeFunc) (*protoManage.NodeFunc, error) {
+	err := app.Request.ReqNodeFuncRegister(ctx, nodeFunc)
+	if err != nil {
+		return nil, err
+	}
+	return nodeFunc, nil
+}
+
+func (app *App) RegisterNodeReport(ctx context.Context, nodeReport *protoManage.NodeReport) (*protoManage.NodeReport, error) {
+	err := app.Request.ReqNodeReportRegister(ctx, nodeReport)
+	if err != nil {
+		return nil, err
+	}
+	return nodeReport, nil
+}
+
 func (app *App) RpcChannel(request protoManage.RpcEngine_RpcChannelServer) (err error) {
 	conn, pErr := Jrpc.GrpcStreamServerInit(request, new(protoManage.Message), app)
 	if pErr != nil {
@@ -246,11 +263,11 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 		app.Request.ReqNodeStateUpdate(id, res.Message)
 		break
 	case protoManage.Order_NodeLinkUpdateState:
-		app.Request.ReqNodeLinkStateUpdate(id, res.Message)
+		app.Request.ReqNodeLinkUpdate(id, res.Message)
 		break
-	case protoManage.Order_NodeFuncUpdateDesc:
-		app.Request.ReqNodeFuncDescUpdate(id, res.Message)
-		break
+	//case protoManage.Order_NodeFuncUpdateDesc:
+	//	app.Request.ReqNodeFuncDescUpdate(id, res.Message)
+	//	break
 	case protoManage.Order_NodeReportUpdateVal:
 		app.Request.ReqNodeReportValUpdate(id, res.Message)
 		break

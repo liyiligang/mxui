@@ -4,7 +4,7 @@
             <CardName :color="convert.getColorByState(nodeFunc.State)" :name="nodeFunc.Name" :id="nodeFunc.Base.ID"></CardName>
             <CardInfo  describe="级别" :name="convert.getNodeFuncStateName(nodeFunc.State)"
                        :name-color="convert.getColorByState(nodeFunc.State)"></CardInfo>
-            <CardInfo  describe="方法" :name="nodeFunc.Func"></CardInfo>
+            <CardInfo  describe="回调" :name="nodeFunc.Func"></CardInfo>
             <CardInfo  describe="节点" :name="node.Name" :nameColor="convert.getColorByState(node.State)" :link=routerPath.toNode(protoManage.Filter.create({ID:node.Base.ID}))></CardInfo>
             <CardBase :id="nodeFunc.Base.ID" :time="nodeFunc.Base.UpdateTime"></CardBase>
         </template>
@@ -35,6 +35,7 @@ import {routerPath} from "../../router"
 import CardInfo from "../cardItem/CardInfo.vue"
 import CardFuncCall from "../cardItem/CardFuncCall.vue"
 import NodeFuncCall from "../../views/table/NodeFuncCall.vue"
+import {defaultVal} from "../../base/defaultVal";
 
 interface NodeFuncCardInfo {
     dialogVisible:boolean
@@ -43,11 +44,17 @@ interface NodeFuncCardInfo {
 export default defineComponent ({
     name: "NodeFuncCard",
     props:{
-        nodeFunc:Object as PropType<protoManage.NodeFunc>,
-        node:Object as PropType<protoManage.Node>,
+        nodeFunc:{
+            type: protoManage.NodeFunc,
+            default: defaultVal.getDefaultProtoNodeFunc()
+        },
+        node:{
+            type: protoManage.Node,
+            default: defaultVal.getDefaultProtoNode()
+        },
         nodeFuncCall:{
             type: protoManage.NodeFuncCall,
-            default: protoManage.NodeFuncCall.create()
+            default: defaultVal.getDefaultProtoNodeFuncCall()
         },
     },
     components: {

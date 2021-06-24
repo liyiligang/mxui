@@ -8,8 +8,8 @@ import (
 )
 
 //新增节点
-func (db *Server) AddNode(node orm.Node) error {
-	return db.Gorm.Create(&node).Error
+func (db *Server) AddNode(node *orm.Node) error {
+	return db.Gorm.Create(node).Error
 }
 
 //删除节点

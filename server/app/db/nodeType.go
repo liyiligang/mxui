@@ -8,8 +8,8 @@ import (
 )
 
 //新增节点类型
-func (db *Server) AddNodeType(nodeType orm.NodeType) error {
-	return db.Gorm.Create(&nodeType).Error
+func (db *Server) AddNodeType(nodeType *orm.NodeType) error {
+	return db.Gorm.Create(nodeType).Error
 }
 
 //删除节点类型

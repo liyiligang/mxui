@@ -8,8 +8,8 @@ import (
 )
 
 //新增节点方法
-func (db *Server) AddNodeFunc(nodeFunc orm.NodeFunc) error {
-	return db.Gorm.Create(&nodeFunc).Error
+func (db *Server) AddNodeFunc(nodeFunc *orm.NodeFunc) error {
+	return db.Gorm.Create(nodeFunc).Error
 }
 
 //删除节点方法
@@ -22,10 +22,10 @@ func (db *Server) DelAllNodeFuncByNodeID(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Where("nodeID = ?", nodeFunc.NodeID).Delete(orm.NodeFunc{}).Error
 }
 
-//按ID更新指定节点方法名
-func (db *Server) UpdateNodeFuncNameByID(nodeFunc orm.NodeFunc) error {
-	return db.Gorm.Model(&nodeFunc).
-		Updates(map[string]interface{}{"name": nodeFunc.Name}).Error
+//按ID更新指定节点方法信息
+func (db *Server) UpdateNodeFuncInfo(nodeFunc orm.NodeFunc) error {
+	return db.Gorm.Model(&nodeFunc).Updates(map[string]interface{}{
+		"func": nodeFunc.Func}).Error
 }
 
 //获取节点方法信息
@@ -84,8 +84,9 @@ func (db *Server) FindNodeFuncByID(nodeFunc orm.NodeFunc) (*orm.NodeFunc, error)
 }
 
 //按名称获取指定节点方法
-func (db *Server) FindNodeFuncByName(nodeFunc orm.NodeFunc) (*orm.NodeFunc, error) {
-	err := db.Gorm.Where("name = ? and nodeID = ?", nodeFunc.Name, nodeFunc.NodeID).First(&nodeFunc).Error
+func (db *Server) FindNodeFuncByIndex(nodeFunc orm.NodeFunc) (*orm.NodeFunc, error) {
+	err := db.Gorm.Where("nodeID = ? and name = ?",
+		nodeFunc.NodeID, nodeFunc.Name).First(&nodeFunc).Error
 	return &nodeFunc, err
 }
 

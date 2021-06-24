@@ -1207,6 +1207,72 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         /**
+         * Callback as used by {@link protoManage.RpcEngine#registerNodeFunc}.
+         * @memberof protoManage.RpcEngine
+         * @typedef RegisterNodeFuncCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {protoManage.NodeFunc} [response] NodeFunc
+         */
+
+        /**
+         * Calls RegisterNodeFunc.
+         * @function registerNodeFunc
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.INodeFunc} request NodeFunc message or plain object
+         * @param {protoManage.RpcEngine.RegisterNodeFuncCallback} callback Node-style callback called with the error, if any, and NodeFunc
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(RpcEngine.prototype.registerNodeFunc = function registerNodeFunc(request, callback) {
+            return this.rpcCall(registerNodeFunc, $root.protoManage.NodeFunc, $root.protoManage.NodeFunc, request, callback);
+        }, "name", { value: "RegisterNodeFunc" });
+
+        /**
+         * Calls RegisterNodeFunc.
+         * @function registerNodeFunc
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.INodeFunc} request NodeFunc message or plain object
+         * @returns {Promise<protoManage.NodeFunc>} Promise
+         * @variation 2
+         */
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#registerNodeReport}.
+         * @memberof protoManage.RpcEngine
+         * @typedef RegisterNodeReportCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {protoManage.NodeReport} [response] NodeReport
+         */
+
+        /**
+         * Calls RegisterNodeReport.
+         * @function registerNodeReport
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.INodeReport} request NodeReport message or plain object
+         * @param {protoManage.RpcEngine.RegisterNodeReportCallback} callback Node-style callback called with the error, if any, and NodeReport
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(RpcEngine.prototype.registerNodeReport = function registerNodeReport(request, callback) {
+            return this.rpcCall(registerNodeReport, $root.protoManage.NodeReport, $root.protoManage.NodeReport, request, callback);
+        }, "name", { value: "RegisterNodeReport" });
+
+        /**
+         * Calls RegisterNodeReport.
+         * @function registerNodeReport
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.INodeReport} request NodeReport message or plain object
+         * @returns {Promise<protoManage.NodeReport>} Promise
+         * @variation 2
+         */
+
+        /**
          * Callback as used by {@link protoManage.RpcEngine#rpcChannel}.
          * @memberof protoManage.RpcEngine
          * @typedef RpcChannelCallback
@@ -5094,8 +5160,8 @@ export const protoManage = $root.protoManage = (() => {
          * @interface INodeReport
          * @property {protoManage.IBase|null} [Base] NodeReport Base
          * @property {number|null} [NodeID] NodeReport NodeID
-         * @property {string|null} [Flag] NodeReport Flag
          * @property {string|null} [Name] NodeReport Name
+         * @property {string|null} [Func] NodeReport Func
          * @property {protoManage.State|null} [State] NodeReport State
          */
 
@@ -5131,20 +5197,20 @@ export const protoManage = $root.protoManage = (() => {
         NodeReport.prototype.NodeID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * NodeReport Flag.
-         * @member {string} Flag
-         * @memberof protoManage.NodeReport
-         * @instance
-         */
-        NodeReport.prototype.Flag = "";
-
-        /**
          * NodeReport Name.
          * @member {string} Name
          * @memberof protoManage.NodeReport
          * @instance
          */
         NodeReport.prototype.Name = "";
+
+        /**
+         * NodeReport Func.
+         * @member {string} Func
+         * @memberof protoManage.NodeReport
+         * @instance
+         */
+        NodeReport.prototype.Func = "";
 
         /**
          * NodeReport State.
@@ -5182,8 +5248,8 @@ export const protoManage = $root.protoManage = (() => {
                 $root.protoManage.Base.encode(message.Base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             if (message.NodeID != null && Object.hasOwnProperty.call(message, "NodeID"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int64(message.NodeID);
-            if (message.Flag != null && Object.hasOwnProperty.call(message, "Flag"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.Flag);
+            if (message.Func != null && Object.hasOwnProperty.call(message, "Func"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.Func);
             if (message.Name != null && Object.hasOwnProperty.call(message, "Name"))
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.Name);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
@@ -5228,11 +5294,11 @@ export const protoManage = $root.protoManage = (() => {
                 case 2:
                     message.NodeID = reader.int64();
                     break;
-                case 3:
-                    message.Flag = reader.string();
-                    break;
                 case 4:
                     message.Name = reader.string();
+                    break;
+                case 3:
+                    message.Func = reader.string();
                     break;
                 case 5:
                     message.State = reader.int32();
@@ -5280,12 +5346,12 @@ export const protoManage = $root.protoManage = (() => {
             if (message.NodeID != null && message.hasOwnProperty("NodeID"))
                 if (!$util.isInteger(message.NodeID) && !(message.NodeID && $util.isInteger(message.NodeID.low) && $util.isInteger(message.NodeID.high)))
                     return "NodeID: integer|Long expected";
-            if (message.Flag != null && message.hasOwnProperty("Flag"))
-                if (!$util.isString(message.Flag))
-                    return "Flag: string expected";
             if (message.Name != null && message.hasOwnProperty("Name"))
                 if (!$util.isString(message.Name))
                     return "Name: string expected";
+            if (message.Func != null && message.hasOwnProperty("Func"))
+                if (!$util.isString(message.Func))
+                    return "Func: string expected";
             if (message.State != null && message.hasOwnProperty("State"))
                 switch (message.State) {
                 default:
@@ -5326,10 +5392,10 @@ export const protoManage = $root.protoManage = (() => {
                     message.NodeID = object.NodeID;
                 else if (typeof object.NodeID === "object")
                     message.NodeID = new $util.LongBits(object.NodeID.low >>> 0, object.NodeID.high >>> 0).toNumber();
-            if (object.Flag != null)
-                message.Flag = String(object.Flag);
             if (object.Name != null)
                 message.Name = String(object.Name);
+            if (object.Func != null)
+                message.Func = String(object.Func);
             switch (object.State) {
             case "StateNot":
             case 0:
@@ -5375,7 +5441,7 @@ export const protoManage = $root.protoManage = (() => {
                     object.NodeID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.NodeID = options.longs === String ? "0" : 0;
-                object.Flag = "";
+                object.Func = "";
                 object.Name = "";
                 object.State = options.enums === String ? "StateNot" : 0;
             }
@@ -5386,8 +5452,8 @@ export const protoManage = $root.protoManage = (() => {
                     object.NodeID = options.longs === String ? String(message.NodeID) : message.NodeID;
                 else
                     object.NodeID = options.longs === String ? $util.Long.prototype.toString.call(message.NodeID) : options.longs === Number ? new $util.LongBits(message.NodeID.low >>> 0, message.NodeID.high >>> 0).toNumber() : message.NodeID;
-            if (message.Flag != null && message.hasOwnProperty("Flag"))
-                object.Flag = message.Flag;
+            if (message.Func != null && message.hasOwnProperty("Func"))
+                object.Func = message.Func;
             if (message.Name != null && message.hasOwnProperty("Name"))
                 object.Name = message.Name;
             if (message.State != null && message.hasOwnProperty("State"))

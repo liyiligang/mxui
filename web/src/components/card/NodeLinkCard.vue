@@ -18,13 +18,23 @@ import {routerPath} from "../../router";
 import {protoManage} from "../../proto/manage"
 import {request} from "../../base/request";
 import {convert} from "../../base/convert";
+import {defaultVal} from "../../base/defaultVal";
 
 export default defineComponent ({
     name: "NodeLinkCard",
     props:{
-        nodeLink:Object as PropType<protoManage.NodeLink>,
-        sourceNode:Object as PropType<protoManage.Node>,
-        targetNode:Object as PropType<protoManage.Node>,
+        nodeLink:{
+            type: protoManage.NodeLink,
+            default: defaultVal.getDefaultProtoNodeLink()
+        },
+        sourceNode:{
+            type: protoManage.Node,
+            default: defaultVal.getDefaultProtoNode()
+        },
+        targetNode:{
+            type: protoManage.Node,
+            default: defaultVal.getDefaultProtoNode()
+        }
     },
     components: {
         CardName,
@@ -33,7 +43,7 @@ export default defineComponent ({
         CardViewFrame
     },
     setup(props){
-
+        console.log(props.targetNode)
         function closeClick(){
             console.log(props.nodeLink?.Base?.ID)
         }

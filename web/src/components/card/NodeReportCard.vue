@@ -4,7 +4,7 @@
             <CardName :color="convert.getColorByState(nodeReport.State)" :name="nodeReport.Name" :id="nodeReport.Base.ID"></CardName>
             <CardInfo  describe="级别" :name="convert.getNodeReportStateName(nodeReport.State)"
                        :name-color="convert.getColorByState(nodeReport.State)"></CardInfo>
-            <CardInfo  describe="标签" :name="nodeReport.Flag"></CardInfo>
+            <CardInfo  describe="回调" :name="nodeReport.Func"></CardInfo>
             <CardInfo  describe="节点" :name="node.Name" :nameColor="convert.getColorByState(node.State)" :link=routerPath.toNode(protoManage.Filter.create({ID:node.Base.ID}))></CardInfo>
             <CardBase :id="nodeReport.Base.ID" :time="nodeReport.Base.UpdateTime"></CardBase>
         </template>
@@ -35,6 +35,7 @@ import {routerPath} from "../../router";
 import {protoManage} from "../../proto/manage"
 import {request} from "../../base/request";
 import {convert} from "../../base/convert";
+import {defaultVal} from "../../base/defaultVal";
 
 interface NodeReportCardInfo {
     dialogVisible:boolean
@@ -43,11 +44,17 @@ interface NodeReportCardInfo {
 export default defineComponent ({
     name: "NodeReportCard",
     props:{
-        nodeReport:Object as PropType<protoManage.NodeReport>,
-        node:Object as PropType<protoManage.Node>,
+        nodeReport:{
+            type: protoManage.NodeReport,
+            default: defaultVal.getDefaultProtoNodeReport()
+        },
+        node:{
+            type: protoManage.Node,
+            default: defaultVal.getDefaultProtoNode()
+        },
         nodeReportVal:{
             type: protoManage.NodeReportVal,
-            default: protoManage.NodeReportVal.create()
+            default: defaultVal.getDefaultProtoNodeReportVal()
         },
     },
     components: {
@@ -57,7 +64,10 @@ export default defineComponent ({
         CardReportVal,
         NodeReportVal
     },
-    setup(){
+    setup(props){
+
+        console.log(props.nodeReport)
+
         const data = reactive<NodeReportCardInfo>({dialogVisible:false})
         function textClick(){
             data.dialogVisible = true

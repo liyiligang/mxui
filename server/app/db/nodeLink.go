@@ -8,8 +8,8 @@ import (
 )
 
 //新增节点连接
-func (db *Server) AddNodeLink(nodeLink orm.NodeLink) error {
-	return db.Gorm.Create(&nodeLink).Error
+func (db *Server) AddNodeLink(nodeLink *orm.NodeLink) error {
+	return db.Gorm.Create(nodeLink).Error
 }
 
 //删除节点连接
@@ -101,7 +101,7 @@ func (db *Server) FindNodeLinkByID(nodeLink orm.NodeLink) (*orm.NodeLink, error)
 }
 
 //按节点ID获取指定节点连接
-func (db *Server) FindNodeLinkByNodeID(nodeLink orm.NodeLink) (*orm.NodeLink, error) {
+func (db *Server) FindNodeLinkByIndex(nodeLink orm.NodeLink) (*orm.NodeLink, error) {
 	err := db.Gorm.Where("sourceID = ? and targetID = ?", nodeLink.SourceID, nodeLink.TargetID).First(&nodeLink).Error
 	return &nodeLink, err
 }

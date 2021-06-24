@@ -9,4 +9,5 @@ import "github.com/liyiligang/manage/client/app"
 
 func main() {
 	app.InitClient()
+	select {}
 }

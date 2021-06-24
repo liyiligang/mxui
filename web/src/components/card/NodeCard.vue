@@ -39,6 +39,7 @@ import {protoManage} from "../../proto/manage"
 import {request} from "../../base/request"
 import {convert} from "../../base/convert"
 import {routerPath} from "../../router"
+import {defaultVal} from "../../base/defaultVal";
 
 interface NodeCardInfo {
     nodeLinkSourceStateCount:protoManage.IStateCount
@@ -50,9 +51,18 @@ interface NodeCardInfo {
 export default defineComponent ({
     name: "NodeCard",
     props:{
-        node:Object as PropType<protoManage.Node>,
-        nodeGroup:Object as PropType<protoManage.Node>,
-        nodeType:Object as PropType<protoManage.Node>,
+        node:{
+            type: protoManage.Node,
+            default: defaultVal.getDefaultProtoNode()
+        },
+        nodeGroup:{
+            type: protoManage.NodeGroup,
+            default: defaultVal.getDefaultProtoNodeGroup()
+        },
+        nodeType:{
+            type: protoManage.NodeType,
+            default: defaultVal.getDefaultProtoNodeType()
+        },
         nodeLinkSourceStateCount:Object as PropType<protoManage.IStateCount>,
         nodeLinkTargetStateCount:Object as PropType<protoManage.IStateCount>,
         nodeFuncStateCount:Object as PropType<protoManage.IStateCount>,

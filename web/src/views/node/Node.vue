@@ -19,6 +19,7 @@ import Empty from "../../components/Empty.vue"
 import Load from "../../components/Load.vue"
 import NodeViewFrame from "../../components/NodeViewFrame.vue"
 import {useRoute, onBeforeRouteUpdate, RouteLocationNormalizedLoaded} from "vue-router";
+import {convert} from "../../base/convert";
 
 interface NodeInfo {
     nodeList: protoManage.INode[]

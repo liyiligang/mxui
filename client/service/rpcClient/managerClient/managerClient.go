@@ -94,45 +94,6 @@ func (client *RpcStreamManageClient) NodeStateUpdate(state protoManage.State) {
 	client.sendPB(protoManage.Order_NodeUpdateState, &node)
 }
 
-//更新节点连接
-func (client *RpcStreamManageClient) NodeLinkUpdate(TargetID int64, state protoManage.State) {
-	nodeLink := protoManage.NodeLink{SourceID: client.GetNode().Base.ID, TargetID: TargetID, State: state}
-	v ,ok := client.data.NodeLinkMap.Load(TargetID)
-	if ok {
-		nodeLink, ok = v.(protoManage.NodeLink)
-		if !ok {
-			Jlog.Warn("节点连接更新失败, protoManage.NodeLink 断言错误")
-			return
-		}
-		nodeLink.State = state
-	}
-	client.data.NodeLinkMap.Store(TargetID, nodeLink)
-	client.sendPB(protoManage.Order_NodeLinkUpdateState, &nodeLink)
-}
-
-//更新节点方法
-func (client *RpcStreamManageClient) NodeFuncUpdate(callFunc CallFuncDef, Describe string) {
-	if callFunc == nil {
-		Jlog.Warn("节点方法更新失败, 方法不能为空")
-		return
-	}
-	funcName := runtime.FuncForPC(reflect.ValueOf(callFunc).Pointer()).Name()
-	funcName = strings.TrimSuffix(funcName, "-fm")
-	nodeFunc := rpcStreamManageFunc{NodeFunc: protoManage.NodeFunc{NodeID: client.GetNode().Base.ID,
-		Name: funcName, Describe: Describe}, CallFunc: callFunc}
-	v ,ok := client.data.NodeFuncMap.Load(funcName)
-	if ok {
-		nodeFunc, ok = v.(rpcStreamManageFunc)
-		if !ok {
-			Jlog.Warn("节点方法更新失败, rpcStreamManageFunc 断言错误")
-			return
-		}
-		nodeFunc.NodeFunc.Describe = Describe
-		nodeFunc.CallFunc = callFunc
-	}
-	client.data.NodeFuncMap.Store(funcName, nodeFunc)
-	client.sendPB(protoManage.Order_NodeFuncUpdateDesc, &nodeFunc.NodeFunc)
-}
 
 //更新节点报告
 func (client *RpcStreamManageClient) NodeReportUpdate(flag string, name string, value string) {
@@ -213,19 +174,7 @@ func (client *RpcStreamManageClient) getNodeStreamByte() ([]byte, error) {
 	return reqNodeOnline.Marshal()
 }
 
-//节点上线
-func (client *RpcStreamManageClient) nodeOnline(message []byte) error {
-	node := protoManage.Node{}
-	if len(message) == 0 {
-		return errors.New("消息为空值")
-	}
-	err := node.Unmarshal(message)
-	if err != nil {
-		return err
-	}
-	client.setNode(node)
-	return nil
-}
+
 
 //执行节点方法
 func (client *RpcStreamManageClient) nodeFuncCall(message []byte) error {
@@ -252,15 +201,6 @@ func (client *RpcStreamManageClient) nodeFuncCall(message []byte) error {
 	return nil
 }
 
-func (client *RpcStreamManageClient) sendPB(order protoManage.Order, pb proto.Message) {
-	pbByte, err := proto.Marshal(pb)
-	if err != nil {
-		Jlog.Warn("管控中心发送失败, protobuf编码错误", "err", err)
-		return
-	}
-	client.send(order, pbByte)
-}
-
 func (client *RpcStreamManageClient) send(order protoManage.Order, data []byte) bool {
 	rpcStream := client.getRpcStream()
 	if rpcStream == nil {
@@ -272,29 +212,9 @@ func (client *RpcStreamManageClient) send(order protoManage.Order, data []byte) 
 	return true
 }
 
-func (client *RpcStreamManageClient) setNode(node protoManage.Node){
-	client.data.Node.Store(node)
-}
 
-func (client *RpcStreamManageClient) GetNode() protoManage.Node {
-	node, ok := client.data.Node.Load().(protoManage.Node)
-	if !ok {
-		return protoManage.Node{Base: protoManage.Base{}, State: protoManage.State_StateUnknow}
-	}
-	return node
-}
 
-func (client *RpcStreamManageClient) setRpcStream(stream *Jrpc.RpcStream){
-	client.rpcStream.Store(stream)
-}
 
-func (client *RpcStreamManageClient) getRpcStream() *Jrpc.RpcStream{
-	stream, ok := client.rpcStream.Load().(*Jrpc.RpcStream)
-	if !ok {
-		return nil
-	}
-	return stream
-}
 
 
 

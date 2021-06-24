@@ -21,6 +21,7 @@ import CardState from "../cardItem/CardState.vue"
 import {routerPath} from "../../router";
 import {request} from "../../base/request";
 import {protoManage} from "../../proto/manage"
+import {defaultVal} from "../../base/defaultVal";
 
 interface NodeTypeCardInfo {
     nodeStateCount:protoManage.IStateCount
@@ -29,7 +30,10 @@ interface NodeTypeCardInfo {
 export default defineComponent ({
     name: "NodeTypeCard",
     props:{
-        nodeType:Object as PropType<protoManage.NodeType>,
+        nodeType:{
+            type: protoManage.NodeType,
+            default: defaultVal.getDefaultProtoNodeType()
+        },
         nodeStateCount:Object as PropType<protoManage.IStateCount>,
     },
     components: {

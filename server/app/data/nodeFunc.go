@@ -14,11 +14,13 @@ func (data *Data) NodeFuncAdd(protoNodeFunc *protoManage.NodeFunc) error {
 	if err := check.NodeFuncCheck(protoNodeFunc); err != nil {
 		return err
 	}
-	return data.DB.AddNodeFunc(orm.NodeFunc{
-		NodeID: protoNodeFunc.NodeID,
-		Name: protoNodeFunc.Name,
-		Func: protoNodeFunc.Func,
-	})
+	ormNodeFunc := &orm.NodeFunc{NodeID: protoNodeFunc.NodeID, Name: protoNodeFunc.Name,
+		Func: protoNodeFunc.Func, State: int32(protoManage.State_StateNormal)}
+	if err := data.DB.AddNodeFunc(ormNodeFunc); err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(&ormNodeFunc.Base, &protoNodeFunc.Base)
+	return nil
 }
 
 //删除节点方法
@@ -31,24 +33,22 @@ func (data *Data) NodeFuncDelAllByNodeID(protoNodeFunc *protoManage.NodeFunc) er
 	return data.DB.DelAllNodeFuncByNodeID(orm.NodeFunc{NodeID: protoNodeFunc.NodeID})
 }
 
-//更新节点方法描述
-func (data *Data) NodeFuncDescUpdate(protoNodeFunc *protoManage.NodeFunc) error {
-	return data.DB.UpdateNodeFuncNameByID(orm.NodeFunc{
-		Base: orm.Base{ID: protoNodeFunc.Base.ID},
-		Name: protoNodeFunc.Name,
-	})
+//更新节点方法信息
+func (data *Data) NodeFuncInfoUpdate(protoNodeFunc *protoManage.NodeFunc) error {
+	return data.DB.UpdateNodeFuncInfo(orm.NodeFunc{Base: orm.Base{ID: protoNodeFunc.Base.ID},
+		Func: protoNodeFunc.Func})
 }
 
-//按节点方法名更新节点方法描述或者新增节点方法
-func (data *Data) NodeFuncDescUpdateOrAddByName(protoNodeFunc *protoManage.NodeFunc) error {
-	err := data.NodeFuncFindIDByName(protoNodeFunc)
+//更新或者新增节点方法
+func (data *Data) NodeFuncUpdateOrAdd(protoNodeFunc *protoManage.NodeFunc) error {
+	err := data.NodeFuncFindIDByIndex(protoNodeFunc)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return data.NodeFuncAdd(protoNodeFunc)
 		}
 		return err
 	}
-	return data.NodeFuncDescUpdate(protoNodeFunc)
+	return data.NodeFuncInfoUpdate(protoNodeFunc)
 }
 
 //节点方法调用请求
@@ -110,8 +110,9 @@ func (data *Data) NodeFuncFindByID(protoNodeFunc *protoManage.NodeFunc) error {
 }
 
 //按名称查询节点方法
-func (data *Data) NodeFuncFindIDByName(protoNodeFunc *protoManage.NodeFunc) error {
-	ormNodeFunc, err :=data.DB.FindNodeFuncByName(orm.NodeFunc{Name: protoNodeFunc.Name, NodeID: protoNodeFunc.NodeID})
+func (data *Data) NodeFuncFindIDByIndex(protoNodeFunc *protoManage.NodeFunc) error {
+	ormNodeFunc, err :=data.DB.FindNodeFuncByIndex(orm.NodeFunc{NodeID: protoNodeFunc.NodeID,
+		Name: protoNodeFunc.Name})
 	if err != nil {
 		return err
 	}
