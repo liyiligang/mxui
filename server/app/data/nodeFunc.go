@@ -51,54 +51,6 @@ func (data *Data) NodeFuncUpdateOrAdd(protoNodeFunc *protoManage.NodeFunc) error
 	return data.NodeFuncInfoUpdate(protoNodeFunc)
 }
 
-//节点方法调用请求
-func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
-	protoNodeFunc := protoManage.NodeFunc{Base: protoManage.Base{ID: req.NodeFuncCall.FuncID}}
-	err := data.NodeFuncFindByID(&protoNodeFunc)
-	if err != nil {
-		return err
-	}
-	protoNode := protoManage.Node{Base: protoManage.Base{ID: protoNodeFunc.NodeID}}
-	err = data.NodeFindByID(&protoNode)
-	if err != nil {
-		return err
-	}
-
-	if protoNode.State == protoManage.State_StateUnknow {
-		return errors.New("请求失败: 节点 " + protoNode.Name +" 处于离线状态")
-	}
-	ormBase, err := data.DB.AddNodeFuncCall(orm.NodeFuncCall{
-		ManagerID: req.NodeFuncCall.ManagerID,
-		FuncID: req.NodeFuncCall.FuncID,
-		Parameter: req.NodeFuncCall.Parameter,
-		State: int32(protoManage.State_StateUnknow),
-	})
-	if err != nil {
-		return err
-	}
-	convert.OrmBaseToProtoBase(ormBase, &req.NodeFuncCall.Base)
-	return nil
-}
-
-//节点方法调用回复
-func (data *Data) NodeFuncCallAns(ans *protoManage.AnsNodeFuncCall) error {
-	return data.DB.UpdateNodeFuncCallByID(orm.NodeFuncCall{
-		Base:      orm.Base{ID: ans.NodeFuncCall.Base.ID},
-		ReturnVal: ans.NodeFuncCall.ReturnVal,
-		State:     int32(ans.NodeFuncCall.State),
-	})
-}
-
-//按ID查询节点方法调用
-func (data *Data) NodeFuncCallFindByID(protoNodeFuncCall *protoManage.NodeFuncCall) error {
-	ormNodeFuncCall, err :=data.DB.FindNodeFuncCallByID(orm.NodeFuncCall{Base: orm.Base{ID: protoNodeFuncCall.Base.ID}})
-	if err != nil {
-		return err
-	}
-	convert.OrmNodeFuncCallToProtoNodeFuncCall(ormNodeFuncCall, protoNodeFuncCall)
-	return nil
-}
-
 //按ID查询节点方法
 func (data *Data) NodeFuncFindByID(protoNodeFunc *protoManage.NodeFunc) error {
 	ormNodeFunc, err :=data.DB.FindNodeFuncByID(orm.NodeFunc{Base: orm.Base{ID: protoNodeFunc.Base.ID}})
@@ -145,12 +97,3 @@ func (data *Data) NodeFuncFind(req protoManage.ReqNodeFuncList) (*protoManage.An
 		NodeFuncCallList: protoNodeFuncCall,Length:count}, nil
 }
 
-//查找节点方法调用信息
-func (data *Data) NodeFuncCallFind(req protoManage.ReqNodeFuncCallList) (*protoManage.AnsNodeFuncCallList, error) {
-	ormFuncCallList, err := data.DB.FindNodeFuncCall(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	protoNodeFuncCallList := convert.OrmNodeFuncCallListToProtoNodeFuncCallList(ormFuncCallList)
-	return &protoManage.AnsNodeFuncCallList{NodeFuncCallList: protoNodeFuncCallList}, nil
-}

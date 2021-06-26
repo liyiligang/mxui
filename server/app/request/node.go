@@ -77,8 +77,8 @@ func (request *Request) ReqNodeOnline(nodeID int64, message []byte) error {
 
 //节点离线
 func (request *Request) ReqNodeOffline(nodeID int64) {
-	request.Data.NodeStateUpdate(&protoManage.Node{Base: protoManage.Base{ID: nodeID},
-		State: protoManage.State_StateUnknow})
+	//request.Data.NodeStateUpdate(&protoManage.Node{Base: protoManage.Base{ID: nodeID},
+	//	State: protoManage.State_StateUnknow})
 }
 
 //节点状态更新

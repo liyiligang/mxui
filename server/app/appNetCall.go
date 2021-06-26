@@ -265,11 +265,11 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 	case protoManage.Order_NodeLinkUpdateState:
 		app.Request.ReqNodeLinkUpdate(id, res.Message)
 		break
-	//case protoManage.Order_NodeFuncUpdateDesc:
-	//	app.Request.ReqNodeFuncDescUpdate(id, res.Message)
-	//	break
+	case protoManage.Order_NodeFuncCallAns:
+		app.Request.AnsNodeFuncCall(id, res.Message)
+		break
 	case protoManage.Order_NodeReportUpdateVal:
-		app.Request.ReqNodeReportValUpdate(id, res.Message)
+		app.Request.ReqNodeReportValAdd(id, res.Message)
 		break
 	case protoManage.Order_NodeNotifyAdd:
 		app.Request.ReqNodeNotifyAdd(id, res.Message)

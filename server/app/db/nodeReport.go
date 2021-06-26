@@ -12,12 +12,6 @@ func (db *Server) AddNodeReport(nodeReport *orm.NodeReport) error {
 	return db.Gorm.Create(nodeReport).Error
 }
 
-//新增节点报告值
-func (db *Server) AddNodeReportVal(nodeReportVal orm.NodeReportVal) (*orm.Base, error) {
-	err := db.Gorm.Create(&nodeReportVal).Error
-	return &nodeReportVal.Base, err
-}
-
 //删除节点报告
 func (db *Server) DelNodeReport(nodeReport orm.NodeReport) error {
 	return db.Gorm.Delete(&nodeReport).Error
@@ -32,12 +26,6 @@ func (db *Server) DelAllNodeReportByNodeID(nodeReport orm.NodeReport) error {
 func (db *Server) UpdateNodeReportInfo(nodeReport orm.NodeReport) error {
 	return db.Gorm.Model(&nodeReport).Updates(map[string]interface{}{
 		"func": nodeReport.Func}).Error
-}
-
-//按ID更新指定节点报告值
-func (db *Server) UpdateNodeReportValueByID(nodeReportVal orm.NodeReportVal) error {
-	return db.Gorm.Model(&nodeReportVal).
-		Updates(map[string]interface{}{"Value": nodeReportVal.Value, "State": nodeReportVal.State}).Error
 }
 
 //获取节点报告信息
@@ -87,31 +75,6 @@ func (db *Server) FindNodeByNodeReport(filter protoManage.Filter) ([]orm.Node, e
 	var nodeList []orm.Node
 	err := db.Gorm.Where("id = any(?)", subQuery2).Find(&nodeList).Error
 	return nodeList, err
-}
-
-//获取节点报告中节点报告ID对应的最后一次报告值
-func (db *Server) FindLastNodeReportValByNodeReport(filter protoManage.Filter) ([]orm.NodeReportVal, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
-	subQuery1 := tx.Model(&orm.NodeReport{})
-	subQuery2 := db.Gorm.Select("t.id").Table("(?) as t", subQuery1)
-	subQuery3 := db.Gorm.Select("max(id)").Table("nodeReportVal").
-		Where("reportID = any(?)", subQuery2).Group("reportID")
-	var nodeReportValList []orm.NodeReportVal
-	err := db.Gorm.Where("id = any(?)", subQuery3).Find(&nodeReportValList).Error
-	return nodeReportValList, err
-}
-
-//获取节点报告值信息
-func (db *Server) FindNodeReportVal(filter protoManage.Filter) ([]orm.NodeReportVal, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
-	var NodeReportValList []orm.NodeReportVal
-	err := tx.Order("id desc").Find(&NodeReportValList).Error
-	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return NodeReportValList, nil
-	}
-	return NodeReportValList, err
 }
 
 //按ID获取指定节点报告

@@ -23,15 +23,14 @@ import (
 	"github.com/liyiligang/manage/app/typedef/orm"
 	"google.golang.org/grpc"
 	"log"
-	"os"
 	"time"
 )
 
 func (app *App) InitConfig(){
 	configPath := ""
-	if len(os.Args) > 1 {
-		configPath = os.Args[1]
-	}
+	//if len(os.Args) > 1 {
+	//	configPath = os.Args[1]
+	//}
 	Jconfig.ReadConfigFromPath(&config.LocalConfig, configPath)
 
 	if config.LocalConfig.IP.PublicIP == ""{

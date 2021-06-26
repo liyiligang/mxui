@@ -12,7 +12,7 @@ import (
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 )
 
-type CallFuncDef func(string) string
+type CallFuncDef func(string) (string, protoManage.State)
 
 func (client *manageClient) RegisterNodeFunc(name string, callFunc CallFuncDef) error {
 	if callFunc == nil {
@@ -29,10 +29,11 @@ func (client *manageClient) RegisterNodeFunc(name string, callFunc CallFuncDef) 
 	if err != nil {
 		return err
 	}
+	client.data.nodeFuncMap.Store(resNodeFunc.Base.ID, callFunc)
 	fmt.Println("注册方法成功: ", resNodeFunc)
 	return nil
 }
 
-func (client *manageClient) testFunc(str string) string {
-	return ""
+func (client *manageClient) testFunc(str string) (string, protoManage.State) {
+	return "567890", protoManage.State_StateNormal
 }

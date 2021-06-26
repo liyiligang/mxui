@@ -11,12 +11,12 @@ import (
 	"github.com/pkg/errors"
 )
 
-func (gateway *Gateway) RpcSendOrBroadCastPB(userID int64, order protoManage.Order, pb proto.Message) error {
+func (gateway *Gateway) RpcSendOrBroadCastPB(nodeID int64, order protoManage.Order, pb proto.Message) error {
 	pbByte, err := proto.Marshal(pb)
 	if err != nil {
 		return errors.WithMessage(err, "protobuf编码错误")
 	}
-	return gateway.RpcSendOrBroadCastData(userID, order, &pbByte)
+	return gateway.RpcSendOrBroadCastData(nodeID, order, &pbByte)
 }
 
 func (gateway *Gateway) RpcSendOrBroadCastData(nodeID int64, order protoManage.Order, data *[]byte) error {

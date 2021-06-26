@@ -11,6 +11,7 @@ import (
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+	"time"
 )
 
 func (client *manageClient) RpcStreamConnect(stream *Jrpc.RpcStream) (interface{}, error) {
@@ -29,7 +30,7 @@ func (client *manageClient) RpcStreamConnected(stream *Jrpc.RpcStream) error {
 		return err
 	}
 
-	err = client.NodeLinkUpdate(15, protoManage.State_StateError)
+	err = client.UpdateNodeLink(15, protoManage.State_StateError)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -39,10 +40,20 @@ func (client *manageClient) RpcStreamConnected(stream *Jrpc.RpcStream) error {
 		fmt.Println(err)
 	}
 
-	err = client.RegisterNodeReport("临界报告", client.testReport, 1)
+	err = client.RegisterNodeReport("临界报告", client.testReport, 3*time.Second)
 	if err != nil {
 		fmt.Println(err)
 	}
+	err = client.RegisterNodeReport("临界报告", client.testReport, 3*time.Second)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = client.SendNodeNotify("临界通知111", protoManage.State_StateWarn)
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	return nil
 }
 
@@ -61,9 +72,9 @@ func (client *manageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv inter
 	res := *recv.(*protoManage.Message)
 	var err error
 	switch res.Order {
-	//case protoManage.Order_NodeFuncCall:
-	//	err = client.streamClient.nodeFuncCall(res.Message)
-	//	break
+	case protoManage.Order_NodeFuncCallReq:
+		err = client.reqNodeFuncCall(res.Message)
+		break
 	default:
 		Jlog.Warn("管控中心指令错误", "指令", res.Order, "消息", &res.Message)
 	}

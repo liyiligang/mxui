@@ -8,7 +8,7 @@
                 <div>{{getManagerNickName(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" width="90">
+        <el-table-column label="状态" align="center" width="80">
             <template #default="scope">
                 <div :class="[getStateColor(scope.$index)]">{{getState(scope.$index)}}</div>
             </template>

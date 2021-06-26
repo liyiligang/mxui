@@ -1,5 +1,5 @@
 <template>
-    <el-table :data="tableData" height="100%" highlight-current-row v-elTableInfiniteScroll="tableLoad">
+    <el-table class="notifyTable" :data="tableData" height="100%" highlight-current-row v-elTableInfiniteScroll="tableLoad">
         <el-table-column label="编号" type="index" align="center" width="120"></el-table-column>
         <el-table-column label="通知者" align="center" width="220">
             <template #default="scope">
@@ -122,7 +122,7 @@ export default defineComponent ({
 </style>
 
 <style>
-.el-table__body-wrapper {
+.notifyTable .el-table__body-wrapper{
     overflow-y: hidden !important;
 }
 </style>

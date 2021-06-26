@@ -33,15 +33,6 @@ func (data *Data) NodeReportDelAllByNodeID(protoNodeReport *protoManage.NodeRepo
 	return data.DB.DelAllNodeReportByNodeID(orm.NodeReport{NodeID: protoNodeReport.NodeID})
 }
 
-//更新节点报告值
-func (data *Data) NodeReportValUpdate(protoNodeReportVal *protoManage.NodeReportVal) error {
-	return data.DB.UpdateNodeReportValueByID(orm.NodeReportVal{
-		Base:  orm.Base{ID: protoNodeReportVal.Base.ID},
-		Value: protoNodeReportVal.Value,
-		State: int32(protoNodeReportVal.State),
-	})
-}
-
 //更新或者新增节点报告
 func (data *Data) NodeReportUpdateOrAdd(protoNodeReport *protoManage.NodeReport) error {
 	err := data.NodeReportFindIDByIndex(protoNodeReport)
@@ -106,13 +97,5 @@ func (data *Data) NodeReportInfoUpdate(protoNodeReport *protoManage.NodeReport) 
 		Func: protoNodeReport.Func})
 }
 
-//查找节点报告值信息
-func (data *Data) NodeReportValFind(req protoManage.ReqNodeReportValList) (*protoManage.AnsNodeReportValList, error) {
-	ormReportValList, err := data.DB.FindNodeReportVal(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	protoNodeReportValList := convert.OrmNodeReportValListToProtoNodeReportValList(ormReportValList)
-	return &protoManage.AnsNodeReportValList{NodeReportValList: protoNodeReportValList}, nil
-}
+
 

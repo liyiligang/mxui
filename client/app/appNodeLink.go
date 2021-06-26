@@ -11,7 +11,7 @@ import (
 )
 
 //更新节点连接
-func (client *manageClient) NodeLinkUpdate(targetID int64, state protoManage.State) error {
+func (client *manageClient) UpdateNodeLink(targetID int64, state protoManage.State) error {
 	node, err := client.GetNode()
 	if err != nil {
 		return err

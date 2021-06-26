@@ -6,12 +6,10 @@
 package makeDBData
 
 import (
-	"github.com/liyiligang/base/component/Jconfig"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/manage/app"
 	"github.com/liyiligang/manage/app/protoFiles/protoManage"
-	"github.com/liyiligang/manage/app/typedef/config"
 	"github.com/liyiligang/manage/app/typedef/orm"
 	"strconv"
 	"testing"
@@ -19,14 +17,17 @@ import (
 
 var appServer *app.App
 
-func TestMake(t *testing.T) {
+func init() {
 	InitApp()
-	MakeNodeGroupData(10)
-	MakeNodeTypeData(10)
+}
+
+func TestMake(t *testing.T) {
+	//MakeNodeGroupData(10)
+	//MakeNodeTypeData(10)
+	MakeNodeNotifyData(200, 200)
 }
 
 func InitApp(){
-	Jconfig.ReadConfigFromPath(&config.LocalConfig, "")
 	var err error
 	appServer ,err = app.InitServer()
 	if err != nil {

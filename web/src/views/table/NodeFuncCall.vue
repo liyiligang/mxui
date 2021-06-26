@@ -27,6 +27,7 @@ import {ElMessage} from "element-plus";
 import {request} from "../../base/request";
 import {globals} from "../../base/globals";
 import {protoManage} from "../../proto/manage";
+import {defaultVal} from "../../base/defaultVal";
 
 interface NodeFuncCallInfo {
     loading: boolean
@@ -48,7 +49,7 @@ export default defineComponent ({
     props:{
         nodeFunc:{
             type: protoManage.NodeFunc,
-            default: protoManage.NodeFunc.create()
+            default: defaultVal.getDefaultProtoNodeFunc()
         }
     },
     setup(props){
@@ -78,6 +79,7 @@ export default defineComponent ({
             data.currentRow = row
             parameter.value.setJsonValue(row.Parameter)
             returnVal.value.setJsonValue(row.ReturnVal)
+            data.parameter = row.Parameter
         }
 
         const table = ref<typeof NodeFuncCallTable>(NodeFuncCallTable);
@@ -113,7 +115,9 @@ export default defineComponent ({
                 })
             })).then((response) => {
                 findCall(response.ID)
-            }).catch(error => {}).finally(()=>{})
+            }).catch(error => {
+                data.loading = false
+            }).finally(()=>{})
         }
 
         function findCall(baseID:number){
@@ -125,7 +129,7 @@ export default defineComponent ({
                     })
                 })).then((response) => {
                     if (response.State == protoManage.State.StateNormal) {
-                        ElMessage.error(reqStr + "成功");
+                        ElMessage.success(reqStr + "成功");
                         findCallEnd(timerID, response)
                     }else if (response.State == protoManage.State.StateUnknow){
                         reqCount++
