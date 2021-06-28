@@ -6,20 +6,32 @@
 package app
 
 import (
+	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 	"google.golang.org/grpc"
+	"time"
 )
 
 //启动rpc服务
 func InitManageClient(config Jrpc.RpcClientConfig) (*manageClient, error) {
+	var err error
 	client := &manageClient{}
-	conn, err := Jrpc.GrpcClientInit(config)
+	client.conn, err = Jrpc.GrpcClientInit(config)
 	if err != nil {
 		return nil, err
 	}
-	client.engine = protoManage.NewRpcEngineClient(conn)
+	client.engine = protoManage.NewRpcEngineClient(client.conn)
+	client.keepalive = &Jrpc.RpcKeepalive{
+		ServerNode: &commonConst.CommonNodeData{},
+		Conn: client.conn,
+		KeepaliveTime: 1*time.Second,
+	}
 	err = client.initManageClientStream()
+	if err != nil {
+		return nil, err
+	}
+	err = Jrpc.RegisterRpcKeepalive(client.keepalive, client)
 	if err != nil {
 		return nil, err
 	}

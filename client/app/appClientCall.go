@@ -11,8 +11,21 @@ import (
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
-	"time"
 )
+
+func (client *manageClient) RpcServeConnected(rpcKeepalive *Jrpc.RpcKeepalive, isReConnect bool) {
+	fmt.Println("RpcServeConnected  连接")
+	if isReConnect {
+		err := client.initManageClientStream()
+		if err != nil {
+			fmt.Println(err)
+		}
+	}
+}
+
+func (client *manageClient) RpcServeDisconnected(rpcKeepalive *Jrpc.RpcKeepalive, isCloseByUser bool) {
+	fmt.Println("RpcServeDisconnected  关闭")
+}
 
 func (client *manageClient) RpcStreamConnect(stream *Jrpc.RpcStream) (interface{}, error) {
 	pbByte, err := client.getNodeStreamByte()
@@ -20,6 +33,7 @@ func (client *manageClient) RpcStreamConnect(stream *Jrpc.RpcStream) (interface{
 		return 0, err
 	}
 	stream.SetRpcStreamClientMsg(pbByte)
+	fmt.Println("RpcStreamConnect  流连接")
 	return commonConst.ManageNodeID, nil
 }
 
@@ -29,35 +43,11 @@ func (client *manageClient) RpcStreamConnected(stream *Jrpc.RpcStream) error {
 	if err != nil{
 		return err
 	}
-
-	err = client.UpdateNodeLink(15, protoManage.State_StateError)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	err = client.RegisterNodeFunc("临界实验", client.testFunc)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	err = client.RegisterNodeReport("临界报告", client.testReport, 3*time.Second)
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = client.RegisterNodeReport("临界报告", client.testReport, 3*time.Second)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	err = client.SendNodeNotify("临界通知111", protoManage.State_StateWarn)
-	if err != nil {
-		fmt.Println(err)
-	}
-
 	return nil
 }
 
 func (client *manageClient) RpcStreamClose(stream *Jrpc.RpcStream) {
+	client.setRpcStream(nil)
 	//Jlog.Info("管控服务连接已断开", "err:", string(stream.GetParm().RpcStreamServerTrailer))
 	//go func(){
 	//	err := client.streamClient.initRpcStreamManageClient()
@@ -86,3 +76,8 @@ func (client *manageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv inter
 func (client *manageClient) RpcStreamError(text string, err error) {
 	fmt.Println("rpc 错误：", text, err)
 }
+
+func (client *manageClient) RpcKeepaliveError(text string, err error) {
+	fmt.Println("rpc 错误：", text, err)
+}
+

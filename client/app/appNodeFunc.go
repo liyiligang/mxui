@@ -34,6 +34,3 @@ func (client *manageClient) RegisterNodeFunc(name string, callFunc CallFuncDef) 
 	return nil
 }
 
-func (client *manageClient) testFunc(str string) (string, protoManage.State) {
-	return "567890", protoManage.State_StateNormal
-}

@@ -1455,7 +1455,7 @@ func (m *NodeReport) GetState() State {
 }
 
 //节点报告值
-type NodeReportVal struct {
+type  NodeReportVal struct {
 	Base                 Base     `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	ReportID             int64    `protobuf:"varint,2,opt,name=ReportID,proto3" json:"ReportID,omitempty"`
 	Value                float64  `protobuf:"fixed64,3,opt,name=Value,proto3" json:"Value,omitempty"`

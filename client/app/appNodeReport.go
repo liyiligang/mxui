@@ -32,11 +32,12 @@ func (client *manageClient) RegisterNodeReport(name string, callReport CallRepor
 		return err
 	}
 	client.stopTicker(resNodeReport.Name)
-	if interval > 0 {
-		cancel := client.startTicker(interval, resNodeReport, callReport)
-		client.data.nodeReportMap.Store(resNodeReport.Name, nodeReportMapVal{
-			nodeReportID: resNodeReport.Base.ID, cancel: cancel})
+	var cancel context.CancelFunc
+	if interval > 0 &&  callReport != nil{
+		cancel = client.startTicker(interval, resNodeReport, callReport)
 	}
+	client.data.nodeReportMap.Store(resNodeReport.Name, nodeReportMapVal{
+		nodeReportID: resNodeReport.Base.ID, cancel: cancel})
 	fmt.Println("注册节点报告成功: ", resNodeReport)
 	return nil
 }
@@ -49,10 +50,11 @@ func (client *manageClient) startTicker(interval time.Duration, nodeReport *prot
 		for {
 			select {
 			case <-ticker.C:
-				client.execCallReport(nodeReport, callReport)
-				fmt.Println("执行定时器")
+				err := client.execCallReport(nodeReport, callReport)
+				if err != nil {
+					client.RpcStreamError("node report call error: ", err)
+				}
 			case <-ctx.Done():
-				fmt.Println("定时器关闭")
 				return
 			}
 		}
@@ -65,13 +67,11 @@ func (client *manageClient) stopTicker(nodeReportName string){
 	if ok {
 		val, ok := v.(nodeReportMapVal)
 		if ok {
-			val.cancel()
+			if val.cancel != nil {
+				val.cancel()
+			}
 		}
 	}
 }
 
-var testVal = 0.0
-func (client *manageClient) testReport() (float64, protoManage.State) {
-	testVal += 1
-	return testVal, protoManage.State_StateNormal
-}
+

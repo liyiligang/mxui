@@ -11,6 +11,7 @@ import (
 	"github.com/golang/protobuf/proto"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+	"google.golang.org/grpc"
 	"reflect"
 	"runtime"
 	"strings"
@@ -27,12 +28,14 @@ type manageClientData struct {
 }
 
 type manageClient struct {
-	data 	  manageClientData
-	engine    protoManage.RpcEngineClient
-	stream    atomic.Value
+	data 	  		manageClientData
+	conn            *grpc.ClientConn
+	engine    		protoManage.RpcEngineClient
+	stream    		atomic.Value
+	keepalive	    *Jrpc.RpcKeepalive
 }
 
-func InitClient() {
+func InitClient() *manageClient {
 	reqNodeLogin := protoManage.ReqNodeLogin{
 		NodeGroup: protoManage.NodeGroup{
 			Name:                 "测试集群",
@@ -44,9 +47,8 @@ func InitClient() {
 			Name:                 "测试服",
 		},
 	}
-
 	byte, _ := reqNodeLogin.Marshal()
-	_, err := InitManageClient(Jrpc.RpcClientConfig{
+	c, err := InitManageClient(Jrpc.RpcClientConfig{
 		RpcBaseConfig:Jrpc.RpcBaseConfig{
 			Addr: ":888",
 			PublicKeyPath:"../store/cert/grpc/ca_cert.pem",
@@ -57,9 +59,10 @@ func InitClient() {
 	})
 	if err != nil {
 		fmt.Println("连接失败:", err)
-		return
+		return nil
 	}
 	fmt.Println("连接成功")
+	return c
 }
 
 func (client *manageClient) setNode(node protoManage.Node){
@@ -92,6 +95,9 @@ func (client *manageClient) getRpcStream() (*Jrpc.RpcStream, error){
 	if !ok {
 		return nil, errors.New("stream format is error, its type should be *Jrpc.RpcStream")
 	}
+	if stream == nil {
+		return nil, errors.New("grpc stream is closed")
+	}
 	return stream, nil
 }
 
@@ -119,4 +125,17 @@ func (client *manageClient) getFuncName(callFunc interface{}) string {
 	index := strings.LastIndex(funcName, ".")
 	funcName = funcName[index+1:]
 	return funcName
+}
+
+func (client *manageClient) Close() {
+	client.keepalive.Close()
+}
+
+func (client *manageClient) CloseStream() {
+	rpcStream, err := client.getRpcStream()
+	if err != nil {
+		client.RpcStreamError("rpc stream close error: ", err)
+		return
+	}
+	rpcStream.Close()
 }
