@@ -6372,8 +6372,6 @@ export const protoManage = $root.protoManage = (() => {
          * @interface IReqNodeOnline
          * @property {protoManage.INode|null} [Node] ReqNodeOnline Node
          * @property {Array.<protoManage.INodeLink>|null} [NodeLinkList] ReqNodeOnline NodeLinkList
-         * @property {Array.<protoManage.INodeFunc>|null} [NodeFuncList] ReqNodeOnline NodeFuncList
-         * @property {Array.<protoManage.INodeReport>|null} [NodeReportList] ReqNodeOnline NodeReportList
          */
 
         /**
@@ -6386,8 +6384,6 @@ export const protoManage = $root.protoManage = (() => {
          */
         function ReqNodeOnline(properties) {
             this.NodeLinkList = [];
-            this.NodeFuncList = [];
-            this.NodeReportList = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -6409,22 +6405,6 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         ReqNodeOnline.prototype.NodeLinkList = $util.emptyArray;
-
-        /**
-         * ReqNodeOnline NodeFuncList.
-         * @member {Array.<protoManage.INodeFunc>} NodeFuncList
-         * @memberof protoManage.ReqNodeOnline
-         * @instance
-         */
-        ReqNodeOnline.prototype.NodeFuncList = $util.emptyArray;
-
-        /**
-         * ReqNodeOnline NodeReportList.
-         * @member {Array.<protoManage.INodeReport>} NodeReportList
-         * @memberof protoManage.ReqNodeOnline
-         * @instance
-         */
-        ReqNodeOnline.prototype.NodeReportList = $util.emptyArray;
 
         /**
          * Creates a new ReqNodeOnline instance using the specified properties.
@@ -6455,12 +6435,6 @@ export const protoManage = $root.protoManage = (() => {
             if (message.NodeLinkList != null && message.NodeLinkList.length)
                 for (let i = 0; i < message.NodeLinkList.length; ++i)
                     $root.protoManage.NodeLink.encode(message.NodeLinkList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.NodeFuncList != null && message.NodeFuncList.length)
-                for (let i = 0; i < message.NodeFuncList.length; ++i)
-                    $root.protoManage.NodeFunc.encode(message.NodeFuncList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            if (message.NodeReportList != null && message.NodeReportList.length)
-                for (let i = 0; i < message.NodeReportList.length; ++i)
-                    $root.protoManage.NodeReport.encode(message.NodeReportList[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             return writer;
         };
 
@@ -6502,16 +6476,6 @@ export const protoManage = $root.protoManage = (() => {
                     if (!(message.NodeLinkList && message.NodeLinkList.length))
                         message.NodeLinkList = [];
                     message.NodeLinkList.push($root.protoManage.NodeLink.decode(reader, reader.uint32()));
-                    break;
-                case 3:
-                    if (!(message.NodeFuncList && message.NodeFuncList.length))
-                        message.NodeFuncList = [];
-                    message.NodeFuncList.push($root.protoManage.NodeFunc.decode(reader, reader.uint32()));
-                    break;
-                case 4:
-                    if (!(message.NodeReportList && message.NodeReportList.length))
-                        message.NodeReportList = [];
-                    message.NodeReportList.push($root.protoManage.NodeReport.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -6562,24 +6526,6 @@ export const protoManage = $root.protoManage = (() => {
                         return "NodeLinkList." + error;
                 }
             }
-            if (message.NodeFuncList != null && message.hasOwnProperty("NodeFuncList")) {
-                if (!Array.isArray(message.NodeFuncList))
-                    return "NodeFuncList: array expected";
-                for (let i = 0; i < message.NodeFuncList.length; ++i) {
-                    let error = $root.protoManage.NodeFunc.verify(message.NodeFuncList[i]);
-                    if (error)
-                        return "NodeFuncList." + error;
-                }
-            }
-            if (message.NodeReportList != null && message.hasOwnProperty("NodeReportList")) {
-                if (!Array.isArray(message.NodeReportList))
-                    return "NodeReportList: array expected";
-                for (let i = 0; i < message.NodeReportList.length; ++i) {
-                    let error = $root.protoManage.NodeReport.verify(message.NodeReportList[i]);
-                    if (error)
-                        return "NodeReportList." + error;
-                }
-            }
             return null;
         };
 
@@ -6610,26 +6556,6 @@ export const protoManage = $root.protoManage = (() => {
                     message.NodeLinkList[i] = $root.protoManage.NodeLink.fromObject(object.NodeLinkList[i]);
                 }
             }
-            if (object.NodeFuncList) {
-                if (!Array.isArray(object.NodeFuncList))
-                    throw TypeError(".protoManage.ReqNodeOnline.NodeFuncList: array expected");
-                message.NodeFuncList = [];
-                for (let i = 0; i < object.NodeFuncList.length; ++i) {
-                    if (typeof object.NodeFuncList[i] !== "object")
-                        throw TypeError(".protoManage.ReqNodeOnline.NodeFuncList: object expected");
-                    message.NodeFuncList[i] = $root.protoManage.NodeFunc.fromObject(object.NodeFuncList[i]);
-                }
-            }
-            if (object.NodeReportList) {
-                if (!Array.isArray(object.NodeReportList))
-                    throw TypeError(".protoManage.ReqNodeOnline.NodeReportList: array expected");
-                message.NodeReportList = [];
-                for (let i = 0; i < object.NodeReportList.length; ++i) {
-                    if (typeof object.NodeReportList[i] !== "object")
-                        throw TypeError(".protoManage.ReqNodeOnline.NodeReportList: object expected");
-                    message.NodeReportList[i] = $root.protoManage.NodeReport.fromObject(object.NodeReportList[i]);
-                }
-            }
             return message;
         };
 
@@ -6646,11 +6572,8 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.arrays || options.defaults) {
+            if (options.arrays || options.defaults)
                 object.NodeLinkList = [];
-                object.NodeFuncList = [];
-                object.NodeReportList = [];
-            }
             if (options.defaults)
                 object.Node = null;
             if (message.Node != null && message.hasOwnProperty("Node"))
@@ -6659,16 +6582,6 @@ export const protoManage = $root.protoManage = (() => {
                 object.NodeLinkList = [];
                 for (let j = 0; j < message.NodeLinkList.length; ++j)
                     object.NodeLinkList[j] = $root.protoManage.NodeLink.toObject(message.NodeLinkList[j], options);
-            }
-            if (message.NodeFuncList && message.NodeFuncList.length) {
-                object.NodeFuncList = [];
-                for (let j = 0; j < message.NodeFuncList.length; ++j)
-                    object.NodeFuncList[j] = $root.protoManage.NodeFunc.toObject(message.NodeFuncList[j], options);
-            }
-            if (message.NodeReportList && message.NodeReportList.length) {
-                object.NodeReportList = [];
-                for (let j = 0; j < message.NodeReportList.length; ++j)
-                    object.NodeReportList[j] = $root.protoManage.NodeReport.toObject(message.NodeReportList[j], options);
             }
             return object;
         };

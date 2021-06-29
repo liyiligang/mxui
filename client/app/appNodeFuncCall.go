@@ -10,7 +10,7 @@ import (
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 )
 
-func (client *manageClient) reqNodeFuncCall(message []byte) error {
+func (client *ManageClient) reqNodeFuncCall(message []byte) error {
 	req := protoManage.ReqNodeFuncCall{}
 	err := req.Unmarshal(message)
 	if err != nil {

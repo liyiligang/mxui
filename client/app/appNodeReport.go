@@ -19,14 +19,14 @@ type nodeReportMapVal struct {
 	cancel 					context.CancelFunc
 }
 
-func (client *manageClient) RegisterNodeReport(name string, callReport CallReportDef, interval time.Duration) error {
+func (client *ManageClient) RegisterNodeReport(name string, callReport CallReportDef, interval time.Duration) error {
 	node, err := client.GetNode()
 	if err != nil {
 		return err
 	}
 	callName := client.getFuncName(callReport)
 	nodeReport := protoManage.NodeReport{NodeID: node.Base.ID, Name: name, Func: callName}
-	ctx := context.Background()
+	ctx, _ := context.WithTimeout(context.Background(), client.config.RequestTimeOut)
 	resNodeReport, err := client.engine.RegisterNodeReport(ctx, &nodeReport)
 	if err != nil {
 		return err
@@ -42,7 +42,7 @@ func (client *manageClient) RegisterNodeReport(name string, callReport CallRepor
 	return nil
 }
 
-func (client *manageClient) startTicker(interval time.Duration, nodeReport *protoManage.NodeReport, callReport CallReportDef) context.CancelFunc {
+func (client *ManageClient) startTicker(interval time.Duration, nodeReport *protoManage.NodeReport, callReport CallReportDef) context.CancelFunc {
 	ticker := time.NewTicker(interval)
 	ctx, cancel := context.WithCancel(context.Background())
 	go func() {
@@ -62,7 +62,7 @@ func (client *manageClient) startTicker(interval time.Duration, nodeReport *prot
 	return cancel
 }
 
-func (client *manageClient) stopTicker(nodeReportName string){
+func (client *ManageClient) stopTicker(nodeReportName string){
 	v, ok := client.data.nodeReportMap.Load(nodeReportName)
 	if ok {
 		val, ok := v.(nodeReportMapVal)

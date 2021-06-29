@@ -10,7 +10,7 @@ import (
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 )
 
-func (client *manageClient) nodeOnline(message []byte) error {
+func (client *ManageClient) nodeOnline(message []byte) error {
 	node := protoManage.Node{}
 	err := node.Unmarshal(message)
 	if err != nil {
@@ -21,4 +21,14 @@ func (client *manageClient) nodeOnline(message []byte) error {
 	}
 	client.setNode(node)
 	return nil
+}
+
+func (client *ManageClient) UpdateNode(state protoManage.State) error {
+	node, err := client.GetNode()
+	if err != nil {
+		return err
+	}
+	node.State = state
+	client.setNode(*node)
+	return client.sendPB(protoManage.Order_NodeUpdateState, node)
 }

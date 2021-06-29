@@ -12,11 +12,15 @@ import (
 	"time"
 )
 
+
 func main() {
-	client := app.InitClient()
+	client, err := initClient()
+	if err !=nil {
+		fmt.Println("连接失败: ", err)
+		return
+	}
 
-
-	err := client.UpdateNodeLink(15, protoManage.State_StateError)
+	err = client.UpdateNodeLink(15, protoManage.State_StateError)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -38,6 +42,25 @@ func main() {
 
 
 	select {}
+}
+
+
+func initClient() (*app.ManageClient, error) {
+	c, err := app.InitManageClient(app.ManageClientConfig{
+		Addr:":888",
+		PublicKeyPath:"../store/cert/grpc/ca_cert.pem",
+		CertName: "x.test.example.com",
+		NodeGroupName: "测试集群",
+		NodeTypeName: "测试类型",
+		NodeName: "测试节点",
+		ConnectTimeOut: time.Second * 5,
+		RequestTimeOut: time.Second * 5,
+		KeepaliveTime: time.Second * 1,
+	})
+	if err != nil {
+		return nil, err
+	}
+	return c, nil
 }
 
 func  testFunc(str string) (string, protoManage.State) {

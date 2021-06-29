@@ -7,7 +7,7 @@ package app
 
 import "github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 
-func (client *manageClient) SendNodeNotify(msg string, level protoManage.State) error {
+func (client *ManageClient) SendNodeNotify(msg string, level protoManage.State) error {
 	node, err := client.GetNode()
 	if err != nil {
 		return err

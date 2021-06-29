@@ -2117,12 +2117,6 @@ export namespace protoManage {
 
         /** ReqNodeOnline NodeLinkList */
         NodeLinkList?: (protoManage.INodeLink[]|null);
-
-        /** ReqNodeOnline NodeFuncList */
-        NodeFuncList?: (protoManage.INodeFunc[]|null);
-
-        /** ReqNodeOnline NodeReportList */
-        NodeReportList?: (protoManage.INodeReport[]|null);
     }
 
     /** Represents a ReqNodeOnline. */
@@ -2139,12 +2133,6 @@ export namespace protoManage {
 
         /** ReqNodeOnline NodeLinkList. */
         public NodeLinkList: protoManage.INodeLink[];
-
-        /** ReqNodeOnline NodeFuncList. */
-        public NodeFuncList: protoManage.INodeFunc[];
-
-        /** ReqNodeOnline NodeReportList. */
-        public NodeReportList: protoManage.INodeReport[];
 
         /**
          * Creates a new ReqNodeOnline instance using the specified properties.

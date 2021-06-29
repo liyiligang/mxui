@@ -13,7 +13,7 @@ import (
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 )
 
-func (client *manageClient) RpcServeConnected(rpcKeepalive *Jrpc.RpcKeepalive, isReConnect bool) {
+func (client *ManageClient) RpcServeConnected(rpcKeepalive *Jrpc.RpcKeepalive, isReConnect bool) {
 	fmt.Println("RpcServeConnected  连接")
 	if isReConnect {
 		err := client.initManageClientStream()
@@ -23,11 +23,18 @@ func (client *manageClient) RpcServeConnected(rpcKeepalive *Jrpc.RpcKeepalive, i
 	}
 }
 
-func (client *manageClient) RpcServeDisconnected(rpcKeepalive *Jrpc.RpcKeepalive, isCloseByUser bool) {
+func (client *ManageClient) RpcServeDisconnected(rpcKeepalive *Jrpc.RpcKeepalive, isCloseByUser bool) {
+	defer func(){
+		if isCloseByUser {
+			client.closeConn()
+		}
+	}()
+
+
 	fmt.Println("RpcServeDisconnected  关闭")
 }
 
-func (client *manageClient) RpcStreamConnect(stream *Jrpc.RpcStream) (interface{}, error) {
+func (client *ManageClient) RpcStreamConnect(stream *Jrpc.RpcStream) (interface{}, error) {
 	pbByte, err := client.getNodeStreamByte()
 	if err != nil {
 		return 0, err
@@ -37,7 +44,7 @@ func (client *manageClient) RpcStreamConnect(stream *Jrpc.RpcStream) (interface{
 	return commonConst.ManageNodeID, nil
 }
 
-func (client *manageClient) RpcStreamConnected(stream *Jrpc.RpcStream) error {
+func (client *ManageClient) RpcStreamConnected(stream *Jrpc.RpcStream) error {
 	client.setRpcStream(stream)
 	err := client.nodeOnline(stream.GetParm().RpcStreamServerHeader)
 	if err != nil{
@@ -46,7 +53,7 @@ func (client *manageClient) RpcStreamConnected(stream *Jrpc.RpcStream) error {
 	return nil
 }
 
-func (client *manageClient) RpcStreamClose(stream *Jrpc.RpcStream) {
+func (client *ManageClient) RpcStreamClose(stream *Jrpc.RpcStream) {
 	client.setRpcStream(nil)
 	//Jlog.Info("管控服务连接已断开", "err:", string(stream.GetParm().RpcStreamServerTrailer))
 	//go func(){
@@ -58,7 +65,7 @@ func (client *manageClient) RpcStreamClose(stream *Jrpc.RpcStream) {
 	fmt.Println("rpc 已关闭")
 }
 
-func (client *manageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv interface{}) {
+func (client *ManageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv interface{}) {
 	res := *recv.(*protoManage.Message)
 	var err error
 	switch res.Order {
@@ -73,11 +80,9 @@ func (client *manageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv inter
 	}
 }
 
-func (client *manageClient) RpcStreamError(text string, err error) {
+func (client *ManageClient) RpcStreamError(text string, err error) {
 	fmt.Println("rpc 错误：", text, err)
 }
 
-func (client *manageClient) RpcKeepaliveError(text string, err error) {
-	fmt.Println("rpc 错误：", text, err)
-}
+
 

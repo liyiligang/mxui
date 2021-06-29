@@ -7,7 +7,6 @@ package app
 
 import (
 	"errors"
-	"fmt"
 	"github.com/golang/protobuf/proto"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
@@ -20,6 +19,18 @@ import (
 	"time"
 )
 
+type ManageClientConfig struct {
+	Addr           string
+	PublicKeyPath  string
+	CertName       string
+	NodeGroupName  string
+	NodeTypeName   string
+	NodeName  	   string
+	ConnectTimeOut time.Duration
+	RequestTimeOut time.Duration
+	KeepaliveTime  time.Duration
+}
+
 type manageClientData struct {
 	node 			  atomic.Value
 	nodeLinkMap	  	  sync.Map
@@ -27,7 +38,8 @@ type manageClientData struct {
 	nodeReportMap	  sync.Map
 }
 
-type manageClient struct {
+type ManageClient struct {
+	config          ManageClientConfig
 	data 	  		manageClientData
 	conn            *grpc.ClientConn
 	engine    		protoManage.RpcEngineClient
@@ -35,41 +47,11 @@ type manageClient struct {
 	keepalive	    *Jrpc.RpcKeepalive
 }
 
-func InitClient() *manageClient {
-	reqNodeLogin := protoManage.ReqNodeLogin{
-		NodeGroup: protoManage.NodeGroup{
-			Name:                 "测试集群",
-		},
-		NodeType: protoManage.NodeType{
-			Name:                 "测试类型",
-		},
-		Node: protoManage.Node{
-			Name:                 "测试服",
-		},
-	}
-	byte, _ := reqNodeLogin.Marshal()
-	c, err := InitManageClient(Jrpc.RpcClientConfig{
-		RpcBaseConfig:Jrpc.RpcBaseConfig{
-			Addr: ":888",
-			PublicKeyPath:"../store/cert/grpc/ca_cert.pem",
-		},
-		CertName: "x.test.example.com",
-		Auth: byte,
-		ConnectTimeOut: time.Second * 5,
-	})
-	if err != nil {
-		fmt.Println("连接失败:", err)
-		return nil
-	}
-	fmt.Println("连接成功")
-	return c
-}
-
-func (client *manageClient) setNode(node protoManage.Node){
+func (client *ManageClient) setNode(node protoManage.Node){
 	client.data.node.Store(node)
 }
 
-func (client *manageClient) GetNode() (*protoManage.Node, error) {
+func (client *ManageClient) GetNode() (*protoManage.Node, error) {
 	val := client.data.node.Load()
 	if val == nil {
 		return nil, errors.New("node data is uninitialized")
@@ -82,11 +64,11 @@ func (client *manageClient) GetNode() (*protoManage.Node, error) {
 }
 
 
-func (client *manageClient) setRpcStream(stream *Jrpc.RpcStream){
+func (client *ManageClient) setRpcStream(stream *Jrpc.RpcStream){
 	client.stream.Store(stream)
 }
 
-func (client *manageClient) getRpcStream() (*Jrpc.RpcStream, error){
+func (client *ManageClient) getRpcStream() (*Jrpc.RpcStream, error){
 	val := client.stream.Load()
 	if val == nil {
 		return nil, errors.New("grpc stream is uninitialized")
@@ -102,7 +84,7 @@ func (client *manageClient) getRpcStream() (*Jrpc.RpcStream, error){
 }
 
 
-func (client *manageClient) sendPB(order protoManage.Order, pb proto.Message) error {
+func (client *ManageClient) sendPB(order protoManage.Order, pb proto.Message) error {
 	pbByte, err := proto.Marshal(pb)
 	if err != nil {
 		return err
@@ -110,7 +92,7 @@ func (client *manageClient) sendPB(order protoManage.Order, pb proto.Message) er
 	return client.send(order, pbByte)
 }
 
-func (client *manageClient) send(order protoManage.Order, data []byte) error {
+func (client *ManageClient) send(order protoManage.Order, data []byte) error {
 	rpcStream, err := client.getRpcStream()
 	if err != nil {
 		return err
@@ -119,7 +101,7 @@ func (client *manageClient) send(order protoManage.Order, data []byte) error {
 	return nil
 }
 
-func (client *manageClient) getFuncName(callFunc interface{}) string {
+func (client *ManageClient) getFuncName(callFunc interface{}) string {
 	funcName := runtime.FuncForPC(reflect.ValueOf(callFunc).Pointer()).Name()
 	funcName = strings.TrimSuffix(funcName, "-fm")
 	index := strings.LastIndex(funcName, ".")
@@ -127,11 +109,18 @@ func (client *manageClient) getFuncName(callFunc interface{}) string {
 	return funcName
 }
 
-func (client *manageClient) Close() {
+func (client *ManageClient) Close() {
 	client.keepalive.Close()
 }
 
-func (client *manageClient) CloseStream() {
+func (client *ManageClient) closeConn() {
+	err := client.conn.Close()
+	if err != nil {
+		client.RpcStreamError("rpc close error: ", err)
+	}
+}
+
+func (client *ManageClient) CloseStream() {
 	rpcStream, err := client.getRpcStream()
 	if err != nil {
 		client.RpcStreamError("rpc stream close error: ", err)
@@ -139,3 +128,6 @@ func (client *manageClient) CloseStream() {
 	}
 	rpcStream.Close()
 }
+
+
+

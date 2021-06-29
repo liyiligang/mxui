@@ -14,7 +14,7 @@ import (
 
 type CallFuncDef func(string) (string, protoManage.State)
 
-func (client *manageClient) RegisterNodeFunc(name string, callFunc CallFuncDef) error {
+func (client *ManageClient) RegisterNodeFunc(name string, callFunc CallFuncDef) error {
 	if callFunc == nil {
 		return errors.New("callFunc is nil")
 	}
@@ -24,7 +24,7 @@ func (client *manageClient) RegisterNodeFunc(name string, callFunc CallFuncDef) 
 	}
 	callName := client.getFuncName(callFunc)
 	nodeFunc := protoManage.NodeFunc{NodeID: node.Base.ID, Name: name, Func: callName}
-	ctx := context.Background()
+	ctx, _ := context.WithTimeout(context.Background(), client.config.RequestTimeOut)
 	resNodeFunc, err := client.engine.RegisterNodeFunc(ctx, &nodeFunc)
 	if err != nil {
 		return err
