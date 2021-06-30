@@ -10,8 +10,15 @@ import (
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 )
 
+type NodeLinkState int32
+const (
+	NodeLinkStateConnected  	NodeLinkState    =  NodeLinkState(protoManage.State_StateNormal)
+	NodeLinkStateConnecting   	NodeLinkState 	 =  NodeLinkState(protoManage.State_StateWarn)
+	NodeLinkStateDisconnected   NodeLinkState	 =  NodeLinkState(protoManage.State_StateError)
+)
+
 //更新节点连接
-func (client *ManageClient) UpdateNodeLink(targetID int64, state protoManage.State) error {
+func (client *ManageClient) UpdateNodeLink(targetID int64, nodeLinkState NodeLinkState) error {
 	node, err := client.GetNode()
 	if err != nil {
 		return err
@@ -23,9 +30,9 @@ func (client *ManageClient) UpdateNodeLink(targetID int64, state protoManage.Sta
 		if !ok {
 			return errors.New("nodeLink data format is error, its type should be protoManage.NodeLink")
 		}
-		nodeLink.State = state
+		nodeLink.State = protoManage.State(nodeLinkState)
 	}else {
-		nodeLink = &protoManage.NodeLink{SourceID: node.Base.ID, TargetID: targetID, State: state}
+		nodeLink = &protoManage.NodeLink{SourceID: node.Base.ID, TargetID: targetID, State: protoManage.State(nodeLinkState)}
 		client.data.nodeLinkMap.Store(targetID, nodeLink)
 	}
 	return client.sendPB(protoManage.Order_NodeLinkUpdateState, nodeLink)

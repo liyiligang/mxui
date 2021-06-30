@@ -7,12 +7,20 @@ package app
 
 import "github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 
-func (client *ManageClient) SendNodeNotify(msg string, level protoManage.State) error {
+type NodeNotifyLevel int32
+const (
+	NodeNotifyLevelInfo  		NodeNotifyLevel   =  NodeNotifyLevel(protoManage.State_StateUnknow)
+	NodeNotifyLevelSuccess   	NodeNotifyLevel   =  NodeNotifyLevel(protoManage.State_StateNormal)
+	NodeNotifyLevelWarn   		NodeNotifyLevel	  =  NodeNotifyLevel(protoManage.State_StateWarn)
+	NodeNotifyLevelError		NodeNotifyLevel	  =  NodeNotifyLevel(protoManage.State_StateError)
+)
+
+func (client *ManageClient) SendNodeNotify(msg string, nodeNotifyLevel NodeNotifyLevel) error {
 	node, err := client.GetNode()
 	if err != nil {
 		return err
 	}
 	nodeNotify := &protoManage.NodeNotify{SenderID: node.Base.ID, SenderType: protoManage.NotifySenderType_NotifySenderTypeNode,
-		Message: msg, State: level}
+		Message: msg, State: protoManage.State(nodeNotifyLevel)}
 	return client.sendPB(protoManage.Order_NodeNotifyAdd, nodeNotify)
 }

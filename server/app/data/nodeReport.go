@@ -94,7 +94,7 @@ func (data *Data) NodeReportFind(req protoManage.ReqNodeReportList) (*protoManag
 //更新节点报告信息
 func (data *Data) NodeReportInfoUpdate(protoNodeReport *protoManage.NodeReport) error {
 	return data.DB.UpdateNodeReportInfo(orm.NodeReport{Base: orm.Base{ID: protoNodeReport.Base.ID},
-		Func: protoNodeReport.Func})
+		Func: protoNodeReport.Func, State: int32(protoNodeReport.State)})
 }
 
 

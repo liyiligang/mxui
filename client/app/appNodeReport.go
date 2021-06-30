@@ -7,25 +7,33 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 	"time"
 )
 
-type CallReportDef func() (float64, protoManage.State)
+type CallReportDef func() (float64, NodeReportValLevel)
 
 type nodeReportMapVal struct {
 	nodeReportID			int64
 	cancel 					context.CancelFunc
 }
 
-func (client *ManageClient) RegisterNodeReport(name string, callReport CallReportDef, interval time.Duration) error {
+type NodeReportLevel int32
+const (
+	NodeReportLevel1 		NodeReportLevel   =   1
+	NodeReportLevel2 		NodeReportLevel   =   2
+	NodeReportLevel3 		NodeReportLevel   =   3
+	NodeReportLevel4 		NodeReportLevel   =   4
+)
+
+func (client *ManageClient) RegisterNodeReport(name string, callReport CallReportDef,
+	interval time.Duration, nodeReportLevel NodeReportLevel) error {
 	node, err := client.GetNode()
 	if err != nil {
 		return err
 	}
 	callName := client.getFuncName(callReport)
-	nodeReport := protoManage.NodeReport{NodeID: node.Base.ID, Name: name, Func: callName}
+	nodeReport := protoManage.NodeReport{NodeID: node.Base.ID, Name: name, Func: callName, State: protoManage.State(nodeReportLevel)}
 	ctx, _ := context.WithTimeout(context.Background(), client.config.RequestTimeOut)
 	resNodeReport, err := client.engine.RegisterNodeReport(ctx, &nodeReport)
 	if err != nil {
@@ -38,7 +46,6 @@ func (client *ManageClient) RegisterNodeReport(name string, callReport CallRepor
 	}
 	client.data.nodeReportMap.Store(resNodeReport.Name, nodeReportMapVal{
 		nodeReportID: resNodeReport.Base.ID, cancel: cancel})
-	fmt.Println("注册节点报告成功: ", resNodeReport)
 	return nil
 }
 

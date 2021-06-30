@@ -135,18 +135,18 @@ export const protoManage = $root.protoManage = (() => {
      * @name protoManage.State
      * @enum {number}
      * @property {number} StateNot=0 StateNot value
-     * @property {number} StateNormal=1 StateNormal value
-     * @property {number} StateWarn=2 StateWarn value
-     * @property {number} StateError=3 StateError value
-     * @property {number} StateUnknow=4 StateUnknow value
+     * @property {number} StateUnknow=1 StateUnknow value
+     * @property {number} StateNormal=2 StateNormal value
+     * @property {number} StateWarn=3 StateWarn value
+     * @property {number} StateError=4 StateError value
      */
     protoManage.State = (function() {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "StateNot"] = 0;
-        values[valuesById[1] = "StateNormal"] = 1;
-        values[valuesById[2] = "StateWarn"] = 2;
-        values[valuesById[3] = "StateError"] = 3;
-        values[valuesById[4] = "StateUnknow"] = 4;
+        values[valuesById[1] = "StateUnknow"] = 1;
+        values[valuesById[2] = "StateNormal"] = 2;
+        values[valuesById[3] = "StateWarn"] = 3;
+        values[valuesById[4] = "StateError"] = 4;
         return values;
     })();
 
@@ -2479,19 +2479,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -3025,19 +3025,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -3324,19 +3324,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -4074,19 +4074,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -4392,19 +4392,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -4719,19 +4719,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -5068,19 +5068,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -5401,19 +5401,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -5705,19 +5705,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -6043,19 +6043,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;
@@ -12420,19 +12420,19 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.State = 0;
                 break;
-            case "StateNormal":
+            case "StateUnknow":
             case 1:
                 message.State = 1;
                 break;
-            case "StateWarn":
+            case "StateNormal":
             case 2:
                 message.State = 2;
                 break;
-            case "StateError":
+            case "StateWarn":
             case 3:
                 message.State = 3;
                 break;
-            case "StateUnknow":
+            case "StateError":
             case 4:
                 message.State = 4;
                 break;

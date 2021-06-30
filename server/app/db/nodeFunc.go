@@ -25,7 +25,7 @@ func (db *Server) DelAllNodeFuncByNodeID(nodeFunc orm.NodeFunc) error {
 //按ID更新指定节点方法信息
 func (db *Server) UpdateNodeFuncInfo(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Model(&nodeFunc).Updates(map[string]interface{}{
-		"func": nodeFunc.Func}).Error
+		"func": nodeFunc.Func, "state": nodeFunc.State}).Error
 }
 
 //获取节点方法信息

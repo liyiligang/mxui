@@ -29,6 +29,7 @@ type ManageClientConfig struct {
 	ConnectTimeOut time.Duration
 	RequestTimeOut time.Duration
 	KeepaliveTime  time.Duration
+	ErrorCall	   func(text string, err error)
 }
 
 type manageClientData struct {

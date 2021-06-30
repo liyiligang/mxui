@@ -61,10 +61,10 @@ export namespace protoManage {
     /** State enum. */
     enum State {
         StateNot = 0,
-        StateNormal = 1,
-        StateWarn = 2,
-        StateError = 3,
-        StateUnknow = 4
+        StateUnknow = 1,
+        StateNormal = 2,
+        StateWarn = 3,
+        StateError = 4
     }
 
     /** NotifySenderType enum. */

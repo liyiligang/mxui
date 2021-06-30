@@ -10,6 +10,14 @@ import (
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 )
 
+type NodeFuncCallLevel int32
+const (
+	NodeFuncCallLevelUnknown			NodeFuncCallLevel   =   1
+	NodeFuncCallLevelLevelNormal		NodeFuncCallLevel   =   2
+	NodeFuncCallLevelLevelWarn			NodeFuncCallLevel   =   3
+	NodeFuncCallLevelLevelError 		NodeFuncCallLevel   =   4
+)
+
 func (client *ManageClient) reqNodeFuncCall(message []byte) error {
 	req := protoManage.ReqNodeFuncCall{}
 	err := req.Unmarshal(message)
@@ -26,7 +34,7 @@ func (client *ManageClient) reqNodeFuncCall(message []byte) error {
 	}
 	res, state := callFunc(req.NodeFuncCall.Parameter)
 	ans := protoManage.AnsNodeFuncCall{NodeFuncCall: protoManage.NodeFuncCall{
-		Base: req.NodeFuncCall.Base, ReturnVal: res, State: state,
+		Base: req.NodeFuncCall.Base, ReturnVal: res, State: protoManage.State(state),
 	}}
 	return client.sendPB(protoManage.Order_NodeFuncCallAns, &ans)
 }

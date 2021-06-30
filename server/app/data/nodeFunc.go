@@ -36,7 +36,7 @@ func (data *Data) NodeFuncDelAllByNodeID(protoNodeFunc *protoManage.NodeFunc) er
 //更新节点方法信息
 func (data *Data) NodeFuncInfoUpdate(protoNodeFunc *protoManage.NodeFunc) error {
 	return data.DB.UpdateNodeFuncInfo(orm.NodeFunc{Base: orm.Base{ID: protoNodeFunc.Base.ID},
-		Func: protoNodeFunc.Func})
+		Func: protoNodeFunc.Func, State: int32(protoNodeFunc.State)})
 }
 
 //更新或者新增节点方法

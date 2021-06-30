@@ -6,7 +6,6 @@
 package app
 
 import (
-	"fmt"
 	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
@@ -14,11 +13,10 @@ import (
 )
 
 func (client *ManageClient) RpcServeConnected(rpcKeepalive *Jrpc.RpcKeepalive, isReConnect bool) {
-	fmt.Println("RpcServeConnected  连接")
 	if isReConnect {
 		err := client.initManageClientStream()
 		if err != nil {
-			fmt.Println(err)
+			client.RpcStreamError("rpc stream init error: ", err)
 		}
 	}
 }
@@ -29,9 +27,6 @@ func (client *ManageClient) RpcServeDisconnected(rpcKeepalive *Jrpc.RpcKeepalive
 			client.closeConn()
 		}
 	}()
-
-
-	fmt.Println("RpcServeDisconnected  关闭")
 }
 
 func (client *ManageClient) RpcStreamConnect(stream *Jrpc.RpcStream) (interface{}, error) {
@@ -40,7 +35,6 @@ func (client *ManageClient) RpcStreamConnect(stream *Jrpc.RpcStream) (interface{
 		return 0, err
 	}
 	stream.SetRpcStreamClientMsg(pbByte)
-	fmt.Println("RpcStreamConnect  流连接")
 	return commonConst.ManageNodeID, nil
 }
 
@@ -55,14 +49,6 @@ func (client *ManageClient) RpcStreamConnected(stream *Jrpc.RpcStream) error {
 
 func (client *ManageClient) RpcStreamClose(stream *Jrpc.RpcStream) {
 	client.setRpcStream(nil)
-	//Jlog.Info("管控服务连接已断开", "err:", string(stream.GetParm().RpcStreamServerTrailer))
-	//go func(){
-	//	err := client.streamClient.initRpcStreamManageClient()
-	//	if err != nil {
-	//		Jlog.Error("管控中心重连失败", "err:", err.Error())
-	//	}
-	//}()
-	fmt.Println("rpc 已关闭")
 }
 
 func (client *ManageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv interface{}) {
@@ -81,7 +67,9 @@ func (client *ManageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv inter
 }
 
 func (client *ManageClient) RpcStreamError(text string, err error) {
-	fmt.Println("rpc 错误：", text, err)
+	if client.config.ErrorCall != nil {
+
+	}
 }
 
 

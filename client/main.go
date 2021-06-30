@@ -8,7 +8,6 @@ package main
 import (
 	"fmt"
 	"github.com/liyiligang/manage/client/app"
-	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 	"time"
 )
 
@@ -20,27 +19,27 @@ func main() {
 		return
 	}
 
-	err = client.UpdateNodeLink(15, protoManage.State_StateError)
+	err = client.UpdateNodeLink(15, app.NodeLinkStateConnected)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = client.RegisterNodeFunc("临界实验", testFunc)
+	err = client.RegisterNodeFunc("临界实验", testFunc, app.NodeFuncLevel2)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = client.RegisterNodeReport("临界报告", testReport, 3*time.Second)
+	err = client.RegisterNodeReport("临界报告", testReport, 3*time.Second, app.NodeReportLevel4)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = client.SendNodeNotify("临界通知111", protoManage.State_StateWarn)
+	err = client.SendNodeNotify("临界通知111", app.NodeNotifyLevelWarn)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-
+	fmt.Println("启动成功")
 	select {}
 }
 
@@ -56,6 +55,7 @@ func initClient() (*app.ManageClient, error) {
 		ConnectTimeOut: time.Second * 5,
 		RequestTimeOut: time.Second * 5,
 		KeepaliveTime: time.Second * 1,
+		ErrorCall: errorCall,
 	})
 	if err != nil {
 		return nil, err
@@ -63,13 +63,17 @@ func initClient() (*app.ManageClient, error) {
 	return c, nil
 }
 
-func  testFunc(str string) (string, protoManage.State) {
-	return "567890", protoManage.State_StateNormal
+func errorCall(text string, err error) {
+	fmt.Println("rpc 错误：", text, err)
+}
+
+func testFunc(str string) (string, app.NodeFuncCallLevel) {
+	return "567890", app.NodeFuncCallLevelLevelNormal
 }
 
 
 var testVal = 0.0
-func testReport() (float64, protoManage.State) {
+func testReport() (float64, app.NodeReportValLevel) {
 	testVal += 1
-	return testVal, protoManage.State_StateNormal
+	return testVal, app.NodeReportValLevelNormal
 }

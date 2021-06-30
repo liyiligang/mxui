@@ -10,6 +10,13 @@ import (
 	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
 )
 
+type NodeState int32
+const (
+	NodeStateNormal  	NodeState	 =  NodeState(protoManage.State_StateNormal)
+	NodeStateAbnormal   NodeState	 =  NodeState(protoManage.State_StateWarn)
+	NodeStateClose   	NodeState	 =  NodeState(protoManage.State_StateError)
+)
+
 func (client *ManageClient) nodeOnline(message []byte) error {
 	node := protoManage.Node{}
 	err := node.Unmarshal(message)
@@ -23,12 +30,12 @@ func (client *ManageClient) nodeOnline(message []byte) error {
 	return nil
 }
 
-func (client *ManageClient) UpdateNode(state protoManage.State) error {
+func (client *ManageClient) UpdateNode(nodeState NodeState) error {
 	node, err := client.GetNode()
 	if err != nil {
 		return err
 	}
-	node.State = state
+	node.State = protoManage.State(nodeState)
 	client.setNode(*node)
 	return client.sendPB(protoManage.Order_NodeUpdateState, node)
 }
