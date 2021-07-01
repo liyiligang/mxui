@@ -13,10 +13,10 @@ import (
 
 type NodeFuncLevel int32
 const (
-	NodeFuncLevel1 		NodeFuncLevel   =   1
-	NodeFuncLevel2 		NodeFuncLevel   =   2
-	NodeFuncLevel3 		NodeFuncLevel   =   3
-	NodeFuncLevel4 		NodeFuncLevel   =   4
+	NodeFuncLevelVisitor 			NodeFuncLevel   =   1
+	NodeFuncLevelMember  			NodeFuncLevel   =   2
+	NodeFuncLevelManager 			NodeFuncLevel   =   3
+	NodeFuncLevelSuperManager 		NodeFuncLevel   =   4
 )
 
 type CallFuncDef func(string) (string, NodeFuncCallLevel)

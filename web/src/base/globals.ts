@@ -2,6 +2,7 @@ import {ElMessage} from "element-plus";
 import {protoManage} from "../proto/manage";
 import {routerPath} from "../router";
 import {reactive} from "vue";
+import {websocket} from "./websocket";
 
 export module globals {
 	// export enum BlockType {
@@ -62,6 +63,7 @@ export module globals {
 		globals.globalsData.manager = protoManage.Manager.create()
 		localStorage.removeItem(globals.globalsConfig.localStorageKey.token)
 		routerPath.toLogin()
+		websocket.wsClose()
 	}
 
 	export function elButtonBlur(e) {

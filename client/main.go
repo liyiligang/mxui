@@ -11,30 +11,32 @@ import (
 	"time"
 )
 
+var manageClient *app.ManageClient
 
 func main() {
-	client, err := initClient()
+	var err error
+	manageClient, err = initClient()
 	if err !=nil {
 		fmt.Println("连接失败: ", err)
 		return
 	}
 
-	err = client.UpdateNodeLink(15, app.NodeLinkStateConnected)
+	err = manageClient.UpdateNodeLink(15, app.NodeLinkStateConnected)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = client.RegisterNodeFunc("临界实验", testFunc, app.NodeFuncLevel2)
+	err = manageClient.RegisterNodeFunc("临界实验", testFunc, app.NodeFuncLevelManager)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = client.RegisterNodeReport("临界报告", testReport, 3*time.Second, app.NodeReportLevel4)
+	err = manageClient.RegisterNodeReport("临界报告", testReport, 3*time.Second, app.NodeReportLevelMember)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = client.SendNodeNotify("临界通知111", app.NodeNotifyLevelWarn)
+	err = manageClient.SendNodeNotify("临界通知111", app.NodeNotifyLevelWarn)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -67,8 +69,15 @@ func errorCall(text string, err error) {
 	fmt.Println("rpc 错误：", text, err)
 }
 
+var testFuncVal = 2
 func testFunc(str string) (string, app.NodeFuncCallLevel) {
-	return "567890", app.NodeFuncCallLevelLevelNormal
+	testFuncVal++
+	if testFuncVal >= 5 {
+		testFuncVal = 2
+	}
+	manageClient.UpdateNode(app.NodeState(testFuncVal))
+	manageClient.UpdateNodeLink(15, app.NodeLinkState(testFuncVal))
+	return "567890", app.NodeFuncCallLevelLevelSuccess
 }
 
 

@@ -12,8 +12,8 @@ import (
 
 type NodeFuncCallLevel int32
 const (
-	NodeFuncCallLevelUnknown			NodeFuncCallLevel   =   1
-	NodeFuncCallLevelLevelNormal		NodeFuncCallLevel   =   2
+	NodeFuncCallLevelTimeout			NodeFuncCallLevel   =   1
+	NodeFuncCallLevelLevelSuccess		NodeFuncCallLevel   =   2
 	NodeFuncCallLevelLevelWarn			NodeFuncCallLevel   =   3
 	NodeFuncCallLevelLevelError 		NodeFuncCallLevel   =   4
 )

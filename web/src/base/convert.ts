@@ -14,7 +14,7 @@ export module convert {
             case protoManage.State.StateUnknow:
                 return "color-state-lose"
         }
-        return "color-state-other"
+        return "color-state-main"
     }
 
     export function getNodeStateName(state: protoManage.State):string {
@@ -41,23 +41,38 @@ export module convert {
         return "未知"
     }
 
-
     export function getNodeFuncStateName(state: protoManage.State):string {
         switch (state) {
+            case protoManage.State.StateUnknow:
+                return "访客"
             case protoManage.State.StateNormal:
-                return "普通"
+                return "组员"
             case protoManage.State.StateWarn:
-                return "谨慎"
+                return "管理员"
             case protoManage.State.StateError:
-                return "危险"
+                return "超级管理员"
         }
-        return "丢失"
+        return "未知"
+    }
+
+    export function getNodeReportStateName(state: protoManage.State):string {
+        switch (state) {
+            case protoManage.State.StateUnknow:
+                return "访客"
+            case protoManage.State.StateNormal:
+                return "组员"
+            case protoManage.State.StateWarn:
+                return "管理员"
+            case protoManage.State.StateError:
+                return "超级管理员"
+        }
+        return "未知"
     }
 
     export function getNodeFuncCallStateName(state: protoManage.State|undefined|null):string {
         switch (state) {
-            case protoManage.State.StateNot:
-                return "暂无"
+            case protoManage.State.StateUnknow:
+                return "超时"
             case protoManage.State.StateNormal:
                 return "成功"
             case protoManage.State.StateWarn:
@@ -65,19 +80,7 @@ export module convert {
             case protoManage.State.StateError:
                 return "失败"
         }
-        return "超时"
-    }
-
-    export function getNodeReportStateName(state: protoManage.State):string {
-        switch (state) {
-            case protoManage.State.StateNormal:
-                return "正常"
-            case protoManage.State.StateWarn:
-                return "异常"
-            case protoManage.State.StateError:
-                return "告警"
-        }
-        return "丢失"
+        return "未知"
     }
 
     export function uint8ArrayToString(data: Uint8Array):string {
@@ -88,14 +91,14 @@ export module convert {
         return dataString
     }
 
-    // export function stringToUint8Array(str: string):Uint8Array {
-    // 	let arr = [];
-    // 	for (let i = 0, j = str.length; i < j; ++i) {
-    // 		arr.push(str.charCodeAt(i));
-    // 	}
-    // 	let tmpUint8Array = new Uint8Array(arr);
-    // 	return tmpUint8Array
-    // }
+    export function stringToUint8Array(str: string):Uint8Array {
+    	let arr:Array<number> = [];
+    	for (let i = 0, j = str.length; i < j; ++i) {
+    		arr.push(str.charCodeAt(i));
+    	}
+    	let tmpUint8Array = new Uint8Array(arr);
+    	return tmpUint8Array
+    }
 
     export function timeStampToFormatDate (timeStamp:number|undefined|null):string {
         if (timeStamp == 0 || timeStamp==undefined){

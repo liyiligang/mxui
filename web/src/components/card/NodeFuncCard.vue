@@ -2,7 +2,7 @@
     <el-card class="card">
         <template #header>
             <CardName :color="convert.getColorByState(nodeFunc.State)" :name="nodeFunc.Name" :id="nodeFunc.Base.ID"></CardName>
-            <CardInfo  describe="级别" :name="convert.getNodeFuncStateName(nodeFunc.State)"
+            <CardInfo  describe="权限" :name="convert.getNodeFuncStateName(nodeFunc.State)"
                        :name-color="convert.getColorByState(nodeFunc.State)"></CardInfo>
             <CardInfo  describe="回调" :name="nodeFunc.Func"></CardInfo>
             <CardInfo  describe="节点" :name="node.Name" :nameColor="convert.getColorByState(node.State)" :link=routerPath.toNode(protoManage.Filter.create({ID:node.Base.ID}))></CardInfo>

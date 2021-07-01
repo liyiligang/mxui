@@ -55,7 +55,7 @@ export module websocket {
         }
 
         function onError(ev: Event) {
-            console.error("websocket连接错误: ", ev);m
+            console.error("websocket连接错误: ", ev);
         }
 
         function onMessage(ev: MessageEvent) {
@@ -69,6 +69,10 @@ export module websocket {
             };
             fileReader.readAsArrayBuffer(ev.data);
         }
+    }
+
+    export function wsClose() {
+        ws?.close()
     }
 
     function receiver(msg:protoManage.Message){

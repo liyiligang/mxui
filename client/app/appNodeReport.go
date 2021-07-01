@@ -20,10 +20,10 @@ type nodeReportMapVal struct {
 
 type NodeReportLevel int32
 const (
-	NodeReportLevel1 		NodeReportLevel   =   1
-	NodeReportLevel2 		NodeReportLevel   =   2
-	NodeReportLevel3 		NodeReportLevel   =   3
-	NodeReportLevel4 		NodeReportLevel   =   4
+	NodeReportLevelVisitor 				NodeReportLevel   =   1
+	NodeReportLevelMember 				NodeReportLevel   =   2
+	NodeReportLevelManager 				NodeReportLevel   =   3
+	NodeReportLevelSuperManager 		NodeReportLevel   =   4
 )
 
 func (client *ManageClient) RegisterNodeReport(name string, callReport CallReportDef,

@@ -5,6 +5,7 @@
         <el-row class="cardViewFrameBody">
             <slot name="body"></slot>
         </el-row>
+        <div class="cardMask"></div>
     </el-card>
 </template>
 
@@ -73,6 +74,19 @@ export default defineComponent ({
     border:0px;
     font-size:18px;
     z-index: 10;
+}
+
+.cardMask{
+    position:absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+    /*backdrop-filter: blur(0.4px);*/
+    backdrop-filter: grayscale(90%); /* 灰度 */
+    background-color: rgba(0, 0, 0, 0.5);
+    pointer-events: none;
 }
 
 </style>

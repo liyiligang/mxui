@@ -49,36 +49,20 @@ func (request *Request) ReqNodeOnline(nodeID int64, message []byte) error {
 		request.Data.NodeStateUpdate(&reqNodeOnline.Node)
 	}
 
-	//for _, v := range reqNodeOnline.NodeLinkList {
-	//	err = check.BaseIDCheck(v.SourceID, nodeID)
-	//	if err != nil {
-	//		return err
-	//	}
-	//	request.Data.NodeLinkStateUpdateOrAddByNodeID(&v)
-	//}
-	//
-	//for _, v := range reqNodeOnline.NodeFuncList {
-	//	err = check.BaseIDCheck(v.NodeID, nodeID)
-	//	if err != nil {
-	//		return err
-	//	}
-	//	request.Data.NodeFuncDescUpdateOrAddByName(&v)
-	//}
-
-	//for _, v := range reqNodeOnline.NodeReportList {
-	//	err = check.BaseIDCheck(v.NodeID, nodeID)
-	//	if err != nil {
-	//		return err
-	//	}
-	//	request.Data.NodeReportValUpdateOrAddByName(&v)
-	//}
+	for _, nodeLink := range reqNodeOnline.NodeLinkList {
+		err = check.BaseIDCheck(nodeLink.SourceID, nodeID)
+		if err != nil {
+			return err
+		}
+		request.Data.NodeLinkUpdateOrAdd(&nodeLink)
+	}
 	return nil
 }
 
 //节点离线
 func (request *Request) ReqNodeOffline(nodeID int64) {
-	//request.Data.NodeStateUpdate(&protoManage.Node{Base: protoManage.Base{ID: nodeID},
-	//	State: protoManage.State_StateUnknow})
+	request.Data.NodeStateUpdate(&protoManage.Node{Base: protoManage.Base{ID: nodeID},
+		State: protoManage.State_StateUnknow})
 }
 
 //节点状态更新
