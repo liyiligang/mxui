@@ -1,11 +1,12 @@
 <template>
     <el-card class="card cardViewFrame" @mouseenter="mouseEnter" @mouseleave="mouseLevel">
-        <el-button v-show="isShowCloseButton()" class="cardViewFrameCloseButton"
+        <el-button v-if="isOfflineState()" class="cardViewFrameCloseButton"
                    plain icon="el-icon-close" @click="closeClick"></el-button>
-        <el-row class="cardViewFrameBody">
-            <slot name="body"></slot>
-        </el-row>
-        <div class="cardMask"></div>
+        <template v-if=hasHeader #header>
+            <slot name="header"></slot>
+        </template>
+        <slot name="body"></slot>
+        <div v-if="isOfflineState()" class="cardMask"></div>
     </el-card>
 </template>
 
@@ -21,10 +22,14 @@ export default defineComponent ({
     name: "CardViewFrame",
     emits: ['closeClick'],
     props:{
+        hasHeader:{
+            type: Boolean,
+            default: false
+        },
         state:{
             type: Number as PropType<protoManage.State>,
-            default: protoManage.State.StateNot
-        },
+            default: protoManage.State.StateNormal
+        }
     },
     components: {
 
@@ -33,9 +38,8 @@ export default defineComponent ({
 
         const data = reactive<CardViewFrameInfo>({isMouseHover:false})
 
-        function isShowCloseButton():boolean {
-            // return props.state != protoManage.State.StateUnknow
-            return data.isMouseHover
+        function isOfflineState():boolean {
+            return props.state < protoManage.State.StateNormal || props.state > protoManage.State.StateError
         }
 
         function closeClick(){
@@ -50,7 +54,7 @@ export default defineComponent ({
             data.isMouseHover = false
         }
 
-        return {isShowCloseButton, closeClick, mouseEnter, mouseLevel}
+        return {isOfflineState, closeClick, mouseEnter, mouseLevel}
     }
 })
 </script>
@@ -82,11 +86,16 @@ export default defineComponent ({
     top: 0;
     width: 100%;
     height: 100%;
-    z-index: 100;
-    /*backdrop-filter: blur(0.4px);*/
-    backdrop-filter: grayscale(90%); /* 灰度 */
-    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: darkred;
+    font-size: 22px;
     pointer-events: none;
+    backdrop-filter: grayscale(100%);
+    /*background-color: rgba(0, 0, 0, 0);*/
+    /*backdrop-filter: blur(2px);*/
 }
 
 </style>

@@ -26,12 +26,12 @@ func main() {
 		fmt.Println(err)
 	}
 
-	err = manageClient.RegisterNodeFunc("临界实验", testFunc, app.NodeFuncLevelManager)
+	err = manageClient.RegisterNodeFunc("临界实验", testFunc, app.NodeFuncLevelVisitor)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = manageClient.RegisterNodeReport("临界报告", testReport, 3*time.Second, app.NodeReportLevelMember)
+	err = manageClient.RegisterNodeReport("临界报告", testReport, 3*time.Second, app.NodeReportLevelVisitor)
 	if err != nil {
 		fmt.Println(err)
 	}

@@ -1,16 +1,18 @@
 <template>
-    <el-card class="card">
-        <template #header>
+    <CardViewFrame :hasHeader="true">
+        <template v-slot:header>
             <CardName :name="nodeType.Name" :id="nodeType.Base.ID"></CardName>
             <CardBase :id="nodeType.Base.ID" :time="nodeType.Base.UpdateTime"></CardBase>
         </template>
-        <cardState name="节点" :link=routerPath.toNode(protoManage.Filter.create({TypeID:nodeType.Base.ID}))
-                   :successCnt="data.nodeStateCount.NormalCount"
-                   :warningCnt="data.nodeStateCount.WarnCount"
-                   :dangerCnt="data.nodeStateCount.ErrorCount"
-                   :loseCnt="data.nodeStateCount.UnknowCount">
-        </cardState>
-    </el-card>
+        <template v-slot:body>
+            <cardState name="节点" :link=routerPath.toNode(protoManage.Filter.create({TypeID:nodeType.Base.ID}))
+                       :successCnt="data.nodeStateCount.NormalCount"
+                       :warningCnt="data.nodeStateCount.WarnCount"
+                       :dangerCnt="data.nodeStateCount.ErrorCount"
+                       :loseCnt="data.nodeStateCount.UnknowCount">
+            </cardState>
+        </template>
+    </CardViewFrame>
 </template>
 
 <script lang="ts">
@@ -18,6 +20,7 @@ import {defineComponent, reactive, onMounted, PropType} from "vue";
 import CardName from "../cardItem/CardName.vue"
 import CardBase from "../cardItem/CardBase.vue"
 import CardState from "../cardItem/CardState.vue"
+import CardViewFrame from "./CardViewFrame.vue"
 import {routerPath} from "../../router";
 import {request} from "../../base/request";
 import {protoManage} from "../../proto/manage"
@@ -39,6 +42,7 @@ export default defineComponent ({
     components: {
         CardName,
         CardBase,
+        CardViewFrame,
         CardState
     },
     setup(prop){

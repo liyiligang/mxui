@@ -5,16 +5,32 @@ export module convert {
         switch (state) {
             case protoManage.State.StateNot:
                 return "color-state-main"
+            case protoManage.State.StateUnknow:
+                return "color-state-lose"
             case protoManage.State.StateNormal:
                 return "color-state-success"
             case protoManage.State.StateWarn:
                 return "color-state-warning"
             case protoManage.State.StateError:
                 return "color-state-danger"
-            case protoManage.State.StateUnknow:
-                return "color-state-lose"
         }
         return "color-state-main"
+    }
+
+    export function getColorByLevel(state: protoManage.State|undefined|null):string {
+        switch (state) {
+            case protoManage.State.StateNot:
+                return "color-state-lose"
+            case protoManage.State.StateUnknow:
+                return "color-state-main"
+            case protoManage.State.StateNormal:
+                return "color-state-success"
+            case protoManage.State.StateWarn:
+                return "color-state-warning"
+            case protoManage.State.StateError:
+                return "color-state-danger"
+        }
+        return "color-state-lose"
     }
 
     export function getNodeStateName(state: protoManage.State):string {

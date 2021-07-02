@@ -1,6 +1,6 @@
 <template>
-    <el-card class="card">
-        <template #header>
+    <CardViewFrame :state="node.State" :hasHeader="true" @closeClick="closeNode">
+        <template v-slot:header>
             <CardName :color="convert.getColorByState(node.State)" :name="node.Name" :id="node.Base.ID"></CardName>
             <CardInfo  describe="状态" :name="convert.getNodeStateName(node.State)"
                        :name-color="convert.getColorByState(node.State)"></CardInfo>
@@ -8,31 +8,34 @@
             <CardInfo  describe="服务" :name="nodeType.Name"  :nameColor="convert.getColorByState(protoManage.State.StateNot)" :link=routerPath.toNodeType(protoManage.Filter.create({ID:node.TypeID}))></CardInfo>
             <CardBase :id="node.Base.ID" :time="node.Base.UpdateTime"></CardBase>
         </template>
-        <cardState name="连接" :link=routerPath.toNodeLink(node.Base.ID)
-                   :successCnt="data.nodeLinkSourceStateCount.NormalCount + data.nodeLinkTargetStateCount.NormalCount"
-                   :warningCnt="data.nodeLinkSourceStateCount.WarnCount + data.nodeLinkTargetStateCount.WarnCount"
-                   :dangerCnt="data.nodeLinkSourceStateCount.ErrorCount + data.nodeLinkTargetStateCount.ErrorCount"
-                   :loseCnt="data.nodeLinkSourceStateCount.UnknowCount + data.nodeLinkTargetStateCount.UnknowCount">
-        </cardState>
-        <cardState name="方法" :link=routerPath.toNodeFunc(node.Base.ID)
-                   :successCnt="data.nodeFuncStateCount.NormalCount"
-                   :warningCnt="data.nodeFuncStateCount.WarnCount"
-                   :dangerCnt="data.nodeFuncStateCount.ErrorCount"
-                   :loseCnt="data.nodeFuncStateCount.UnknowCount">
-        </cardState>
-        <cardState name="报告" :link=routerPath.toNodeReport(node.Base.ID)
-                   :successCnt="data.nodeReportStateCount.NormalCount"
-                   :warningCnt="data.nodeReportStateCount.WarnCount"
-                   :dangerCnt="data.nodeReportStateCount.ErrorCount"
-                   :loseCnt="data.nodeReportStateCount.UnknowCount">
-        </cardState>
-    </el-card>
+        <template v-slot:body>
+            <cardState name="连接" :link=routerPath.toNodeLink(node.Base.ID)
+                       :successCnt="data.nodeLinkSourceStateCount.NormalCount + data.nodeLinkTargetStateCount.NormalCount"
+                       :warningCnt="data.nodeLinkSourceStateCount.WarnCount + data.nodeLinkTargetStateCount.WarnCount"
+                       :dangerCnt="data.nodeLinkSourceStateCount.ErrorCount + data.nodeLinkTargetStateCount.ErrorCount"
+                       :loseCnt="data.nodeLinkSourceStateCount.UnknowCount + data.nodeLinkTargetStateCount.UnknowCount">
+            </cardState>
+            <cardState name="方法" :link=routerPath.toNodeFunc(node.Base.ID)
+                       :successCnt="data.nodeFuncStateCount.NormalCount"
+                       :warningCnt="data.nodeFuncStateCount.WarnCount"
+                       :dangerCnt="data.nodeFuncStateCount.ErrorCount"
+                       :loseCnt="data.nodeFuncStateCount.UnknowCount">
+            </cardState>
+            <cardState name="报告" :link=routerPath.toNodeReport(node.Base.ID)
+                       :successCnt="data.nodeReportStateCount.NormalCount"
+                       :warningCnt="data.nodeReportStateCount.WarnCount"
+                       :dangerCnt="data.nodeReportStateCount.ErrorCount"
+                       :loseCnt="data.nodeReportStateCount.UnknowCount">
+            </cardState>
+        </template>
+    </CardViewFrame>
 </template>
 
 <script lang="ts">
 import {defineComponent, reactive, onMounted, PropType} from "vue"
 import CardName from "../cardItem/CardName.vue"
 import CardBase from "../cardItem/CardBase.vue"
+import CardViewFrame from "./CardViewFrame.vue"
 import CardInfo from "../cardItem/CardInfo.vue"
 import CardState from "../cardItem/CardState.vue"
 import {protoManage} from "../../proto/manage"
@@ -71,6 +74,7 @@ export default defineComponent ({
     components: {
         CardName,
         CardBase,
+        CardViewFrame,
         CardInfo,
         CardState
     },
@@ -95,7 +99,10 @@ export default defineComponent ({
                 data.nodeReportStateCount = prop.nodeReportStateCount
             }
         })
-        return {data, request, convert, protoManage, routerPath}
+        function closeNode(){
+
+        }
+        return {data, request, convert, protoManage, routerPath, closeNode}
     }
 })
 </script>
