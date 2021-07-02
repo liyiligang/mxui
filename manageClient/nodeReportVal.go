@@ -3,19 +3,19 @@
 // Date: 2021/06/25 17:18
 // Description:
 
-package app
+package main
 
 import (
 	"errors"
-	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+	"github.com/liyiligang/client/manageClient/protoFiles/protoManage"
 )
 
 type NodeReportValLevel int32
 const (
-	NodeReportValUnknown			NodeReportValLevel   =   1
-	NodeReportValLevelNormal		NodeReportValLevel   =   2
-	NodeReportValLevelWarn			NodeReportValLevel   =   3
-	NodeReportValLevelError 		NodeReportValLevel   =   4
+	NodeReportValUnknown     NodeReportValLevel =   1
+	NodeReportValLevelNormal NodeReportValLevel =   2
+	NodeReportValLevelWarn   NodeReportValLevel =   3
+	NodeReportValLevelError  NodeReportValLevel =   4
 )
 
 func (client *ManageClient) execCallReport(nodeReport *protoManage.NodeReport, callReport CallReportDef) error{

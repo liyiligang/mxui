@@ -3,13 +3,13 @@
 // Date: 2021/06/21 10:32
 // Description: rpc client call
 
-package app
+package main
 
 import (
 	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
-	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+	"github.com/liyiligang/client/manageClient/protoFiles/protoManage"
 )
 
 func (client *ManageClient) RpcServeConnected(rpcKeepalive *Jrpc.RpcKeepalive, isReConnect bool) {
@@ -68,7 +68,7 @@ func (client *ManageClient) RpcStreamReceiver(stream *Jrpc.RpcStream, recv inter
 
 func (client *ManageClient) RpcStreamError(text string, err error) {
 	if client.config.ErrorCall != nil {
-
+		client.config.ErrorCall(text, err)
 	}
 }
 

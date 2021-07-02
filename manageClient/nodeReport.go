@@ -3,11 +3,11 @@
 // Date: 2021/06/24 14:30
 // Description:
 
-package app
+package main
 
 import (
 	"context"
-	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+	"github.com/liyiligang/client/manageClient/protoFiles/protoManage"
 	"time"
 )
 
@@ -20,10 +20,10 @@ type nodeReportMapVal struct {
 
 type NodeReportLevel int32
 const (
-	NodeReportLevelVisitor 				NodeReportLevel   =   1
-	NodeReportLevelMember 				NodeReportLevel   =   2
-	NodeReportLevelManager 				NodeReportLevel   =   3
-	NodeReportLevelSuperManager 		NodeReportLevel   =   4
+	NodeReportLevelVisitor      NodeReportLevel =   1
+	NodeReportLevelMember       NodeReportLevel =   2
+	NodeReportLevelManager      NodeReportLevel =   3
+	NodeReportLevelSuperManager NodeReportLevel =   4
 )
 
 func (client *ManageClient) RegisterNodeReport(name string, callReport CallReportDef,

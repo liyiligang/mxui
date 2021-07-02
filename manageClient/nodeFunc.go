@@ -3,20 +3,20 @@
 // Date: 2021/06/23 15:52
 // Description:
 
-package app
+package main
 
 import (
 	"context"
 	"errors"
-	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+	"github.com/liyiligang/client/manageClient/protoFiles/protoManage"
 )
 
 type NodeFuncLevel int32
 const (
-	NodeFuncLevelVisitor 			NodeFuncLevel   =   1
-	NodeFuncLevelMember  			NodeFuncLevel   =   2
-	NodeFuncLevelManager 			NodeFuncLevel   =   3
-	NodeFuncLevelSuperManager 		NodeFuncLevel   =   4
+	NodeFuncLevelVisitor      NodeFuncLevel =   1
+	NodeFuncLevelMember       NodeFuncLevel =   2
+	NodeFuncLevelManager      NodeFuncLevel =   3
+	NodeFuncLevelSuperManager NodeFuncLevel =   4
 )
 
 type CallFuncDef func(string) (string, NodeFuncCallLevel)

@@ -3,16 +3,16 @@
 // Date: 2021/06/24 17:41
 // Description:
 
-package app
+package main
 
-import "github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+import "github.com/liyiligang/client/manageClient/protoFiles/protoManage"
 
 type NodeNotifyLevel int32
 const (
-	NodeNotifyLevelInfo  		NodeNotifyLevel   =  NodeNotifyLevel(protoManage.State_StateUnknow)
-	NodeNotifyLevelSuccess   	NodeNotifyLevel   =  NodeNotifyLevel(protoManage.State_StateNormal)
-	NodeNotifyLevelWarn   		NodeNotifyLevel	  =  NodeNotifyLevel(protoManage.State_StateWarn)
-	NodeNotifyLevelError		NodeNotifyLevel	  =  NodeNotifyLevel(protoManage.State_StateError)
+	NodeNotifyLevelInfo    NodeNotifyLevel =  NodeNotifyLevel(protoManage.State_StateUnknow)
+	NodeNotifyLevelSuccess NodeNotifyLevel =  NodeNotifyLevel(protoManage.State_StateNormal)
+	NodeNotifyLevelWarn    NodeNotifyLevel =  NodeNotifyLevel(protoManage.State_StateWarn)
+	NodeNotifyLevelError   NodeNotifyLevel =  NodeNotifyLevel(protoManage.State_StateError)
 )
 
 func (client *ManageClient) SendNodeNotify(msg string, nodeNotifyLevel NodeNotifyLevel) error {

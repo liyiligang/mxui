@@ -7,11 +7,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/liyiligang/manage/client/app"
 	"time"
 )
 
-var manageClient *app.ManageClient
+var manageClient *ManageClient
 
 func main() {
 	var err error
@@ -21,22 +20,22 @@ func main() {
 		return
 	}
 
-	err = manageClient.UpdateNodeLink(15, app.NodeLinkStateConnected)
+	err = manageClient.UpdateNodeLink(15, NodeLinkStateConnected)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = manageClient.RegisterNodeFunc("临界实验", testFunc, app.NodeFuncLevelVisitor)
+	err = manageClient.RegisterNodeFunc("临界实验", testFunc, NodeFuncLevelVisitor)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = manageClient.RegisterNodeReport("临界报告", testReport, 3*time.Second, app.NodeReportLevelVisitor)
+	err = manageClient.RegisterNodeReport("临界报告", testReport, 3*time.Second, NodeReportLevelVisitor)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = manageClient.SendNodeNotify("临界通知111", app.NodeNotifyLevelWarn)
+	err = manageClient.SendNodeNotify("临界通知111", NodeNotifyLevelWarn)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -46,8 +45,8 @@ func main() {
 }
 
 
-func initClient() (*app.ManageClient, error) {
-	c, err := app.InitManageClient(app.ManageClientConfig{
+func initClient() (*ManageClient, error) {
+	c, err := InitManageClient(ManageClientConfig{
 		Addr:":888",
 		PublicKeyPath:"../store/cert/grpc/ca_cert.pem",
 		CertName: "x.test.example.com",
@@ -70,19 +69,19 @@ func errorCall(text string, err error) {
 }
 
 var testFuncVal = 2
-func testFunc(str string) (string, app.NodeFuncCallLevel) {
+func testFunc(str string) (string, NodeFuncCallLevel) {
 	testFuncVal++
 	if testFuncVal >= 5 {
 		testFuncVal = 2
 	}
-	manageClient.UpdateNode(app.NodeState(testFuncVal))
-	manageClient.UpdateNodeLink(15, app.NodeLinkState(testFuncVal))
-	return "567890", app.NodeFuncCallLevelLevelSuccess
+	manageClient.UpdateNode(NodeState(testFuncVal))
+	manageClient.UpdateNodeLink(15, NodeLinkState(testFuncVal))
+	return "567890", NodeFuncCallLevelLevelSuccess
 }
 
 
 var testVal = 0.0
-func testReport() (float64, app.NodeReportValLevel) {
+func testReport() (float64, NodeReportValLevel) {
 	testVal += 1
-	return testVal, app.NodeReportValLevelNormal
+	return testVal, NodeReportValLevelNormal
 }

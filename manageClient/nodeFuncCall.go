@@ -3,19 +3,19 @@
 // Date: 2021/06/25 14:36
 // Description:
 
-package app
+package main
 
 import (
 	"errors"
-	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+	"github.com/liyiligang/client/manageClient/protoFiles/protoManage"
 )
 
 type NodeFuncCallLevel int32
 const (
-	NodeFuncCallLevelTimeout			NodeFuncCallLevel   =   1
-	NodeFuncCallLevelLevelSuccess		NodeFuncCallLevel   =   2
-	NodeFuncCallLevelLevelWarn			NodeFuncCallLevel   =   3
-	NodeFuncCallLevelLevelError 		NodeFuncCallLevel   =   4
+	NodeFuncCallLevelTimeout      NodeFuncCallLevel =   1
+	NodeFuncCallLevelLevelSuccess NodeFuncCallLevel =   2
+	NodeFuncCallLevelLevelWarn    NodeFuncCallLevel =   3
+	NodeFuncCallLevelLevelError   NodeFuncCallLevel =   4
 )
 
 func (client *ManageClient) reqNodeFuncCall(message []byte) error {

@@ -1,72 +1,61 @@
 // Copyright 2021 The Authors. All rights reserved.
 // Author: liyiligang
-// Date: 2021/06/21 10:01
-// Description: rpc client start
+// Date: 2021/06/21 10:00
+// Description: client app main
 
-package app
+package main
 
 import (
 	"errors"
 	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+	"github.com/liyiligang/client/manageClient/protoFiles/protoManage"
 	"google.golang.org/grpc"
+	"reflect"
+	"runtime"
+	"strings"
+	"sync"
+	"sync/atomic"
+	"time"
 )
 
-//启动rpc服务
-func InitManageClient(config ManageClientConfig) (*ManageClient, error) {
-	client := &ManageClient{config: config}
-	auth, err := client.getManageAuth()
-	if err != nil {
-		return nil, err
-	}
-	client.conn, err = Jrpc.GrpcClientInit(Jrpc.RpcClientConfig{
-		RpcBaseConfig:  Jrpc.RpcBaseConfig{
-			Addr: config.Addr,
-			PublicKeyPath: config.PublicKeyPath,
-		},
-		CertName:       config.CertName,
-		Auth:           auth,
-		ConnectTimeOut: config.ConnectTimeOut,
-	})
-	if err != nil {
-		return nil, err
-	}
-	client.engine = protoManage.NewRpcEngineClient(client.conn)
-	err = client.initManageClientStream()
-	if err != nil {
-		return nil, err
-	}
-	client.keepalive = &Jrpc.RpcKeepalive{
-		ServerNode: client.getManageServerNode(config.Addr),
-		Conn: client.conn,
-		KeepaliveTime: config.KeepaliveTime,
-	}
-	err = Jrpc.RegisterRpcKeepalive(client.keepalive, client)
-	if err != nil {
-		return nil, err
-	}
-	err = client.UpdateNode(NodeStateNormal)
-	if err != nil {
-		return nil, err
-	}
-	return client, nil
+type ManageClientConfig struct {
+	Addr           string
+	PublicKeyPath  string
+	CertName       string
+	NodeGroupName  string
+	NodeTypeName   string
+	NodeName  	   string
+	ConnectTimeOut time.Duration
+	RequestTimeOut time.Duration
+	KeepaliveTime  time.Duration
+	ErrorCall	   func(text string, err error)
 }
 
-//初始化grpc流
-func (client *ManageClient) initManageClientStream() error {
-	rpcStream, err := Jrpc.GrpcStreamClientInit(new(protoManage.Message), client)
-	if err != nil {
-		return err
-	}
-	channel, err := client.engine.RpcChannel(rpcStream.GetContext(), grpc.WaitForReady(true))
-	if err != nil {
-		return err
-	}
-	return rpcStream.GrpcStreamClientRun(channel)
+type manageClientData struct {
+	node 			  atomic.Value
+	nodeLinkMap	  	  sync.Map
+	nodeFuncMap	  	  sync.Map
+	nodeReportMap	  sync.Map
 }
 
+type ManageClient struct {
+	config    ManageClientConfig
+	data      manageClientData
+	conn      *grpc.ClientConn
+	engine    protoManage.RpcEngineClient
+	stream    atomic.Value
+	keepalive *Jrpc.RpcKeepalive
+}
+
+func (client *ManageClient) getFuncName(callFunc interface{}) string {
+	funcName := runtime.FuncForPC(reflect.ValueOf(callFunc).Pointer()).Name()
+	funcName = strings.TrimSuffix(funcName, "-fm")
+	index := strings.LastIndex(funcName, ".")
+	funcName = funcName[index+1:]
+	return funcName
+}
 
 func (client *ManageClient) getManageAuth() ([]byte, error) {
 	reqNodeLogin := protoManage.ReqNodeLogin{
@@ -88,7 +77,6 @@ func (client *ManageClient) getManageServerNode(addr string) *commonConst.Common
 		GrpcPort:     Jtool.GetPortFromAddr(addr)}
 }
 
-//上报缓存信息
 func (client *ManageClient) getNodeStreamByte() ([]byte, error) {
 	var nodeLinkList  	[]protoManage.NodeLink
 	client.data.nodeLinkMap.Range(func(key, value interface{}) bool {
@@ -110,3 +98,5 @@ func (client *ManageClient) getNodeStreamByte() ([]byte, error) {
 	}
 	return reqNodeOnline.Marshal()
 }
+
+

@@ -1,4 +1,4 @@
-module github.com/liyiligang/manage/client
+module github.com/liyiligang/client/manageClient
 
 go 1.15
 

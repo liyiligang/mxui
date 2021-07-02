@@ -3,18 +3,18 @@
 // Date: 2021/06/23 9:45
 // Description:
 
-package app
+package main
 
 import (
 	"errors"
-	"github.com/liyiligang/manage/client/app/protoFiles/protoManage"
+	"github.com/liyiligang/client/manageClient/protoFiles/protoManage"
 )
 
 type NodeLinkState int32
 const (
-	NodeLinkStateConnected  	NodeLinkState    =  NodeLinkState(protoManage.State_StateNormal)
-	NodeLinkStateConnecting   	NodeLinkState 	 =  NodeLinkState(protoManage.State_StateWarn)
-	NodeLinkStateDisconnected   NodeLinkState	 =  NodeLinkState(protoManage.State_StateError)
+	NodeLinkStateConnected    NodeLinkState =  NodeLinkState(protoManage.State_StateNormal)
+	NodeLinkStateConnecting   NodeLinkState =  NodeLinkState(protoManage.State_StateWarn)
+	NodeLinkStateDisconnected NodeLinkState =  NodeLinkState(protoManage.State_StateError)
 )
 
 //更新节点连接
