@@ -1,6 +1,7 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-        <NodeLinkCard  v-for="i in data.nodeLinkList" :nodeLink="i" :sourceNode=data.nodeMap.get(i.SourceID) :targetNode=data.nodeMap.get(i.TargetID)>
+        <NodeLinkCard  v-for="i in data.nodeLinkList" :nodeLink="i"  @deleteNodeLink="deleteNodeLink"
+                       :sourceNode=data.nodeMap.get(i.SourceID) :targetNode=data.nodeMap.get(i.TargetID)>
         </NodeLinkCard>
     </NodeViewFrame>
 </template>
@@ -13,7 +14,7 @@ import NodeLinkCard from "../../components/card/NodeLinkCard.vue"
 import Page from "../../components/Page.vue"
 import Empty from "../../components/Empty.vue"
 import Load from "../../components/Load.vue"
-import NodeViewFrame from "../../components/NodeViewFrame.vue"
+import NodeViewFrame from "./NodeViewFrame.vue"
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {refresh} from "../../base/refresh";
 
@@ -81,7 +82,24 @@ export default defineComponent ({
             }
             refresh.addGlobalAutoRefresh(instance?.uid, getNodeLinkList, data.refreshFlag)
         }
-        return {data}
+
+        function deleteNodeLink(nodeLink:protoManage.NodeLink){
+            request.reqNodeLinkDel(protoManage.NodeLink.create({
+                Base:protoManage.Base.create({ID:nodeLink.Base?.ID})
+            })).then((response) => {
+                deleteNodeLinkByID(Number(response.Base?.ID))
+            }).catch(error => {}).finally(()=>{})
+        }
+
+        function deleteNodeLinkByID(nodeLinkID:number){
+            for (let i = 0; i < data.nodeLinkList.length; i++){
+                if (data.nodeLinkList[i].Base?.ID == nodeLinkID){
+                    data.nodeLinkList.splice(i, 1)
+                }
+            }
+            data.pageTotal = data.nodeLinkList.length
+        }
+        return {data, deleteNodeLink}
     }
 })
 </script>

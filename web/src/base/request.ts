@@ -375,6 +375,58 @@ export module request {
         })
     }
 
+    export function reqNodeDel(req:protoManage.Node):Promise<protoManage.Node> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Node.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeDel, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.Node.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeLinkDel(req:protoManage.NodeLink):Promise<protoManage.NodeLink> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeLink.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeLinkDel, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.NodeLink.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeFuncDel(req:protoManage.NodeFunc):Promise<protoManage.NodeFunc> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeFunc.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncDel, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.NodeFunc.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeReportDel(req:protoManage.NodeReport):Promise<protoManage.NodeReport> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeReport.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeReportDel, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.NodeReport.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqNodeTest(req:protoManage.ReqNodeTest):Promise<protoManage.AnsNodeTest> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.ReqNodeTest.encode(req).finish()

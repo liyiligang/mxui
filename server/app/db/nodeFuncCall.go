@@ -17,6 +17,15 @@ func (db *Server) AddNodeFuncCall(nodeFuncCall *orm.NodeFuncCall) error {
 	return db.Gorm.Create(nodeFuncCall).Error
 }
 
+func (db *Server) DelNodeFuncCallByNodeFuncID(nodeFuncCall orm.NodeFuncCall) error {
+	return db.Gorm.Where("funcID = ?", nodeFuncCall.FuncID).Delete(&nodeFuncCall).Error
+}
+
+func (db *Server) DelNodeFuncCallByNodeID(nodeID int64) error {
+	subQuery1 := db.Gorm.Select("id").Model(&orm.NodeFunc{}).Where("nodeID=?", nodeID)
+	return db.Gorm.Where("funcID = any(?)", subQuery1).Delete(&orm.NodeFuncCall{}).Error
+}
+
 //按ID更新节点方法调用
 func (db *Server) UpdateNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) error {
 	err := db.Gorm.Model(&nodeFuncCall).

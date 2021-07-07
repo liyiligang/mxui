@@ -71,3 +71,15 @@ func (data *Data) NodeFuncCallFind(req protoManage.ReqNodeFuncCallList) (*protoM
 	protoNodeFuncCallList := convert.OrmNodeFuncCallListToProtoNodeFuncCallList(ormFuncCallList)
 	return &protoManage.AnsNodeFuncCallList{NodeFuncCallList: protoNodeFuncCallList}, nil
 }
+
+func (data *Data) NodeFuncCallDelByNodeFuncID(funcID int64) error {
+	return data.DB.DelNodeFuncCallByNodeFuncID(orm.NodeFuncCall{
+		FuncID: funcID,
+	})
+}
+
+func (data *Data) NodeFuncCallDelByNodeID(nodeID int64) error {
+	return data.DB.DelNodeFuncCallByNodeID(nodeID)
+}
+
+

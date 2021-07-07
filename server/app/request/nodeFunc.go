@@ -33,4 +33,21 @@ func (request *Request) ReqNodeFuncFind(userID int64, message []byte)([]byte, er
 	return pbByte, err
 }
 
+func (request *Request) ReqNodeFuncDel(userID int64, message []byte)([]byte, error) {
+	req := protoManage.NodeFunc{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.NodeFuncDel(&req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
 

@@ -44,3 +44,20 @@ func (request *Request) ReqNodeLinkUpdate(nodeID int64, message []byte) {
 		return
 	}
 }
+
+func (request *Request) ReqNodeLinkDel(userID int64, message []byte)([]byte, error) {
+	req := protoManage.NodeLink{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.NodeLinkDel(&req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}

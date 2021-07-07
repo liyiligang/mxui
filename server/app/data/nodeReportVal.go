@@ -30,3 +30,13 @@ func (data *Data) NodeReportValAdd(protoNodeReportVal *protoManage.NodeReportVal
 	}
 	return data.DB.AddNodeReportVal(ormNodeReportVal)
 }
+
+func (data *Data) NodeReportValDelByNodeReportID(reportID int64) error {
+	return data.DB.DelNodeReportValByNodeReportID(orm.NodeReportVal{
+		ReportID: reportID,
+	})
+}
+
+func (data *Data) NodeReportValDelByNodeID(nodeID int64) error {
+	return data.DB.DelNodeReportValByNodeID(nodeID)
+}

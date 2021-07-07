@@ -37,3 +37,5 @@ func (request *Request) ReqNodeReportValAdd(nodeID int64, message []byte) {
 		return
 	}
 }
+
+

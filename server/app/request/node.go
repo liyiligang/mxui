@@ -117,6 +117,23 @@ func (request *Request) ReqNodeFindByID(userID int64, message []byte)([]byte, er
 	return pbByte, err
 }
 
+func (request *Request) ReqNodeDel(userID int64, message []byte)([]byte, error) {
+	req := protoManage.Node{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.NodeDel(&req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
 //请求节点测试
 func (request *Request) ReqNodeTest(userID int64, message []byte)([]byte, error) {
 	req := protoManage.ReqNodeTest{}

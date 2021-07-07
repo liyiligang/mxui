@@ -24,6 +24,7 @@ import {defaultVal} from "../../base/defaultVal";
 
 export default defineComponent ({
     name: "NodeLinkCard",
+    emits: ['deleteNodeLink'],
     props:{
         nodeLink:{
             type: protoManage.NodeLink,
@@ -44,9 +45,9 @@ export default defineComponent ({
         CardBase,
         CardViewFrame
     },
-    setup(props){
+    setup(props, context){
         function closeNodeLink(){
-            console.log(props.nodeLink?.Base?.ID)
+            context.emit('deleteNodeLink', props.nodeLink)
         }
         return {request, convert, protoManage, routerPath, closeNodeLink}
     }

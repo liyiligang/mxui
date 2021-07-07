@@ -46,6 +46,7 @@ interface NodeReportCardInfo {
 
 export default defineComponent ({
     name: "NodeReportCard",
+    emits: ['deleteNodeReport'],
     props:{
         nodeReport:{
             type: protoManage.NodeReport,
@@ -68,14 +69,14 @@ export default defineComponent ({
         CardReportVal,
         NodeReportVal
     },
-    setup(props){
+    setup(props, context){
         const data = reactive<NodeReportCardInfo>({dialogVisible:false})
         function textClick(){
             data.dialogVisible = true
         }
 
         function closeNodeReport(){
-
+            context.emit('deleteNodeReport', props.nodeReport)
         }
 
         return {data, textClick, request, convert, protoManage, routerPath, closeNodeReport}

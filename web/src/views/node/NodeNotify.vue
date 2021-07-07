@@ -22,7 +22,7 @@ import {request} from "../../base/request";
 import {refresh} from "../../base/refresh";
 import {globals} from "../../base/globals";
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute, useRouter} from "vue-router";
-import NodeViewFrame from "../../components/NodeViewFrame.vue"
+import NodeViewFrame from "./NodeViewFrame.vue"
 import NodeNotifyTable from "../../components/table/NodeNotifyTable.vue"
 import SelectFilter from "../../components/fifter/NodeNotifyMessageFilter.vue"
 import NodeNotifyFormFilter from "../../components/fifter/NodeNotifyFormFilter.vue"

@@ -14,7 +14,7 @@ import NodeTypeCard from "../../components/card/NodeTypeCard.vue"
 import Page from "../../components/Page.vue"
 import Empty from "../../components/Empty.vue"
 import Load from "../../components/Load.vue"
-import NodeViewFrame from "../../components/NodeViewFrame.vue"
+import NodeViewFrame from "./NodeViewFrame.vue"
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {refresh} from "../../base/refresh";
 

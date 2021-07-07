@@ -170,6 +170,18 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		case protoManage.Order_NodeNotifyFind:
 			ansMsg, err = app.Request.ReqNodeNotifyFind(userID, req.Message)
 			break
+		case protoManage.Order_NodeDel:
+			ansMsg, err = app.Request.ReqNodeDel(userID, req.Message)
+			break
+		case protoManage.Order_NodeLinkDel:
+			ansMsg, err = app.Request.ReqNodeLinkDel(userID, req.Message)
+			break
+		case protoManage.Order_NodeFuncDel:
+			ansMsg, err = app.Request.ReqNodeFuncDel(userID, req.Message)
+			break
+		case protoManage.Order_NodeReportDel:
+			ansMsg, err = app.Request.ReqNodeReportDel(userID, req.Message)
+			break
 		case protoManage.Order_NodeTest:
 			ansMsg, err = app.Request.ReqNodeTest(userID, req.Message)
 			break

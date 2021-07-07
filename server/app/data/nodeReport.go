@@ -25,11 +25,19 @@ func (data *Data) NodeReportAdd(protoNodeReport *protoManage.NodeReport) error {
 
 //删除节点报告
 func (data *Data) NodeReportDel(protoNodeReport *protoManage.NodeReport) error {
+	err := data.NodeReportValDelByNodeReportID(protoNodeReport.Base.ID)
+	if err != nil {
+		return err
+	}
 	return data.DB.DelNodeReport(orm.NodeReport{Base: orm.Base{ID: protoNodeReport.Base.ID}})
 }
 
 //按节点ID删除所有节点报告
 func (data *Data) NodeReportDelAllByNodeID(protoNodeReport *protoManage.NodeReport) error {
+	err := data.NodeReportValDelByNodeID(protoNodeReport.NodeID)
+	if err != nil {
+		return err
+	}
 	return data.DB.DelAllNodeReportByNodeID(orm.NodeReport{NodeID: protoNodeReport.NodeID})
 }
 

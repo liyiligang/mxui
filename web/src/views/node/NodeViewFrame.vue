@@ -4,7 +4,7 @@
         <Empty v-if="pageTotal<=0"></Empty>
         <el-row v-else :class="[globals.globalsData.managerSetting.setting.isPageFix ? 'mainViewPageFix' : 'mainView']" class="flex-row-center-between">
             <el-row :class="[globals.globalsData.managerSetting.setting.isPageFix ? 'slotViewPageFix' : 'slotView']">
-                <slot>暂无数据</slot>
+                <slot></slot>
             </el-row>
             <el-row :class="[globals.globalsData.managerSetting.setting.isPageFix ? 'pageViewFix' : 'pageView']" class="flex-row-center-start">
                 <Page :pageTotal="pageTotal"></Page>
@@ -15,10 +15,10 @@
 
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
-import Page from "../components/Page.vue"
-import Empty from "../components/Empty.vue"
-import Load from "../components/Load.vue"
-import { globals } from "../base/globals"
+import Page from "../../components/Page.vue"
+import Empty from "../../components/Empty.vue"
+import Load from "../../components/Load.vue"
+import { globals } from "../../base/globals"
 
 interface NodeViewFrameInfo {
 
@@ -42,7 +42,7 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-@import "../css/flex.css";
+@import "../../css/flex.css";
 
 .frameView{
     width: 100%;

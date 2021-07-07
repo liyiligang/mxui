@@ -1,6 +1,6 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-        <NodeReportCard  v-for="i in data.nodeReportList" :nodeReport="i"
+        <NodeReportCard  v-for="i in data.nodeReportList" :nodeReport="i" @deleteNodeReport="deleteNodeReport"
                          :node=data.nodeMap.get(i.NodeID) :nodeReportVal=data.nodeReportValMap.get(i.Base.ID)>
         </NodeReportCard>
     </NodeViewFrame>
@@ -14,7 +14,7 @@ import NodeReportCard from "../../components/card/NodeReportCard.vue"
 import Page from "../../components/Page.vue"
 import Empty from "../../components/Empty.vue"
 import Load from "../../components/Load.vue"
-import NodeViewFrame from "../../components/NodeViewFrame.vue"
+import NodeViewFrame from "./NodeViewFrame.vue"
 import {refresh} from "../../base/refresh";
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 
@@ -91,7 +91,25 @@ export default defineComponent ({
             }
             refresh.addGlobalAutoRefresh(instance?.uid, getNodeReportList, data.refreshFlag)
         }
-        return {data}
+
+        function deleteNodeReport(nodeReport:protoManage.NodeReport){
+            request.reqNodeReportDel(protoManage.NodeReport.create({
+                Base:protoManage.Base.create({ID:nodeReport.Base?.ID})
+            })).then((response) => {
+                deleteNodeReportByID(Number(response.Base?.ID))
+            }).catch(error => {}).finally(()=>{})
+        }
+
+        function deleteNodeReportByID(nodeReportID:number){
+            for (let i = 0; i < data.nodeReportList.length; i++){
+                if (data.nodeReportList[i].Base?.ID == nodeReportID){
+                    data.nodeReportList.splice(i, 1)
+                }
+            }
+            data.nodeReportValMap.delete(nodeReportID)
+            data.pageTotal = data.nodeReportList.length
+        }
+        return {data, deleteNodeReport}
     }
 })
 </script>

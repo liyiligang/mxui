@@ -13,6 +13,7 @@
 <script lang="ts">
 import {defineComponent, PropType, reactive} from "vue";
 import {protoManage} from "../../proto/manage";
+import {ElMessageBox} from "element-plus";
 
 interface CardViewFrameInfo {
     isMouseHover:boolean
@@ -43,7 +44,13 @@ export default defineComponent ({
         }
 
         function closeClick(){
-            context.emit('closeClick');
+            ElMessageBox.confirm('此操作将永久删除相关数据, 是否继续?', '警告', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                context.emit('closeClick');
+            }).catch(() => {});
         }
 
         function mouseEnter(){

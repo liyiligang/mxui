@@ -1,6 +1,6 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-        <NodeFuncCard  v-for="i in data.nodeFuncList" :nodeFunc="i"
+        <NodeFuncCard  v-for="i in data.nodeFuncList" :nodeFunc="i" @deleteNodeFunc="deleteNodeFunc"
                        :node=data.nodeMap.get(i.NodeID) :nodeFuncCall=data.nodeFuncCallMap.get(i.Base.ID)>
         </NodeFuncCard>
     </NodeViewFrame>
@@ -14,7 +14,7 @@ import NodeFuncCard from "../../components/card/NodeFuncCard.vue"
 import Page from "../../components/Page.vue"
 import Empty from "../../components/Empty.vue"
 import Load from "../../components/Load.vue"
-import NodeViewFrame from "../../components/NodeViewFrame.vue"
+import NodeViewFrame from "./NodeViewFrame.vue"
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {refresh} from "../../base/refresh";
 
@@ -89,7 +89,26 @@ export default defineComponent ({
             }
             refresh.addGlobalAutoRefresh(instance?.uid, getNodeFuncList, data.refreshFlag)
         }
-        return {data}
+
+        function deleteNodeFunc(nodeFunc:protoManage.NodeFunc){
+            request.reqNodeFuncDel(protoManage.NodeFunc.create({
+                Base:protoManage.Base.create({ID:nodeFunc.Base?.ID})
+            })).then((response) => {
+                deleteNodeFuncByID(Number(response.Base?.ID))
+            }).catch(error => {}).finally(()=>{})
+        }
+
+        function deleteNodeFuncByID(nodeFuncID:number){
+            for (let i = 0; i < data.nodeFuncList.length; i++){
+                if (data.nodeFuncList[i].Base?.ID == nodeFuncID){
+                    data.nodeFuncList.splice(i, 1)
+                }
+            }
+            data.nodeFuncCallMap.delete(nodeFuncID)
+            data.pageTotal = data.nodeFuncList.length
+        }
+        
+        return {data, deleteNodeFunc}
     }
 })
 </script>

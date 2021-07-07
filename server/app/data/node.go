@@ -22,9 +22,10 @@ func (data *Data) NodeAdd(protoNode *protoManage.Node) error {
 	return nil
 }
 
-//删除节点
-func (data *Data) NodeDel(protoNode *protoManage.Node) error {
-	//判断节点是否正在运行
+func (data *Data) NodeIsOnline(nodeID int64) error {
+	protoNode := &protoManage.Node{
+		Base: protoManage.Base{ID: nodeID},
+	}
 	err := data.NodeFindByID(protoNode)
 	if err != nil {
 		return err
@@ -32,9 +33,14 @@ func (data *Data) NodeDel(protoNode *protoManage.Node) error {
 	if protoNode.State != protoManage.State_StateUnknow {
 		return errors.New("节点未处于离线状态")
 	}
+	return nil
+}
+
+//删除节点
+func (data *Data) NodeDel(protoNode *protoManage.Node) error {
 
 	//删除节点其他相关信息
-	err = data.NodeLinkDelAllByNodeID(&protoManage.NodeLink{SourceID: protoNode.Base.ID, TargetID: protoNode.Base.ID})
+	err := data.NodeLinkDelAllByNodeID(&protoManage.NodeLink{SourceID: protoNode.Base.ID, TargetID: protoNode.Base.ID})
 	if err != nil {
 		return err
 	}
@@ -46,8 +52,11 @@ func (data *Data) NodeDel(protoNode *protoManage.Node) error {
 	if err != nil {
 		return err
 	}
+	err = data.DB.DelNode(orm.Node{Base: orm.Base{ID: protoNode.Base.ID}})
+	if err != nil {
+		return err
+	}
 
-	//删除节点类型
 	count, err := data.DB.CountAllNodeByTypeID(orm.Node{TypeID: protoNode.TypeID})
 	if err != nil {
 		return err
@@ -59,7 +68,7 @@ func (data *Data) NodeDel(protoNode *protoManage.Node) error {
 		}
 	}
 
-	//删除节点组
+
 	count, err = data.DB.CountAllNodeByGroupID(orm.Node{GroupID: protoNode.GroupID})
 	if err != nil {
 		return err

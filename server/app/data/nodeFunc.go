@@ -25,11 +25,19 @@ func (data *Data) NodeFuncAdd(protoNodeFunc *protoManage.NodeFunc) error {
 
 //删除节点方法
 func (data *Data) NodeFuncDel(protoNodeFunc *protoManage.NodeFunc) error {
+	err := data.NodeFuncCallDelByNodeFuncID(protoNodeFunc.Base.ID)
+	if err != nil {
+		return err
+	}
 	return data.DB.DelNodeFunc(orm.NodeFunc{Base: orm.Base{ID: protoNodeFunc.Base.ID}})
 }
 
 //按节点ID删除所有节点方法
 func (data *Data) NodeFuncDelAllByNodeID(protoNodeFunc *protoManage.NodeFunc) error {
+	err := data.NodeFuncCallDelByNodeID(protoNodeFunc.NodeID)
+	if err != nil {
+		return err
+	}
 	return data.DB.DelAllNodeFuncByNodeID(orm.NodeFunc{NodeID: protoNodeFunc.NodeID})
 }
 

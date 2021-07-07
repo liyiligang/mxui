@@ -46,6 +46,7 @@ interface NodeFuncCardInfo {
 
 export default defineComponent ({
     name: "NodeFuncCard",
+    emits: ['deleteNodeFunc'],
     props:{
         nodeFunc:{
             type: protoManage.NodeFunc,
@@ -68,7 +69,7 @@ export default defineComponent ({
         CardFuncCall,
         NodeFuncCall
     },
-    setup(){
+    setup(props, context){
         const data = reactive<NodeFuncCardInfo>({dialogVisible:false})
 
         function textClick(){
@@ -76,7 +77,7 @@ export default defineComponent ({
         }
 
         function closeNodeFunc(){
-
+            context.emit('deleteNodeFunc', props.nodeFunc)
         }
 
         return {data, textClick, request, protoManage, routerPath, convert, closeNodeFunc}

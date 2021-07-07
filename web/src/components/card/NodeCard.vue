@@ -53,6 +53,7 @@ interface NodeCardInfo {
 
 export default defineComponent ({
     name: "NodeCard",
+    emits: ['deleteNode'],
     props:{
         node:{
             type: protoManage.Node,
@@ -78,7 +79,7 @@ export default defineComponent ({
         CardInfo,
         CardState
     },
-    setup(prop){
+    setup(props, context){
         const data = reactive<NodeCardInfo>({
             nodeLinkSourceStateCount:protoManage.StateCount.create(),
             nodeLinkTargetStateCount:protoManage.StateCount.create(),
@@ -86,21 +87,21 @@ export default defineComponent ({
             nodeReportStateCount:protoManage.StateCount.create(),
         })
         onMounted(()=>{
-            if (prop.nodeLinkSourceStateCount != undefined){
-                data.nodeLinkSourceStateCount = prop.nodeLinkSourceStateCount
+            if (props.nodeLinkSourceStateCount != undefined){
+                data.nodeLinkSourceStateCount = props.nodeLinkSourceStateCount
             }
-            if (prop.nodeLinkTargetStateCount != undefined){
-                data.nodeLinkTargetStateCount = prop.nodeLinkTargetStateCount
+            if (props.nodeLinkTargetStateCount != undefined){
+                data.nodeLinkTargetStateCount = props.nodeLinkTargetStateCount
             }
-            if (prop.nodeFuncStateCount != undefined){
-                data.nodeFuncStateCount = prop.nodeFuncStateCount
+            if (props.nodeFuncStateCount != undefined){
+                data.nodeFuncStateCount = props.nodeFuncStateCount
             }
-            if (prop.nodeReportStateCount != undefined){
-                data.nodeReportStateCount = prop.nodeReportStateCount
+            if (props.nodeReportStateCount != undefined){
+                data.nodeReportStateCount = props.nodeReportStateCount
             }
         })
         function closeNode(){
-
+            context.emit('deleteNode', props.node)
         }
         return {data, request, convert, protoManage, routerPath, closeNode}
     }

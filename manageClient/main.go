@@ -30,7 +30,7 @@ func main() {
 		fmt.Println(err)
 	}
 
-	err = manageClient.RegisterNodeReport("临界报告", testReport, 3*time.Second, NodeReportLevelVisitor)
+	err = manageClient.RegisterNodeReport("临界报告22", testReport, 3*time.Second, NodeReportLevelVisitor)
 	if err != nil {
 		fmt.Println(err)
 	}

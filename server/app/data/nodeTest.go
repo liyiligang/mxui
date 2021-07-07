@@ -7,6 +7,7 @@ import (
 
 //请求节点测试
 func (data *Data) NodeTest(userID int64, protoNodeTest *protoManage.ReqNodeTest) error {
+
 	protoNodeNotify := protoManage.NodeNotify{
 		SenderID:   userID,
 		SenderType: protoManage.NotifySenderType(protoNodeTest.Type),

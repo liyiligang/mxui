@@ -1,6 +1,6 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
-        <NodeCard v-for="i in data.nodeList" :node="i"
+        <NodeCard v-for="i in data.nodeList" :node="i" @deleteNode="deleteNode"
                   :nodeGroup=data.nodeGroupMap.get(i.GroupID) :nodeType=data.nodeTypeMap.get(i.TypeID)
                   :nodeFuncStateCount=data.nodeFuncStateCountMap.get(i.Base.ID) :nodeReportStateCount=data.nodeReportStateCountMap.get(i.Base.ID)
         :nodeLinkSourceStateCount=data.nodeLinkSourceStateCountMap.get(i.Base.ID) :nodeLinkTargetStateCount="data.nodeLinkTargetStateCountMap.get(i.Base.ID)">
@@ -17,7 +17,7 @@ import NodeCard from "../../components/card/NodeCard.vue"
 import Page from "../../components/Page.vue"
 import Empty from "../../components/Empty.vue"
 import Load from "../../components/Load.vue"
-import NodeViewFrame from "../../components/NodeViewFrame.vue"
+import NodeViewFrame from "./NodeViewFrame.vue"
 import {useRoute, onBeforeRouteUpdate, RouteLocationNormalizedLoaded} from "vue-router";
 import {convert} from "../../base/convert";
 
@@ -132,7 +132,26 @@ export default defineComponent ({
                 data.nodeLinkTargetStateCountMap.set(key, val)
             }
         }
-        return {data}
+
+        function deleteNode(node:protoManage.Node){
+            request.reqNodeDel(protoManage.Node.create({
+                Base:protoManage.Base.create({ID:node.Base?.ID}),
+                GroupID:node.GroupID,
+                TypeID: node.TypeID
+            })).then((response) => {
+                deleteNodeByID(Number(response.Base?.ID))
+            }).catch(error => {}).finally(()=>{})
+        }
+
+        function deleteNodeByID(nodeID:number){
+            for (let i = 0; i < data.nodeList.length; i++){
+                if (data.nodeList[i].Base?.ID == nodeID){
+                    data.nodeList.splice(i, 1)
+                }
+            }
+            data.pageTotal = data.nodeList.length
+        }
+        return {data, deleteNode}
     }
 })
 </script>

@@ -29,6 +29,15 @@ func (db *Server) AddNodeReportVal(nodeReportVal *orm.NodeReportVal) error {
 	return db.Gorm.Create(nodeReportVal).Error
 }
 
+func (db *Server) DelNodeReportValByNodeReportID(nodeReportVal orm.NodeReportVal) error {
+	return db.Gorm.Where("reportID = ?", nodeReportVal.ReportID).Delete(&nodeReportVal).Error
+}
+
+func (db *Server) DelNodeReportValByNodeID(nodeID int64) error {
+	subQuery1 := db.Gorm.Select("id").Model(&orm.NodeReport{}).Where("nodeID=?", nodeID)
+	return db.Gorm.Where("reportID = any(?)", subQuery1).Delete(&orm.NodeReportVal{}).Error
+}
+
 //获取节点报告中节点报告ID对应的最后一次报告值
 func (db *Server) FindLastNodeReportValByNodeReport(filter protoManage.Filter) ([]orm.NodeReportVal, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
