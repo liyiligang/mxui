@@ -7,8 +7,8 @@ import (
 	"github.com/liyiligang/base/component/Jtoken"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
-	"github.com/liyiligang/manage/app/protoFiles/protoManage"
-	"github.com/liyiligang/manage/app/typedef/config"
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/config"
 	"github.com/pkg/errors"
 	"time"
 )

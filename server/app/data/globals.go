@@ -1,8 +1,8 @@
 package data
 
 import (
-	"github.com/liyiligang/manage/app/db"
-	"github.com/liyiligang/manage/app/gateway"
+	"github.com/liyiligang/klee/app/db"
+	"github.com/liyiligang/klee/app/gateway"
 )
 
 type Data struct {

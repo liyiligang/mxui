@@ -7,7 +7,7 @@ import (
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/manage/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/pkg/errors"
 )
 

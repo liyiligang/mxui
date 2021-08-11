@@ -2,11 +2,11 @@ package data
 
 import (
 	"github.com/liyiligang/base/component/Jtoken"
-	"github.com/liyiligang/manage/app/check"
-	"github.com/liyiligang/manage/app/convert"
-	"github.com/liyiligang/manage/app/protoFiles/protoManage"
-	"github.com/liyiligang/manage/app/typedef/config"
-	"github.com/liyiligang/manage/app/typedef/orm"
+	"github.com/liyiligang/klee/app/check"
+	"github.com/liyiligang/klee/app/convert"
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/config"
+	"github.com/liyiligang/klee/app/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 	"time"

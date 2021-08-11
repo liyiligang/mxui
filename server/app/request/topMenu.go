@@ -1,6 +1,6 @@
 package request
 
-import "github.com/liyiligang/manage/app/protoFiles/protoManage"
+import "github.com/liyiligang/klee/app/protoFiles/protoManage"
 
 //顶部链接信息查询
 func (request *Request) ReqTopLinkFind(userID int64, message []byte)([]byte, error){

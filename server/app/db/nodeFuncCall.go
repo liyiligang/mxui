@@ -7,8 +7,8 @@ package db
 
 import (
 	"errors"
-	"github.com/liyiligang/manage/app/protoFiles/protoManage"
-	"github.com/liyiligang/manage/app/typedef/orm"
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/orm"
 	"gorm.io/gorm"
 )
 

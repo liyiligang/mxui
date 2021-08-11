@@ -5,7 +5,7 @@
 
 package request
 
-import "github.com/liyiligang/manage/app/protoFiles/protoManage"
+import "github.com/liyiligang/klee/app/protoFiles/protoManage"
 
 //节点方法调用查询
 func (request *Request) ReqNodeFuncCallFind(userID int64, message []byte)([]byte, error) {

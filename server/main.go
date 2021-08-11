@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/liyiligang/manage/app"
+	"github.com/liyiligang/klee/app"
 	"log"
 )
 

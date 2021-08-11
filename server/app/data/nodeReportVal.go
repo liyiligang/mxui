@@ -6,9 +6,9 @@
 package data
 
 import (
-	"github.com/liyiligang/manage/app/convert"
-	"github.com/liyiligang/manage/app/protoFiles/protoManage"
-	"github.com/liyiligang/manage/app/typedef/orm"
+	"github.com/liyiligang/klee/app/convert"
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/orm"
 )
 
 //查找节点报告值信息

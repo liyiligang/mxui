@@ -1,6 +1,6 @@
 package db
 
-import "github.com/liyiligang/manage/app/typedef/orm"
+import "github.com/liyiligang/klee/app/typedef/orm"
 
 //获取顶部链接
 func (db *Server) FindTopLink() ([]orm.TopLink, error) {

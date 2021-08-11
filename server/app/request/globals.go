@@ -1,7 +1,7 @@
 package request
 
 import (
-	"github.com/liyiligang/manage/app/data"
+	"github.com/liyiligang/klee/app/data"
 )
 
 type Request struct {

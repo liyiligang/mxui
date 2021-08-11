@@ -6,8 +6,8 @@
 package request
 
 import (
-	"github.com/liyiligang/manage/app/check"
-	"github.com/liyiligang/manage/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/check"
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 )
 
 //节点连接信息查询

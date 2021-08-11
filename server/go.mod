@@ -1,4 +1,4 @@
-module github.com/liyiligang/manage
+module github.com/liyiligang/klee
 
 go 1.15
 

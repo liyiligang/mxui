@@ -2,10 +2,10 @@
 
  import (
 	 "github.com/liyiligang/base/commonConst"
-	 "github.com/liyiligang/manage/app/check"
-	 "github.com/liyiligang/manage/app/convert"
-	 "github.com/liyiligang/manage/app/protoFiles/protoManage"
-	 "github.com/liyiligang/manage/app/typedef/orm"
+	 "github.com/liyiligang/klee/app/check"
+	 "github.com/liyiligang/klee/app/convert"
+	 "github.com/liyiligang/klee/app/protoFiles/protoManage"
+	 "github.com/liyiligang/klee/app/typedef/orm"
  )
 
  //新增节点

@@ -7,7 +7,7 @@ package request
 
 import (
 	"context"
-	"github.com/liyiligang/manage/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 )
 
 //节点方法注册

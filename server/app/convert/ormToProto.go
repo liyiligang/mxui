@@ -2,8 +2,8 @@ package convert
 
 import (
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/manage/app/protoFiles/protoManage"
-	"github.com/liyiligang/manage/app/typedef/orm"
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/orm"
 )
 
 //DBBase To PBBase

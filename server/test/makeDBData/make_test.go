@@ -8,9 +8,9 @@ package makeDBData
 import (
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/manage/app"
-	"github.com/liyiligang/manage/app/protoFiles/protoManage"
-	"github.com/liyiligang/manage/app/typedef/orm"
+	"github.com/liyiligang/klee/app"
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/orm"
 	"strconv"
 	"testing"
 )

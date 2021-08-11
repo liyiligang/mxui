@@ -5,7 +5,7 @@
 
 package request
 
-import "github.com/liyiligang/manage/app/protoFiles/protoManage"
+import "github.com/liyiligang/klee/app/protoFiles/protoManage"
 
 //节点类型信息查询
 func (request *Request) ReqNodeTypeFind(userID int64, message []byte)([]byte, error) {

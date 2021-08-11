@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/liyiligang/manage/app/typedef/orm"
+	"github.com/liyiligang/klee/app/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )
