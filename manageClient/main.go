@@ -13,34 +13,45 @@ import (
 var manageClient *ManageClient
 
 func main() {
+	//example
+	//link
 	var err error
 	manageClient, err = initClient()
 	if err !=nil {
-		fmt.Println("连接失败: ", err)
+		fmt.Println("link error: ", err)
 		return
 	}
 
+	//node link
 	err = manageClient.UpdateNodeLink(15, NodeLinkStateConnected)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = manageClient.RegisterNodeFunc("临界实验", testFunc, NodeFuncLevelVisitor)
+	//node func
+	err = manageClient.RegisterNodeFunc("testFunc", testFunc, NodeFuncLevelVisitor)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = manageClient.RegisterNodeReport("临界报告22", testReport, 3*time.Second, NodeReportLevelVisitor)
+	//node report
+	err = manageClient.RegisterNodeReport("testReport", testReport, 3*time.Second, NodeReportLevelVisitor)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	err = manageClient.SendNodeNotify("临界通知111", NodeNotifyLevelWarn)
+	//node report manual update
+	err = manageClient.UpdateReportVal("testReport", 1, NodeReportValLevelNormal)
 	if err != nil {
 		fmt.Println(err)
 	}
 
-	fmt.Println("启动成功")
+	//node notify
+	err = manageClient.SendNodeNotify("testNotify", NodeNotifyLevelWarn)
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	select {}
 }
 
@@ -50,9 +61,9 @@ func initClient() (*ManageClient, error) {
 		Addr:":888",
 		PublicKeyPath:"../store/cert/grpc/ca_cert.pem",
 		CertName: "x.test.example.com",
-		NodeGroupName: "测试集群",
-		NodeTypeName: "测试类型",
-		NodeName: "测试节点",
+		NodeGroupName: "TestGroup",
+		NodeTypeName: "TestType",
+		NodeName: "TestNode",
 		ConnectTimeOut: time.Second * 5,
 		RequestTimeOut: time.Second * 5,
 		KeepaliveTime: time.Second * 1,
@@ -65,7 +76,7 @@ func initClient() (*ManageClient, error) {
 }
 
 func errorCall(text string, err error) {
-	fmt.Println("rpc 错误：", text, err)
+	fmt.Println("rpc error: ", text, err)
 }
 
 var testFuncVal = 2

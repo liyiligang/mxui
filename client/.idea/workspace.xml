@@ -20,15 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d965386d-d615-4f75-b9a9-40f172f80569" name="默认的" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../manageClient/main.go" beforeDir="false" afterPath="$PROJECT_DIR$/../manageClient/main.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/app/appNetCall.go" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/appNetCall.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/app/data/nodeReport.go" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/data/nodeReport.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/app/data/nodeReportVal.go" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/data/nodeReportVal.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/app/db/nodeReportVal.go" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/db/nodeReportVal.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/app/request/nodeReport.go" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/request/nodeReport.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../server/app/request/nodeReportVal.go" beforeDir="false" afterPath="$PROJECT_DIR$/../server/app/request/nodeReportVal.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../manageClient/nodeFunc.go" beforeDir="false" afterPath="$PROJECT_DIR$/../manageClient/nodeFunc.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,5 +110,9 @@
       <screen x="0" y="0" width="1549" height="831" />
     </state>
     <state x="284" y="60" key="SettingsEditor/0.0.1549.831@0.0.1549.831" timestamp="1625450397198" />
+    <state x="510" y="147" width="528" height="536" key="find.popup" timestamp="1628652395529">
+      <screen x="0" y="0" width="1549" height="831" />
+    </state>
+    <state x="510" y="147" width="528" height="536" key="find.popup/0.0.1549.831@0.0.1549.831" timestamp="1628652395529" />
   </component>
 </project>
