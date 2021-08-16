@@ -29,22 +29,24 @@ func (request *Request) ReqNodeLinkFind(userID int64, message []byte)([]byte, er
 }
 
 //节点连接状态更新
-func (request *Request) ReqNodeLinkUpdate(nodeID int64, message []byte) {
+func (request *Request) ReqNodeLinkUpdate(nodeID int64, message []byte) error {
 	nodeLink := protoManage.NodeLink{}
 	err := nodeLink.Unmarshal(message)
 	if err != nil {
-		return
+		return err
 	}
 	err = check.BaseIDCheck(nodeLink.SourceID, nodeID)
 	if err != nil {
-		return
+		return err
 	}
 	err = request.Data.NodeLinkUpdateOrAdd(&nodeLink)
 	if err != nil {
-		return
+		return err
 	}
+	return nil
 }
 
+//刪除节点连接
 func (request *Request) ReqNodeLinkDel(userID int64, message []byte)([]byte, error) {
 	req := protoManage.NodeLink{}
 	err := req.Unmarshal(message)

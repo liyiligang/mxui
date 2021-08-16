@@ -22,6 +22,12 @@ func (db *Server) DelAllNodeFuncByNodeID(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Where("nodeID = ?", nodeFunc.NodeID).Delete(orm.NodeFunc{}).Error
 }
 
+//按节点ID更新节点方法状态
+func (db *Server) UpdateNodeFuncStateByNodeID(nodeFunc orm.NodeFunc) error {
+	return db.Gorm.Model(&nodeFunc).Where("nodeID = ?", nodeFunc.NodeID).
+		Updates(map[string]interface{}{"state": nodeFunc.State}).Error
+}
+
 //按ID更新指定节点方法信息
 func (db *Server) UpdateNodeFuncInfo(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Model(&nodeFunc).Updates(map[string]interface{}{

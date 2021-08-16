@@ -39,15 +39,14 @@ func (gateway *Gateway) RpcCloseClient(nodeID interface{}) {
 	}
 }
 
-func (gateway *Gateway) RpcGetID(userID interface{}) (int64, error) {
-	id, ok:= userID.(int64)
+func (gateway *Gateway) RpcGetID(nodeID interface{}) (int64, error) {
+	id, ok := nodeID.(int64)
 	if !ok {
-		str := fmt.Sprintf("rpc id类型错误, userID: %v", userID)
+		str := fmt.Sprintf("rpc id类型错误, nodeID: %v", nodeID)
 		return 0, errors.New(str)
 	}
 	return id, nil
 }
-
 
 func (gateway *Gateway) rpcSend(nodeID int64, order protoManage.Order, data *[]byte) error {
 	conn, ok := gateway.RpcManage.Load(nodeID)

@@ -1,6 +1,7 @@
 package request
 
 import (
+	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/klee/app/check"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 )
@@ -61,24 +62,38 @@ func (request *Request) ReqNodeOnline(nodeID int64, message []byte) error {
 
 //节点离线
 func (request *Request) ReqNodeOffline(nodeID int64) {
-	request.Data.NodeStateUpdate(&protoManage.Node{Base: protoManage.Base{ID: nodeID},
+	err := request.Data.NodeStateUpdate(&protoManage.Node{Base: protoManage.Base{ID: nodeID},
 		State: protoManage.State_StateUnknow})
+	if err != nil {
+		Jlog.Error(err.Error())
+	}
+	err = request.Data.NodeLinkStateUpdateByNodeID(&protoManage.NodeLink{SourceID: nodeID, TargetID: nodeID, State: protoManage.State_StateUnknow})
+	if err != nil {
+		Jlog.Error(err.Error())
+	}
+	err = request.Data.NodeFuncStateUpdateByNodeID(&protoManage.NodeFunc{NodeID: nodeID, State: protoManage.State_StateUnknow})
+	if err != nil {
+		Jlog.Error(err.Error())
+	}
+	err = request.Data.NodeReportStateUpdateByNodeID(&protoManage.NodeReport{NodeID: nodeID, State: protoManage.State_StateUnknow})
+	if err != nil {
+		Jlog.Error(err.Error())
+	}
 }
 
 //节点状态更新
-func (request *Request) ReqNodeStateUpdate(nodeID int64, message []byte) {
+func (request *Request) ReqNodeStateUpdate(nodeID int64, message []byte) error {
 	node := protoManage.Node{}
 	err := node.Unmarshal(message)
 	if err != nil {
-		return
+		return err
 	}
 
 	err = check.BaseIDCheck(node.Base.ID, nodeID)
 	if err != nil {
-		return
+		return err
 	}
-
-	request.Data.NodeStateUpdate(&node)
+	return request.Data.NodeStateUpdate(&node)
 }
 
 //节点信息查询
@@ -117,6 +132,7 @@ func (request *Request) ReqNodeFindByID(userID int64, message []byte)([]byte, er
 	return pbByte, err
 }
 
+//刪除节点
 func (request *Request) ReqNodeDel(userID int64, message []byte)([]byte, error) {
 	req := protoManage.Node{}
 	err := req.Unmarshal(message)

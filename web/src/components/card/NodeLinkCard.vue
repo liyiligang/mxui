@@ -1,5 +1,5 @@
 <template>
-    <CardViewFrame :state="sourceNode.State" @closeClick="closeNodeLink">
+    <CardViewFrame :state="nodeLink.State" @closeClick="closeNodeLink">
         <template v-slot:body>
             <CardName :color="convert.getColorByState(nodeLink.State)" :id="nodeLink.Base.ID"
                       :name="convert.getNodeLinkStateName(nodeLink.State)"></CardName>

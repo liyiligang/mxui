@@ -28,6 +28,12 @@ func (db *Server) UpdateNodeReportInfo(nodeReport orm.NodeReport) error {
 		"func": nodeReport.Func, "state": nodeReport.State}).Error
 }
 
+//按节点ID更新节点报告状态
+func (db *Server) UpdateNodeReportStateByNodeID(nodeReport orm.NodeReport) error {
+	return db.Gorm.Model(&nodeReport).Where("nodeID = ?", nodeReport.NodeID).
+		Updates(map[string]interface{}{"state": nodeReport.State}).Error
+}
+
 //获取节点报告信息
 func (db *Server) FindNodeReport(filter protoManage.Filter) ([]orm.NodeReport, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))

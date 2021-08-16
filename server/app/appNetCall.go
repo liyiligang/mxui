@@ -18,53 +18,73 @@ func (app *App) WebsocketConnect(conn *Jweb.WebsocketConn) (interface{}, error) 
 }
 
 func (app *App) WebsocketConnected(conn *Jweb.WebsocketConn) error {
-	id, err := app.Gateway.WsGetID(conn.GetBindVal())
+	var userID int64
+	var err error
+	defer func(){
+		if err != nil {
+			Jlog.Error("用户上线失败：", "userID", userID, "error", err)
+			app.Request.SaveNodeNotifyWithUserError(userID, "用户上线失败: " + err.Error())
+		}else{
+			Jlog.Info("用户已上线：", "userID", userID, "error", err)
+			app.Request.SaveNodeNotifyWithUserInfo(userID, "用户已上线")
+		}
+	}()
+	userID, err = app.Gateway.WsGetID(conn.GetBindVal())
 	if err != nil {
 		return err
 	}
-	if app.Gateway.WebsocketManage.IsExist(id) {
-		app.Gateway.WsCloseClient(id, "您的账户在别处登录")
+	if app.Gateway.WebsocketManage.IsExist(userID) {
+		app.Gateway.WsCloseClient(userID, "您的账户在别处登录")
 	}
-	err = app.Request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
+	err = app.Request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: userID},
 		State: protoManage.State_StateNormal})
 	if err != nil {
 		return err
 	}
-	app.Gateway.WebsocketManage.Store(id, conn)
-	Jlog.Info("websocket已连接", "id", id)
+	app.Gateway.WebsocketManage.Store(userID, conn)
 	return nil
 }
 
 func (app *App) WebsocketClose(conn *Jweb.WebsocketConn, code int, text string) {
-	id, err := app.Gateway.WsGetID(conn.GetBindVal())
+	var userID int64
+	var err error
+	defer func(){
+		if err != nil {
+			Jlog.Error("用户下线错误: ", "userID", userID, "error", err)
+			app.Request.SaveNodeNotifyWithUserError(userID, "用户下线错误: " + err.Error())
+		}else{
+			Jlog.Info("用户已下线: ", "userID", userID, "error", err)
+			app.Request.SaveNodeNotifyWithUserInfo(userID, "用户已下线")
+		}
+	}()
+	userID, err = app.Gateway.WsGetID(conn.GetBindVal())
 	if err != nil {
 		return
 	}
-	app.Request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: id},
+	app.Request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: userID},
 		State: protoManage.State_StateUnknow})
-	app.Gateway.WebsocketManage.Delete(id)
-	Jlog.Info("websocket连接已关闭", "id", id)
+	app.Gateway.WebsocketManage.Delete(userID)
 }
 
 func (app *App) WebsocketReceiver(conn *Jweb.WebsocketConn, message *[]byte) {
-	id, err := app.Gateway.WsGetID(conn.GetBindVal())
-	if err != nil {
-		Jlog.Warn("websocket数据接收错误", "err", err)
-		return
-	}
-	res := protoManage.Message{}
-	err = res.Unmarshal(*message)
-	if err != nil {
-		Jlog.Warn("websocket数据解析错误", "err", err)
-		return
-	}
-	switch res.Order {
-	case protoManage.Order_NodeUpdateState:
-		app.Request.ReqNodeStateUpdate(id, res.Message)
-	break
-	default:
-		Jlog.Warn("websocket指令错误", "消息", res)
-	}
+	//id, err := app.Gateway.WsGetID(conn.GetBindVal())
+	//if err != nil {
+	//	Jlog.Warn("websocket数据接收错误", "err", err)
+	//	return
+	//}
+	//res := protoManage.Message{}
+	//err = res.Unmarshal(*message)
+	//if err != nil {
+	//	Jlog.Warn("websocket数据解析错误", "err", err)
+	//	return
+	//}
+	//switch res.Order {
+	//case protoManage.Order_NodeUpdateState:
+	//	app.Request.ReqNodeStateUpdate(id, res.Message)
+	//break
+	//default:
+	//	Jlog.Warn("websocket指令错误", "消息", res)
+	//}
 }
 
 func (app *App) WebsocketPong(conn *Jweb.WebsocketConn, pingData string) string {
@@ -72,21 +92,26 @@ func (app *App) WebsocketPong(conn *Jweb.WebsocketConn, pingData string) string 
 }
 
 func (app *App) WebsocketError(text string, err error){
-	Jlog.Warn(text, "err", err)
+	Jlog.Error(text, "err", err)
 }
 
 func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 	var ansMsg []byte
 	var userID int64
 	var err error
-
+	defer func(){
+		if err != nil {
+			Jlog.Error("http请求错误：", "error", err)
+			app.Request.SaveNodeNotifyWithUserError(userID, err.Error())
+		}
+	}()
 	req := protoManage.HttpMessage{}
 	err = req.Unmarshal(raw)
 	if err != nil {
 		return nil, err, int(protoManage.HttpError_HttpErrorUnmarshal)
 	}
 	if req.Order == protoManage.Order_ManagerLogin {
-		ansMsg, err = app.Request.ReqManagerLogin(0, req.Message)
+		ansMsg, err = app.Request.ReqManagerLogin(userID, req.Message)
 		if err != nil {
 			return nil, err, int(protoManage.HttpError_HttpErrorLogin)
 		}
@@ -186,8 +211,7 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 			ansMsg, err = app.Request.ReqNodeTest(userID, req.Message)
 			break
 		default:
-			err = errors.New("http指令错误")
-			Jlog.Error("http指令错误", "消息", req)
+			err = errors.New("http指令错误：" +  Jtool.Int64ToString(int64(req.Order)))
 		}
 	}
 	if err != nil {
@@ -235,62 +259,94 @@ func (app *App) RpcStreamConnect(conn *Jrpc.RpcStream) (interface{}, error) {
 }
 
 func (app *App) RpcStreamConnected(conn *Jrpc.RpcStream) error {
-	id, err := app.Gateway.RpcGetID(conn.GetBindVal())
+	var nodeID int64
+	var err error
+	defer func(){
+		if err != nil {
+			Jlog.Error("节点上线失败：", "nodeID", nodeID, "error", err)
+			app.Request.SaveNodeNotifyWithNodeError(nodeID, "节点上线失败: " + err.Error())
+		}else{
+			Jlog.Info("节点已上线：", "nodeID", nodeID, "error", err)
+			app.Request.SaveNodeNotifyWithNodeInfo(nodeID, "节点已上线")
+		}
+	}()
+	nodeID, err = app.Gateway.RpcGetID(conn.GetBindVal())
 	if err != nil {
 		return err
 	}
-	if app.Gateway.RpcManage.IsExistDelayCheck(id, 500*time.Millisecond, 6) {
-		return errors.New("id:"+Jtool.Int64ToString(id)+"已存在")
+	if app.Gateway.RpcManage.IsExistDelayCheck(nodeID, 500*time.Millisecond, 6) {
+		return errors.New("id:"+Jtool.Int64ToString(nodeID)+"已存在")
 	}
-	err = app.Request.ReqNodeOnline(id, conn.GetParm().RpcStreamClientMsg)
+	err = app.Request.ReqNodeOnline(nodeID, conn.GetParm().RpcStreamClientMsg)
 	if err != nil {
 		return err
 	}
-	app.Gateway.RpcManage.Store(id, conn)
-	Jlog.Info("rpc已连接", "id", id)
+	app.Gateway.RpcManage.Store(nodeID, conn)
 	return nil
 }
 
 func (app *App) RpcStreamClose(conn *Jrpc.RpcStream) {
-	id, err := app.Gateway.RpcGetID(conn.GetBindVal())
+	var nodeID int64
+	var err error
+	defer func(){
+		if err != nil {
+			Jlog.Error("节点下线错误：", "nodeID", nodeID, "error", err)
+			app.Request.SaveNodeNotifyWithNodeError(nodeID, "节点下线错误: " + err.Error())
+		}else{
+			Jlog.Info("节点已下线：", "nodeID", nodeID, "error", err)
+			app.Request.SaveNodeNotifyWithNodeInfo(nodeID, "节点已下线")
+		}
+	}()
+	nodeID, err = app.Gateway.RpcGetID(conn.GetBindVal())
 	if err != nil {
-		Jlog.Warn("rpc连接关闭错误", "err", err)
-		return
+		return 
 	}
-	app.Request.ReqNodeOffline(id)
+	app.Request.ReqNodeOffline(nodeID)
 	app.Gateway.RpcManage.Delete(conn.GetBindVal())
-	Jlog.Info("rpc连接已关闭", "id", id)
 }
 
 func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
-	id, err := app.Gateway.RpcGetID(conn.GetBindVal())
+	var nodeID int64
+	var err error
+	defer func(){
+		if err != nil {
+			Jlog.Error("rpc stream请求错误：", "error", err)
+			app.Request.SendNodeNotifyWithNodeError(nodeID, err.Error())
+		}
+	}()
+	nodeID, err = app.Gateway.RpcGetID(conn.GetBindVal())
 	if err != nil {
-		Jlog.Warn("rpc数据接收错误", "err", err)
 		return
 	}
-	res := *recv.(*protoManage.Message)
-
+	res, ok := recv.(*protoManage.Message)
+	if !ok {
+		err = errors.New("rpc stream消息断言错误")
+		return
+	}
 	switch res.Order {
 	case protoManage.Order_NodeUpdateState:
-		app.Request.ReqNodeStateUpdate(id, res.Message)
+		err = app.Request.ReqNodeStateUpdate(nodeID, res.Message)
 		break
 	case protoManage.Order_NodeLinkUpdateState:
-		app.Request.ReqNodeLinkUpdate(id, res.Message)
+		err = app.Request.ReqNodeLinkUpdate(nodeID, res.Message)
 		break
 	case protoManage.Order_NodeFuncCallAns:
-		app.Request.AnsNodeFuncCall(id, res.Message)
+		err = app.Request.AnsNodeFuncCall(nodeID, res.Message)
 		break
 	case protoManage.Order_NodeReportUpdateVal:
-		app.Request.ReqNodeReportValAdd(id, res.Message)
+		err = app.Request.ReqNodeReportValAdd(nodeID, res.Message)
 		break
 	case protoManage.Order_NodeNotifyAdd:
-		app.Request.ReqNodeNotifyAdd(id, res.Message)
+		err = app.Request.ReqNodeNotifyAdd(nodeID, res.Message)
 		break
 	default:
-		Jlog.Warn("rpc 指令错误", "消息", res)
+		err = errors.New("rpc stream指令错误：" +  Jtool.Int64ToString(int64(res.Order)))
+	}
+	if err != nil {
+		return
 	}
 }
 
 func (app *App) RpcStreamError(text string, err error){
-	Jlog.Warn(text, "err", err)
+	Jlog.Error(text, "err", err)
 }

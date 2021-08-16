@@ -8,8 +8,8 @@
 	 "github.com/liyiligang/klee/app/typedef/orm"
  )
 
- //新增节点
- func (data *Data) NodeNotifyAdd(protoNodeNotify *protoManage.NodeNotify) error {
+ //新增节点通知
+ func (data *Data) NodeNotifyAdd(protoNodeNotify *protoManage.NodeNotify, isSend bool) error {
 	 if err := check.NodeNotifyCheck(protoNodeNotify); err != nil {
 		 return err
 	 }
@@ -21,7 +21,10 @@
 	 }); err != nil {
 		 return err
 	 }
-	 return  data.Gateway.WsSendOrBroadCastPB(commonConst.ConstBroadcast, protoManage.Order_NodeNotifyAdd, protoNodeNotify)
+	 if isSend {
+		 return data.Gateway.WsSendOrBroadCastPB(commonConst.ConstBroadcast, protoManage.Order_NodeNotifyAdd, protoNodeNotify)
+	 }
+	 return nil
  }
 
 

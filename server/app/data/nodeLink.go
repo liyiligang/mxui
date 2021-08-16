@@ -98,3 +98,9 @@ func (data *Data) NodeLinkDelAllByNodeID(protoNodeLink *protoManage.NodeLink) er
 func (data *Data) NodeLinkStateUpdate(protoNodeLink *protoManage.NodeLink) error {
 	return data.DB.UpdateNodeLinkState(orm.NodeLink{Base: orm.Base{ID: protoNodeLink.Base.ID}, State: int32(protoNodeLink.State)})
 }
+
+//按节点ID更新节点连接状态
+func (data *Data) NodeLinkStateUpdateByNodeID(protoNodeLink *protoManage.NodeLink) error {
+	return data.DB.UpdateNodeLinkStateByNodeID(orm.NodeLink{SourceID: protoNodeLink.SourceID,
+		TargetID: protoNodeLink.TargetID, State: int32(protoNodeLink.State)})
+}

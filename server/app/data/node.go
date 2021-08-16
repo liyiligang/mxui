@@ -38,7 +38,6 @@ func (data *Data) NodeIsOnline(nodeID int64) error {
 
 //删除节点
 func (data *Data) NodeDel(protoNode *protoManage.Node) error {
-
 	//删除节点其他相关信息
 	err := data.NodeLinkDelAllByNodeID(&protoManage.NodeLink{SourceID: protoNode.Base.ID, TargetID: protoNode.Base.ID})
 	if err != nil {
@@ -56,7 +55,6 @@ func (data *Data) NodeDel(protoNode *protoManage.Node) error {
 	if err != nil {
 		return err
 	}
-
 	count, err := data.DB.CountAllNodeByTypeID(orm.Node{TypeID: protoNode.TypeID})
 	if err != nil {
 		return err
@@ -67,8 +65,6 @@ func (data *Data) NodeDel(protoNode *protoManage.Node) error {
 			return err
 		}
 	}
-
-
 	count, err = data.DB.CountAllNodeByGroupID(orm.Node{GroupID: protoNode.GroupID})
 	if err != nil {
 		return err

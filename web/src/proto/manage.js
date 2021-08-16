@@ -72,6 +72,7 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} NodeReportValFind=707 NodeReportValFind value
      * @property {number} NodeNotifyAdd=801 NodeNotifyAdd value
      * @property {number} NodeNotifyFind=802 NodeNotifyFind value
+     * @property {number} NodeNotifyError=803 NodeNotifyError value
      */
     protoManage.Order = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -127,6 +128,7 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[707] = "NodeReportValFind"] = 707;
         values[valuesById[801] = "NodeNotifyAdd"] = 801;
         values[valuesById[802] = "NodeNotifyFind"] = 802;
+        values[valuesById[803] = "NodeNotifyError"] = 803;
         return values;
     })();
 
@@ -388,6 +390,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 707:
                 case 801:
                 case 802:
+                case 803:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -616,6 +619,10 @@ export const protoManage = $root.protoManage = (() => {
             case "NodeNotifyFind":
             case 802:
                 message.order = 802;
+                break;
+            case "NodeNotifyError":
+            case 803:
+                message.order = 803;
                 break;
             }
             if (object.message != null)
@@ -884,6 +891,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 707:
                 case 801:
                 case 802:
+                case 803:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -1115,6 +1123,10 @@ export const protoManage = $root.protoManage = (() => {
             case "NodeNotifyFind":
             case 802:
                 message.order = 802;
+                break;
+            case "NodeNotifyError":
+            case 803:
+                message.order = 803;
                 break;
             }
             if (object.message != null)

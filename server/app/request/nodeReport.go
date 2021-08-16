@@ -33,6 +33,7 @@ func (request *Request) ReqNodeReportFind(userID int64, message []byte)([]byte, 
 	return pbByte, err
 }
 
+//刪除节点报告
 func (request *Request) ReqNodeReportDel(userID int64, message []byte)([]byte, error) {
 	req := protoManage.NodeReport{}
 	err := req.Unmarshal(message)

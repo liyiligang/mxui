@@ -26,7 +26,7 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 	}
 
 	if protoNode.State == protoManage.State_StateUnknow {
-		return errors.New("请求失败: 节点 " + protoNode.Name +" 处于离线状态")
+		return errors.New("请求失败: " + protoNode.Name +" 处于离线状态")
 	}
 
 	ormNodeFuncCall := &orm.NodeFuncCall{

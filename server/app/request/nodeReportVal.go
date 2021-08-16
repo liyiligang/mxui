@@ -26,16 +26,17 @@ func (request *Request) ReqNodeReportValFind(userID int64, message []byte)([]byt
 }
 
 //节点报告值更新
-func (request *Request) ReqNodeReportValAdd(nodeID int64, message []byte) {
+func (request *Request) ReqNodeReportValAdd(nodeID int64, message []byte) error {
 	nodeReportVal := protoManage.NodeReportVal{}
 	err := nodeReportVal.Unmarshal(message)
 	if err != nil {
-		return
+		return err
 	}
 	err = request.Data.NodeReportValAdd(&nodeReportVal)
 	if err != nil {
-		return
+		return err
 	}
+	return nil
 }
 
 

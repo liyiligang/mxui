@@ -15,7 +15,7 @@ func (data *Data) NodeFuncAdd(protoNodeFunc *protoManage.NodeFunc) error {
 		return err
 	}
 	ormNodeFunc := &orm.NodeFunc{NodeID: protoNodeFunc.NodeID, Name: protoNodeFunc.Name,
-		Func: protoNodeFunc.Func, State: int32(protoManage.State_StateNormal)}
+		Func: protoNodeFunc.Func, State: int32(protoNodeFunc.State)}
 	if err := data.DB.AddNodeFunc(ormNodeFunc); err != nil {
 		return err
 	}
@@ -39,6 +39,11 @@ func (data *Data) NodeFuncDelAllByNodeID(protoNodeFunc *protoManage.NodeFunc) er
 		return err
 	}
 	return data.DB.DelAllNodeFuncByNodeID(orm.NodeFunc{NodeID: protoNodeFunc.NodeID})
+}
+
+//按节点ID更新节点方法状态
+func (data *Data) NodeFuncStateUpdateByNodeID(protoNodeFunc *protoManage.NodeFunc) error {
+	return data.DB.UpdateNodeFuncStateByNodeID(orm.NodeFunc{NodeID: protoNodeFunc.NodeID, State: int32(protoNodeFunc.State)})
 }
 
 //更新节点方法信息

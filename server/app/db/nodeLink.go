@@ -27,6 +27,12 @@ func (db *Server) UpdateNodeLinkState(nodeLink orm.NodeLink) error {
 	return db.Gorm.Model(&nodeLink).Update("state", nodeLink.State).Error
 }
 
+//按节点ID更新节点连接状态
+func (db *Server) UpdateNodeLinkStateByNodeID(nodeLink orm.NodeLink) error {
+	return db.Gorm.Model(&nodeLink).Where("sourceID = ? or targetID = ?", nodeLink.SourceID, nodeLink.TargetID).
+		Updates(map[string]interface{}{"state": nodeLink.State}).Error
+}
+
 //获取节点连接信息
 func (db *Server) FindNodeLink(filter protoManage.Filter) ([]orm.NodeLink, error) {
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
