@@ -71,11 +71,11 @@ func (request *Request) ReqNodeOffline(nodeID int64) {
 	if err != nil {
 		Jlog.Error(err.Error())
 	}
-	err = request.Data.NodeFuncStateUpdateByNodeID(&protoManage.NodeFunc{NodeID: nodeID, State: protoManage.State_StateUnknow})
+	err = request.Data.NodeFuncStateUpdateByNodeID(&protoManage.NodeFunc{NodeID: nodeID, State: protoManage.State_StateNot})
 	if err != nil {
 		Jlog.Error(err.Error())
 	}
-	err = request.Data.NodeReportStateUpdateByNodeID(&protoManage.NodeReport{NodeID: nodeID, State: protoManage.State_StateUnknow})
+	err = request.Data.NodeReportStateUpdateByNodeID(&protoManage.NodeReport{NodeID: nodeID, State: protoManage.State_StateNot})
 	if err != nil {
 		Jlog.Error(err.Error())
 	}

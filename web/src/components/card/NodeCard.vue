@@ -1,5 +1,5 @@
 <template>
-    <CardViewFrame :state="node.State" :hasHeader="true" @closeClick="closeNode">
+    <CardViewFrame :isGray="convert.isGrayByState(node.State)" :hasHeader="true" @closeClick="closeNode">
         <template v-slot:header>
             <CardName :color="convert.getColorByState(node.State)" :name="node.Name" :id="node.Base.ID"></CardName>
             <CardInfo  describe="状态" :name="convert.getNodeStateName(node.State)"

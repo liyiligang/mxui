@@ -23,8 +23,16 @@ func (data *Data) ManagerAdd(protoManager *protoManage.Manager) error {
 	if err := data.DB.IsExistManagerByNickName(orm.Manager{NickName: protoManager.NickName}); err != nil{
 		return err
 	}
+	level := protoManage.ManagerLevel_ManagerLevelPrimary
+	protoManagerLevel := &protoManage.Manager{Level: int32(protoManage.ManagerLevel_ManagerLevelSuper)}
+	if err := data.ManagerFindByLevel(0, protoManagerLevel); err != nil{
+		return err
+	}
+	if protoManagerLevel.Base.ID == 0 {
+		level = protoManage.ManagerLevel(protoManagerLevel.Level)
+	}
 	return data.DB.AddManager(orm.Manager{NickName: protoManager.NickName, Name:protoManager.Name,
-		Password: protoManager.Password})
+		Password: protoManager.Password, Level: int32(level)})
 }
 
 
@@ -68,7 +76,7 @@ func (data *Data) ManagerLogin(manager *protoManage.Manager) error {
 }
 
 //查找管理员信息
-func (data *Data) ManagerFind(req protoManage.ReqManagerList) (*protoManage.AnsManagerList, error) {
+func (data *Data) ManagerFind(req *protoManage.ReqManagerList) (*protoManage.AnsManagerList, error) {
 	ormManager, err := data.DB.FindManager()
 	if err != nil {
 		return nil, err
@@ -127,6 +135,7 @@ func (data *Data) ManagerSettingUpdate(userID int64, protoManager *protoManage.M
 	return nil
 }
 
+//获取管理token
 func (data *Data) ManagerGetTokenByID(userID int64) string {
 	tokenConfig := Jtoken.TokenConfig{
 		Key:           config.LocalConfig.Token.Key,
@@ -134,4 +143,14 @@ func (data *Data) ManagerGetTokenByID(userID int64) string {
 		StartDuration: time.Duration(config.LocalConfig.Token.StartDuration) * time.Hour,
 		StopDuration:  time.Duration(config.LocalConfig.Token.StopDuration) * time.Hour}
 	 return Jtoken.GetToken(tokenConfig)
+}
+
+//按权限查询管理员
+func (data *Data) ManagerFindByLevel(userID int64, protoManager *protoManage.Manager) error {
+	ormBase, err := data.DB.FindManagerByLevel(orm.Manager{Level: protoManager.Level})
+	if err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
+	return nil
 }

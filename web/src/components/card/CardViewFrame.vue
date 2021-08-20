@@ -1,12 +1,12 @@
 <template>
     <el-card class="card cardViewFrame" @mouseenter="mouseEnter" @mouseleave="mouseLevel">
-        <el-button v-if="isOfflineState()" class="cardViewFrameCloseButton"
+        <el-button v-if="isGray" class="cardViewFrameCloseButton"
                    plain icon="el-icon-close" @click="closeClick"></el-button>
         <template v-if=hasHeader #header>
             <slot name="header"></slot>
         </template>
         <slot name="body"></slot>
-        <div v-if="isOfflineState()" class="cardMask"></div>
+        <div v-if="isGray" class="cardMask"></div>
     </el-card>
 </template>
 
@@ -27,22 +27,16 @@ export default defineComponent ({
             type: Boolean,
             default: false
         },
-        state:{
-            type: Number as PropType<protoManage.State>,
-            default: protoManage.State.StateNormal
+        isGray:{
+            type: Boolean,
+            default: false
         }
     },
     components: {
 
     },
     setup(props, context){
-
         const data = reactive<CardViewFrameInfo>({isMouseHover:false})
-
-        function isOfflineState():boolean {
-            return props.state < protoManage.State.StateNormal || props.state > protoManage.State.StateError
-        }
-
         function closeClick(){
             ElMessageBox.confirm('此操作将永久删除相关数据, 是否继续?', '警告', {
                 confirmButtonText: '确定',
@@ -61,7 +55,7 @@ export default defineComponent ({
             data.isMouseHover = false
         }
 
-        return {isOfflineState, closeClick, mouseEnter, mouseLevel}
+        return {closeClick, mouseEnter, mouseLevel}
     }
 })
 </script>

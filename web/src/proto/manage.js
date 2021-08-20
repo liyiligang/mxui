@@ -33,6 +33,7 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} ManagerFindByID=104 ManagerFindByID value
      * @property {number} ManagerUpdatePassword=105 ManagerUpdatePassword value
      * @property {number} ManagerUpdateSetting=106 ManagerUpdateSetting value
+     * @property {number} ManagerFindByLevel=107 ManagerFindByLevel value
      * @property {number} NodeGroupAdd=201 NodeGroupAdd value
      * @property {number} NodeGroupDel=202 NodeGroupDel value
      * @property {number} NodeGroupFind=203 NodeGroupFind value
@@ -89,6 +90,7 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[104] = "ManagerFindByID"] = 104;
         values[valuesById[105] = "ManagerUpdatePassword"] = 105;
         values[valuesById[106] = "ManagerUpdateSetting"] = 106;
+        values[valuesById[107] = "ManagerFindByLevel"] = 107;
         values[valuesById[201] = "NodeGroupAdd"] = 201;
         values[valuesById[202] = "NodeGroupDel"] = 202;
         values[valuesById[203] = "NodeGroupFind"] = 203;
@@ -149,6 +151,24 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[2] = "StateNormal"] = 2;
         values[valuesById[3] = "StateWarn"] = 3;
         values[valuesById[4] = "StateError"] = 4;
+        return values;
+    })();
+
+    /**
+     * ManagerLevel enum.
+     * @name protoManage.ManagerLevel
+     * @enum {number}
+     * @property {number} ManagerLevelPrimary=0 ManagerLevelPrimary value
+     * @property {number} ManagerLevelIntermediate=1 ManagerLevelIntermediate value
+     * @property {number} ManagerLevelSenior=2 ManagerLevelSenior value
+     * @property {number} ManagerLevelSuper=3 ManagerLevelSuper value
+     */
+    protoManage.ManagerLevel = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "ManagerLevelPrimary"] = 0;
+        values[valuesById[1] = "ManagerLevelIntermediate"] = 1;
+        values[valuesById[2] = "ManagerLevelSenior"] = 2;
+        values[valuesById[3] = "ManagerLevelSuper"] = 3;
         return values;
     })();
 
@@ -351,6 +371,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 104:
                 case 105:
                 case 106:
+                case 107:
                 case 201:
                 case 202:
                 case 203:
@@ -463,6 +484,10 @@ export const protoManage = $root.protoManage = (() => {
             case "ManagerUpdateSetting":
             case 106:
                 message.order = 106;
+                break;
+            case "ManagerFindByLevel":
+            case 107:
+                message.order = 107;
                 break;
             case "NodeGroupAdd":
             case 201:
@@ -852,6 +877,7 @@ export const protoManage = $root.protoManage = (() => {
                 case 104:
                 case 105:
                 case 106:
+                case 107:
                 case 201:
                 case 202:
                 case 203:
@@ -967,6 +993,10 @@ export const protoManage = $root.protoManage = (() => {
             case "ManagerUpdateSetting":
             case 106:
                 message.order = 106;
+                break;
+            case "ManagerFindByLevel":
+            case 107:
+                message.order = 107;
                 break;
             case "NodeGroupAdd":
             case 201:

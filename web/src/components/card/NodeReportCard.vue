@@ -1,5 +1,5 @@
 <template>
-    <CardViewFrame :state="nodeReport.State" :hasHeader="true" @closeClick="closeNodeReport">
+    <CardViewFrame :isGray="convert.isGrayByLevel(nodeReport.State)" :hasHeader="true" @closeClick="closeNodeReport">
         <template v-slot:header>
             <CardName :color="convert.getColorByLevel(nodeReport.State)" :name="nodeReport.Name" :id="nodeReport.Base.ID"></CardName>
             <CardInfo  describe="权限" :name="convert.getNodeReportStateName(nodeReport.State)"

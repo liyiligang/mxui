@@ -1,5 +1,5 @@
 <template>
-    <CardViewFrame :state="nodeFunc.State" :hasHeader="true" @closeClick="closeNodeFunc">
+    <CardViewFrame :isGray="convert.isGrayByLevel(nodeFunc.State)" :hasHeader="true" @closeClick="closeNodeFunc">
         <template v-slot:header>
             <CardName :color="convert.getColorByLevel(nodeFunc.State)" :name="nodeFunc.Name" :id="nodeFunc.Base.ID"></CardName>
             <CardInfo  describe="权限" :name="convert.getNodeFuncStateName(nodeFunc.State)"

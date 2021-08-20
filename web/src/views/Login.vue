@@ -1,14 +1,19 @@
 <template>
     <el-row class="loginMain" type="flex" justify="center" align="middle" @keyup.enter.native="loginByName()">
-        <el-card class="loginCard" v-loading="data.isLoad" element-loading-text="登录中...">
+        <el-card v-show="data.isShowLogin" class="loginCard" v-loading="data.isLoad" element-loading-text="登录中...">
             <el-row type="flex" justify="center" align="middle">
                 <img class="loginLogo" src="../assets/logo.png" alt="admin">
-                <el-input class="loginInput" v-model="data.username" placeholder="用户名" clearable></el-input>
-                <el-input class="loginInput" v-model="data.password" placeholder="密码" clearable show-password></el-input>
-                <el-button class="loginButton" size="medium" type="primary" round @click="loginByName">登录</el-button>
-                <el-row class="loginToolRow" type="flex" justify="space-between" align="middle">
-                    <el-checkbox v-model="data.isAutoLogin" @change="autoLoginChanged">自动登录</el-checkbox>
-                    <el-button type="text" @click="register">注册帐号</el-button>
+                <el-row v-if="data.hasSystemInit" type="flex" justify="center" align="middle">
+                    <el-input class="loginInput" v-model="data.username" placeholder="用户名" clearable></el-input>
+                    <el-input class="loginInput" v-model="data.password" placeholder="密码" clearable show-password></el-input>
+                    <el-button class="loginButton" size="medium" type="primary" round @click="loginByName">登录</el-button>
+                    <el-row class="loginToolRow" type="flex" justify="space-between" align="middle">
+                        <el-checkbox v-model="data.isAutoLogin" @change="autoLoginChanged">自动登录</el-checkbox>
+                        <el-button type="text" @click="register">注册帐号</el-button>
+                    </el-row>
+                </el-row>
+                <el-row v-else type="flex" justify="center" align="middle">
+                    <el-button class="createButton" type="primary" round @click="register">创建管理员</el-button>
                 </el-row>
             </el-row>
         </el-card>
@@ -17,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from "vue";
+import { defineComponent, reactive, onMounted, watchEffect} from "vue";
 import {protoManage} from "../proto/manage"
 import {globals} from "../base/globals"
 import {request} from "../base/request"
@@ -25,10 +30,11 @@ import {routerPath} from '../router'
 import {ElMessage} from "element-plus";
 import Register from "./Register.vue";
 
-
 interface LoginInfo {
     isLoad:boolean,
     isAutoLogin:boolean,
+    isShowLogin:boolean,
+    hasSystemInit:boolean,
     registerVisible:boolean
     username: string,
     password: string,
@@ -41,7 +47,7 @@ export default defineComponent ({
     },
     setup(){
         const data = reactive<LoginInfo>({isLoad:false, isAutoLogin:false, username:"",
-            password:"", registerVisible:false})
+            password:"", registerVisible:false, isShowLogin:false, hasSystemInit:false})
 
         onMounted(()=>{
             let token = globals.globalsData.manager.Token
@@ -52,6 +58,8 @@ export default defineComponent ({
             }
             if (token != null && token != "" && data.isAutoLogin){
                 loginByToken(token)
+            }else{
+                findSystemInitState()
             }
         })
 
@@ -93,6 +101,24 @@ export default defineComponent ({
             data.registerVisible = true
         }
 
+        watchEffect(registerVisibleChanged)
+        function registerVisibleChanged(){
+            if (data.registerVisible == false){
+                findSystemInitState()
+            }
+        }
+
+        function findSystemInitState(){
+            data.isShowLogin = false
+            request.reqManagerFindByLevel(protoManage.Manager.create({
+                Level: protoManage.ManagerLevel.ManagerLevelSuper
+            })).then((response) => {
+                if (response.Base?.ID != 0){
+                    data.hasSystemInit = true
+                }
+                data.isShowLogin = true
+            }).catch(error => {}).finally(()=>{})
+        }
         return {data, loginByName, register, autoLoginChanged}
     }
 })
@@ -117,6 +143,7 @@ export default defineComponent ({
 .loginInput {
     margin-top: 15px;
 }
+
 .loginButton {
     margin-top: 25px;
     margin-bottom: 15px;
@@ -125,6 +152,12 @@ export default defineComponent ({
 
 .loginToolRow {
     width: 100%;
+}
+
+.createButton {
+    margin-top: 25px;
+    margin-bottom: 15px;
+    width: 150px;
 }
 
 </style>

@@ -66,7 +66,7 @@ func (request *Request) ReqManagerFind(userID int64, message []byte)([]byte, err
 	if err != nil {
 		return nil, err
 	}
-	ans, err := request.Data.ManagerFind(req)
+	ans, err := request.Data.ManagerFind(&req)
 	if err != nil {
 		return nil, err
 	}
@@ -121,6 +121,24 @@ func (request *Request) ReqManagerUpdateSetting(userID int64, message []byte)([]
 		return nil, err
 	}
 	err = request.Data.ManagerSettingUpdate(userID, &req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
+//查找是否存在超管
+func (request *Request) ReqManagerFindByLevel(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerFindByLevel(userID, &req)
 	if err != nil {
 		return nil, err
 	}

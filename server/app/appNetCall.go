@@ -120,7 +120,12 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		if err != nil {
 			return nil, err, int(protoManage.HttpError_HttpErrorRegister)
 		}
-	}else {
+	}else if req.Order ==  protoManage.Order_ManagerFindByLevel {
+		ansMsg, err = app.Request.ReqManagerFindByLevel(userID, req.Message)
+		if err != nil {
+			return nil, err, int(protoManage.HttpError_HttpErrorRequest)
+		}
+	} else {
 		userID, err = Jtoken.ParseToken(req.Token, config.LocalConfig.Token.Key)
 		if err != nil {
 			return nil, errors.New("身份验证失败"), int(protoManage.HttpError_HttpErrorRequest)

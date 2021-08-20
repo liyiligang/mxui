@@ -93,7 +93,9 @@ export default defineComponent ({
                     },{deep:true})
                     refresh.watchGlobalAutoRefresh()
                 }else{
-                    ElMessage.error("用户配置解析失败, 将使用默认配置")
+                    if (data != ""){
+                        ElMessage.error("用户配置解析失败, 将使用默认配置")
+                    }
                 }
             }).catch(error => {}).finally(()=>{})
         }

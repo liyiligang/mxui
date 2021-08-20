@@ -60,13 +60,13 @@ export module convert {
     export function getNodeFuncStateName(state: protoManage.State):string {
         switch (state) {
             case protoManage.State.StateUnknow:
-                return "访客"
+                return "初级"
             case protoManage.State.StateNormal:
-                return "组员"
+                return "中级"
             case protoManage.State.StateWarn:
-                return "管理员"
+                return "高级"
             case protoManage.State.StateError:
-                return "超级管理员"
+                return "超级"
         }
         return "未知"
     }
@@ -74,13 +74,13 @@ export module convert {
     export function getNodeReportStateName(state: protoManage.State):string {
         switch (state) {
             case protoManage.State.StateUnknow:
-                return "访客"
+                return "初级"
             case protoManage.State.StateNormal:
-                return "组员"
+                return "中级"
             case protoManage.State.StateWarn:
-                return "管理员"
+                return "高级"
             case protoManage.State.StateError:
-                return "超级管理员"
+                return "超级"
         }
         return "未知"
     }
@@ -97,6 +97,14 @@ export module convert {
                 return "失败"
         }
         return "未知"
+    }
+
+    export function isGrayByState(state: protoManage.State):boolean {
+        return state < protoManage.State.StateNormal || state > protoManage.State.StateError
+    }
+
+    export function isGrayByLevel(state: protoManage.State):boolean {
+        return state < protoManage.State.StateUnknow || state > protoManage.State.StateError
     }
 
     export function uint8ArrayToString(data: Uint8Array):string {

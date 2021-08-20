@@ -17,6 +17,7 @@ export namespace protoManage {
         ManagerFindByID = 104,
         ManagerUpdatePassword = 105,
         ManagerUpdateSetting = 106,
+        ManagerFindByLevel = 107,
         NodeGroupAdd = 201,
         NodeGroupDel = 202,
         NodeGroupFind = 203,
@@ -66,6 +67,14 @@ export namespace protoManage {
         StateNormal = 2,
         StateWarn = 3,
         StateError = 4
+    }
+
+    /** ManagerLevel enum. */
+    enum ManagerLevel {
+        ManagerLevelPrimary = 0,
+        ManagerLevelIntermediate = 1,
+        ManagerLevelSenior = 2,
+        ManagerLevelSuper = 3
     }
 
     /** NotifySenderType enum. */

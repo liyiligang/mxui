@@ -83,3 +83,15 @@ func (db *Server) FindManager() ([]orm.Manager, error) {
 	err := db.Gorm.Find(&ormManagerList).Error
 	return ormManagerList, err
 }
+
+//查询是否存在超管
+func (db *Server) FindManagerByLevel(manager orm.Manager) (*orm.Base, error) {
+	err := db.Gorm.Where("Level = ?", manager.Level).First(&manager).Error
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return &manager.Base, nil
+		}
+		return nil, err
+	}
+	return &manager.Base, err
+}
