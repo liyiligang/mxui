@@ -54,6 +54,12 @@ export default defineComponent ({
             reqTopLinkList()
         }
         provide('topLinkListUpdate', topLinkListUpdate)
+
+        //管理员刷新
+        const ManagerListUpdate = () => {
+            reqManagerList()
+        }
+        provide('managerListUpdate', ManagerListUpdate)
         return {data}
     }
 })

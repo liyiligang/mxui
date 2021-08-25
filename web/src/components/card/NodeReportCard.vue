@@ -1,9 +1,9 @@
 <template>
-    <CardViewFrame :isGray="convert.isGrayByLevel(nodeReport.State)" :hasHeader="true" @closeClick="closeNodeReport">
+    <CardViewFrame :isGray="convert.isGrayByState(nodeReport.State)" :hasHeader="true" @closeClick="closeNodeReport">
         <template v-slot:header>
-            <CardName :color="convert.getColorByLevel(nodeReport.State)" :name="nodeReport.Name" :id="nodeReport.Base.ID"></CardName>
-            <CardInfo  describe="权限" :name="convert.getNodeReportStateName(nodeReport.State)"
-                       :name-color="convert.getColorByLevel(nodeReport.State)"></CardInfo>
+            <CardName :color="convert.getColorByLevel(nodeReport.Level)" :name="nodeReport.Name" :id="nodeReport.Base.ID"></CardName>
+            <CardInfo  describe="权限" :name="convert.getManagerLevelName(nodeReport.Level)"
+                       :name-color="convert.getColorByLevel(nodeReport.Level)"></CardInfo>
             <CardInfo  describe="回调" :name="nodeReport.Func"></CardInfo>
             <CardInfo  describe="节点" :name="node.Name" :nameColor="convert.getColorByState(node.State)" :link=routerPath.toNode(protoManage.Filter.create({ID:node.Base.ID}))></CardInfo>
             <CardBase :id="nodeReport.Base.ID" :time="nodeReport.Base.UpdateTime"></CardBase>
@@ -18,7 +18,7 @@
                 top="10vh"
                 destroy-on-close>
                 <template v-slot:title>
-                    <span class="card-dialog-title" :class=convert.getColorByLevel(nodeReport.State)>{{nodeReport.Name}}</span>
+                    <span class="card-dialog-title" :class=convert.getColorByLevel(nodeReport.Level)>{{nodeReport.Name}}</span>
                 </template>
                 <NodeReportVal :nodeReport="nodeReport"></NodeReportVal>
             </el-dialog>

@@ -111,7 +111,7 @@ export default defineComponent ({
         function findSystemInitState(){
             data.isShowLogin = false
             request.reqManagerFindByLevel(protoManage.Manager.create({
-                Level: protoManage.ManagerLevel.ManagerLevelSuper
+                Level: protoManage.Level.LevelSuper
             })).then((response) => {
                 if (response.Base?.ID != 0){
                     data.hasSystemInit = true

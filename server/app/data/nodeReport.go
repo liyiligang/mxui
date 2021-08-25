@@ -15,7 +15,8 @@ func (data *Data) NodeReportAdd(protoNodeReport *protoManage.NodeReport) error {
 		return err
 	}
 	ormNodeReport := &orm.NodeReport{NodeID: protoNodeReport.NodeID, Name: protoNodeReport.Name,
-		Func: protoNodeReport.Func, State: int32(protoNodeReport.State)}
+		Func: protoNodeReport.Func, Level: int32(protoNodeReport.Level),
+		State: int32(protoManage.State_StateNormal)}
 	if err := data.DB.AddNodeReport(ormNodeReport); err != nil {
 		return err
 	}
@@ -102,12 +103,13 @@ func (data *Data) NodeReportFind(req protoManage.ReqNodeReportList) (*protoManag
 //更新节点报告信息
 func (data *Data) NodeReportInfoUpdate(protoNodeReport *protoManage.NodeReport) error {
 	return data.DB.UpdateNodeReportInfo(orm.NodeReport{Base: orm.Base{ID: protoNodeReport.Base.ID},
-		Func: protoNodeReport.Func, State: int32(protoNodeReport.State)})
+		Func: protoNodeReport.Func, Level: int32(protoNodeReport.Level), State: int32(protoManage.State_StateNormal)})
 }
 
 //按节点ID更新节点报告状态
 func (data *Data) NodeReportStateUpdateByNodeID(protoNodeReport *protoManage.NodeReport) error {
-	return data.DB.UpdateNodeReportStateByNodeID(orm.NodeReport{NodeID: protoNodeReport.NodeID, State: int32(protoNodeReport.State)})
+	return data.DB.UpdateNodeReportStateByNodeID(orm.NodeReport{NodeID: protoNodeReport.NodeID,
+		State: int32(protoNodeReport.State)})
 }
 
 

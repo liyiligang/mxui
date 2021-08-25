@@ -137,11 +137,11 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		case protoManage.Order_ManagerFindByID:
 			ansMsg, err = app.Request.ReqManagerFindByID(userID, req.Message)
 			break
-		case protoManage.Order_ManagerUpdatePassword:
-			ansMsg, err = app.Request.ReqManagerUpdatePassword(userID, req.Message)
+		case protoManage.Order_ManagerUpdate:
+			ansMsg, err = app.Request.ReqManagerUpdate(userID, req.Message)
 			break
-		case protoManage.Order_ManagerUpdateSetting:
-			ansMsg, err = app.Request.ReqManagerUpdateSetting(userID, req.Message)
+		case protoManage.Order_ManagerDel:
+			ansMsg, err = app.Request.ReqManagerDel(userID, req.Message)
 			break
 		case protoManage.Order_TopLinkFind:
 			ansMsg, err = app.Request.ReqTopLinkFind(userID, req.Message)

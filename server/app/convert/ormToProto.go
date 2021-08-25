@@ -14,17 +14,17 @@ func OrmBaseToProtoBase(ormBase *orm.Base, protoBase *protoManage.Base) {
 
 //DBManager To PBManager
 func OrmManagerToProtoManager(ormManager *orm.Manager, protoManager *protoManage.Manager)  {
-	OrmBaseToProtoBase(&ormManager.Base, &protoManager.Base)
-	protoManager.NickName = ormManager.NickName
+	OrmManagerNickNameToProtoManagerNickName(ormManager, protoManager)
 	protoManager.Setting = ormManager.Setting
-	protoManager.Level = ormManager.Level
-	protoManager.State = protoManage.State(ormManager.State)
 }
 
 //DBManagerNickName To PBManagerNickName
 func OrmManagerNickNameToProtoManagerNickName(ormManager *orm.Manager, protoManager *protoManage.Manager)  {
 	OrmBaseToProtoBase(&ormManager.Base, &protoManager.Base)
+	protoManager.Name = ormManager.Name
 	protoManager.NickName = ormManager.NickName
+	protoManager.Level = protoManage.Level(ormManager.Level)
+	protoManager.State = protoManage.State(ormManager.State)
 }
 
 //DBManagerNickNameList To PBManagerNickNameList
@@ -136,6 +136,7 @@ func OrmNodeFuncToProtoNodeFunc(ormNodeFunc *orm.NodeFunc, protoNodeFunc *protoM
 	protoNodeFunc.NodeID = ormNodeFunc.NodeID
 	protoNodeFunc.Name = ormNodeFunc.Name
 	protoNodeFunc.Func = ormNodeFunc.Func
+	protoNodeFunc.Level = protoManage.Level(ormNodeFunc.Level)
 	protoNodeFunc.State = protoManage.State(ormNodeFunc.State)
 }
 
@@ -177,8 +178,8 @@ func OrmNodeReportToProtoNodeReport(ormNodeReport *orm.NodeReport, protoNodeRepo
 	protoNodeReport.NodeID = ormNodeReport.NodeID
 	protoNodeReport.Name = ormNodeReport.Name
 	protoNodeReport.Func = ormNodeReport.Func
+	protoNodeReport.Level = protoManage.Level(ormNodeReport.Level)
 	protoNodeReport.State = protoManage.State(ormNodeReport.State)
-	//protoNodeReport.Value = ormNodeReport.Value
 }
 
 //DBNodeReportList To PBNodeReportList

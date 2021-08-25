@@ -49,7 +49,6 @@ func (data *Data) TopLinkDel(protoTopLink *protoManage.TopLink) error {
 	if err != nil {
 		return err
 	}
-	convert.OrmTopLinkToProtoTopLink(&ormTopLink, protoTopLink)
 	return nil
 }
 

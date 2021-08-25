@@ -13,10 +13,10 @@ export namespace protoManage {
         NodeTest = 6,
         ManagerLogin = 101,
         ManagerAdd = 102,
-        ManagerFind = 103,
-        ManagerFindByID = 104,
-        ManagerUpdatePassword = 105,
-        ManagerUpdateSetting = 106,
+        ManagerDel = 103,
+        ManagerUpdate = 104,
+        ManagerFind = 105,
+        ManagerFindByID = 106,
         ManagerFindByLevel = 107,
         NodeGroupAdd = 201,
         NodeGroupDel = 202,
@@ -69,12 +69,13 @@ export namespace protoManage {
         StateError = 4
     }
 
-    /** ManagerLevel enum. */
-    enum ManagerLevel {
-        ManagerLevelPrimary = 0,
-        ManagerLevelIntermediate = 1,
-        ManagerLevelSenior = 2,
-        ManagerLevelSuper = 3
+    /** Level enum. */
+    enum Level {
+        LevelNot = 0,
+        LevelPrimary = 1,
+        LevelIntermediate = 2,
+        LevelSenior = 3,
+        LevelSuper = 4
     }
 
     /** NotifySenderType enum. */
@@ -815,7 +816,7 @@ export namespace protoManage {
         Setting?: (string|null);
 
         /** Manager Level */
-        Level?: (number|null);
+        Level?: (protoManage.Level|null);
 
         /** Manager State */
         State?: (protoManage.State|null);
@@ -849,7 +850,7 @@ export namespace protoManage {
         public Setting: string;
 
         /** Manager Level. */
-        public Level: number;
+        public Level: protoManage.Level;
 
         /** Manager State. */
         public State: protoManage.State;
@@ -1462,6 +1463,9 @@ export namespace protoManage {
         /** NodeFunc Func */
         Func?: (string|null);
 
+        /** NodeFunc Level */
+        Level?: (protoManage.Level|null);
+
         /** NodeFunc State */
         State?: (protoManage.State|null);
     }
@@ -1486,6 +1490,9 @@ export namespace protoManage {
 
         /** NodeFunc Func. */
         public Func: string;
+
+        /** NodeFunc Level. */
+        public Level: protoManage.Level;
 
         /** NodeFunc State. */
         public State: protoManage.State;
@@ -1696,6 +1703,9 @@ export namespace protoManage {
         /** NodeReport Func */
         Func?: (string|null);
 
+        /** NodeReport Level */
+        Level?: (protoManage.Level|null);
+
         /** NodeReport State */
         State?: (protoManage.State|null);
     }
@@ -1720,6 +1730,9 @@ export namespace protoManage {
 
         /** NodeReport Func. */
         public Func: string;
+
+        /** NodeReport Level. */
+        public Level: protoManage.Level;
 
         /** NodeReport State. */
         public State: protoManage.State;

@@ -17,17 +17,23 @@ export module convert {
         return "color-state-main"
     }
 
-    export function getColorByLevel(state: protoManage.State|undefined|null):string {
+    export function getColorByManagerState(state: protoManage.State|undefined|null):string {
         switch (state) {
-            case protoManage.State.StateNot:
-                return "color-state-lose"
-            case protoManage.State.StateUnknow:
-                return "color-state-main"
             case protoManage.State.StateNormal:
                 return "color-state-success"
-            case protoManage.State.StateWarn:
+        }
+        return "color-state-lose"
+    }
+
+    export function getColorByLevel(level: protoManage.Level|undefined|null):string {
+        switch (level) {
+            case protoManage.Level.LevelPrimary:
+                return "color-state-main"
+            case protoManage.Level.LevelIntermediate:
+                return "color-state-success"
+            case protoManage.Level.LevelSenior:
                 return "color-state-warning"
-            case protoManage.State.StateError:
+            case protoManage.Level.LevelSuper:
                 return "color-state-danger"
         }
         return "color-state-lose"
@@ -57,36 +63,22 @@ export module convert {
         return "未知"
     }
 
-    export function getNodeFuncStateName(state: protoManage.State):string {
-        switch (state) {
-            case protoManage.State.StateUnknow:
+    export function getManagerLevelName(level: protoManage.Level|undefined|null):string {
+        switch (level) {
+            case protoManage.Level.LevelPrimary:
                 return "初级"
-            case protoManage.State.StateNormal:
+            case protoManage.Level.LevelIntermediate:
                 return "中级"
-            case protoManage.State.StateWarn:
+            case protoManage.Level.LevelSenior:
                 return "高级"
-            case protoManage.State.StateError:
+            case protoManage.Level.LevelSuper:
                 return "超级"
         }
-        return "未知"
+        return "无"
     }
 
-    export function getNodeReportStateName(state: protoManage.State):string {
-        switch (state) {
-            case protoManage.State.StateUnknow:
-                return "初级"
-            case protoManage.State.StateNormal:
-                return "中级"
-            case protoManage.State.StateWarn:
-                return "高级"
-            case protoManage.State.StateError:
-                return "超级"
-        }
-        return "未知"
-    }
-
-    export function getNodeFuncCallStateName(state: protoManage.State|undefined|null):string {
-        switch (state) {
+    export function getNodeFuncCallStateName(level: protoManage.State|undefined|null):string {
+        switch (level) {
             case protoManage.State.StateUnknow:
                 return "超时"
             case protoManage.State.StateNormal:

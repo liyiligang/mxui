@@ -29,10 +29,10 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} NodeTest=6 NodeTest value
      * @property {number} ManagerLogin=101 ManagerLogin value
      * @property {number} ManagerAdd=102 ManagerAdd value
-     * @property {number} ManagerFind=103 ManagerFind value
-     * @property {number} ManagerFindByID=104 ManagerFindByID value
-     * @property {number} ManagerUpdatePassword=105 ManagerUpdatePassword value
-     * @property {number} ManagerUpdateSetting=106 ManagerUpdateSetting value
+     * @property {number} ManagerDel=103 ManagerDel value
+     * @property {number} ManagerUpdate=104 ManagerUpdate value
+     * @property {number} ManagerFind=105 ManagerFind value
+     * @property {number} ManagerFindByID=106 ManagerFindByID value
      * @property {number} ManagerFindByLevel=107 ManagerFindByLevel value
      * @property {number} NodeGroupAdd=201 NodeGroupAdd value
      * @property {number} NodeGroupDel=202 NodeGroupDel value
@@ -86,10 +86,10 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[6] = "NodeTest"] = 6;
         values[valuesById[101] = "ManagerLogin"] = 101;
         values[valuesById[102] = "ManagerAdd"] = 102;
-        values[valuesById[103] = "ManagerFind"] = 103;
-        values[valuesById[104] = "ManagerFindByID"] = 104;
-        values[valuesById[105] = "ManagerUpdatePassword"] = 105;
-        values[valuesById[106] = "ManagerUpdateSetting"] = 106;
+        values[valuesById[103] = "ManagerDel"] = 103;
+        values[valuesById[104] = "ManagerUpdate"] = 104;
+        values[valuesById[105] = "ManagerFind"] = 105;
+        values[valuesById[106] = "ManagerFindByID"] = 106;
         values[valuesById[107] = "ManagerFindByLevel"] = 107;
         values[valuesById[201] = "NodeGroupAdd"] = 201;
         values[valuesById[202] = "NodeGroupDel"] = 202;
@@ -155,20 +155,22 @@ export const protoManage = $root.protoManage = (() => {
     })();
 
     /**
-     * ManagerLevel enum.
-     * @name protoManage.ManagerLevel
+     * Level enum.
+     * @name protoManage.Level
      * @enum {number}
-     * @property {number} ManagerLevelPrimary=0 ManagerLevelPrimary value
-     * @property {number} ManagerLevelIntermediate=1 ManagerLevelIntermediate value
-     * @property {number} ManagerLevelSenior=2 ManagerLevelSenior value
-     * @property {number} ManagerLevelSuper=3 ManagerLevelSuper value
+     * @property {number} LevelNot=0 LevelNot value
+     * @property {number} LevelPrimary=1 LevelPrimary value
+     * @property {number} LevelIntermediate=2 LevelIntermediate value
+     * @property {number} LevelSenior=3 LevelSenior value
+     * @property {number} LevelSuper=4 LevelSuper value
      */
-    protoManage.ManagerLevel = (function() {
+    protoManage.Level = (function() {
         const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "ManagerLevelPrimary"] = 0;
-        values[valuesById[1] = "ManagerLevelIntermediate"] = 1;
-        values[valuesById[2] = "ManagerLevelSenior"] = 2;
-        values[valuesById[3] = "ManagerLevelSuper"] = 3;
+        values[valuesById[0] = "LevelNot"] = 0;
+        values[valuesById[1] = "LevelPrimary"] = 1;
+        values[valuesById[2] = "LevelIntermediate"] = 2;
+        values[valuesById[3] = "LevelSenior"] = 3;
+        values[valuesById[4] = "LevelSuper"] = 4;
         return values;
     })();
 
@@ -469,19 +471,19 @@ export const protoManage = $root.protoManage = (() => {
             case 102:
                 message.order = 102;
                 break;
-            case "ManagerFind":
+            case "ManagerDel":
             case 103:
                 message.order = 103;
                 break;
-            case "ManagerFindByID":
+            case "ManagerUpdate":
             case 104:
                 message.order = 104;
                 break;
-            case "ManagerUpdatePassword":
+            case "ManagerFind":
             case 105:
                 message.order = 105;
                 break;
-            case "ManagerUpdateSetting":
+            case "ManagerFindByID":
             case 106:
                 message.order = 106;
                 break;
@@ -978,19 +980,19 @@ export const protoManage = $root.protoManage = (() => {
             case 102:
                 message.order = 102;
                 break;
-            case "ManagerFind":
+            case "ManagerDel":
             case 103:
                 message.order = 103;
                 break;
-            case "ManagerFindByID":
+            case "ManagerUpdate":
             case 104:
                 message.order = 104;
                 break;
-            case "ManagerUpdatePassword":
+            case "ManagerFind":
             case 105:
                 message.order = 105;
                 break;
-            case "ManagerUpdateSetting":
+            case "ManagerFindByID":
             case 106:
                 message.order = 106;
                 break;
@@ -2780,7 +2782,7 @@ export const protoManage = $root.protoManage = (() => {
          * @property {string|null} [NickName] Manager NickName
          * @property {string|null} [Token] Manager Token
          * @property {string|null} [Setting] Manager Setting
-         * @property {number|null} [Level] Manager Level
+         * @property {protoManage.Level|null} [Level] Manager Level
          * @property {protoManage.State|null} [State] Manager State
          */
 
@@ -2849,7 +2851,7 @@ export const protoManage = $root.protoManage = (() => {
 
         /**
          * Manager Level.
-         * @member {number} Level
+         * @member {protoManage.Level} Level
          * @memberof protoManage.Manager
          * @instance
          */
@@ -3017,8 +3019,16 @@ export const protoManage = $root.protoManage = (() => {
                 if (!$util.isString(message.Setting))
                     return "Setting: string expected";
             if (message.Level != null && message.hasOwnProperty("Level"))
-                if (!$util.isInteger(message.Level))
-                    return "Level: integer expected";
+                switch (message.Level) {
+                default:
+                    return "Level: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
             if (message.State != null && message.hasOwnProperty("State"))
                 switch (message.State) {
                 default:
@@ -3060,8 +3070,28 @@ export const protoManage = $root.protoManage = (() => {
                 message.Token = String(object.Token);
             if (object.Setting != null)
                 message.Setting = String(object.Setting);
-            if (object.Level != null)
-                message.Level = object.Level | 0;
+            switch (object.Level) {
+            case "LevelNot":
+            case 0:
+                message.Level = 0;
+                break;
+            case "LevelPrimary":
+            case 1:
+                message.Level = 1;
+                break;
+            case "LevelIntermediate":
+            case 2:
+                message.Level = 2;
+                break;
+            case "LevelSenior":
+            case 3:
+                message.Level = 3;
+                break;
+            case "LevelSuper":
+            case 4:
+                message.Level = 4;
+                break;
+            }
             switch (object.State) {
             case "StateNot":
             case 0:
@@ -3107,7 +3137,7 @@ export const protoManage = $root.protoManage = (() => {
                 object.NickName = "";
                 object.Token = "";
                 object.Setting = "";
-                object.Level = 0;
+                object.Level = options.enums === String ? "LevelNot" : 0;
                 object.State = options.enums === String ? "StateNot" : 0;
             }
             if (message.Base != null && message.hasOwnProperty("Base"))
@@ -3123,7 +3153,7 @@ export const protoManage = $root.protoManage = (() => {
             if (message.Setting != null && message.hasOwnProperty("Setting"))
                 object.Setting = message.Setting;
             if (message.Level != null && message.hasOwnProperty("Level"))
-                object.Level = message.Level;
+                object.Level = options.enums === String ? $root.protoManage.Level[message.Level] : message.Level;
             if (message.State != null && message.hasOwnProperty("State"))
                 object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
             return object;
@@ -4522,6 +4552,7 @@ export const protoManage = $root.protoManage = (() => {
          * @property {number|null} [NodeID] NodeFunc NodeID
          * @property {string|null} [Name] NodeFunc Name
          * @property {string|null} [Func] NodeFunc Func
+         * @property {protoManage.Level|null} [Level] NodeFunc Level
          * @property {protoManage.State|null} [State] NodeFunc State
          */
 
@@ -4573,6 +4604,14 @@ export const protoManage = $root.protoManage = (() => {
         NodeFunc.prototype.Func = "";
 
         /**
+         * NodeFunc Level.
+         * @member {protoManage.Level} Level
+         * @memberof protoManage.NodeFunc
+         * @instance
+         */
+        NodeFunc.prototype.Level = 0;
+
+        /**
          * NodeFunc State.
          * @member {protoManage.State} State
          * @memberof protoManage.NodeFunc
@@ -4612,8 +4651,10 @@ export const protoManage = $root.protoManage = (() => {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.Name);
             if (message.Func != null && Object.hasOwnProperty.call(message, "Func"))
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.Func);
+            if (message.Level != null && Object.hasOwnProperty.call(message, "Level"))
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.Level);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.State);
+                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.State);
             return writer;
         };
 
@@ -4661,6 +4702,9 @@ export const protoManage = $root.protoManage = (() => {
                     message.Func = reader.string();
                     break;
                 case 5:
+                    message.Level = reader.int32();
+                    break;
+                case 6:
                     message.State = reader.int32();
                     break;
                 default:
@@ -4712,6 +4756,17 @@ export const protoManage = $root.protoManage = (() => {
             if (message.Func != null && message.hasOwnProperty("Func"))
                 if (!$util.isString(message.Func))
                     return "Func: string expected";
+            if (message.Level != null && message.hasOwnProperty("Level"))
+                switch (message.Level) {
+                default:
+                    return "Level: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
             if (message.State != null && message.hasOwnProperty("State"))
                 switch (message.State) {
                 default:
@@ -4756,6 +4811,28 @@ export const protoManage = $root.protoManage = (() => {
                 message.Name = String(object.Name);
             if (object.Func != null)
                 message.Func = String(object.Func);
+            switch (object.Level) {
+            case "LevelNot":
+            case 0:
+                message.Level = 0;
+                break;
+            case "LevelPrimary":
+            case 1:
+                message.Level = 1;
+                break;
+            case "LevelIntermediate":
+            case 2:
+                message.Level = 2;
+                break;
+            case "LevelSenior":
+            case 3:
+                message.Level = 3;
+                break;
+            case "LevelSuper":
+            case 4:
+                message.Level = 4;
+                break;
+            }
             switch (object.State) {
             case "StateNot":
             case 0:
@@ -4803,6 +4880,7 @@ export const protoManage = $root.protoManage = (() => {
                     object.NodeID = options.longs === String ? "0" : 0;
                 object.Name = "";
                 object.Func = "";
+                object.Level = options.enums === String ? "LevelNot" : 0;
                 object.State = options.enums === String ? "StateNot" : 0;
             }
             if (message.Base != null && message.hasOwnProperty("Base"))
@@ -4816,6 +4894,8 @@ export const protoManage = $root.protoManage = (() => {
                 object.Name = message.Name;
             if (message.Func != null && message.hasOwnProperty("Func"))
                 object.Func = message.Func;
+            if (message.Level != null && message.hasOwnProperty("Level"))
+                object.Level = options.enums === String ? $root.protoManage.Level[message.Level] : message.Level;
             if (message.State != null && message.hasOwnProperty("State"))
                 object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
             return object;
@@ -5204,6 +5284,7 @@ export const protoManage = $root.protoManage = (() => {
          * @property {number|null} [NodeID] NodeReport NodeID
          * @property {string|null} [Name] NodeReport Name
          * @property {string|null} [Func] NodeReport Func
+         * @property {protoManage.Level|null} [Level] NodeReport Level
          * @property {protoManage.State|null} [State] NodeReport State
          */
 
@@ -5255,6 +5336,14 @@ export const protoManage = $root.protoManage = (() => {
         NodeReport.prototype.Func = "";
 
         /**
+         * NodeReport Level.
+         * @member {protoManage.Level} Level
+         * @memberof protoManage.NodeReport
+         * @instance
+         */
+        NodeReport.prototype.Level = 0;
+
+        /**
          * NodeReport State.
          * @member {protoManage.State} State
          * @memberof protoManage.NodeReport
@@ -5294,8 +5383,10 @@ export const protoManage = $root.protoManage = (() => {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.Func);
             if (message.Name != null && Object.hasOwnProperty.call(message, "Name"))
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.Name);
+            if (message.Level != null && Object.hasOwnProperty.call(message, "Level"))
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.Level);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.State);
+                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.State);
             return writer;
         };
 
@@ -5343,6 +5434,9 @@ export const protoManage = $root.protoManage = (() => {
                     message.Func = reader.string();
                     break;
                 case 5:
+                    message.Level = reader.int32();
+                    break;
+                case 6:
                     message.State = reader.int32();
                     break;
                 default:
@@ -5394,6 +5488,17 @@ export const protoManage = $root.protoManage = (() => {
             if (message.Func != null && message.hasOwnProperty("Func"))
                 if (!$util.isString(message.Func))
                     return "Func: string expected";
+            if (message.Level != null && message.hasOwnProperty("Level"))
+                switch (message.Level) {
+                default:
+                    return "Level: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
             if (message.State != null && message.hasOwnProperty("State"))
                 switch (message.State) {
                 default:
@@ -5438,6 +5543,28 @@ export const protoManage = $root.protoManage = (() => {
                 message.Name = String(object.Name);
             if (object.Func != null)
                 message.Func = String(object.Func);
+            switch (object.Level) {
+            case "LevelNot":
+            case 0:
+                message.Level = 0;
+                break;
+            case "LevelPrimary":
+            case 1:
+                message.Level = 1;
+                break;
+            case "LevelIntermediate":
+            case 2:
+                message.Level = 2;
+                break;
+            case "LevelSenior":
+            case 3:
+                message.Level = 3;
+                break;
+            case "LevelSuper":
+            case 4:
+                message.Level = 4;
+                break;
+            }
             switch (object.State) {
             case "StateNot":
             case 0:
@@ -5485,6 +5612,7 @@ export const protoManage = $root.protoManage = (() => {
                     object.NodeID = options.longs === String ? "0" : 0;
                 object.Func = "";
                 object.Name = "";
+                object.Level = options.enums === String ? "LevelNot" : 0;
                 object.State = options.enums === String ? "StateNot" : 0;
             }
             if (message.Base != null && message.hasOwnProperty("Base"))
@@ -5498,6 +5626,8 @@ export const protoManage = $root.protoManage = (() => {
                 object.Func = message.Func;
             if (message.Name != null && message.hasOwnProperty("Name"))
                 object.Name = message.Name;
+            if (message.Level != null && message.hasOwnProperty("Level"))
+                object.Level = options.enums === String ? $root.protoManage.Level[message.Level] : message.Level;
             if (message.State != null && message.hasOwnProperty("State"))
                 object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
             return object;

@@ -68,7 +68,7 @@ export default defineComponent ({
         function passwordReset(){
             if (passwordResetCheck()){
                 data.isLoad = true
-                request.reqManagerUpdatePassword(data.manager).then((response) => {
+                request.reqManagerUpdate(data.manager).then((response) => {
                     dialogClose()
                     globals.reLogin()
                     ElMessage.success("密码修改成功, 请重新登录")

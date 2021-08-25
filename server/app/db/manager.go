@@ -59,22 +59,21 @@ func (db *Server) UpdateManagerToken(manager orm.Manager) (*orm.Base, error) {
 	return &manager.Base, err
 }
 
+//按ID更新管理员信息
+func (db *Server) UpdateManager(manager orm.Manager) (*orm.Base, error) {
+	err := db.Gorm.Model(&manager).Updates(manager).Error
+	return &manager.Base, err
+}
+
 //按ID更新管理员状态
 func (db *Server) UpdateManagerState(manager orm.Manager) (*orm.Base, error) {
 	err := db.Gorm.Model(&manager).Update("State", manager.State).Error
 	return &manager.Base, err
 }
 
-//按ID更新管理员密码
-func (db *Server) UpdateManagerPassword(manager orm.Manager) (*orm.Base, error) {
-	err := db.Gorm.Model(&manager).Update("Password", manager.Password).Error
-	return &manager.Base, err
-}
-
 //按ID更新管理员设置
-func (db *Server) UpdateManagerSetting(manager orm.Manager) (*orm.Base, error) {
-	err := db.Gorm.Model(&manager).Update("Setting", manager.Setting).Error
-	return &manager.Base, err
+func (db *Server) DelManager(manager orm.Manager) error {
+	return db.Gorm.Delete(&manager).Error
 }
 
 //获取管理员

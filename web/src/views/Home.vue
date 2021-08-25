@@ -68,7 +68,7 @@ export default defineComponent ({
     setup() {
         onMounted(()=>{
             initWs()
-            initUserSetting()
+            initUserInfo()
         })
 
         function initWs(){
@@ -80,24 +80,29 @@ export default defineComponent ({
             websocket.wsConnect("ws://localhost/ws?parameter="+str)
         }
 
-        function initUserSetting(){
+        function initUserInfo(){
             request.reqManagerByID(protoManage.Manager.create({})).then((response) => {
-                let data = response.Setting
-                if (globals.isJson(data)){
-                    let setting = JSON.parse(data)
-                    globals.globalsData.managerSetting.setting = setting
-                    watch(() => globals.globalsData.managerSetting.setting, (newValue) => {
-                        request.reqManagerUpdateSetting(protoManage.Manager.create({
-                            Setting:JSON.stringify(newValue)
-                        })).then((response) => {}).catch(error => {}).finally(()=>{})
-                    },{deep:true})
-                    refresh.watchGlobalAutoRefresh()
-                }else{
-                    if (data != ""){
-                        ElMessage.error("用户配置解析失败, 将使用默认配置")
-                    }
-                }
+                response.Token = globals.globalsData.manager.Token
+                globals.globalsData.manager = response
+                initUserSetting(response.Setting)
             }).catch(error => {}).finally(()=>{})
+        }
+
+        function initUserSetting(data:string){
+            if (globals.isJson(data)){
+                let setting = JSON.parse(data)
+                globals.globalsData.managerSetting.setting = setting
+                watch(() => globals.globalsData.managerSetting.setting, (newValue) => {
+                    request.reqManagerUpdate(protoManage.Manager.create({
+                        Setting:JSON.stringify(newValue)
+                    })).then((response) => {}).catch(error => {}).finally(()=>{})
+                },{deep:true})
+                refresh.watchGlobalAutoRefresh()
+            }else{
+                if (data != ""){
+                    ElMessage.error("用户配置解析失败, 将使用默认配置")
+                }
+            }
         }
     }
 })

@@ -25,7 +25,7 @@ func (db *Server) DelAllNodeReportByNodeID(nodeReport orm.NodeReport) error {
 //按ID更新指定节点报告信息
 func (db *Server) UpdateNodeReportInfo(nodeReport orm.NodeReport) error {
 	return db.Gorm.Model(&nodeReport).Updates(map[string]interface{}{
-		"func": nodeReport.Func, "state": nodeReport.State}).Error
+		"func": nodeReport.Func, "level": nodeReport.Level, "state": nodeReport.State}).Error
 }
 
 //按节点ID更新节点报告状态

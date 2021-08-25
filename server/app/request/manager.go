@@ -96,13 +96,13 @@ func (request *Request) ReqManagerFindByID(userID int64, message []byte)([]byte,
 }
 
 //更新管理员密码
-func (request *Request) ReqManagerUpdatePassword(userID int64, message []byte)([]byte, error){
+func (request *Request) ReqManagerUpdate(userID int64, message []byte)([]byte, error){
 	req := protoManage.Manager{}
 	err := req.Unmarshal(message)
 	if err != nil {
 		return nil, err
 	}
-	err = request.Data.ManagerPasswordUpdate(userID, &req)
+	err = request.Data.ManagerUpdate(userID, &req)
 	if err != nil {
 		return nil, err
 	}
@@ -114,13 +114,13 @@ func (request *Request) ReqManagerUpdatePassword(userID int64, message []byte)([
 }
 
 //更新管理员设置
-func (request *Request) ReqManagerUpdateSetting(userID int64, message []byte)([]byte, error){
+func (request *Request) ReqManagerDel(userID int64, message []byte)([]byte, error){
 	req := protoManage.Manager{}
 	err := req.Unmarshal(message)
 	if err != nil {
 		return nil, err
 	}
-	err = request.Data.ManagerSettingUpdate(userID, &req)
+	err = request.Data.ManagerDel(userID, &req)
 	if err != nil {
 		return nil, err
 	}

@@ -33,6 +33,15 @@ func ManagerAddCheck(protoManager *protoManage.Manager) error {
 	return nil
 }
 
+func ManagerUpdateCheck(userID int64, protoManager *protoManage.Manager) error {
+	if protoManager.Password != "" || protoManager.Setting != "" {
+		if protoManager.Base.ID != userID {
+			return errors.New("权限错误")
+		}
+	}
+	return nil
+}
+
 func ManagerUpdatePasswordCheck(protoManager *protoManage.Manager) error {
 	if protoManager.Token == "" {
 		return errors.New("原密码不能为空值")

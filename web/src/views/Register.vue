@@ -2,7 +2,7 @@
     <el-dialog
         :modelValue="dialogModel"
         width="280px"
-        top="25vh"
+        top="16vh"
         @close="dialogClose"
         destroy-on-close>
         <template v-slot:title>
@@ -13,6 +13,9 @@
             <el-input class="registerInput" v-model="data.manager.Name" placeholder="用户名" clearable></el-input>
             <el-input class="registerInput" v-model="data.manager.Password" placeholder="密码" clearable show-password></el-input>
             <el-input class="registerInput" v-model="data.passwordConfirm" placeholder="确认密码" clearable show-password></el-input>
+            <el-select class="registerSelect" v-model="data.manager.Level" placeholder="请选择权限等级">
+                <el-option v-for="i in data.userSetLevelSelectOptions" :key="getUserLevelNameBySelectIndex(i)" :label="getUserLevelNameBySelectIndex(i)" :value="i"></el-option>
+            </el-select>
             <el-button class="registerButton" size="medium" type="primary" round @click="register">注册</el-button>
         </el-row>
     </el-dialog>
@@ -36,6 +39,7 @@ export default defineComponent ({
     components: {
 
     },
+    emits:['registerSuccess', 'update:dialogModel'],
     props:{
         dialogModel:{
             type: Boolean,
@@ -70,6 +74,7 @@ export default defineComponent ({
                 data.isLoad = true
                 request.reqManagerAdd(data.manager).then((response) => {
                     ElMessage.success("注册成功")
+                    context.emit("registerSuccess")
                     dialogClose()
                 }).catch(error => {}).finally(()=>{data.isLoad = false})
             }
@@ -90,5 +95,10 @@ export default defineComponent ({
 .registerButton {
     margin-top: 5px;
     width: 80px;
+}
+
+.registerSelect {
+    width: 100%;
+    margin-bottom: 15px;
 }
 </style>

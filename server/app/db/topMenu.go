@@ -22,7 +22,7 @@ func (db *Server) AddTopLink(topLink *orm.TopLink) error {
 
 //删除顶部链接
 func (db *Server) DelTopLink(topLink *orm.TopLink) error {
-	return db.Gorm.Delete(&topLink).Error
+	return db.Gorm.Delete(topLink).Error
 }
 
 //更新顶部链接

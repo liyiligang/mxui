@@ -23,18 +23,26 @@ func (data *Data) ManagerAdd(protoManager *protoManage.Manager) error {
 	if err := data.DB.IsExistManagerByNickName(orm.Manager{NickName: protoManager.NickName}); err != nil{
 		return err
 	}
-	level := protoManage.ManagerLevel_ManagerLevelPrimary
-	protoManagerLevel := &protoManage.Manager{Level: int32(protoManage.ManagerLevel_ManagerLevelSuper)}
-	if err := data.ManagerFindByLevel(0, protoManagerLevel); err != nil{
+	level := protoManage.Level_LevelPrimary
+	protoLevel := &protoManage.Manager{Level: protoManage.Level_LevelSuper}
+	if err := data.ManagerFindByLevel(0, protoLevel); err != nil{
 		return err
 	}
-	if protoManagerLevel.Base.ID == 0 {
-		level = protoManage.ManagerLevel(protoManagerLevel.Level)
+	if protoLevel.Base.ID == 0 {
+		level = protoLevel.Level
 	}
 	return data.DB.AddManager(orm.Manager{NickName: protoManager.NickName, Name:protoManager.Name,
 		Password: protoManager.Password, Level: int32(level)})
 }
 
+//删除管理员
+func (data *Data) ManagerDel(userID int64, protoManager *protoManage.Manager) error {
+	err := data.DB.DelManager(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID}})
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 //更新管理员token
 func (data *Data) ManagerTokenUpdate(protoManager *protoManage.Manager) error {
@@ -43,6 +51,46 @@ func (data *Data) ManagerTokenUpdate(protoManager *protoManage.Manager) error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+//更新管理员状态
+func (data *Data) ManagerStateUpdate(protoManager *protoManage.Manager) error {
+	ormBase, err := data.DB.UpdateManagerState(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID}, State: int32(protoManager.State)})
+	if err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
+	return nil
+}
+
+//更新管理员
+func (data *Data) ManagerUpdate(userID int64, protoManager *protoManage.Manager) error {
+	if protoManager.Base.ID == 0 {
+		protoManager.Base.ID = userID
+	}
+	if err := check.ManagerUpdateCheck(userID, protoManager); err != nil {
+		return err
+	}
+	if protoManager.Password != "" {
+		if err := check.ManagerUpdatePasswordCheck(protoManager); err != nil {
+			return err
+		}
+		ormManager, err := data.DB.FindManagerByID(orm.Manager{Base:orm.Base{ID: protoManager.Base.ID}})
+		if err != nil {
+			return err
+		}
+		if ormManager.Password != protoManager.Token {
+			return errors.New("原密码不正确")
+		}
+	}
+	ormBase, err := data.DB.UpdateManager(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID},
+		Password: protoManager.Password, NickName: protoManager.NickName,
+		Setting:protoManager.Setting, Level: int32(protoManager.Level)})
+	if err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
 	return nil
 }
 
@@ -95,46 +143,6 @@ func (data *Data) ManagerFindByID(userID int64, manager *protoManage.Manager) er
 	return nil
 }
 
-//更新管理员密码
-func (data *Data) ManagerPasswordUpdate(userID int64, protoManager *protoManage.Manager) error {
-	if err := check.ManagerUpdatePasswordCheck(protoManager); err != nil {
-		return err
-	}
-	ormManager, err := data.DB.FindManagerByID(orm.Manager{Base:orm.Base{ID: userID}})
-	if err != nil {
-		return err
-	}
-	if ormManager.Password != protoManager.Token {
-		return errors.New("原密码不正确")
-	}
-	ormBase, err := data.DB.UpdateManagerPassword(orm.Manager{Base: orm.Base{ID: userID}, Password: protoManager.Password})
-	if err != nil {
-		return err
-	}
-	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
-	return nil
-}
-
-//更新管理员状态
-func (data *Data) ManagerStateUpdate(protoManager *protoManage.Manager) error {
-	ormBase, err := data.DB.UpdateManagerState(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID}, State: int32(protoManager.State)})
-	if err != nil {
-		return err
-	}
-	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
-	return nil
-}
-
-//更新管理员设置
-func (data *Data) ManagerSettingUpdate(userID int64, protoManager *protoManage.Manager) error {
-	ormBase, err := data.DB.UpdateManagerSetting(orm.Manager{Base: orm.Base{ID: userID}, Setting: protoManager.Setting})
-	if err != nil {
-		return err
-	}
-	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
-	return nil
-}
-
 //获取管理token
 func (data *Data) ManagerGetTokenByID(userID int64) string {
 	tokenConfig := Jtoken.TokenConfig{
@@ -147,7 +155,7 @@ func (data *Data) ManagerGetTokenByID(userID int64) string {
 
 //按权限查询管理员
 func (data *Data) ManagerFindByLevel(userID int64, protoManager *protoManage.Manager) error {
-	ormBase, err := data.DB.FindManagerByLevel(orm.Manager{Level: protoManager.Level})
+	ormBase, err := data.DB.FindManagerByLevel(orm.Manager{Level: int32(protoManager.Level)})
 	if err != nil {
 		return err
 	}

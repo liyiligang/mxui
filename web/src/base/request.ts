@@ -120,10 +120,10 @@ export module request {
         })
     }
 
-    export function reqManagerUpdatePassword(req:protoManage.Manager):Promise<protoManage.Manager> {
+    export function reqManagerUpdate(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdatePassword, message:msg}))
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdate, message:msg}))
                 .then((response) => {
                     let ans = protoManage.Manager.decode(response.message)
                     resolve(ans)
@@ -133,10 +133,10 @@ export module request {
         })
     }
 
-    export function reqManagerUpdateSetting(req:protoManage.Manager):Promise<protoManage.Manager> {
+    export function reqManagerDel(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdateSetting, message:msg}))
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerDel, message:msg}))
                 .then((response) => {
                     let ans = protoManage.Manager.decode(response.message)
                     resolve(ans)

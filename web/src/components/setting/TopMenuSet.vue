@@ -14,13 +14,13 @@
                     <el-table-column label="编号" type="index" align="center" width="50"></el-table-column>
                     <el-table-column label="名称" align="center" width="120">
                         <template #default="scope">
-                            <el-input v-if="isEditing(scope.$index)" size="small" ref="funcNameInput" v-model="scope.row.Name" placeholder="名称"></el-input>
+                            <el-input v-if="isEditing(scope.$index)" size="small" v-model="scope.row.Name" placeholder="名称"></el-input>
                             <div v-else>{{scope.row.Name}}</div>
                         </template>
                     </el-table-column>
                     <el-table-column label="链接" align="center">
                         <template #default="scope">
-                            <el-input v-if="isEditing(scope.$index)" size="small" ref="funcNameInput" v-model="scope.row.Url" placeholder="链接"></el-input>
+                            <el-input v-if="isEditing(scope.$index)" size="small" v-model="scope.row.Url" placeholder="链接"></el-input>
                             <el-link v-else :href="scope.row.Url" target="_blank" :underline="false">{{scope.row.Url}}</el-link>
                         </template>
                     </el-table-column>
@@ -96,6 +96,11 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{data.topLinkLoading = false})
         }
 
+        function isEditing(index){
+            return data.topLinkEditList[index].isEdit
+        }
+
+
         function editTopLink(index){
             data.topLinkEditList[index].isEdit = true
         }
@@ -149,10 +154,6 @@ export default defineComponent ({
                     data.topLinkEditList[index].isEdit = false
                 }).catch(error => {}).finally(()=>{})
             }
-        }
-
-        function isEditing(index){
-            return data.topLinkEditList[index].isEdit
         }
 
         const topLinkListUpdate = inject<Function>('topLinkListUpdate')
