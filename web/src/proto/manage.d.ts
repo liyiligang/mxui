@@ -12,12 +12,14 @@ export namespace protoManage {
         TopLinkUpdate = 5,
         NodeTest = 6,
         ManagerLogin = 101,
-        ManagerAdd = 102,
-        ManagerDel = 103,
-        ManagerUpdate = 104,
-        ManagerFind = 105,
-        ManagerFindByID = 106,
-        ManagerFindByLevel = 107,
+        ManagerRegister = 102,
+        ManagerAdd = 103,
+        ManagerDel = 104,
+        ManagerUpdate = 105,
+        ManagerFindNickName = 106,
+        ManagerFindLowLevel = 107,
+        ManagerFindByID = 108,
+        ManagerFindByLevel = 109,
         NodeGroupAdd = 201,
         NodeGroupDel = 202,
         NodeGroupFind = 203,
@@ -635,6 +637,12 @@ export namespace protoManage {
         /** Filter State */
         State?: (protoManage.State|null);
 
+        /** Filter Level */
+        Level?: (protoManage.Level|null);
+
+        /** Filter LevelLow */
+        LevelLow?: (protoManage.Level|null);
+
         /** Filter PageSize */
         PageSize?: (number|null);
 
@@ -701,6 +709,12 @@ export namespace protoManage {
 
         /** Filter State. */
         public State: protoManage.State;
+
+        /** Filter Level. */
+        public Level: protoManage.Level;
+
+        /** Filter LevelLow. */
+        public LevelLow: protoManage.Level;
 
         /** Filter PageSize. */
         public PageSize: number;

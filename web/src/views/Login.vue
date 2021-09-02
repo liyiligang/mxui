@@ -50,16 +50,13 @@ export default defineComponent ({
             password:"", registerVisible:false, isShowLogin:false, hasSystemInit:false})
 
         onMounted(()=>{
-            let token = globals.globalsData.manager.Token
             data.isAutoLogin = true
             let isAutoLogin = localStorage.getItem(globals.globalsConfig.localStorageKey.autoLogin)
             if (isAutoLogin == null){
                 data.isAutoLogin = false
             }
-            if (token != null && token != "" && data.isAutoLogin){
-                loginByToken(token)
-            }else{
-                findSystemInitState()
+            if (data.isAutoLogin){
+                loginByToken()
             }
         })
 
@@ -70,7 +67,11 @@ export default defineComponent ({
             routerPath.toGroupAll()
         }
 
-        function loginByToken(token:string){
+        function loginByToken(){
+            let token = <string>localStorage.getItem(globals.globalsConfig.localStorageKey.token)
+            if (token == null || token == ""){
+                return
+            }
             data.isLoad = true
             request.reqManagerLogin(protoManage.Manager.create({
                 Token:token

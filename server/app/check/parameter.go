@@ -30,6 +30,9 @@ func ManagerAddCheck(protoManager *protoManage.Manager) error {
 	if protoManager.Password == "" {
 		return errors.New("密码不能为空值")
 	}
+	if protoManager.Level == protoManage.Level_LevelNot {
+		return errors.New("权限不能设置为零值")
+	}
 	return nil
 }
 

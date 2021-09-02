@@ -68,6 +68,19 @@ export module request {
         return filter
     }
 
+    export function reqManagerRegister(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerRegister, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqManagerAdd(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
@@ -212,16 +225,30 @@ export module request {
         })
     }
 
-    export function reqManagerList():Promise<protoManage.AnsManagerList> {
+    export function reqManagerNickNameList():Promise<protoManage.AnsManagerList> {
         return new Promise((resolve, reject)=>{
             let req = protoManage.ReqManagerList.create({})
             let msg = protoManage.ReqManagerList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerFind, message:msg}))
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerFindNickName, message:msg}))
                 .then((response) => {
                     let ans = protoManage.AnsManagerList.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
                     reject(error)
+            })
+        })
+    }
+
+    export function reqManagerLowLevelList():Promise<protoManage.AnsManagerList> {
+        return new Promise((resolve, reject)=>{
+            let req = protoManage.ReqManagerList.create({})
+            let msg = protoManage.ReqManagerList.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerFindLowLevel, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.AnsManagerList.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
             })
         })
     }

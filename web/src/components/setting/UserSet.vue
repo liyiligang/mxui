@@ -25,11 +25,7 @@
                     </el-table-column>
                     <el-table-column label="权限" align="center" width="150">
                         <template #default="scope">
-                            <el-select v-if="isEditing(scope.$index)" class="userSetLevelSelect" size="small"
-                                       v-model="scope.row.Level" placeholder="请选择权限等级">
-                                <el-option v-for="i in data.userSetLevelSelectOptions" :key="getUserLevelNameBySelectIndex(i)"
-                                           :label="getUserLevelNameBySelectIndex(i)" :value="i" :disabled="getUserLevelDisabled(i)"></el-option>
-                            </el-select>
+                            <LevelSelect v-if="isEditing(scope.$index)" size="small" v-model="scope.row.Level"></LevelSelect>
                             <div v-else :class="[getUserLevelColor(scope.$index)]">{{getUserLevelNameByTableIndex(scope.$index)}}</div>
                         </template>
                     </el-table-column>
@@ -52,16 +48,16 @@
             </el-row>
         </el-row>
     </el-dialog>
-    <Register v-model:dialogModel="data.userSetAddFlag" @registerSuccess="newUserSuccess"></Register>
+    <Register v-model:dialogModel="data.userSetAddFlag" :useLevel="true" @registerSuccess="newUserSuccess"></Register>
 </template>
 
 <script lang="ts">
 import {defineComponent, inject, nextTick, onMounted, reactive, ref} from "vue";
-import { globals } from "../../base/globals";
 import {protoManage} from "../../proto/manage";
 import {convert} from "../../base/convert";
 import {request} from "../../base/request";
 import Register from "../../views/Register.vue";
+import LevelSelect from "./LevelSelect.vue";
 import {ElMessage, ElTable} from "element-plus";
 
 interface UserSetEditInfo {
@@ -71,7 +67,6 @@ interface UserSetEditInfo {
 interface UserSetInfo {
     userSetEditList:Array<UserSetEditInfo>
     userSetList: Array<protoManage.IManager>
-    userSetLevelSelectOptions:Array<protoManage.Level>
     userSetAddFlag:boolean
     userSetLoading:boolean
 }
@@ -91,12 +86,12 @@ export default defineComponent ({
         }
     },
     components: {
-        Register
+        Register,
+        LevelSelect
     },
     setup(props, context){
 
         const data = reactive<UserSetInfo>({userSetList:[], userSetEditList:[],
-            userSetLevelSelectOptions: <Array<protoManage.Level>>Object.values(protoManage.Level),
             userSetAddFlag:false, userSetLoading:false})
 
         onMounted(()=>{
@@ -104,14 +99,13 @@ export default defineComponent ({
         })
 
         function initUserSetList(){
-            request.reqManagerList().then((response) => {
+            request.reqManagerLowLevelList().then((response) => {
                 data.userSetList = response.ManagerList
                 for (let i=0; i<data.userSetList.length; i++){
                     let userSetEditInfo:UserSetEditInfo = {isEdit:false}
                     data.userSetEditList.push(userSetEditInfo)
                 }
             }).catch(error => {}).finally(()=>{data.userSetLoading = false})
-            data.userSetLevelSelectOptions.shift()
         }
 
         function getUserStateColor(index){
@@ -120,13 +114,6 @@ export default defineComponent ({
 
         function getUserLevelColor(index){
             return convert.getColorByLevel(data.userSetList[index].Level)
-        }
-
-        function getUserLevelNameBySelectIndex(index){
-            return convert.getManagerLevelName(index)
-        }
-        function getUserLevelDisabled(index){
-            return globals.globalsData.manager.Level <= index
         }
 
         function getUserLevelNameByTableIndex(index){
@@ -185,9 +172,8 @@ export default defineComponent ({
             }
             context.emit("update:dialogModel", false)
         }
-        return {data, dialogClose, getUserStateColor, isEditing, getUserLevelColor, getUserLevelNameBySelectIndex,
-            getUserLevelNameByTableIndex, newUserSet, newUserSuccess, editUserSet, delUserSet, updateUserSet,
-            cancelUserSet, getUserLevelDisabled, userSetTable}
+        return {data, dialogClose, getUserStateColor, isEditing, getUserLevelColor, getUserLevelNameByTableIndex,
+            newUserSet, newUserSuccess, editUserSet, delUserSet, updateUserSet, cancelUserSet, userSetTable}
     }
 })
 
@@ -205,7 +191,4 @@ export default defineComponent ({
     width: 100%;
 }
 
-.userSetLevelSelect{
-    width: 120px;
-}
 </style>

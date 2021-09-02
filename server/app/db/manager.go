@@ -83,6 +83,13 @@ func (db *Server) FindManager() ([]orm.Manager, error) {
 	return ormManagerList, err
 }
 
+//获取下级管理员
+func (db *Server) FindManagerLowLevel(manager orm.Manager) ([]orm.Manager, error) {
+	var ormManagerList []orm.Manager
+	err := db.Gorm.Where("Level < ?", manager.Level).Find(&ormManagerList).Error
+	return ormManagerList, err
+}
+
 //查询是否存在超管
 func (db *Server) FindManagerByLevel(manager orm.Manager) (*orm.Base, error) {
 	err := db.Gorm.Where("Level = ?", manager.Level).First(&manager).Error

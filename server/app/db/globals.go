@@ -44,6 +44,12 @@ func (db *Server) SetFilter(tx *gorm.DB, filter protoManage.Filter) *gorm.DB {
 	if filter.State != protoManage.State_StateNot {
 		tx.Where("state = ?", filter.State)
 	}
+	if filter.Level != protoManage.Level_LevelNot {
+		tx.Where("level = ?", filter.Level)
+	}
+	if filter.LevelLow != protoManage.Level_LevelNot {
+		tx.Where("level <= ?", filter.LevelLow)
+	}
 	if filter.SenderName != "" {
 		tx.Where("(senderID = any(select id from node where name like ? and senderType = ?)) " +
 			"or (senderID = any(select id from manager where nickName like ? and senderType = ?))",
@@ -64,5 +70,4 @@ func (db *Server) SetFilter(tx *gorm.DB, filter protoManage.Filter) *gorm.DB {
 	}
 	return tx
 }
-
 

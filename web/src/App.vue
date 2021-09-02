@@ -4,15 +4,10 @@
 
 <script>
 
-import {defineComponent, onMounted} from "vue";
-import {globals} from "./base/globals";
+import {defineComponent} from "vue";
 
 export default defineComponent ({
     name: 'App',
-    setup() {
-        onMounted(()=>{
-            globals.globalsData.manager.Token = localStorage.getItem(globals.globalsConfig.localStorageKey.token)
-        })
-    }
+    setup() {}
 })
 </script>

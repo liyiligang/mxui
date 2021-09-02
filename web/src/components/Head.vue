@@ -39,7 +39,7 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{})
         }
         function reqManagerList(){
-            request.reqManagerList().then((response) => {
+            request.reqManagerNickNameList().then((response) => {
                 globals.globalsData.managerList.clear()
                 for (let i = 0; i < response.ManagerList .length; i++){
                     let key = Number(response.ManagerList[i].Base?.ID)

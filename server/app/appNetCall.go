@@ -97,130 +97,38 @@ func (app *App) WebsocketError(text string, err error){
 
 func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 	var ansMsg []byte
-	var userID int64
 	var err error
+	var userID int64
+	errCode := protoManage.HttpError_HttpErrorNull
+
 	defer func(){
 		if err != nil {
 			Jlog.Error("http请求错误：", "error", err)
 			app.Request.SaveNodeNotifyWithUserError(userID, err.Error())
 		}
 	}()
+
 	req := protoManage.HttpMessage{}
 	err = req.Unmarshal(raw)
 	if err != nil {
 		return nil, err, int(protoManage.HttpError_HttpErrorUnmarshal)
 	}
-	if req.Order == protoManage.Order_ManagerLogin {
-		ansMsg, err = app.Request.ReqManagerLogin(userID, req.Message)
-		if err != nil {
-			return nil, err, int(protoManage.HttpError_HttpErrorLogin)
-		}
-	}else if req.Order == protoManage.Order_ManagerAdd {
-		ansMsg, err = app.Request.ReqManagerAdd(userID, req.Message)
-		if err != nil {
-			return nil, err, int(protoManage.HttpError_HttpErrorRegister)
-		}
-	}else if req.Order ==  protoManage.Order_ManagerFindByLevel {
-		ansMsg, err = app.Request.ReqManagerFindByLevel(userID, req.Message)
-		if err != nil {
-			return nil, err, int(protoManage.HttpError_HttpErrorRequest)
-		}
+
+	if req.Token == "" {
+		ansMsg, err, errCode = app.httpRequestNoToken(userID, &req)
 	} else {
 		userID, err = Jtoken.ParseToken(req.Token, config.LocalConfig.Token.Key)
 		if err != nil {
 			return nil, errors.New("身份验证失败"), int(protoManage.HttpError_HttpErrorRequest)
 		}
-		switch req.Order {
-		case protoManage.Order_ManagerFind:
-			ansMsg, err = app.Request.ReqManagerFind(userID, req.Message)
-			break
-		case protoManage.Order_ManagerFindByID:
-			ansMsg, err = app.Request.ReqManagerFindByID(userID, req.Message)
-			break
-		case protoManage.Order_ManagerUpdate:
-			ansMsg, err = app.Request.ReqManagerUpdate(userID, req.Message)
-			break
-		case protoManage.Order_ManagerDel:
-			ansMsg, err = app.Request.ReqManagerDel(userID, req.Message)
-			break
-		case protoManage.Order_TopLinkFind:
-			ansMsg, err = app.Request.ReqTopLinkFind(userID, req.Message)
-			break
-		case protoManage.Order_TopLinkFindByID:
-			ansMsg, err = app.Request.ReqTopLinkFindByID(userID, req.Message)
-			break
-		case protoManage.Order_TopLinkAdd:
-			ansMsg, err = app.Request.ReqTopLinkAdd(userID, req.Message)
-			break
-		case protoManage.Order_TopLinkDel:
-			ansMsg, err = app.Request.ReqTopLinkDel(userID, req.Message)
-			break
-		case protoManage.Order_TopLinkUpdate:
-			ansMsg, err = app.Request.ReqTopLinkUpdate(userID, req.Message)
-			break
-		case protoManage.Order_NodeGroupFind:
-			ansMsg, err = app.Request.ReqNodeGroupFind(userID, req.Message)
-			break
-		case protoManage.Order_NodeTypeFind:
-			ansMsg, err = app.Request.ReqNodeTypeFind(userID, req.Message)
-			break
-		case protoManage.Order_NodeFind:
-			ansMsg, err = app.Request.ReqNodeFind(userID, req.Message)
-			break
-		case protoManage.Order_NodeLinkFind:
-			ansMsg, err = app.Request.ReqNodeLinkFind(userID, req.Message)
-			break
-		case protoManage.Order_NodeFuncFind:
-			ansMsg, err = app.Request.ReqNodeFuncFind(userID, req.Message)
-			break
-		case protoManage.Order_NodeReportFind:
-			ansMsg, err = app.Request.ReqNodeReportFind(userID, req.Message)
-			break
-		case protoManage.Order_NodeGroupFindByID:
-			ansMsg, err = app.Request.ReqNodeGroupFindByID(userID, req.Message)
-			break
-		case protoManage.Order_NodeTypeFindByID:
-			ansMsg, err = app.Request.ReqNodeTypeFindByID(userID, req.Message)
-			break
-		case protoManage.Order_NodeFindByID:
-			ansMsg, err = app.Request.ReqNodeFindByID(userID, req.Message)
-			break
-		case protoManage.Order_NodeFuncCallReq:
-			ansMsg, err = app.Request.ReqNodeFuncCall(userID, req.Message)
-			break
-		case protoManage.Order_NodeFuncCallFind:
-			ansMsg, err = app.Request.ReqNodeFuncCallFind(userID, req.Message)
-			break
-		case protoManage.Order_NodeFuncCallFindByID:
-			ansMsg, err = app.Request.ReqNodeFuncCallFindByID(userID, req.Message)
-			break
-		case protoManage.Order_NodeReportValFind:
-			ansMsg, err = app.Request.ReqNodeReportValFind(userID, req.Message)
-			break
-		case protoManage.Order_NodeNotifyFind:
-			ansMsg, err = app.Request.ReqNodeNotifyFind(userID, req.Message)
-			break
-		case protoManage.Order_NodeDel:
-			ansMsg, err = app.Request.ReqNodeDel(userID, req.Message)
-			break
-		case protoManage.Order_NodeLinkDel:
-			ansMsg, err = app.Request.ReqNodeLinkDel(userID, req.Message)
-			break
-		case protoManage.Order_NodeFuncDel:
-			ansMsg, err = app.Request.ReqNodeFuncDel(userID, req.Message)
-			break
-		case protoManage.Order_NodeReportDel:
-			ansMsg, err = app.Request.ReqNodeReportDel(userID, req.Message)
-			break
-		case protoManage.Order_NodeTest:
-			ansMsg, err = app.Request.ReqNodeTest(userID, req.Message)
-			break
-		default:
-			err = errors.New("http指令错误：" +  Jtool.Int64ToString(int64(req.Order)))
+		err = app.httpRequestLevel(userID, &req)
+		if err != nil {
+			return nil, err, int(protoManage.HttpError_HttpErrorRequest)
 		}
+		ansMsg, err, errCode = app.httpRequestWithToken(userID, &req)
 	}
 	if err != nil {
-		return nil ,err, int(protoManage.HttpError_HttpErrorRequest)
+		return nil ,err, int(errCode)
 	}
 	ans := protoManage.HttpMessage{Message: ansMsg}
 	pbByte, err := ans.Marshal()
@@ -228,6 +136,171 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 		return nil, err, int(protoManage.HttpError_HttpErrorMarshal)
 	}
 	return pbByte, err, int(protoManage.HttpError_HttpErrorNull)
+}
+
+func (app *App) httpRequestNoToken(userID int64, req *protoManage.HttpMessage) ([]byte, error, protoManage.HttpError) {
+	var ansMsg []byte
+	var err error
+	errCode := protoManage.HttpError_HttpErrorNull
+
+	switch req.Order {
+	case protoManage.Order_ManagerLogin:
+		ansMsg, err = app.Request.ReqManagerLogin(userID, req.Message)
+		if err != nil {
+			errCode = protoManage.HttpError_HttpErrorLogin
+		}
+		break
+	case protoManage.Order_ManagerRegister:
+		ansMsg, err = app.Request.ReqManagerRegister(userID, req.Message)
+		if err != nil {
+			errCode = protoManage.HttpError_HttpErrorRegister
+		}
+		break
+	case protoManage.Order_ManagerFindByLevel:
+		ansMsg, err = app.Request.ReqManagerFindByLevel(userID, req.Message)
+		break
+	default:
+		err = errors.New("http指令错误：" +  Jtool.Int64ToString(int64(req.Order)))
+	}
+
+	if err != nil && errCode == protoManage.HttpError_HttpErrorNull {
+		errCode = protoManage.HttpError_HttpErrorRequest
+	}
+	return ansMsg, err, errCode
+}
+
+func (app *App) httpRequestWithToken(userID int64, req *protoManage.HttpMessage) ([]byte, error, protoManage.HttpError) {
+	var ansMsg []byte
+	var err error
+	errCode := protoManage.HttpError_HttpErrorNull
+
+	switch req.Order {
+	case protoManage.Order_ManagerAdd:
+		ansMsg, err = app.Request.ReqManagerAdd(userID, req.Message)
+		break
+	case protoManage.Order_ManagerFindNickName:
+		ansMsg, err = app.Request.ReqManagerFindNickName(userID, req.Message)
+		break
+	case protoManage.Order_ManagerFindLowLevel:
+		ansMsg, err = app.Request.ReqManagerFindLowLevel(userID, req.Message)
+		break
+	case protoManage.Order_ManagerFindByID:
+		ansMsg, err = app.Request.ReqManagerFindByID(userID, req.Message)
+		break
+	case protoManage.Order_ManagerUpdate:
+		ansMsg, err = app.Request.ReqManagerUpdate(userID, req.Message)
+		break
+	case protoManage.Order_ManagerDel:
+		ansMsg, err = app.Request.ReqManagerDel(userID, req.Message)
+		break
+	case protoManage.Order_TopLinkFind:
+		ansMsg, err = app.Request.ReqTopLinkFind(userID, req.Message)
+		break
+	case protoManage.Order_TopLinkFindByID:
+		ansMsg, err = app.Request.ReqTopLinkFindByID(userID, req.Message)
+		break
+	case protoManage.Order_TopLinkAdd:
+		ansMsg, err = app.Request.ReqTopLinkAdd(userID, req.Message)
+		break
+	case protoManage.Order_TopLinkDel:
+		ansMsg, err = app.Request.ReqTopLinkDel(userID, req.Message)
+		break
+	case protoManage.Order_TopLinkUpdate:
+		ansMsg, err = app.Request.ReqTopLinkUpdate(userID, req.Message)
+		break
+	case protoManage.Order_NodeGroupFind:
+		ansMsg, err = app.Request.ReqNodeGroupFind(userID, req.Message)
+		break
+	case protoManage.Order_NodeTypeFind:
+		ansMsg, err = app.Request.ReqNodeTypeFind(userID, req.Message)
+		break
+	case protoManage.Order_NodeFind:
+		ansMsg, err = app.Request.ReqNodeFind(userID, req.Message)
+		break
+	case protoManage.Order_NodeLinkFind:
+		ansMsg, err = app.Request.ReqNodeLinkFind(userID, req.Message)
+		break
+	case protoManage.Order_NodeFuncFind:
+		ansMsg, err = app.Request.ReqNodeFuncFind(userID, req.Message)
+		break
+	case protoManage.Order_NodeReportFind:
+		ansMsg, err = app.Request.ReqNodeReportFind(userID, req.Message)
+		break
+	case protoManage.Order_NodeGroupFindByID:
+		ansMsg, err = app.Request.ReqNodeGroupFindByID(userID, req.Message)
+		break
+	case protoManage.Order_NodeTypeFindByID:
+		ansMsg, err = app.Request.ReqNodeTypeFindByID(userID, req.Message)
+		break
+	case protoManage.Order_NodeFindByID:
+		ansMsg, err = app.Request.ReqNodeFindByID(userID, req.Message)
+		break
+	case protoManage.Order_NodeFuncCallReq:
+		ansMsg, err = app.Request.ReqNodeFuncCall(userID, req.Message)
+		break
+	case protoManage.Order_NodeFuncCallFind:
+		ansMsg, err = app.Request.ReqNodeFuncCallFind(userID, req.Message)
+		break
+	case protoManage.Order_NodeFuncCallFindByID:
+		ansMsg, err = app.Request.ReqNodeFuncCallFindByID(userID, req.Message)
+		break
+	case protoManage.Order_NodeReportValFind:
+		ansMsg, err = app.Request.ReqNodeReportValFind(userID, req.Message)
+		break
+	case protoManage.Order_NodeNotifyFind:
+		ansMsg, err = app.Request.ReqNodeNotifyFind(userID, req.Message)
+		break
+	case protoManage.Order_NodeDel:
+		ansMsg, err = app.Request.ReqNodeDel(userID, req.Message)
+		break
+	case protoManage.Order_NodeLinkDel:
+		ansMsg, err = app.Request.ReqNodeLinkDel(userID, req.Message)
+		break
+	case protoManage.Order_NodeFuncDel:
+		ansMsg, err = app.Request.ReqNodeFuncDel(userID, req.Message)
+		break
+	case protoManage.Order_NodeReportDel:
+		ansMsg, err = app.Request.ReqNodeReportDel(userID, req.Message)
+		break
+	case protoManage.Order_NodeTest:
+		ansMsg, err = app.Request.ReqNodeTest(userID, req.Message)
+		break
+	default:
+		err = errors.New("http指令错误：" +  Jtool.Int64ToString(int64(req.Order)))
+	}
+
+	if err != nil && errCode == protoManage.HttpError_HttpErrorNull {
+		errCode = protoManage.HttpError_HttpErrorRequest
+	}
+
+	return ansMsg, err, errCode
+}
+
+func (app *App) httpRequestLevel(userID int64, req *protoManage.HttpMessage) error {
+	httpLevel := protoManage.Level_LevelNot
+	switch req.Order {
+	case protoManage.Order_TopLinkDel,
+	protoManage.Order_TopLinkUpdate,
+	protoManage.Order_ManagerAdd,
+	protoManage.Order_ManagerDel,
+	protoManage.Order_ManagerUpdate,
+	protoManage.Order_ManagerFindLowLevel,
+	protoManage.Order_NodeFuncDel,
+	protoManage.Order_NodeReportDel,
+	protoManage.Order_TopLinkAdd:
+		httpLevel = protoManage.Level_LevelSuper
+		break
+	}
+	if httpLevel > protoManage.Level_LevelNot {
+		level, err := app.Data.ManagerFindLevelByID(userID)
+		if err != nil {
+			return err
+		}
+		if level < httpLevel {
+			return errors.New("权限不足")
+		}
+	}
+	return nil
 }
 
 func (app *App) RegisterNodeFunc(ctx context.Context, nodeFunc *protoManage.NodeFunc) (*protoManage.NodeFunc, error) {

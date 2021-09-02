@@ -112,3 +112,19 @@ func (data *Data) NodeFuncFind(req protoManage.ReqNodeFuncList) (*protoManage.An
 		NodeFuncCallList: protoNodeFuncCall,Length:count}, nil
 }
 
+//节点方法接口权限验证
+func (data *Data) NodeFuncLevelCheck(userID int64, funcID int64) error {
+	level, err := data.ManagerFindLevelByID(userID)
+	if err != nil {
+		return err
+	}
+	protoNodeFunc := &protoManage.NodeFunc{Base: protoManage.Base{ID: funcID}}
+	err = data.NodeFuncFindByID(protoNodeFunc)
+	if err != nil {
+		return err
+	}
+	if protoNodeFunc.Level >  level {
+		return errors.New("权限不足")
+	}
+	return nil
+}

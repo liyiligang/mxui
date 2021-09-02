@@ -28,12 +28,14 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} TopLinkUpdate=5 TopLinkUpdate value
      * @property {number} NodeTest=6 NodeTest value
      * @property {number} ManagerLogin=101 ManagerLogin value
-     * @property {number} ManagerAdd=102 ManagerAdd value
-     * @property {number} ManagerDel=103 ManagerDel value
-     * @property {number} ManagerUpdate=104 ManagerUpdate value
-     * @property {number} ManagerFind=105 ManagerFind value
-     * @property {number} ManagerFindByID=106 ManagerFindByID value
-     * @property {number} ManagerFindByLevel=107 ManagerFindByLevel value
+     * @property {number} ManagerRegister=102 ManagerRegister value
+     * @property {number} ManagerAdd=103 ManagerAdd value
+     * @property {number} ManagerDel=104 ManagerDel value
+     * @property {number} ManagerUpdate=105 ManagerUpdate value
+     * @property {number} ManagerFindNickName=106 ManagerFindNickName value
+     * @property {number} ManagerFindLowLevel=107 ManagerFindLowLevel value
+     * @property {number} ManagerFindByID=108 ManagerFindByID value
+     * @property {number} ManagerFindByLevel=109 ManagerFindByLevel value
      * @property {number} NodeGroupAdd=201 NodeGroupAdd value
      * @property {number} NodeGroupDel=202 NodeGroupDel value
      * @property {number} NodeGroupFind=203 NodeGroupFind value
@@ -85,12 +87,14 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[5] = "TopLinkUpdate"] = 5;
         values[valuesById[6] = "NodeTest"] = 6;
         values[valuesById[101] = "ManagerLogin"] = 101;
-        values[valuesById[102] = "ManagerAdd"] = 102;
-        values[valuesById[103] = "ManagerDel"] = 103;
-        values[valuesById[104] = "ManagerUpdate"] = 104;
-        values[valuesById[105] = "ManagerFind"] = 105;
-        values[valuesById[106] = "ManagerFindByID"] = 106;
-        values[valuesById[107] = "ManagerFindByLevel"] = 107;
+        values[valuesById[102] = "ManagerRegister"] = 102;
+        values[valuesById[103] = "ManagerAdd"] = 103;
+        values[valuesById[104] = "ManagerDel"] = 104;
+        values[valuesById[105] = "ManagerUpdate"] = 105;
+        values[valuesById[106] = "ManagerFindNickName"] = 106;
+        values[valuesById[107] = "ManagerFindLowLevel"] = 107;
+        values[valuesById[108] = "ManagerFindByID"] = 108;
+        values[valuesById[109] = "ManagerFindByLevel"] = 109;
         values[valuesById[201] = "NodeGroupAdd"] = 201;
         values[valuesById[202] = "NodeGroupDel"] = 202;
         values[valuesById[203] = "NodeGroupFind"] = 203;
@@ -374,6 +378,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 105:
                 case 106:
                 case 107:
+                case 108:
+                case 109:
                 case 201:
                 case 202:
                 case 203:
@@ -467,29 +473,37 @@ export const protoManage = $root.protoManage = (() => {
             case 101:
                 message.order = 101;
                 break;
-            case "ManagerAdd":
+            case "ManagerRegister":
             case 102:
                 message.order = 102;
                 break;
-            case "ManagerDel":
+            case "ManagerAdd":
             case 103:
                 message.order = 103;
                 break;
-            case "ManagerUpdate":
+            case "ManagerDel":
             case 104:
                 message.order = 104;
                 break;
-            case "ManagerFind":
+            case "ManagerUpdate":
             case 105:
                 message.order = 105;
                 break;
-            case "ManagerFindByID":
+            case "ManagerFindNickName":
             case 106:
                 message.order = 106;
                 break;
-            case "ManagerFindByLevel":
+            case "ManagerFindLowLevel":
             case 107:
                 message.order = 107;
+                break;
+            case "ManagerFindByID":
+            case 108:
+                message.order = 108;
+                break;
+            case "ManagerFindByLevel":
+            case 109:
+                message.order = 109;
                 break;
             case "NodeGroupAdd":
             case 201:
@@ -880,6 +894,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 105:
                 case 106:
                 case 107:
+                case 108:
+                case 109:
                 case 201:
                 case 202:
                 case 203:
@@ -976,29 +992,37 @@ export const protoManage = $root.protoManage = (() => {
             case 101:
                 message.order = 101;
                 break;
-            case "ManagerAdd":
+            case "ManagerRegister":
             case 102:
                 message.order = 102;
                 break;
-            case "ManagerDel":
+            case "ManagerAdd":
             case 103:
                 message.order = 103;
                 break;
-            case "ManagerUpdate":
+            case "ManagerDel":
             case 104:
                 message.order = 104;
                 break;
-            case "ManagerFind":
+            case "ManagerUpdate":
             case 105:
                 message.order = 105;
                 break;
-            case "ManagerFindByID":
+            case "ManagerFindNickName":
             case 106:
                 message.order = 106;
                 break;
-            case "ManagerFindByLevel":
+            case "ManagerFindLowLevel":
             case 107:
                 message.order = 107;
+                break;
+            case "ManagerFindByID":
+            case 108:
+                message.order = 108;
+                break;
+            case "ManagerFindByLevel":
+            case 109:
+                message.order = 109;
                 break;
             case "NodeGroupAdd":
             case 201:
@@ -1990,6 +2014,8 @@ export const protoManage = $root.protoManage = (() => {
          * @property {string|null} [Flag] Filter Flag
          * @property {string|null} [Value] Filter Value
          * @property {protoManage.State|null} [State] Filter State
+         * @property {protoManage.Level|null} [Level] Filter Level
+         * @property {protoManage.Level|null} [LevelLow] Filter LevelLow
          * @property {number|null} [PageSize] Filter PageSize
          * @property {number|null} [PageNum] Filter PageNum
          * @property {string|null} [SenderName] Filter SenderName
@@ -2111,6 +2137,22 @@ export const protoManage = $root.protoManage = (() => {
         Filter.prototype.State = 0;
 
         /**
+         * Filter Level.
+         * @member {protoManage.Level} Level
+         * @memberof protoManage.Filter
+         * @instance
+         */
+        Filter.prototype.Level = 0;
+
+        /**
+         * Filter LevelLow.
+         * @member {protoManage.Level} LevelLow
+         * @memberof protoManage.Filter
+         * @instance
+         */
+        Filter.prototype.LevelLow = 0;
+
+        /**
          * Filter PageSize.
          * @member {number} PageSize
          * @memberof protoManage.Filter
@@ -2214,20 +2256,24 @@ export const protoManage = $root.protoManage = (() => {
                 writer.uint32(/* id 11, wireType 2 =*/90).string(message.Value);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
                 writer.uint32(/* id 12, wireType 0 =*/96).int32(message.State);
+            if (message.Level != null && Object.hasOwnProperty.call(message, "Level"))
+                writer.uint32(/* id 13, wireType 0 =*/104).int32(message.Level);
+            if (message.LevelLow != null && Object.hasOwnProperty.call(message, "LevelLow"))
+                writer.uint32(/* id 14, wireType 0 =*/112).int32(message.LevelLow);
             if (message.PageSize != null && Object.hasOwnProperty.call(message, "PageSize"))
-                writer.uint32(/* id 13, wireType 0 =*/104).int64(message.PageSize);
+                writer.uint32(/* id 15, wireType 0 =*/120).int64(message.PageSize);
             if (message.PageNum != null && Object.hasOwnProperty.call(message, "PageNum"))
-                writer.uint32(/* id 14, wireType 0 =*/112).int64(message.PageNum);
+                writer.uint32(/* id 16, wireType 0 =*/128).int64(message.PageNum);
             if (message.SenderName != null && Object.hasOwnProperty.call(message, "SenderName"))
-                writer.uint32(/* id 15, wireType 2 =*/122).string(message.SenderName);
+                writer.uint32(/* id 17, wireType 2 =*/138).string(message.SenderName);
             if (message.SenderType != null && Object.hasOwnProperty.call(message, "SenderType"))
-                writer.uint32(/* id 16, wireType 0 =*/128).int32(message.SenderType);
+                writer.uint32(/* id 18, wireType 0 =*/144).int32(message.SenderType);
             if (message.SenderBeginTime != null && Object.hasOwnProperty.call(message, "SenderBeginTime"))
-                writer.uint32(/* id 17, wireType 0 =*/136).int64(message.SenderBeginTime);
+                writer.uint32(/* id 19, wireType 0 =*/152).int64(message.SenderBeginTime);
             if (message.SenderEndTime != null && Object.hasOwnProperty.call(message, "SenderEndTime"))
-                writer.uint32(/* id 18, wireType 0 =*/144).int64(message.SenderEndTime);
+                writer.uint32(/* id 20, wireType 0 =*/160).int64(message.SenderEndTime);
             if (message.Message != null && Object.hasOwnProperty.call(message, "Message"))
-                writer.uint32(/* id 19, wireType 2 =*/154).string(message.Message);
+                writer.uint32(/* id 21, wireType 2 =*/170).string(message.Message);
             return writer;
         };
 
@@ -2299,24 +2345,30 @@ export const protoManage = $root.protoManage = (() => {
                     message.State = reader.int32();
                     break;
                 case 13:
-                    message.PageSize = reader.int64();
+                    message.Level = reader.int32();
                     break;
                 case 14:
-                    message.PageNum = reader.int64();
+                    message.LevelLow = reader.int32();
                     break;
                 case 15:
-                    message.SenderName = reader.string();
+                    message.PageSize = reader.int64();
                     break;
                 case 16:
-                    message.SenderType = reader.int32();
+                    message.PageNum = reader.int64();
                     break;
                 case 17:
-                    message.SenderBeginTime = reader.int64();
+                    message.SenderName = reader.string();
                     break;
                 case 18:
-                    message.SenderEndTime = reader.int64();
+                    message.SenderType = reader.int32();
                     break;
                 case 19:
+                    message.SenderBeginTime = reader.int64();
+                    break;
+                case 20:
+                    message.SenderEndTime = reader.int64();
+                    break;
+                case 21:
                     message.Message = reader.string();
                     break;
                 default:
@@ -2391,6 +2443,28 @@ export const protoManage = $root.protoManage = (() => {
                 switch (message.State) {
                 default:
                     return "State: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
+            if (message.Level != null && message.hasOwnProperty("Level"))
+                switch (message.Level) {
+                default:
+                    return "Level: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
+            if (message.LevelLow != null && message.hasOwnProperty("LevelLow"))
+                switch (message.LevelLow) {
+                default:
+                    return "LevelLow: enum value expected";
                 case 0:
                 case 1:
                 case 2:
@@ -2540,6 +2614,50 @@ export const protoManage = $root.protoManage = (() => {
                 message.State = 4;
                 break;
             }
+            switch (object.Level) {
+            case "LevelNot":
+            case 0:
+                message.Level = 0;
+                break;
+            case "LevelPrimary":
+            case 1:
+                message.Level = 1;
+                break;
+            case "LevelIntermediate":
+            case 2:
+                message.Level = 2;
+                break;
+            case "LevelSenior":
+            case 3:
+                message.Level = 3;
+                break;
+            case "LevelSuper":
+            case 4:
+                message.Level = 4;
+                break;
+            }
+            switch (object.LevelLow) {
+            case "LevelNot":
+            case 0:
+                message.LevelLow = 0;
+                break;
+            case "LevelPrimary":
+            case 1:
+                message.LevelLow = 1;
+                break;
+            case "LevelIntermediate":
+            case 2:
+                message.LevelLow = 2;
+                break;
+            case "LevelSenior":
+            case 3:
+                message.LevelLow = 3;
+                break;
+            case "LevelSuper":
+            case 4:
+                message.LevelLow = 4;
+                break;
+            }
             if (object.PageSize != null)
                 if ($util.Long)
                     (message.PageSize = $util.Long.fromValue(object.PageSize)).unsigned = false;
@@ -2655,6 +2773,8 @@ export const protoManage = $root.protoManage = (() => {
                 object.Flag = "";
                 object.Value = "";
                 object.State = options.enums === String ? "StateNot" : 0;
+                object.Level = options.enums === String ? "LevelNot" : 0;
+                object.LevelLow = options.enums === String ? "LevelNot" : 0;
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, false);
                     object.PageSize = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -2727,6 +2847,10 @@ export const protoManage = $root.protoManage = (() => {
                 object.Value = message.Value;
             if (message.State != null && message.hasOwnProperty("State"))
                 object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
+            if (message.Level != null && message.hasOwnProperty("Level"))
+                object.Level = options.enums === String ? $root.protoManage.Level[message.Level] : message.Level;
+            if (message.LevelLow != null && message.hasOwnProperty("LevelLow"))
+                object.LevelLow = options.enums === String ? $root.protoManage.Level[message.LevelLow] : message.LevelLow;
             if (message.PageSize != null && message.hasOwnProperty("PageSize"))
                 if (typeof message.PageSize === "number")
                     object.PageSize = options.longs === String ? String(message.PageSize) : message.PageSize;

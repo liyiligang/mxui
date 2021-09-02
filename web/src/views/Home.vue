@@ -66,6 +66,7 @@ export default defineComponent ({
         NodeTest
     },
     setup() {
+        globals.globalsData.manager.Token = <string>localStorage.getItem(globals.globalsConfig.localStorageKey.token)
         onMounted(()=>{
             initWs()
             initUserInfo()

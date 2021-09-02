@@ -2,7 +2,7 @@
     <el-dialog
         :modelValue="dialogModel"
         width="280px"
-        top="16vh"
+        top="18vh"
         @close="dialogClose"
         destroy-on-close>
         <template v-slot:title>
@@ -13,9 +13,7 @@
             <el-input class="registerInput" v-model="data.manager.Name" placeholder="用户名" clearable></el-input>
             <el-input class="registerInput" v-model="data.manager.Password" placeholder="密码" clearable show-password></el-input>
             <el-input class="registerInput" v-model="data.passwordConfirm" placeholder="确认密码" clearable show-password></el-input>
-            <el-select class="registerSelect" v-model="data.manager.Level" placeholder="请选择权限等级">
-                <el-option v-for="i in data.userSetLevelSelectOptions" :key="getUserLevelNameBySelectIndex(i)" :label="getUserLevelNameBySelectIndex(i)" :value="i"></el-option>
-            </el-select>
+            <LevelSelect v-if="useLevel" class="registerSelect" v-model="data.manager.Level"></LevelSelect>
             <el-button class="registerButton" size="medium" type="primary" round @click="register">注册</el-button>
         </el-row>
     </el-dialog>
@@ -26,7 +24,8 @@ import {defineComponent, onMounted, reactive} from "vue";
 import { request } from "../base/request";
 import {protoManage} from "../proto/manage";
 import {ElMessage} from "element-plus";
-import {globals} from "../base/globals";
+import LevelSelect from "../components/setting/LevelSelect.vue";
+
 
 interface RegisterInfo {
     isLoad:boolean
@@ -37,7 +36,7 @@ interface RegisterInfo {
 export default defineComponent ({
     name: "Register",
     components: {
-
+        LevelSelect
     },
     emits:['registerSuccess', 'update:dialogModel'],
     props:{
@@ -45,14 +44,20 @@ export default defineComponent ({
             type: Boolean,
             default: false,
             required: true
+        },
+        useLevel:{
+            type: Boolean,
+            default: false,
+            required: false
         }
     },
     setup(props, context){
 
-        const data = reactive<RegisterInfo>({isLoad:false, manager:protoManage.Manager.create(), passwordConfirm:""})
+        const data = reactive<RegisterInfo>({isLoad:false, manager:protoManage.Manager.
+            create({Level:protoManage.Level.LevelPrimary}), passwordConfirm:""})
 
         function dataInit(){
-            data.manager = protoManage.Manager.create()
+            data.manager = protoManage.Manager.create({Level:protoManage.Level.LevelPrimary})
             data.passwordConfirm = ""
         }
 
@@ -72,11 +77,20 @@ export default defineComponent ({
         function register(){
             if (registerCheck()){
                 data.isLoad = true
-                request.reqManagerAdd(data.manager).then((response) => {
-                    ElMessage.success("注册成功")
-                    context.emit("registerSuccess")
-                    dialogClose()
-                }).catch(error => {}).finally(()=>{data.isLoad = false})
+
+                if (props.useLevel) {
+                    request.reqManagerAdd(data.manager).then((response) => {
+                        ElMessage.success("注册成功")
+                        context.emit("registerSuccess")
+                        dialogClose()
+                    }).catch(error => {}).finally(()=>{data.isLoad = false})
+                }else {
+                    request.reqManagerRegister(data.manager).then((response) => {
+                        ElMessage.success("注册成功")
+                        context.emit("registerSuccess")
+                        dialogClose()
+                    }).catch(error => {}).finally(()=>{data.isLoad = false})
+                }
             }
         }
         return {data, dialogClose, register}

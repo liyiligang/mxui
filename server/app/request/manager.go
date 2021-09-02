@@ -24,6 +24,24 @@ func (request *Request) ReqWsTokenCheck(message []byte, addr string) (int64, err
 }
 
 //管理员注册
+func (request *Request) ReqManagerRegister(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerRegister(&req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
+//管理员注册
 func (request *Request) ReqManagerAdd(userID int64, message []byte)([]byte, error){
 	req := protoManage.Manager{}
 	err := req.Unmarshal(message)
@@ -59,14 +77,32 @@ func (request *Request) ReqManagerLogin(userID int64, message []byte)([]byte, er
 	return pbByte, err
 }
 
-//管理员信息查询
-func (request *Request) ReqManagerFind(userID int64, message []byte)([]byte, error){
+//管理员昵称查询
+func (request *Request) ReqManagerFindNickName(userID int64, message []byte)([]byte, error){
 	req := protoManage.ReqManagerList{}
 	err := req.Unmarshal(message)
 	if err != nil {
 		return nil, err
 	}
-	ans, err := request.Data.ManagerFind(&req)
+	ans, err := request.Data.ManagerFindNickName(&req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := ans.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
+//下级管理员信息查询
+func (request *Request) ReqManagerFindLowLevel(userID int64, message []byte)([]byte, error){
+	req := protoManage.ReqManagerList{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	ans, err := request.Data.ManagerFindLowLevel(userID, &req)
 	if err != nil {
 		return nil, err
 	}

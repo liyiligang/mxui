@@ -12,6 +12,19 @@ import (
 	"time"
 )
 
+//注册管理员
+func (data *Data) ManagerRegister(protoManager *protoManage.Manager) error {
+	protoManager.Level = protoManage.Level_LevelPrimary
+	superManager := &protoManage.Manager{Level: protoManage.Level_LevelSuper}
+	if err := data.ManagerFindByLevel(0, superManager); err != nil{
+		return err
+	}
+	if superManager.Base.ID == 0 {
+		protoManager.Level = superManager.Level
+	}
+	return data.ManagerAdd(protoManager)
+}
+
 //新增管理员
 func (data *Data) ManagerAdd(protoManager *protoManage.Manager) error {
 	if err := check.ManagerAddCheck(protoManager); err != nil {
@@ -23,16 +36,8 @@ func (data *Data) ManagerAdd(protoManager *protoManage.Manager) error {
 	if err := data.DB.IsExistManagerByNickName(orm.Manager{NickName: protoManager.NickName}); err != nil{
 		return err
 	}
-	level := protoManage.Level_LevelPrimary
-	protoLevel := &protoManage.Manager{Level: protoManage.Level_LevelSuper}
-	if err := data.ManagerFindByLevel(0, protoLevel); err != nil{
-		return err
-	}
-	if protoLevel.Base.ID == 0 {
-		level = protoLevel.Level
-	}
 	return data.DB.AddManager(orm.Manager{NickName: protoManager.NickName, Name:protoManager.Name,
-		Password: protoManager.Password, Level: int32(level)})
+		Password: protoManager.Password, Level: int32(protoManager.Level)})
 }
 
 //删除管理员
@@ -123,8 +128,8 @@ func (data *Data) ManagerLogin(manager *protoManage.Manager) error {
 	return data.ManagerTokenUpdate(manager)
 }
 
-//查找管理员信息
-func (data *Data) ManagerFind(req *protoManage.ReqManagerList) (*protoManage.AnsManagerList, error) {
+//查找管理员昵称
+func (data *Data) ManagerFindNickName(req *protoManage.ReqManagerList) (*protoManage.AnsManagerList, error) {
 	ormManager, err := data.DB.FindManager()
 	if err != nil {
 		return nil, err
@@ -133,14 +138,39 @@ func (data *Data) ManagerFind(req *protoManage.ReqManagerList) (*protoManage.Ans
 	return &protoManage.AnsManagerList{ManagerList: protoManager}, nil
 }
 
+//查找下级管理员信息
+func (data *Data) ManagerFindLowLevel(userID int64, req *protoManage.ReqManagerList) (*protoManage.AnsManagerList, error) {
+	manager, err := data.DB.FindManagerByID(orm.Manager{Base:orm.Base{ID: userID}})
+	if err != nil {
+		return nil, err
+	}
+	ormManager, err := data.DB.FindManagerLowLevel(*manager)
+	if err != nil {
+		return nil, err
+	}
+	protoManager := convert.OrmManagerListNoSettingToProtoManagerListNoSetting(ormManager)
+	return &protoManage.AnsManagerList{ManagerList: protoManager}, nil
+}
+
+
 //查找管理员信息按ID
 func (data *Data) ManagerFindByID(userID int64, manager *protoManage.Manager) error {
-	ormManager, err := data.DB.FindManagerByID(orm.Manager{Base:orm.Base{ID: userID}})
+	if manager.Base.ID == 0 {
+		manager.Base.ID = userID
+	}
+	ormManager, err := data.DB.FindManagerByID(orm.Manager{Base:orm.Base{ID: manager.Base.ID}})
 	if err != nil {
 		return err
 	}
 	convert.OrmManagerToProtoManager(ormManager, manager)
 	return nil
+}
+
+//查找管理员权限按ID
+func (data *Data) ManagerFindLevelByID(userID int64) (protoManage.Level, error) {
+	manager := &protoManage.Manager{}
+	err := data.ManagerFindByID(userID, manager)
+	return manager.Level, err
 }
 
 //获取管理token

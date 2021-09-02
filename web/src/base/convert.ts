@@ -66,13 +66,13 @@ export module convert {
     export function getManagerLevelName(level: protoManage.Level|undefined|null):string {
         switch (level) {
             case protoManage.Level.LevelPrimary:
-                return "初级"
+                return "访客"
             case protoManage.Level.LevelIntermediate:
-                return "中级"
+                return "员工"
             case protoManage.Level.LevelSenior:
-                return "高级"
+                return "管理员"
             case protoManage.Level.LevelSuper:
-                return "超级"
+                return "超级管理员"
         }
         return "无"
     }

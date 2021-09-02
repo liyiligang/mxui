@@ -14,6 +14,10 @@ func (request *Request) ReqNodeFuncCallFind(userID int64, message []byte)([]byte
 	if err != nil {
 		return nil, err
 	}
+	err = request.Data.NodeFuncLevelCheck(userID, req.Filter.FuncID)
+	if err != nil {
+		return nil, err
+	}
 	ans, err := request.Data.NodeFuncCallFind(req)
 	if err != nil {
 		return nil, err
@@ -32,6 +36,10 @@ func (request *Request) ReqNodeFuncCallFindByID(userID int64, message []byte)([]
 	if err != nil {
 		return nil, err
 	}
+	err = request.Data.NodeFuncLevelCheck(userID, req.FuncID)
+	if err != nil {
+		return nil, err
+	}
 	err = request.Data.NodeFuncCallFindByID(&req)
 	if err != nil {
 		return nil, err
@@ -47,6 +55,10 @@ func (request *Request) ReqNodeFuncCallFindByID(userID int64, message []byte)([]
 func (request *Request) ReqNodeFuncCall(userID int64, message []byte)([]byte, error) {
 	req := protoManage.ReqNodeFuncCall{}
 	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.NodeFuncLevelCheck(userID, req.NodeFuncCall.FuncID)
 	if err != nil {
 		return nil, err
 	}

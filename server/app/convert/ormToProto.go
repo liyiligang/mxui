@@ -14,17 +14,30 @@ func OrmBaseToProtoBase(ormBase *orm.Base, protoBase *protoManage.Base) {
 
 //DBManager To PBManager
 func OrmManagerToProtoManager(ormManager *orm.Manager, protoManager *protoManage.Manager)  {
-	OrmManagerNickNameToProtoManagerNickName(ormManager, protoManager)
+	OrmBaseToProtoBase(&ormManager.Base, &protoManager.Base)
+	protoManager.Name = ormManager.Name
+	protoManager.NickName = ormManager.NickName
 	protoManager.Setting = ormManager.Setting
+	protoManager.Level = protoManage.Level(ormManager.Level)
+	protoManager.State = protoManage.State(ormManager.State)
+}
+
+//DBManagerList To PBManagerList
+func OrmManagerListNoSettingToProtoManagerListNoSetting(ormManagerList []orm.Manager) []protoManage.Manager {
+	var protoManagerList []protoManage.Manager
+	for _ ,v := range ormManagerList {
+		val := protoManage.Manager{}
+		OrmManagerToProtoManager(&v, &val)
+		val.Setting = ""
+		protoManagerList = append(protoManagerList, val)
+	}
+	return protoManagerList
 }
 
 //DBManagerNickName To PBManagerNickName
 func OrmManagerNickNameToProtoManagerNickName(ormManager *orm.Manager, protoManager *protoManage.Manager)  {
 	OrmBaseToProtoBase(&ormManager.Base, &protoManager.Base)
-	protoManager.Name = ormManager.Name
 	protoManager.NickName = ormManager.NickName
-	protoManager.Level = protoManage.Level(ormManager.Level)
-	protoManager.State = protoManage.State(ormManager.State)
 }
 
 //DBManagerNickNameList To PBManagerNickNameList
