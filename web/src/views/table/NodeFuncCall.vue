@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, PropType, reactive, ref} from "vue";
+import {defineComponent, onMounted, PropType, reactive, ref, watch} from "vue";
 import JsonEdit from "../../components/json/JsonEdit.vue"
 import NodeFuncCallTable from "../../components/table/NodeFuncCallTable.vue"
 import {ElMessage} from "element-plus";
@@ -113,42 +113,23 @@ export default defineComponent ({
                     FuncID: props.nodeFunc?.Base?.ID,
                     Parameter: data.parameter
                 })
-            })).then((response) => {
-                findCall(response.ID)
-            }).catch(error => {
-                data.loading = false
-            }).finally(()=>{})
+            })).then((response) => {}).catch(error => {}).finally(()=>{})
         }
 
-        function findCall(baseID:number){
-            let reqCount = 0
-            let timerID = setInterval(()=> {
-                request.reqNodeFuncCallByID(protoManage.NodeFuncCall.create({
-                    Base: protoManage.Base.create({
-                        ID: baseID
-                    })
-                })).then((response) => {
-                    if (response.State == protoManage.State.StateNormal) {
-                        ElMessage.success(reqStr + "成功");
-                        findCallEnd(timerID, response)
-                    }else if (response.State == protoManage.State.StateUnknow){
-                        reqCount++
-                        if (reqCount >= globals.globalsConfig.funcCallConfig.findReturnValRetryCnt) {
-                            ElMessage.error(reqStr + "超时");
-                            findCallEnd(timerID, response)
-                        }
-                    }else {
-                        ElMessage.error(reqStr + "失败");
-                        findCallEnd(timerID, response)
-                    }
-                }).catch(error => {}).finally(()=>{})
-            }, globals.globalsConfig.funcCallConfig.findReturnValRetryTime)
-        }
 
-        function findCallEnd(timerID, response){
-            clearInterval(timerID)
-            pushNodeFuncCall(response, false)
+        watch(() => globals.globalsData.wsMessage.message, (newVal) => {
+            if (globals.globalsData.wsMessage.order == protoManage.Order.NodeFuncCallAns) {
+                findCallEnd(newVal.nodeFuncCallAns.NodeFuncCall, newVal.nodeFuncCallAns.Error)
+            }
+        },{deep:true})
+
+
+        function findCallEnd(nodeFuncCall, error){
+            pushNodeFuncCall(nodeFuncCall, false)
             data.loading = false
+            if (error != ""){
+                globals.viewError(error)
+            }
         }
 
         function pushNodeFuncCall(nodeFuncCall:protoManage.INodeFuncCall, isPush:boolean){

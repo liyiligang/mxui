@@ -3879,6 +3879,9 @@ export namespace protoManage {
 
         /** AnsNodeFuncCall NodeFuncCall */
         NodeFuncCall?: (protoManage.INodeFuncCall|null);
+
+        /** AnsNodeFuncCall Error */
+        Error?: (string|null);
     }
 
     /** Represents an AnsNodeFuncCall. */
@@ -3892,6 +3895,9 @@ export namespace protoManage {
 
         /** AnsNodeFuncCall NodeFuncCall. */
         public NodeFuncCall?: (protoManage.INodeFuncCall|null);
+
+        /** AnsNodeFuncCall Error. */
+        public Error: string;
 
         /**
          * Creates a new AnsNodeFuncCall instance using the specified properties.

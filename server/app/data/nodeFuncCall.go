@@ -45,11 +45,15 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 
 //节点方法调用回复
 func (data *Data) NodeFuncCallAns(ans *protoManage.AnsNodeFuncCall) error {
-	return data.DB.UpdateNodeFuncCallByID(orm.NodeFuncCall{
+	err := data.DB.UpdateNodeFuncCallByID(orm.NodeFuncCall{
 		Base:      orm.Base{ID: ans.NodeFuncCall.Base.ID},
 		ReturnVal: ans.NodeFuncCall.ReturnVal,
 		State:     int32(ans.NodeFuncCall.State),
 	})
+	if err != nil {
+		return err
+	}
+	return data.Gateway.WsSendOrBroadCastPB(ans.NodeFuncCall.ManagerID, protoManage.Order_NodeFuncCallAns, ans)
 }
 
 //按ID查询节点方法调用

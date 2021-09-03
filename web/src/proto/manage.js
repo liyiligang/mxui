@@ -11018,6 +11018,7 @@ export const protoManage = $root.protoManage = (() => {
          * @memberof protoManage
          * @interface IAnsNodeFuncCall
          * @property {protoManage.INodeFuncCall|null} [NodeFuncCall] AnsNodeFuncCall NodeFuncCall
+         * @property {string|null} [Error] AnsNodeFuncCall Error
          */
 
         /**
@@ -11042,6 +11043,14 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         AnsNodeFuncCall.prototype.NodeFuncCall = null;
+
+        /**
+         * AnsNodeFuncCall Error.
+         * @member {string} Error
+         * @memberof protoManage.AnsNodeFuncCall
+         * @instance
+         */
+        AnsNodeFuncCall.prototype.Error = "";
 
         /**
          * Creates a new AnsNodeFuncCall instance using the specified properties.
@@ -11069,6 +11078,8 @@ export const protoManage = $root.protoManage = (() => {
                 writer = $Writer.create();
             if (message.NodeFuncCall != null && Object.hasOwnProperty.call(message, "NodeFuncCall"))
                 $root.protoManage.NodeFuncCall.encode(message.NodeFuncCall, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.Error != null && Object.hasOwnProperty.call(message, "Error"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.Error);
             return writer;
         };
 
@@ -11105,6 +11116,9 @@ export const protoManage = $root.protoManage = (() => {
                 switch (tag >>> 3) {
                 case 1:
                     message.NodeFuncCall = $root.protoManage.NodeFuncCall.decode(reader, reader.uint32());
+                    break;
+                case 2:
+                    message.Error = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -11146,6 +11160,9 @@ export const protoManage = $root.protoManage = (() => {
                 if (error)
                     return "NodeFuncCall." + error;
             }
+            if (message.Error != null && message.hasOwnProperty("Error"))
+                if (!$util.isString(message.Error))
+                    return "Error: string expected";
             return null;
         };
 
@@ -11166,6 +11183,8 @@ export const protoManage = $root.protoManage = (() => {
                     throw TypeError(".protoManage.AnsNodeFuncCall.NodeFuncCall: object expected");
                 message.NodeFuncCall = $root.protoManage.NodeFuncCall.fromObject(object.NodeFuncCall);
             }
+            if (object.Error != null)
+                message.Error = String(object.Error);
             return message;
         };
 
@@ -11182,10 +11201,14 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults)
+            if (options.defaults) {
                 object.NodeFuncCall = null;
+                object.Error = "";
+            }
             if (message.NodeFuncCall != null && message.hasOwnProperty("NodeFuncCall"))
                 object.NodeFuncCall = $root.protoManage.NodeFuncCall.toObject(message.NodeFuncCall, options);
+            if (message.Error != null && message.hasOwnProperty("Error"))
+                object.Error = message.Error;
             return object;
         };
 

@@ -1,6 +1,7 @@
 import {ElMessage, ElNotification} from "element-plus";
 import {protoManage} from "../proto/manage";
 import {globals} from "../base/globals";
+import {inject} from "vue";
 
 export let ws:WebSocket|null = null
 export let reconnectCnt = 0
@@ -76,14 +77,23 @@ export module websocket {
     }
 
     function receiver(msg:protoManage.Message){
+        globals.globalsData.wsMessage.order = msg.order
         switch (msg.order) {
             case protoManage.Order.NodeNotifyAdd:
                 nodeNotify(msg.message)
+                break
+            case protoManage.Order.NodeFuncCallAns:
+                nodeFuncCallAns(msg.message)
                 break
             default:
                 globals.viewError("错误的websocket指令: " + msg.order)
                 break
         }
+    }
+
+    function nodeFuncCallAns(data:Uint8Array){
+        let msg = protoManage.AnsNodeFuncCall.decode(data)
+        globals.globalsData.wsMessage.message.nodeFuncCallAns = msg
     }
 
     function nodeNotify(data:Uint8Array){

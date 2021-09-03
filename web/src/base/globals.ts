@@ -36,9 +36,7 @@ export module globals {
 			initCount:7
 		},
 		funcCallConfig:{
-			tablePageSize:50,
-			findReturnValRetryTime:1000,
-			findReturnValRetryCnt:5
+			tablePageSize:50
 		},
 		userInitSetting:{
 			isPageFix: false,
@@ -49,7 +47,13 @@ export module globals {
 	export let globalsData = {
 		manager:protoManage.Manager.create(),
 		managerList:new Map<number, protoManage.IManager>(),
-		managerSetting:reactive({setting:globals.globalsConfig.userInitSetting})
+		managerSetting:reactive({setting:globals.globalsConfig.userInitSetting}),
+		wsMessage:{
+			order:protoManage.Order.Unknow,
+			message:reactive({
+				nodeFuncCallAns:protoManage.AnsNodeFuncCall.create()
+			})
+		}
 	}
 
 	export function getManagerByID(id: number|undefined|null):protoManage.IManager|undefined {
