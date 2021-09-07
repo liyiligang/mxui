@@ -6,6 +6,7 @@
     "dev": "vite"
   },
   "dependencies": {
+    "@lljj/vue3-form-element": "^1.7.0",
     "@vue/composition-api": "^1.0.0-rc.1",
     "axios": "^0.21.1",
     "echarts": "^5.1.0",

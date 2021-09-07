@@ -19,16 +19,17 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 	if err != nil {
 		return err
 	}
+	if protoNodeFunc.State == protoManage.State_StateNot {
+		return errors.New(protoNodeFunc.Name +" 已失效")
+	}
 	protoNode := protoManage.Node{Base: protoManage.Base{ID: protoNodeFunc.NodeID}}
 	err = data.NodeFindByID(&protoNode)
 	if err != nil {
 		return err
 	}
-
 	if protoNode.State == protoManage.State_StateUnknow {
-		return errors.New("请求失败: " + protoNode.Name +" 处于离线状态")
+		return errors.New(protoNode.Name +" 处于离线状态")
 	}
-
 	ormNodeFuncCall := &orm.NodeFuncCall{
 		ManagerID: req.NodeFuncCall.ManagerID,
 		FuncID: req.NodeFuncCall.FuncID,

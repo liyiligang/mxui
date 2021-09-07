@@ -3,6 +3,7 @@ import App from './App.vue'
 import './index.css'
 import router from './router'
 import ElementPlus from 'element-plus'
+import VueForm from '@lljj/vue3-form-element';
 import 'element-plus/lib/theme-chalk/index.css'
 import 'dayjs/locale/zh-cn'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
@@ -37,6 +38,7 @@ createApp(App)
     .use(elTableInfiniteScroll)
     .use(ElementPlus, { locale })
     .component('v-chart', ECharts)
+    .component('VueForm', VueForm)
     .mount('#app')
 
 

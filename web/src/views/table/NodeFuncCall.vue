@@ -113,7 +113,9 @@ export default defineComponent ({
                     FuncID: props.nodeFunc?.Base?.ID,
                     Parameter: data.parameter
                 })
-            })).then((response) => {}).catch(error => {}).finally(()=>{})
+            })).then((response) => {}).catch(error => {
+                data.loading = false
+            }).finally(()=>{})
         }
 
 
@@ -125,10 +127,15 @@ export default defineComponent ({
 
 
         function findCallEnd(nodeFuncCall, error){
-            pushNodeFuncCall(nodeFuncCall, false)
             data.loading = false
-            if (error != ""){
+            if (error != null && error != ""){
                 globals.viewError(error)
+            }else{
+                if (nodeFuncCall != null){
+                    pushNodeFuncCall(nodeFuncCall, false)
+                    tableSetCurrentRow(data.nodeFuncCallList[0])
+                }
+                ElMessage.success("调用成功");
             }
         }
 
