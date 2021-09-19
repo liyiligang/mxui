@@ -69,6 +69,7 @@ type NodeFunc struct {
 	NodeID       		int64	`gorm:"NOT NULL; UNIQUE_INDEX:NodeFuncIndex;"`
 	Name 				string	`gorm:"NOT NULL; UNIQUE_INDEX:NodeFuncIndex;"`
 	Func     			string	`gorm:"NOT NULL;"`
+	Schema     			string	`gorm:"NOT NULL; SIZE:10240;"`
 	Level				int32	`gorm:"NOT NULL;"`
 	State				int32	`gorm:"NOT NULL;"`
 }

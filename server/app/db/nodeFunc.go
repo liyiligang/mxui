@@ -31,7 +31,8 @@ func (db *Server) UpdateNodeFuncStateByNodeID(nodeFunc orm.NodeFunc) error {
 //按ID更新指定节点方法信息
 func (db *Server) UpdateNodeFuncInfo(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Model(&nodeFunc).Updates(map[string]interface{}{
-		"func": nodeFunc.Func, "level": nodeFunc.Level, "state": nodeFunc.State}).Error
+		"func": nodeFunc.Func, "schema": nodeFunc.Schema,
+		"level": nodeFunc.Level, "state": nodeFunc.State}).Error
 }
 
 //获取节点方法信息

@@ -33,7 +33,7 @@ import CardInfo from "../cardItem/CardInfo.vue"
 import CardBase from "../cardItem/CardBase.vue"
 import CardViewFrame from "./CardViewFrame.vue"
 import CardReportVal from "../cardItem/CardReportVal.vue"
-import NodeReportVal from "../../views/table/NodeReportVal.vue"
+import NodeReportVal from "../../views/dialog/NodeReportVal.vue"
 import {routerPath} from "../../router";
 import {protoManage} from "../../proto/manage"
 import {request} from "../../base/request";

@@ -6,10 +6,11 @@
 package data
 
 import (
-	"errors"
 	"github.com/liyiligang/klee/app/convert"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/liyiligang/klee/app/typedef/orm"
+	"github.com/pkg/errors"
+	"github.com/xeipuuv/gojsonschema"
 )
 
 //节点方法调用请求
@@ -29,6 +30,10 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 	}
 	if protoNode.State == protoManage.State_StateUnknow {
 		return errors.New(protoNode.Name +" 处于离线状态")
+	}
+	err = data.jsonSchemaValid(protoNodeFunc.Schema, req.NodeFuncCall.Parameter)
+	if err != nil {
+		return err
 	}
 	ormNodeFuncCall := &orm.NodeFuncCall{
 		ManagerID: req.NodeFuncCall.ManagerID,
@@ -85,6 +90,23 @@ func (data *Data) NodeFuncCallDelByNodeFuncID(funcID int64) error {
 
 func (data *Data) NodeFuncCallDelByNodeID(nodeID int64) error {
 	return data.DB.DelNodeFuncCallByNodeID(nodeID)
+}
+
+func (data *Data) jsonSchemaValid(schema string, json string) error {
+	schemaLoader := gojsonschema.NewStringLoader(schema)
+	documentLoader := gojsonschema.NewStringLoader(json)
+	result, err := gojsonschema.Validate(schemaLoader, documentLoader)
+	if err != nil {
+		return err
+	}
+	if !result.Valid() {
+		str := ""
+		for _, desc := range result.Errors() {
+			str = str + desc.String() + "\n"
+		}
+		err = errors.New(str)
+	}
+	return err
 }
 
 

@@ -1,13 +1,13 @@
 <template>
     <el-menu class="menu" @select="menuSelect" :default-active="data.activeName" :default-openeds="data.activeSubMenu">
-        <el-submenu index="1">
+        <el-sub-menu index="1">
             <template #title>
                 <span class="submenuSpanOne">分组</span>
             </template>
             <el-menu-item class="submenuSpanTwo" :index="routerName.nodeGroup" >集群</el-menu-item>
             <el-menu-item class="submenuSpanTwo" :index="routerName.nodeType" >服务</el-menu-item>
-        </el-submenu>
-        <el-submenu index="2">
+        </el-sub-menu>
+        <el-sub-menu index="2">
             <template #title>
                 <span class="submenuSpanOne">功能</span>
             </template>
@@ -17,7 +17,7 @@
             <el-menu-item class="submenuSpanTwo" :index="routerName.nodeReport">报告</el-menu-item>
             <el-menu-item class="submenuSpanTwo" :index="routerName.nodeNotify">通知</el-menu-item>
             <el-menu-item class="submenuSpanTwo" :index="routerName.nodeTest">测试</el-menu-item>
-        </el-submenu>
+        </el-sub-menu>
     </el-menu>
 </template>
 

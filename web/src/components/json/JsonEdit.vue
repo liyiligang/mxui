@@ -58,6 +58,18 @@ export default defineComponent ({
                 }
             }
         }
+
+        function setJsonValueSchema(schema:object){
+            if (data.jsonEditor != null){
+                data.jsonEditor.setSchema(schema)
+            }
+        }
+
+        function validate(){
+            if (data.jsonEditor != null){
+                return data.jsonEditor.validate()
+            }
+        }
         // watchEffect(setJsonValue)
 
         function onEditable(node:EditableNode|object):boolean{
@@ -97,7 +109,7 @@ export default defineComponent ({
                 data.jsonEditor = null
             }
         })
-        return {data, setJsonValue}
+        return {data, setJsonValue, setJsonValueSchema, validate}
     },
 })
 </script>

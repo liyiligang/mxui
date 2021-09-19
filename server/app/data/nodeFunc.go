@@ -15,7 +15,7 @@ func (data *Data) NodeFuncAdd(protoNodeFunc *protoManage.NodeFunc) error {
 		return err
 	}
 	ormNodeFunc := &orm.NodeFunc{NodeID: protoNodeFunc.NodeID, Name: protoNodeFunc.Name,
-		Func: protoNodeFunc.Func, Level: int32(protoNodeFunc.Level),
+		Func: protoNodeFunc.Func, Schema: protoNodeFunc.Schema, Level: int32(protoNodeFunc.Level),
 		State: int32(protoManage.State_StateNormal)}
 	if err := data.DB.AddNodeFunc(ormNodeFunc); err != nil {
 		return err
@@ -51,7 +51,8 @@ func (data *Data) NodeFuncStateUpdateByNodeID(protoNodeFunc *protoManage.NodeFun
 //更新节点方法信息
 func (data *Data) NodeFuncInfoUpdate(protoNodeFunc *protoManage.NodeFunc) error {
 	return data.DB.UpdateNodeFuncInfo(orm.NodeFunc{Base: orm.Base{ID: protoNodeFunc.Base.ID},
-		Func: protoNodeFunc.Func, Level: int32(protoNodeFunc.Level), State: int32(protoManage.State_StateNormal)})
+		Func: protoNodeFunc.Func, Schema: protoNodeFunc.Schema, Level: int32(protoNodeFunc.Level),
+		State: int32(protoManage.State_StateNormal)})
 }
 
 //更新或者新增节点方法

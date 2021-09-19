@@ -1,5 +1,5 @@
 /**
- * 对 element-ui 的无限滚动在 el-table 上使用的封装
+ * 对 element-ui 的无限滚动在 el-dialog 上使用的封装
  */
 import { ElInfiniteScroll } from "element-plus";
 
@@ -10,7 +10,7 @@ const elTableScrollWrapperClass = '.el-table__body-wrapper';
 export default {
     install: (app, options) => {},
     mounted(el, binding, vnode, oldVnode) {
-        // 获取 table 中的滚动层
+        // 获取 dialog 中的滚动层
         const scrollElem = el.querySelector(elTableScrollWrapperClass);
 
         // 如果没找到元素，返回错误

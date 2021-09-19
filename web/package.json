@@ -6,29 +6,30 @@
     "dev": "vite"
   },
   "dependencies": {
-    "@lljj/vue3-form-element": "^1.7.0",
-    "@vue/composition-api": "^1.0.0-rc.1",
-    "axios": "^0.21.1",
-    "echarts": "^5.1.0",
+    "@lljj/vue3-form-element": "^1.9.0",
+    "@vitejs/plugin-vue": "^1.6.2",
+    "@vue/composition-api": "^1.1.5",
+    "axios": "^0.21.4",
+    "echarts": "^5.2.0",
     "el-table-infinite-scroll": "^1.0.10",
-    "element-plus": "^1.0.2-beta.46",
+    "element-plus": "^1.1.0-beta.12",
     "es6-promise": "^4.2.8",
-    "jsoneditor": "^9.2.0",
-    "protobufjs": "^6.10.2",
-    "vue": "^3.0.5",
-    "vue-echarts": "^6.0.0-rc.4",
+    "jsoneditor": "^9.5.5",
+    "protobufjs": "^6.11.2",
+    "vue": "^3.2.11",
+    "vue-echarts": "^6.0.0",
     "vue-json-editor": "^1.4.3",
-    "vue-native-websocket-vue3": "^3.1.0",
-    "vue-router": "^4.0.3",
-    "vuex": "^4.0.0-rc.2",
-    "webpack-merge": "^5.7.3"
+    "vue-native-websocket-vue3": "^3.1.4",
+    "vue-router": "^4.0.11",
+    "vuex": "^4.0.2",
+    "webpack-merge": "^5.8.0"
   },
   "devDependencies": {
-    "@types/jsoneditor": "^8.6.0",
-    "@vue/cli-plugin-router": "^5.0.0-beta.1",
-    "@vue/cli-plugin-typescript": "^5.0.0-beta.1",
-    "@vue/compiler-sfc": "^3.0.4",
-    "typescript": "~4.1.5",
-    "vite": "^1.0.0-rc.13"
+    "@types/jsoneditor": "^8.6.1",
+    "@vue/cli-plugin-router": "^5.0.0-beta.4",
+    "@vue/cli-plugin-typescript": "^5.0.0-beta.4",
+    "@vue/compiler-sfc": "^3.2.12",
+    "typescript": "^4.4.3",
+    "vite": "^2.5.8"
   }
 }

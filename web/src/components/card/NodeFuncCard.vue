@@ -14,14 +14,24 @@
 
             <el-dialog
                 v-model="data.dialogVisible"
-                width="860px"
-                top="10vh"
+                width="520px"
+                top="8vh"
                 destroy-on-close>
                 <template v-slot:title>
                     <span class="card-dialog-title" :class=convert.getColorByLevel(nodeFunc.Level)>{{nodeFunc.Name}}</span>
                 </template>
                 <NodeFuncCall :nodeFunc="nodeFunc"></NodeFuncCall>
             </el-dialog>
+<!--            <el-dialog-->
+<!--                v-model="data.dialogVisible"-->
+<!--                width="860px"-->
+<!--                top="10vh"-->
+<!--                destroy-on-close>-->
+<!--                <template v-slot:title>-->
+<!--                    <span class="card-dialog-title" :class=convert.getColorByLevel(nodeFunc.Level)>{{nodeFunc.Name}}</span>-->
+<!--                </template>-->
+<!--                <NodeFuncCall :nodeFunc="nodeFunc"></NodeFuncCall>-->
+<!--            </el-dialog>-->
         </template>
     </CardViewFrame>
 </template>
@@ -37,7 +47,8 @@ import {convert} from "../../base/convert"
 import {routerPath} from "../../router"
 import CardInfo from "../cardItem/CardInfo.vue"
 import CardFuncCall from "../cardItem/CardFuncCall.vue"
-import NodeFuncCall from "../../views/table/NodeFuncCall.vue"
+import NodeFuncHistory from "../../views/dialog/NodeFuncHistory.vue"
+import NodeFuncCall from "../../views/dialog/NodeFuncCall.vue"
 import {defaultVal} from "../../base/defaultVal";
 
 interface NodeFuncCardInfo {
@@ -67,7 +78,8 @@ export default defineComponent ({
         CardViewFrame,
         CardInfo,
         CardFuncCall,
-        NodeFuncCall
+        NodeFuncCall,
+        NodeFuncHistory
     },
     setup(props, context){
         const data = reactive<NodeFuncCardInfo>({dialogVisible:false})

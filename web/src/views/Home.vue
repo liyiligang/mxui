@@ -90,9 +90,11 @@ export default defineComponent ({
         }
 
         function initUserSetting(data:string){
-            if (globals.isJson(data)){
-                let setting = JSON.parse(data)
-                globals.globalsData.managerSetting.setting = setting
+            if (data != null){
+                if (globals.isJson(data)){
+                    let setting = JSON.parse(data)
+                    globals.globalsData.managerSetting.setting = setting
+                }
                 watch(() => globals.globalsData.managerSetting.setting, (newValue) => {
                     request.reqManagerUpdate(protoManage.Manager.create({
                         Setting:JSON.stringify(newValue)

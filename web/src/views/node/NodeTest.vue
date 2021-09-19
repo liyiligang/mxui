@@ -41,7 +41,7 @@ export default defineComponent ({
             "\"required\": [\"userName\"],\"properties\": {\"userName\": " +
             "{\"type\": \"integer\",\"title\": \"用户名\",\"default\": 1}}}"
 
-        let kkk = "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"$ref\":\"#/definitions/TestUser\",\"definitions\":{\"TestUser\":{\"required\":[\"id\",\"name\"],\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\",\"title\":\"用户名\",\"description\":\"用户名的名字\",\"default\":\"alex\",\"examples\":[\"joe\",\"lucy\"]}},\"additionalProperties\":false,\"type\":\"object\"}}}"
+        let kkk = "{\"$schema\":\"http://json-schema.org/draft-04/schema#\",\"$ref\":\"#/definitions/TestUser\",\"definitions\":{\"TestUser\":{\"required\":[\"id\",\"name\"],\"properties\":{\"id\":{\"type\":\"integer\"},\"name\":{\"type\":\"string\",\"title\":\"the name\",\"description\":\"The name of a friend\",\"default\":\"alex\",\"examples\":[\"joe\",\"lucy\"]},\"friends\":{\"items\":{\"type\":\"integer\"},\"type\":\"array\",\"description\":\"The list of IDs, omitted when empty\"},\"tags\":{\"patternProperties\":{\".*\":{\"additionalProperties\":true}},\"type\":\"object\",\"a\":\"b\",\"foo\":[\"bar\",\"bar1\"]},\"birth_date\":{\"type\":\"string\",\"format\":\"date-time\"},\"year_of_birth\":{\"type\":\"string\"},\"metadata\":{\"additionalProperties\":true,\"oneOf\":[{\"type\":\"string\"},{\"type\":\"array\"}]},\"fav_color\":{\"enum\":[\"red\",\"green\",\"blue\"],\"type\":\"string\"}},\"additionalProperties\":false,\"type\":\"object\",\"oneOf\":[{\"required\":[\"birth_date\"],\"title\":\"date\"},{\"required\":[\"year_of_birth\"],\"title\":\"year\"}]}}}"
 
         // let aa = {
         //     "type": "object",

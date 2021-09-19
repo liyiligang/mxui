@@ -149,6 +149,7 @@ func OrmNodeFuncToProtoNodeFunc(ormNodeFunc *orm.NodeFunc, protoNodeFunc *protoM
 	protoNodeFunc.NodeID = ormNodeFunc.NodeID
 	protoNodeFunc.Name = ormNodeFunc.Name
 	protoNodeFunc.Func = ormNodeFunc.Func
+	protoNodeFunc.Schema = ormNodeFunc.Schema
 	protoNodeFunc.Level = protoManage.Level(ormNodeFunc.Level)
 	protoNodeFunc.State = protoManage.State(ormNodeFunc.State)
 }

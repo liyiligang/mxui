@@ -22,7 +22,7 @@ func (app *App) WebsocketConnected(conn *Jweb.WebsocketConn) error {
 	var err error
 	defer func(){
 		if err != nil {
-			Jlog.Error("用户上线失败：", "userID", userID, "error", err)
+			Jlog.Warn("用户上线失败：", "userID", userID, "error", err)
 			app.Request.SaveNodeNotifyWithUserError(userID, "用户上线失败: " + err.Error())
 		}else{
 			Jlog.Info("用户已上线：", "userID", userID, "error", err)
@@ -50,7 +50,7 @@ func (app *App) WebsocketClose(conn *Jweb.WebsocketConn, code int, text string) 
 	var err error
 	defer func(){
 		if err != nil {
-			Jlog.Error("用户下线错误: ", "userID", userID, "error", err)
+			Jlog.Warn("用户下线错误: ", "userID", userID, "error", err)
 			app.Request.SaveNodeNotifyWithUserError(userID, "用户下线错误: " + err.Error())
 		}else{
 			Jlog.Info("用户已下线: ", "userID", userID, "error", err)
@@ -103,7 +103,7 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 
 	defer func(){
 		if err != nil {
-			Jlog.Error("http请求错误：", "error", err)
+			Jlog.Warn("http请求错误：", "error", err)
 			app.Request.SaveNodeNotifyWithUserError(userID, err.Error())
 		}
 	}()
@@ -341,7 +341,7 @@ func (app *App) RpcStreamConnected(conn *Jrpc.RpcStream) error {
 	var err error
 	defer func(){
 		if err != nil {
-			Jlog.Error("节点上线失败：", "nodeID", nodeID, "error", err)
+			Jlog.Warn("节点上线失败：", "nodeID", nodeID, "error", err)
 			app.Request.SaveNodeNotifyWithNodeError(nodeID, "节点上线失败: " + err.Error())
 		}else{
 			Jlog.Info("节点已上线：", "nodeID", nodeID, "error", err)
@@ -368,7 +368,7 @@ func (app *App) RpcStreamClose(conn *Jrpc.RpcStream) {
 	var err error
 	defer func(){
 		if err != nil {
-			Jlog.Error("节点下线错误：", "nodeID", nodeID, "error", err)
+			Jlog.Warn("节点下线错误：", "nodeID", nodeID, "error", err)
 			app.Request.SaveNodeNotifyWithNodeError(nodeID, "节点下线错误: " + err.Error())
 		}else{
 			Jlog.Info("节点已下线：", "nodeID", nodeID, "error", err)
@@ -388,7 +388,7 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 	var err error
 	defer func(){
 		if err != nil {
-			Jlog.Error("rpc stream请求错误：", "error", err)
+			Jlog.Warn("rpc stream请求错误：", "error", err)
 			app.Request.SendNodeNotifyWithNodeError(nodeID, err.Error())
 		}
 	}()

@@ -29,7 +29,7 @@ import {globals} from "../../base/globals";
 import {protoManage} from "../../proto/manage";
 import {defaultVal} from "../../base/defaultVal";
 
-interface NodeFuncCallInfo {
+interface NodeFuncHistoryInfo {
     loading: boolean
     tabActiveName:string
     parameter:string|null|undefined
@@ -41,7 +41,7 @@ interface NodeFuncCallInfo {
 }
 
 export default defineComponent ({
-    name: "NodeFuncCall",
+    name: "NodeFuncHistory",
     components: {
         JsonEdit,
         NodeFuncCallTable
@@ -53,7 +53,7 @@ export default defineComponent ({
         }
     },
     setup(props){
-        const data = reactive<NodeFuncCallInfo>({loading:false, tableIndex:1, tabActiveName:"parameter", currentRow:null,
+        const data = reactive<NodeFuncHistoryInfo>({loading:false, tableIndex:1, tabActiveName:"parameter", currentRow:null,
             parameter:"", returnVal:"", nodeFuncCallList:[], nodeFuncCallIDMap:new Map<number|null|undefined, number>()})
         let reqStr = "执行方法（" + props.nodeFunc?.Name+"）"
 

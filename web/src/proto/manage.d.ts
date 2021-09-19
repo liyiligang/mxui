@@ -1477,6 +1477,9 @@ export namespace protoManage {
         /** NodeFunc Func */
         Func?: (string|null);
 
+        /** NodeFunc Schema */
+        Schema?: (string|null);
+
         /** NodeFunc Level */
         Level?: (protoManage.Level|null);
 
@@ -1504,6 +1507,9 @@ export namespace protoManage {
 
         /** NodeFunc Func. */
         public Func: string;
+
+        /** NodeFunc Schema. */
+        public Schema: string;
 
         /** NodeFunc Level. */
         public Level: protoManage.Level;

@@ -2,9 +2,8 @@
     <el-pagination
         class="page"
         layout="total, sizes, prev, pager, next, jumper"
-        :page-sizes="data.pageSizeList"
-        :currentPage="data.pageNum" v-model:pageSize="data.pageSize"
-        :total=pageTotal :pageCount="globals.globalsConfig.pageConfig.initCount"
+        :page-sizes="data.pageSizeList" :current-page="data.pageNum"
+        v-model:page-size="data.pageSize" :total=pageTotal
         @size-change="pageSizeChange"
         @current-change="pageNumChange">
     </el-pagination>

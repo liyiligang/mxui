@@ -4676,6 +4676,7 @@ export const protoManage = $root.protoManage = (() => {
          * @property {number|null} [NodeID] NodeFunc NodeID
          * @property {string|null} [Name] NodeFunc Name
          * @property {string|null} [Func] NodeFunc Func
+         * @property {string|null} [Schema] NodeFunc Schema
          * @property {protoManage.Level|null} [Level] NodeFunc Level
          * @property {protoManage.State|null} [State] NodeFunc State
          */
@@ -4728,6 +4729,14 @@ export const protoManage = $root.protoManage = (() => {
         NodeFunc.prototype.Func = "";
 
         /**
+         * NodeFunc Schema.
+         * @member {string} Schema
+         * @memberof protoManage.NodeFunc
+         * @instance
+         */
+        NodeFunc.prototype.Schema = "";
+
+        /**
          * NodeFunc Level.
          * @member {protoManage.Level} Level
          * @memberof protoManage.NodeFunc
@@ -4775,10 +4784,12 @@ export const protoManage = $root.protoManage = (() => {
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message.Name);
             if (message.Func != null && Object.hasOwnProperty.call(message, "Func"))
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.Func);
+            if (message.Schema != null && Object.hasOwnProperty.call(message, "Schema"))
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.Schema);
             if (message.Level != null && Object.hasOwnProperty.call(message, "Level"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.Level);
+                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.Level);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.State);
+                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.State);
             return writer;
         };
 
@@ -4826,9 +4837,12 @@ export const protoManage = $root.protoManage = (() => {
                     message.Func = reader.string();
                     break;
                 case 5:
-                    message.Level = reader.int32();
+                    message.Schema = reader.string();
                     break;
                 case 6:
+                    message.Level = reader.int32();
+                    break;
+                case 7:
                     message.State = reader.int32();
                     break;
                 default:
@@ -4880,6 +4894,9 @@ export const protoManage = $root.protoManage = (() => {
             if (message.Func != null && message.hasOwnProperty("Func"))
                 if (!$util.isString(message.Func))
                     return "Func: string expected";
+            if (message.Schema != null && message.hasOwnProperty("Schema"))
+                if (!$util.isString(message.Schema))
+                    return "Schema: string expected";
             if (message.Level != null && message.hasOwnProperty("Level"))
                 switch (message.Level) {
                 default:
@@ -4935,6 +4952,8 @@ export const protoManage = $root.protoManage = (() => {
                 message.Name = String(object.Name);
             if (object.Func != null)
                 message.Func = String(object.Func);
+            if (object.Schema != null)
+                message.Schema = String(object.Schema);
             switch (object.Level) {
             case "LevelNot":
             case 0:
@@ -5004,6 +5023,7 @@ export const protoManage = $root.protoManage = (() => {
                     object.NodeID = options.longs === String ? "0" : 0;
                 object.Name = "";
                 object.Func = "";
+                object.Schema = "";
                 object.Level = options.enums === String ? "LevelNot" : 0;
                 object.State = options.enums === String ? "StateNot" : 0;
             }
@@ -5018,6 +5038,8 @@ export const protoManage = $root.protoManage = (() => {
                 object.Name = message.Name;
             if (message.Func != null && message.hasOwnProperty("Func"))
                 object.Func = message.Func;
+            if (message.Schema != null && message.hasOwnProperty("Schema"))
+                object.Schema = message.Schema;
             if (message.Level != null && message.hasOwnProperty("Level"))
                 object.Level = options.enums === String ? $root.protoManage.Level[message.Level] : message.Level;
             if (message.State != null && message.hasOwnProperty("State"))
