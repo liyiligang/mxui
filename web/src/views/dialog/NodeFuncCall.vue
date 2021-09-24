@@ -1,6 +1,6 @@
 <template>
-    <el-row type="flex" justify="center" align="middle">
-        <el-tabs class="funcCallTabs" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
+    <el-row type="flex" justify="center" align="middle" >
+        <el-tabs class="funcCallTabs" v-loading="data.loading" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
             <el-tab-pane label="表单" name="form">
                 <el-row class="formRow" type="flex" justify="center" align="middle">
                     <vue-form class="form" v-model="data.formData" :form-footer="data.formFooter"
@@ -17,29 +17,53 @@
             <el-button class="funcCallButton" type="primary" @click=funcCall :disabled="data.loading">提交</el-button>
         </el-row>
     </el-row>
+
+    <el-dialog
+        v-model="data.dialogVisible"
+        width="620px"
+        top="12vh"
+        destroy-on-close>
+        <template v-slot:title>
+            <el-row class="funcCallTitleRow" type="flex" justify="space-between" align="middle" >
+                <span class="card-dialog-title" :class=convert.getColorByLevel(nodeFunc.Level)>{{nodeFunc.Name}}</span>
+                <i class="funcCallIcon" :class="[convert.getNodeFuncCallStateIcon(data.nodeFuncCall.State),
+                convert.getColorByState(data.nodeFuncCall.State)]"></i>
+                <div></div>
+            </el-row>
+        </template>
+        <NodeFuncReturn :nodeFuncCall="data.nodeFuncCall"></NodeFuncReturn>
+    </el-dialog>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive, ref} from "vue";
+import {defineComponent, onMounted, reactive, ref, watch} from "vue";
 import {protoManage} from "../../proto/manage";
 import {defaultVal} from "../../base/defaultVal";
-import JsonEdit from "../../components/json/JsonEdit.vue";
 import { globals } from "../../base/globals";
 import {request} from "../../base/request";
+import {convert} from "../../base/convert"
+import JsonEdit from "../../components/json/JsonEdit.vue";
+import NodeFuncReturn from "./NodeFuncReturn.vue";
+import {ElMessage} from "element-plus";
 
 interface NodeFuncCallInfo {
     formData:{}
-    resetData:string
     schema:{}
     uiSchema:{}
     formFooter:{}
+    resetData:string
+    loading: boolean
     tabActiveName:string
+    funcCallID:number
+    dialogVisible:boolean
+    nodeFuncCall:protoManage.NodeFuncCall
 }
 
 export default defineComponent ({
     name: "NodeFuncCall",
     components: {
-        JsonEdit
+        JsonEdit,
+        NodeFuncReturn
     },
     props:{
         nodeFunc:{
@@ -50,7 +74,8 @@ export default defineComponent ({
     setup(props){
         const data = reactive<NodeFuncCallInfo>({formData:{}, resetData:"", uiSchema:{},
             schema:globals.getJson(props.nodeFunc.Schema), formFooter:{show: false},
-            tabActiveName:"form"})
+            loading:false, tabActiveName:"form", funcCallID:0, dialogVisible:false,
+            nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall()})
         if (typeof data.schema === "object") {
             traversalSchema(data.schema)
         }
@@ -95,16 +120,34 @@ export default defineComponent ({
             if (! await jsonValidate()){
                return
             }
-            // data.loading = true
+            data.loading = true
             request.reqCallNodeFunc(protoManage.ReqNodeFuncCall.create({
                 NodeFuncCall: protoManage.NodeFuncCall.create({
                     FuncID: props.nodeFunc?.Base?.ID,
                     Parameter: JSON.stringify(data.formData)
                 })
             })).then((response) => {
-            }).catch(error => {
-                // data.loading = false
-            }).finally(() => {})
+               data.funcCallID = response.ID
+            }).catch(error => {}).finally(() => {})
+        }
+
+        watch(() => globals.globalsData.wsMessage.message, (newVal) => {
+            if (globals.globalsData.wsMessage.order == protoManage.Order.NodeFuncCallAns) {
+                funcCallFinish(newVal.nodeFuncCallAns)
+            }
+        },{deep:true})
+
+        function funcCallFinish(returnVal:protoManage.AnsNodeFuncCall) {
+            if (data.funcCallID == returnVal.NodeFuncCall?.Base?.ID) {
+                data.loading = false
+                if (returnVal.Error != null && returnVal.Error != ""){
+                    globals.viewError(returnVal.Error)
+                }else{
+                    data.dialogVisible = true
+                    data.nodeFuncCall = protoManage.NodeFuncCall.create(returnVal.NodeFuncCall)
+                    ElMessage.success("调用成功");
+                }
+            }
         }
 
         function jsonChanged(jsonValue:string) {
@@ -122,14 +165,17 @@ export default defineComponent ({
             return isOK
         }
 
-        return {data, funcCall, reset, jsonChanged, tabClick, jsonEdit}
+        return {data, funcCall, reset, jsonChanged, tabClick, jsonEdit, convert}
     }
 })
 </script>
 
 <style scoped>
+@import "../../css/card.css";
+@import "../../css/color.css";
+
 .formRow{
-    height: 360px;
+    height: 320px;
     overflow-y:scroll;
     margin-bottom: 5px;
 }
@@ -137,7 +183,7 @@ export default defineComponent ({
     margin-right: 6px;
 }
 .json{
-    height: 360px;
+    height: 320px;
     margin-bottom: 5px;
 }
 .funcCallButton{
@@ -148,5 +194,14 @@ export default defineComponent ({
 .funcCallTabs{
     width: 100%;
     height: 100%;
+}
+
+.funcCallTitleRow{
+    width: 100%;
+}
+
+.funcCallIcon{
+    font-size: 32px;
+    margin-right: 60px;
 }
 </style>

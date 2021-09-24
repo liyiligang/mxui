@@ -172,6 +172,7 @@ func OrmNodeFuncCallToProtoNodeFuncCall(ormNodeFuncCall *orm.NodeFuncCall, proto
 	protoNodeFuncCall.FuncID = ormNodeFuncCall.FuncID
 	protoNodeFuncCall.Parameter = ormNodeFuncCall.Parameter
 	protoNodeFuncCall.ReturnVal = ormNodeFuncCall.ReturnVal
+	protoNodeFuncCall.ReturnType = protoManage.NodeFuncReturnType(ormNodeFuncCall.ReturnType)
 	protoNodeFuncCall.State = protoManage.State(ormNodeFuncCall.State)
 }
 

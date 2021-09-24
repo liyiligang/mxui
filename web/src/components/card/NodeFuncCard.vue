@@ -14,24 +14,14 @@
 
             <el-dialog
                 v-model="data.dialogVisible"
-                width="520px"
-                top="8vh"
+                width="500px"
+                top="12vh"
                 destroy-on-close>
                 <template v-slot:title>
                     <span class="card-dialog-title" :class=convert.getColorByLevel(nodeFunc.Level)>{{nodeFunc.Name}}</span>
                 </template>
                 <NodeFuncCall :nodeFunc="nodeFunc"></NodeFuncCall>
             </el-dialog>
-<!--            <el-dialog-->
-<!--                v-model="data.dialogVisible"-->
-<!--                width="860px"-->
-<!--                top="10vh"-->
-<!--                destroy-on-close>-->
-<!--                <template v-slot:title>-->
-<!--                    <span class="card-dialog-title" :class=convert.getColorByLevel(nodeFunc.Level)>{{nodeFunc.Name}}</span>-->
-<!--                </template>-->
-<!--                <NodeFuncCall :nodeFunc="nodeFunc"></NodeFuncCall>-->
-<!--            </el-dialog>-->
         </template>
     </CardViewFrame>
 </template>

@@ -9,6 +9,7 @@ import 'dayjs/locale/zh-cn'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 import elTableInfiniteScroll from "./components/tableInfiniteScroll";
 import ECharts  from 'vue-echarts'
+import JsonViewer from "vue3-json-viewer"
 import { use } from "echarts/core";
 import {
         CanvasRenderer
@@ -38,6 +39,7 @@ app.config.unwrapInjectedRef = true
 app.use(router)
     .use(elTableInfiniteScroll)
     .use(ElementPlus, { locale })
+    .use(JsonViewer)
     .component('v-chart', ECharts)
     .component('VueForm', VueForm)
     .mount('#app')

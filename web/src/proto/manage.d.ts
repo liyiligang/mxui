@@ -80,6 +80,17 @@ export namespace protoManage {
         LevelSuper = 4
     }
 
+    /** NodeFuncReturnType enum. */
+    enum NodeFuncReturnType {
+        Text = 0,
+        Json = 1,
+        Link = 2,
+        Media = 3,
+        File = 4,
+        Table = 5,
+        LineChart = 6
+    }
+
     /** NotifySenderType enum. */
     enum NotifySenderType {
         NotifySenderTypeUnknow = 0,
@@ -1606,6 +1617,9 @@ export namespace protoManage {
         /** NodeFuncCall ReturnVal */
         ReturnVal?: (string|null);
 
+        /** NodeFuncCall ReturnType */
+        ReturnType?: (protoManage.NodeFuncReturnType|null);
+
         /** NodeFuncCall State */
         State?: (protoManage.State|null);
     }
@@ -1633,6 +1647,9 @@ export namespace protoManage {
 
         /** NodeFuncCall ReturnVal. */
         public ReturnVal: string;
+
+        /** NodeFuncCall ReturnType. */
+        public ReturnType: protoManage.NodeFuncReturnType;
 
         /** NodeFuncCall State. */
         public State: protoManage.State;

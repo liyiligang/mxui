@@ -17,6 +17,20 @@ export module convert {
         return "color-state-main"
     }
 
+    export function getViewColorByState(state: protoManage.State|undefined|null):string {
+        switch (state) {
+            case protoManage.State.StateUnknow:
+                return "color-state-main"
+            case protoManage.State.StateNormal:
+                return "color-state-success"
+            case protoManage.State.StateWarn:
+                return "color-state-warning"
+            case protoManage.State.StateError:
+                return "color-state-danger"
+        }
+        return ""
+    }
+
     export function getColorByManagerState(state: protoManage.State|undefined|null):string {
         switch (state) {
             case protoManage.State.StateNormal:
@@ -77,8 +91,8 @@ export module convert {
         return "无"
     }
 
-    export function getNodeFuncCallStateName(level: protoManage.State|undefined|null):string {
-        switch (level) {
+    export function getNodeFuncCallStateName(state: protoManage.State|undefined|null):string {
+        switch (state) {
             case protoManage.State.StateUnknow:
                 return "超时"
             case protoManage.State.StateNormal:
@@ -87,6 +101,32 @@ export module convert {
                 return "异常"
             case protoManage.State.StateError:
                 return "失败"
+        }
+        return "未知"
+    }
+
+    export function getNodeFuncCallStateIcon(state: protoManage.State|undefined|null):string {
+        switch (state) {
+            case protoManage.State.StateUnknow:
+                return "el-icon-remove"
+            case protoManage.State.StateNormal:
+                return "el-icon-success"
+            case protoManage.State.StateWarn:
+                return "el-icon-warning"
+            case protoManage.State.StateError:
+                return "el-icon-error"
+        }
+        return "el-icon-question"
+    }
+
+    export function getNodeFuncReturnTypeName(type: protoManage.NodeFuncReturnType|undefined|null):string {
+        switch (type) {
+            case protoManage.NodeFuncReturnType.Text:
+                return "文本"
+            case protoManage.NodeFuncReturnType.Json:
+                return "Json"
+            case protoManage.NodeFuncReturnType.Link:
+                return "链接"
         }
         return "未知"
     }

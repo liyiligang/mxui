@@ -31,6 +31,7 @@ func (db *Server) UpdateNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) error {
 	err := db.Gorm.Model(&nodeFuncCall).
 		Updates(map[string]interface{}{
 			"returnVal": nodeFuncCall.ReturnVal,
+			"returnType": nodeFuncCall.ReturnType,
 			"state": nodeFuncCall.State}).Error
 	return err
 }

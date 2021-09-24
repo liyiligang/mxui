@@ -53,6 +53,7 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 func (data *Data) NodeFuncCallAns(ans *protoManage.AnsNodeFuncCall) error {
 	err := data.DB.UpdateNodeFuncCallByID(orm.NodeFuncCall{
 		Base:      orm.Base{ID: ans.NodeFuncCall.Base.ID},
+		ReturnType: int32(ans.NodeFuncCall.ReturnType),
 		ReturnVal: ans.NodeFuncCall.ReturnVal,
 		State:     int32(ans.NodeFuncCall.State),
 	})

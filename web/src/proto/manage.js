@@ -179,6 +179,30 @@ export const protoManage = $root.protoManage = (() => {
     })();
 
     /**
+     * NodeFuncReturnType enum.
+     * @name protoManage.NodeFuncReturnType
+     * @enum {number}
+     * @property {number} Text=0 Text value
+     * @property {number} Json=1 Json value
+     * @property {number} Link=2 Link value
+     * @property {number} Media=3 Media value
+     * @property {number} File=4 File value
+     * @property {number} Table=5 Table value
+     * @property {number} LineChart=6 LineChart value
+     */
+    protoManage.NodeFuncReturnType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "Text"] = 0;
+        values[valuesById[1] = "Json"] = 1;
+        values[valuesById[2] = "Link"] = 2;
+        values[valuesById[3] = "Media"] = 3;
+        values[valuesById[4] = "File"] = 4;
+        values[valuesById[5] = "Table"] = 5;
+        values[valuesById[6] = "LineChart"] = 6;
+        return values;
+    })();
+
+    /**
      * NotifySenderType enum.
      * @name protoManage.NotifySenderType
      * @enum {number}
@@ -5072,6 +5096,7 @@ export const protoManage = $root.protoManage = (() => {
          * @property {number|null} [FuncID] NodeFuncCall FuncID
          * @property {string|null} [Parameter] NodeFuncCall Parameter
          * @property {string|null} [ReturnVal] NodeFuncCall ReturnVal
+         * @property {protoManage.NodeFuncReturnType|null} [ReturnType] NodeFuncCall ReturnType
          * @property {protoManage.State|null} [State] NodeFuncCall State
          */
 
@@ -5131,6 +5156,14 @@ export const protoManage = $root.protoManage = (() => {
         NodeFuncCall.prototype.ReturnVal = "";
 
         /**
+         * NodeFuncCall ReturnType.
+         * @member {protoManage.NodeFuncReturnType} ReturnType
+         * @memberof protoManage.NodeFuncCall
+         * @instance
+         */
+        NodeFuncCall.prototype.ReturnType = 0;
+
+        /**
          * NodeFuncCall State.
          * @member {protoManage.State} State
          * @memberof protoManage.NodeFuncCall
@@ -5172,8 +5205,10 @@ export const protoManage = $root.protoManage = (() => {
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message.Parameter);
             if (message.ReturnVal != null && Object.hasOwnProperty.call(message, "ReturnVal"))
                 writer.uint32(/* id 5, wireType 2 =*/42).string(message.ReturnVal);
+            if (message.ReturnType != null && Object.hasOwnProperty.call(message, "ReturnType"))
+                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.ReturnType);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.State);
+                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.State);
             return writer;
         };
 
@@ -5224,6 +5259,9 @@ export const protoManage = $root.protoManage = (() => {
                     message.ReturnVal = reader.string();
                     break;
                 case 6:
+                    message.ReturnType = reader.int32();
+                    break;
+                case 7:
                     message.State = reader.int32();
                     break;
                 default:
@@ -5278,6 +5316,19 @@ export const protoManage = $root.protoManage = (() => {
             if (message.ReturnVal != null && message.hasOwnProperty("ReturnVal"))
                 if (!$util.isString(message.ReturnVal))
                     return "ReturnVal: string expected";
+            if (message.ReturnType != null && message.hasOwnProperty("ReturnType"))
+                switch (message.ReturnType) {
+                default:
+                    return "ReturnType: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                case 5:
+                case 6:
+                    break;
+                }
             if (message.State != null && message.hasOwnProperty("State"))
                 switch (message.State) {
                 default:
@@ -5331,6 +5382,36 @@ export const protoManage = $root.protoManage = (() => {
                 message.Parameter = String(object.Parameter);
             if (object.ReturnVal != null)
                 message.ReturnVal = String(object.ReturnVal);
+            switch (object.ReturnType) {
+            case "Text":
+            case 0:
+                message.ReturnType = 0;
+                break;
+            case "Json":
+            case 1:
+                message.ReturnType = 1;
+                break;
+            case "Link":
+            case 2:
+                message.ReturnType = 2;
+                break;
+            case "Media":
+            case 3:
+                message.ReturnType = 3;
+                break;
+            case "File":
+            case 4:
+                message.ReturnType = 4;
+                break;
+            case "Table":
+            case 5:
+                message.ReturnType = 5;
+                break;
+            case "LineChart":
+            case 6:
+                message.ReturnType = 6;
+                break;
+            }
             switch (object.State) {
             case "StateNot":
             case 0:
@@ -5383,6 +5464,7 @@ export const protoManage = $root.protoManage = (() => {
                     object.FuncID = options.longs === String ? "0" : 0;
                 object.Parameter = "";
                 object.ReturnVal = "";
+                object.ReturnType = options.enums === String ? "Text" : 0;
                 object.State = options.enums === String ? "StateNot" : 0;
             }
             if (message.Base != null && message.hasOwnProperty("Base"))
@@ -5401,6 +5483,8 @@ export const protoManage = $root.protoManage = (() => {
                 object.Parameter = message.Parameter;
             if (message.ReturnVal != null && message.hasOwnProperty("ReturnVal"))
                 object.ReturnVal = message.ReturnVal;
+            if (message.ReturnType != null && message.hasOwnProperty("ReturnType"))
+                object.ReturnType = options.enums === String ? $root.protoManage.NodeFuncReturnType[message.ReturnType] : message.ReturnType;
             if (message.State != null && message.hasOwnProperty("State"))
                 object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
             return object;

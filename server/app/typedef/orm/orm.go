@@ -80,6 +80,7 @@ type NodeFuncCall struct {
 	FuncID       		int64	`gorm:"NOT NULL; INDEX:NodeFuncCallIndex;"`
 	Parameter  			string	`gorm:"NOT NULL;"`
 	ReturnVal 			string	`gorm:"NOT NULL;"`
+	ReturnType 			int32	`gorm:"NOT NULL;"`
 	State				int32	`gorm:"NOT NULL;"`
 }
 
