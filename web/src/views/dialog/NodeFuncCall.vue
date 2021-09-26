@@ -22,12 +22,15 @@
         v-model="data.dialogVisible"
         width="620px"
         top="12vh"
-        destroy-on-close>
+        destroy-on-close
+        :fullscreen="data.fullScreen"
+        :custom-class="getFuncCallReturnView()">
         <template v-slot:title>
             <el-row class="funcCallTitleRow" type="flex" justify="space-between" align="middle" >
                 <span class="card-dialog-title" :class=convert.getColorByLevel(nodeFunc.Level)>{{nodeFunc.Name}}</span>
                 <i class="funcCallIcon" :class="[convert.getNodeFuncCallStateIcon(data.nodeFuncCall.State),
                 convert.getColorByState(data.nodeFuncCall.State)]"></i>
+                <el-button size="small" @click="setFullScreen"></el-button>
                 <div></div>
             </el-row>
         </template>
@@ -57,6 +60,7 @@ interface NodeFuncCallInfo {
     funcCallID:number
     dialogVisible:boolean
     nodeFuncCall:protoManage.NodeFuncCall
+    fullScreen:boolean
 }
 
 export default defineComponent ({
@@ -74,7 +78,7 @@ export default defineComponent ({
     setup(props){
         const data = reactive<NodeFuncCallInfo>({formData:{}, resetData:"", uiSchema:{},
             schema:globals.getJson(props.nodeFunc.Schema), formFooter:{show: false},
-            loading:false, tabActiveName:"form", funcCallID:0, dialogVisible:false,
+            loading:false, tabActiveName:"form", funcCallID:0, dialogVisible:false, fullScreen:false,
             nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall()})
         if (typeof data.schema === "object") {
             traversalSchema(data.schema)
@@ -154,6 +158,14 @@ export default defineComponent ({
             data.formData = globals.getJson(jsonValue)
         }
 
+        function setFullScreen() {
+            data.fullScreen = !data.fullScreen
+        }
+
+        function getFuncCallReturnView() {
+            return data.fullScreen?"funcCallReturnFullScreen":"funcCallReturnView"
+        }
+
         async function jsonValidate(): Promise<boolean> {
             let isOK = true
             await jsonEdit.value.validate().then((response) => {
@@ -165,7 +177,8 @@ export default defineComponent ({
             return isOK
         }
 
-        return {data, funcCall, reset, jsonChanged, tabClick, jsonEdit, convert}
+        return {data, funcCall, reset, jsonChanged, tabClick, setFullScreen, getFuncCallReturnView,
+            jsonEdit, convert}
     }
 })
 </script>
@@ -203,5 +216,16 @@ export default defineComponent ({
 .funcCallIcon{
     font-size: 32px;
     margin-right: 60px;
+}
+
+</style>
+
+<style>
+.funcCallReturnView .el-dialog__body{
+    height: calc(80vh - 125px);
+}
+
+.funcCallReturnFullScreen .el-dialog__body{
+    height: calc(100vh - 125px);
 }
 </style>

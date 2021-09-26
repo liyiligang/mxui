@@ -27,8 +27,12 @@
                 class="contextRow" type="flex" justify="start" align="top">
             <NodeFuncReturnTable class="contextTable" :options="returnObj"></NodeFuncReturnTable>
         </el-row>
+        <el-row v-else-if="nodeFuncCall.ReturnType===protoManage.NodeFuncReturnType.Charts"
+                class="contextRow" type="flex" justify="start" align="top">
+            <NodeFuncReturnCharts class="contextCharts" :options="getUnicode(returnObj)"></NodeFuncReturnCharts>
+        </el-row>
         <el-row v-else class="contextRow color-text-main" type="flex" justify="center" align="middle">
-            <div class="contextText">{{nodeFuncCall.ReturnVal}}</div>
+            <div class="contextText">{{returnObj.Content}}</div>
         </el-row>
     </el-row>
 </template>
@@ -43,12 +47,15 @@ import {globals} from "../../base/globals"
 import {saveAs} from "file-saver"
 import Player from "../../components/media/Player.vue"
 import NodeFuncReturnTable from "../../components/table/NodeFuncReturnTable.vue"
+import NodeFuncReturnCharts from "../../components/echarts/NodeFuncReturnCharts.vue"
+import {consoleLog} from "echarts/types/src/util/log";
 
 export default defineComponent ({
     name: "NodeFuncReturn",
     components: {
         Player,
-        NodeFuncReturnTable
+        NodeFuncReturnTable,
+        NodeFuncReturnCharts
     },
     props:{
         nodeFuncCall:{
@@ -78,13 +85,18 @@ export default defineComponent ({
             return fileInfo.Name
         }
 
+        function getUnicode(str){
+            return str.Content
+        }
+
         function downloadFile(fileInfo){
             let dec = window.atob(fileInfo.Content);
             let data = convert.stringToUint8Array(dec)
             let blob = new Blob([data], {type:"text/plain; charset=utf-8"})
             saveAs(blob, fileInfo.Name)
         }
-        return {convert, globals, protoManage, getLinkName, returnObj, getFileName, downloadFile}
+        return {convert, globals, protoManage, getLinkName, returnObj, getFileName, downloadFile,
+            getUnicode}
     }
 })
 </script>
@@ -92,7 +104,7 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 .mainRow{
-    height: 450px;
+    height: 100%;
 }
 
 .contextRow{
@@ -128,6 +140,11 @@ export default defineComponent ({
 }
 
 .contextTable{
+    width: 100%;
+    height: 100%;
+}
+
+.contextCharts{
     width: 100%;
     height: 100%;
 }

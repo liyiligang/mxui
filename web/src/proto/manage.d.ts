@@ -88,7 +88,7 @@ export namespace protoManage {
         Media = 3,
         File = 4,
         Table = 5,
-        LineChart = 6
+        Charts = 6
     }
 
     /** NotifySenderType enum. */

@@ -188,7 +188,7 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} Media=3 Media value
      * @property {number} File=4 File value
      * @property {number} Table=5 Table value
-     * @property {number} LineChart=6 LineChart value
+     * @property {number} Charts=6 Charts value
      */
     protoManage.NodeFuncReturnType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -198,7 +198,7 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[3] = "Media"] = 3;
         values[valuesById[4] = "File"] = 4;
         values[valuesById[5] = "Table"] = 5;
-        values[valuesById[6] = "LineChart"] = 6;
+        values[valuesById[6] = "Charts"] = 6;
         return values;
     })();
 
@@ -5407,7 +5407,7 @@ export const protoManage = $root.protoManage = (() => {
             case 5:
                 message.ReturnType = 5;
                 break;
-            case "LineChart":
+            case "Charts":
             case 6:
                 message.ReturnType = 6;
                 break;

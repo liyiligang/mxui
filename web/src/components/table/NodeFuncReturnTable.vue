@@ -12,7 +12,6 @@
 <script lang="ts">
 
 import {defineComponent, onMounted, reactive} from "vue";
-import {protoManage} from "../../proto/manage";
 import {convert} from "../../base/convert";
 
 interface NodeFuncReturnTableInfo {

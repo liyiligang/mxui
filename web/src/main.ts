@@ -8,31 +8,9 @@ import 'element-plus/dist/index.css'
 import 'dayjs/locale/zh-cn'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
 import elTableInfiniteScroll from "./components/tableInfiniteScroll";
-import ECharts  from 'vue-echarts'
 import JsonViewer from "vue3-json-viewer"
-import { use } from "echarts/core";
-import {
-        CanvasRenderer
-} from 'echarts/renderers'
-import {
-        LineChart
-} from 'echarts/charts'
-import {
-        GridComponent,
-        TooltipComponent,
-        TitleComponent,
-        DataZoomComponent,
-        VisualMapComponent
-} from 'echarts/components'
-use([
-        CanvasRenderer,
-        LineChart,
-        GridComponent,
-        TooltipComponent,
-        TitleComponent,
-        DataZoomComponent,
-        VisualMapComponent
-]);
+import "echarts";
+import ECharts  from 'vue-echarts'
 
 const app = createApp(App)
 app.config.unwrapInjectedRef = true
