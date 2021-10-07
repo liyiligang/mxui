@@ -116,6 +116,6 @@ export default defineComponent ({
 
 <style scoped>
 .json-editor {
-    height: 356px;
+    height: 100%;
 }
 </style>

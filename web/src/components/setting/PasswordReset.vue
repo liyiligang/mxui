@@ -1,21 +1,13 @@
 <template>
-    <el-dialog
-        :modelValue="dialogModel"
-        width="260px"
-        top="25vh"
-        @close="dialogClose"
-        destroy-on-close
-        append-to-body>
-        <template v-slot:title>
-            <span class="card-dialog-title color-text-normal">{{"修改密码"}}</span>
-        </template>
+    <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
+                     :title="title" width="260px" :close-full-screen="true" :close-fix-height="true">
         <el-row v-loading="data.isLoad" type="flex" justify="center" align="middle">
             <el-input class="passwordResetInput" v-model="data.manager.Token" placeholder="原密码" clearable show-password></el-input>
             <el-input class="passwordResetInput" v-model="data.manager.Password" placeholder="密码" clearable show-password></el-input>
             <el-input class="passwordResetInput" v-model="data.passwordConfirm" placeholder="确认密码" clearable show-password></el-input>
             <el-button class="passwordResetButton" size="medium" type="primary" round @click="passwordReset">修改</el-button>
         </el-row>
-    </el-dialog>
+    </DialogViewFrame>
 </template>
 
 <script lang="ts">
@@ -24,6 +16,7 @@ import { request } from "../../base/request";
 import {protoManage} from "../../proto/manage";
 import {ElMessage} from "element-plus";
 import {globals} from "../../base/globals";
+import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 
 interface PasswordResetInfo {
     isLoad:boolean
@@ -33,14 +26,18 @@ interface PasswordResetInfo {
 
 export default defineComponent ({
     name: "PasswordReset",
+    emits:['update:modelValue'],
     components: {
-
+        DialogViewFrame
     },
     props:{
-        dialogModel:{
+        modelValue:{
             type: Boolean,
             default: false,
-            required: true
+        },
+        title:{
+            type: String,
+            default: "",
         }
     },
     setup(props, context){
@@ -52,8 +49,8 @@ export default defineComponent ({
             data.passwordConfirm = ""
         }
 
-        function dialogClose(){
-            context.emit("update:dialogModel", false)
+        function modelValueUpdate(val:boolean){
+            context.emit("update:modelValue", val)
             dataInit()
         }
 
@@ -68,14 +65,14 @@ export default defineComponent ({
         function passwordReset(){
             if (passwordResetCheck()){
                 data.isLoad = true
-                request.reqManagerUpdate(data.manager).then((response) => {
-                    dialogClose()
+                request.reqManagerUpdatePasswd(data.manager).then((response) => {
+                    modelValueUpdate(false)
                     globals.reLogin()
                     ElMessage.success("密码修改成功, 请重新登录")
                 }).catch(error => {}).finally(()=>{data.isLoad = false})
             }
         }
-        return {data, dialogClose, passwordReset}
+        return {data, modelValueUpdate, passwordReset}
     }
 })
 </script>

@@ -41,7 +41,8 @@ func (db *Server) FindNodeFuncCall(filter protoManage.Filter) ([]orm.NodeFuncCal
 	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
 	tx = db.SetFilter(tx, filter)
 	var NodeFuncCallList []orm.NodeFuncCall
-	err := tx.Order("id desc").Find(&NodeFuncCallList).Error
+	err := tx.Order("id desc").Select("id", "updatedAt",
+		"managerID", "funcID", "returnType", "state").Find(&NodeFuncCallList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return NodeFuncCallList, nil
 	}
@@ -51,6 +52,20 @@ func (db *Server) FindNodeFuncCall(filter protoManage.Filter) ([]orm.NodeFuncCal
 //按ID获取指定节点方法调用
 func (db *Server) FindNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) (*orm.NodeFuncCall, error) {
 	err := db.Gorm.First(&nodeFuncCall, nodeFuncCall.ID).Error
+	return &nodeFuncCall, err
+}
+
+//按ID获取指定节点方法调用参数
+func (db *Server) FindNodeFuncCallParameterByID(nodeFuncCall orm.NodeFuncCall) (*orm.NodeFuncCall, error) {
+	err := db.Gorm.Select("id", "parameter").Find(&nodeFuncCall).
+		Where("id = ?", nodeFuncCall.ID).Error
+	return &nodeFuncCall, err
+}
+
+//按ID获取指定节点方法调用返回值
+func (db *Server) FindNodeFuncCallReturnValByID(nodeFuncCall orm.NodeFuncCall) (*orm.NodeFuncCall, error) {
+	err := db.Gorm.Select("id", "returnVal", "returnType", "state").Find(&nodeFuncCall).
+		Where("id = ?", nodeFuncCall.ID).Error
 	return &nodeFuncCall, err
 }
 

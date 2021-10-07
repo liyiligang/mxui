@@ -31,9 +31,11 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 	if protoNode.State == protoManage.State_StateUnknow {
 		return errors.New(protoNode.Name +" 处于离线状态")
 	}
-	err = data.jsonSchemaValid(protoNodeFunc.Schema, req.NodeFuncCall.Parameter)
-	if err != nil {
-		return err
+	if protoNodeFunc.Schema != ""{
+		err = data.jsonSchemaValid(protoNodeFunc.Schema, req.NodeFuncCall.Parameter)
+		if err != nil {
+			return err
+		}
 	}
 	ormNodeFuncCall := &orm.NodeFuncCall{
 		ManagerID: req.NodeFuncCall.ManagerID,
@@ -63,6 +65,16 @@ func (data *Data) NodeFuncCallAns(ans *protoManage.AnsNodeFuncCall) error {
 	return data.Gateway.WsSendOrBroadCastPB(ans.NodeFuncCall.ManagerID, protoManage.Order_NodeFuncCallAns, ans)
 }
 
+//查找节点方法调用信息
+func (data *Data) NodeFuncCallFind(req protoManage.ReqNodeFuncCallList) (*protoManage.AnsNodeFuncCallList, error) {
+	ormFuncCallList, err := data.DB.FindNodeFuncCall(req.Filter)
+	if err != nil {
+		return nil, err
+	}
+	protoNodeFuncCallList := convert.OrmNodeFuncCallListToProtoNodeFuncCallList(ormFuncCallList)
+	return &protoManage.AnsNodeFuncCallList{NodeFuncCallList: protoNodeFuncCallList}, nil
+}
+
 //按ID查询节点方法调用
 func (data *Data) NodeFuncCallFindByID(protoNodeFuncCall *protoManage.NodeFuncCall) error {
 	ormNodeFuncCall, err :=data.DB.FindNodeFuncCallByID(orm.NodeFuncCall{Base: orm.Base{ID: protoNodeFuncCall.Base.ID}})
@@ -73,14 +85,24 @@ func (data *Data) NodeFuncCallFindByID(protoNodeFuncCall *protoManage.NodeFuncCa
 	return nil
 }
 
-//查找节点方法调用信息
-func (data *Data) NodeFuncCallFind(req protoManage.ReqNodeFuncCallList) (*protoManage.AnsNodeFuncCallList, error) {
-	ormFuncCallList, err := data.DB.FindNodeFuncCall(req.Filter)
+//按ID查询节点方法调用参数
+func (data *Data) NodeFuncCallParameterFindByID(protoNodeFuncCall *protoManage.NodeFuncCall) error {
+	ormNodeFuncCall, err :=data.DB.FindNodeFuncCallParameterByID(orm.NodeFuncCall{Base: orm.Base{ID: protoNodeFuncCall.Base.ID}})
 	if err != nil {
-		return nil, err
+		return err
 	}
-	protoNodeFuncCallList := convert.OrmNodeFuncCallListToProtoNodeFuncCallList(ormFuncCallList)
-	return &protoManage.AnsNodeFuncCallList{NodeFuncCallList: protoNodeFuncCallList}, nil
+	convert.OrmNodeFuncCallToProtoNodeFuncCall(ormNodeFuncCall, protoNodeFuncCall)
+	return nil
+}
+
+//按ID查询节点方法调用返回值
+func (data *Data) NodeFuncCallReturnValFindByID(protoNodeFuncCall *protoManage.NodeFuncCall) error {
+	ormNodeFuncCall, err :=data.DB.FindNodeFuncCallReturnValByID(orm.NodeFuncCall{Base: orm.Base{ID: protoNodeFuncCall.Base.ID}})
+	if err != nil {
+		return err
+	}
+	convert.OrmNodeFuncCallToProtoNodeFuncCall(ormNodeFuncCall, protoNodeFuncCall)
+	return nil
 }
 
 func (data *Data) NodeFuncCallDelByNodeFuncID(funcID int64) error {

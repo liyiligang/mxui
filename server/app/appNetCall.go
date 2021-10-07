@@ -190,6 +190,12 @@ func (app *App) httpRequestWithToken(userID int64, req *protoManage.HttpMessage)
 	case protoManage.Order_ManagerUpdate:
 		ansMsg, err = app.Request.ReqManagerUpdate(userID, req.Message)
 		break
+	case protoManage.Order_ManagerUpdatePasswd:
+		ansMsg, err = app.Request.ReqManagerUpdatePasswd(userID, req.Message)
+		break
+	case protoManage.Order_ManagerUpdateSetting:
+		ansMsg, err = app.Request.ReqManagerUpdateSetting(userID, req.Message)
+		break
 	case protoManage.Order_ManagerDel:
 		ansMsg, err = app.Request.ReqManagerDel(userID, req.Message)
 		break
@@ -243,6 +249,12 @@ func (app *App) httpRequestWithToken(userID int64, req *protoManage.HttpMessage)
 		break
 	case protoManage.Order_NodeFuncCallFindByID:
 		ansMsg, err = app.Request.ReqNodeFuncCallFindByID(userID, req.Message)
+		break
+	case protoManage.Order_NodeFuncCallFindParameterByID:
+		ansMsg, err = app.Request.ReqNodeFuncCallParameterFindByID(userID, req.Message)
+		break
+	case protoManage.Order_NodeFuncCallFindReturnValByID:
+		ansMsg, err = app.Request.ReqNodeFuncCallReturnValFindByID(userID, req.Message)
 		break
 	case protoManage.Order_NodeReportValFind:
 		ansMsg, err = app.Request.ReqNodeReportValFind(userID, req.Message)

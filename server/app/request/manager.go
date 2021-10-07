@@ -8,7 +8,7 @@ import (
 	"github.com/pkg/errors"
 )
 
-//管理员登录
+//管理员登录(websocket)
 func (request *Request) ReqWsTokenCheck(message []byte, addr string) (int64, error) {
 	message = Jtool.RunesToBytes(message)
 	manager := protoManage.Manager{}
@@ -21,6 +21,24 @@ func (request *Request) ReqWsTokenCheck(message []byte, addr string) (int64, err
 		return 0, errors.New("websocket连接验证失败, 无效的token")
 	}
 	return userID, nil
+}
+
+//管理员登录
+func (request *Request) ReqManagerLogin(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerLogin(&req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
 }
 
 //管理员注册
@@ -41,7 +59,7 @@ func (request *Request) ReqManagerRegister(userID int64, message []byte)([]byte,
 	return pbByte, err
 }
 
-//管理员注册
+//管理员新增
 func (request *Request) ReqManagerAdd(userID int64, message []byte)([]byte, error){
 	req := protoManage.Manager{}
 	err := req.Unmarshal(message)
@@ -59,14 +77,86 @@ func (request *Request) ReqManagerAdd(userID int64, message []byte)([]byte, erro
 	return pbByte, err
 }
 
-//管理员登录
-func (request *Request) ReqManagerLogin(userID int64, message []byte)([]byte, error){
+//管理员删除
+func (request *Request) ReqManagerDel(userID int64, message []byte)([]byte, error){
 	req := protoManage.Manager{}
 	err := req.Unmarshal(message)
 	if err != nil {
 		return nil, err
 	}
-	err = request.Data.ManagerLogin(&req)
+	err = request.Data.ManagerDel(userID, &req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
+//更新管理员信息
+func (request *Request) ReqManagerUpdate(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerUpdate(userID, &req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
+//更新管理员密码
+func (request *Request) ReqManagerUpdatePasswd(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerUpdatePasswd(userID, &req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
+//更新管理员设置
+func (request *Request) ReqManagerUpdateSetting(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerUpdateSetting(userID, &req)
+	if err != nil {
+		return nil, err
+	}
+	pbByte, err := req.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, err
+}
+
+//管理员信息查询按ID
+func (request *Request) ReqManagerFindByID(userID int64, message []byte)([]byte, error){
+	req := protoManage.Manager{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return nil, err
+	}
+	err = request.Data.ManagerFindByID(userID, &req)
 	if err != nil {
 		return nil, err
 	}
@@ -113,61 +203,7 @@ func (request *Request) ReqManagerFindLowLevel(userID int64, message []byte)([]b
 	return pbByte, err
 }
 
-//管理员信息查询按ID
-func (request *Request) ReqManagerFindByID(userID int64, message []byte)([]byte, error){
-	req := protoManage.Manager{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.ManagerFindByID(userID, &req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//更新管理员密码
-func (request *Request) ReqManagerUpdate(userID int64, message []byte)([]byte, error){
-	req := protoManage.Manager{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.ManagerUpdate(userID, &req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//更新管理员设置
-func (request *Request) ReqManagerDel(userID int64, message []byte)([]byte, error){
-	req := protoManage.Manager{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.ManagerDel(userID, &req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//查找是否存在超管
+//管理员权限查询
 func (request *Request) ReqManagerFindByLevel(userID int64, message []byte)([]byte, error){
 	req := protoManage.Manager{}
 	err := req.Unmarshal(message)

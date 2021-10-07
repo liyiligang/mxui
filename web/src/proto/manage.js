@@ -32,10 +32,12 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} ManagerAdd=103 ManagerAdd value
      * @property {number} ManagerDel=104 ManagerDel value
      * @property {number} ManagerUpdate=105 ManagerUpdate value
-     * @property {number} ManagerFindNickName=106 ManagerFindNickName value
-     * @property {number} ManagerFindLowLevel=107 ManagerFindLowLevel value
-     * @property {number} ManagerFindByID=108 ManagerFindByID value
-     * @property {number} ManagerFindByLevel=109 ManagerFindByLevel value
+     * @property {number} ManagerUpdatePasswd=106 ManagerUpdatePasswd value
+     * @property {number} ManagerUpdateSetting=107 ManagerUpdateSetting value
+     * @property {number} ManagerFindNickName=108 ManagerFindNickName value
+     * @property {number} ManagerFindLowLevel=109 ManagerFindLowLevel value
+     * @property {number} ManagerFindByID=110 ManagerFindByID value
+     * @property {number} ManagerFindByLevel=111 ManagerFindByLevel value
      * @property {number} NodeGroupAdd=201 NodeGroupAdd value
      * @property {number} NodeGroupDel=202 NodeGroupDel value
      * @property {number} NodeGroupFind=203 NodeGroupFind value
@@ -64,8 +66,10 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} NodeFuncFindByID=607 NodeFuncFindByID value
      * @property {number} NodeFuncCallReq=608 NodeFuncCallReq value
      * @property {number} NodeFuncCallAns=609 NodeFuncCallAns value
-     * @property {number} NodeFuncCallFind=611 NodeFuncCallFind value
-     * @property {number} NodeFuncCallFindByID=610 NodeFuncCallFindByID value
+     * @property {number} NodeFuncCallFind=610 NodeFuncCallFind value
+     * @property {number} NodeFuncCallFindByID=611 NodeFuncCallFindByID value
+     * @property {number} NodeFuncCallFindParameterByID=612 NodeFuncCallFindParameterByID value
+     * @property {number} NodeFuncCallFindReturnValByID=613 NodeFuncCallFindReturnValByID value
      * @property {number} NodeReportAdd=701 NodeReportAdd value
      * @property {number} NodeReportDel=702 NodeReportDel value
      * @property {number} NodeReportDelAllWithNodeID=703 NodeReportDelAllWithNodeID value
@@ -91,10 +95,12 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[103] = "ManagerAdd"] = 103;
         values[valuesById[104] = "ManagerDel"] = 104;
         values[valuesById[105] = "ManagerUpdate"] = 105;
-        values[valuesById[106] = "ManagerFindNickName"] = 106;
-        values[valuesById[107] = "ManagerFindLowLevel"] = 107;
-        values[valuesById[108] = "ManagerFindByID"] = 108;
-        values[valuesById[109] = "ManagerFindByLevel"] = 109;
+        values[valuesById[106] = "ManagerUpdatePasswd"] = 106;
+        values[valuesById[107] = "ManagerUpdateSetting"] = 107;
+        values[valuesById[108] = "ManagerFindNickName"] = 108;
+        values[valuesById[109] = "ManagerFindLowLevel"] = 109;
+        values[valuesById[110] = "ManagerFindByID"] = 110;
+        values[valuesById[111] = "ManagerFindByLevel"] = 111;
         values[valuesById[201] = "NodeGroupAdd"] = 201;
         values[valuesById[202] = "NodeGroupDel"] = 202;
         values[valuesById[203] = "NodeGroupFind"] = 203;
@@ -123,8 +129,10 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[607] = "NodeFuncFindByID"] = 607;
         values[valuesById[608] = "NodeFuncCallReq"] = 608;
         values[valuesById[609] = "NodeFuncCallAns"] = 609;
-        values[valuesById[611] = "NodeFuncCallFind"] = 611;
-        values[valuesById[610] = "NodeFuncCallFindByID"] = 610;
+        values[valuesById[610] = "NodeFuncCallFind"] = 610;
+        values[valuesById[611] = "NodeFuncCallFindByID"] = 611;
+        values[valuesById[612] = "NodeFuncCallFindParameterByID"] = 612;
+        values[valuesById[613] = "NodeFuncCallFindReturnValByID"] = 613;
         values[valuesById[701] = "NodeReportAdd"] = 701;
         values[valuesById[702] = "NodeReportDel"] = 702;
         values[valuesById[703] = "NodeReportDelAllWithNodeID"] = 703;
@@ -182,23 +190,31 @@ export const protoManage = $root.protoManage = (() => {
      * NodeFuncReturnType enum.
      * @name protoManage.NodeFuncReturnType
      * @enum {number}
-     * @property {number} Text=0 Text value
-     * @property {number} Json=1 Json value
-     * @property {number} Link=2 Link value
-     * @property {number} Media=3 Media value
-     * @property {number} File=4 File value
-     * @property {number} Table=5 Table value
-     * @property {number} Charts=6 Charts value
+     * @property {number} Unsure=0 Unsure value
+     * @property {number} NotReturn=1 NotReturn value
+     * @property {number} Error=2 Error value
+     * @property {number} Text=3 Text value
+     * @property {number} Json=4 Json value
+     * @property {number} Link=5 Link value
+     * @property {number} Image=6 Image value
+     * @property {number} Media=7 Media value
+     * @property {number} File=8 File value
+     * @property {number} Table=9 Table value
+     * @property {number} Charts=10 Charts value
      */
     protoManage.NodeFuncReturnType = (function() {
         const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "Text"] = 0;
-        values[valuesById[1] = "Json"] = 1;
-        values[valuesById[2] = "Link"] = 2;
-        values[valuesById[3] = "Media"] = 3;
-        values[valuesById[4] = "File"] = 4;
-        values[valuesById[5] = "Table"] = 5;
-        values[valuesById[6] = "Charts"] = 6;
+        values[valuesById[0] = "Unsure"] = 0;
+        values[valuesById[1] = "NotReturn"] = 1;
+        values[valuesById[2] = "Error"] = 2;
+        values[valuesById[3] = "Text"] = 3;
+        values[valuesById[4] = "Json"] = 4;
+        values[valuesById[5] = "Link"] = 5;
+        values[valuesById[6] = "Image"] = 6;
+        values[valuesById[7] = "Media"] = 7;
+        values[valuesById[8] = "File"] = 8;
+        values[valuesById[9] = "Table"] = 9;
+        values[valuesById[10] = "Charts"] = 10;
         return values;
     })();
 
@@ -404,6 +420,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 107:
                 case 108:
                 case 109:
+                case 110:
+                case 111:
                 case 201:
                 case 202:
                 case 203:
@@ -432,8 +450,10 @@ export const protoManage = $root.protoManage = (() => {
                 case 607:
                 case 608:
                 case 609:
-                case 611:
                 case 610:
+                case 611:
+                case 612:
+                case 613:
                 case 701:
                 case 702:
                 case 703:
@@ -513,21 +533,29 @@ export const protoManage = $root.protoManage = (() => {
             case 105:
                 message.order = 105;
                 break;
-            case "ManagerFindNickName":
+            case "ManagerUpdatePasswd":
             case 106:
                 message.order = 106;
                 break;
-            case "ManagerFindLowLevel":
+            case "ManagerUpdateSetting":
             case 107:
                 message.order = 107;
                 break;
-            case "ManagerFindByID":
+            case "ManagerFindNickName":
             case 108:
                 message.order = 108;
                 break;
-            case "ManagerFindByLevel":
+            case "ManagerFindLowLevel":
             case 109:
                 message.order = 109;
+                break;
+            case "ManagerFindByID":
+            case 110:
+                message.order = 110;
+                break;
+            case "ManagerFindByLevel":
+            case 111:
+                message.order = 111;
                 break;
             case "NodeGroupAdd":
             case 201:
@@ -642,12 +670,20 @@ export const protoManage = $root.protoManage = (() => {
                 message.order = 609;
                 break;
             case "NodeFuncCallFind":
+            case 610:
+                message.order = 610;
+                break;
+            case "NodeFuncCallFindByID":
             case 611:
                 message.order = 611;
                 break;
-            case "NodeFuncCallFindByID":
-            case 610:
-                message.order = 610;
+            case "NodeFuncCallFindParameterByID":
+            case 612:
+                message.order = 612;
+                break;
+            case "NodeFuncCallFindReturnValByID":
+            case 613:
+                message.order = 613;
                 break;
             case "NodeReportAdd":
             case 701:
@@ -920,6 +956,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 107:
                 case 108:
                 case 109:
+                case 110:
+                case 111:
                 case 201:
                 case 202:
                 case 203:
@@ -948,8 +986,10 @@ export const protoManage = $root.protoManage = (() => {
                 case 607:
                 case 608:
                 case 609:
-                case 611:
                 case 610:
+                case 611:
+                case 612:
+                case 613:
                 case 701:
                 case 702:
                 case 703:
@@ -1032,21 +1072,29 @@ export const protoManage = $root.protoManage = (() => {
             case 105:
                 message.order = 105;
                 break;
-            case "ManagerFindNickName":
+            case "ManagerUpdatePasswd":
             case 106:
                 message.order = 106;
                 break;
-            case "ManagerFindLowLevel":
+            case "ManagerUpdateSetting":
             case 107:
                 message.order = 107;
                 break;
-            case "ManagerFindByID":
+            case "ManagerFindNickName":
             case 108:
                 message.order = 108;
                 break;
-            case "ManagerFindByLevel":
+            case "ManagerFindLowLevel":
             case 109:
                 message.order = 109;
+                break;
+            case "ManagerFindByID":
+            case 110:
+                message.order = 110;
+                break;
+            case "ManagerFindByLevel":
+            case 111:
+                message.order = 111;
                 break;
             case "NodeGroupAdd":
             case 201:
@@ -1161,12 +1209,20 @@ export const protoManage = $root.protoManage = (() => {
                 message.order = 609;
                 break;
             case "NodeFuncCallFind":
+            case 610:
+                message.order = 610;
+                break;
+            case "NodeFuncCallFindByID":
             case 611:
                 message.order = 611;
                 break;
-            case "NodeFuncCallFindByID":
-            case 610:
-                message.order = 610;
+            case "NodeFuncCallFindParameterByID":
+            case 612:
+                message.order = 612;
+                break;
+            case "NodeFuncCallFindReturnValByID":
+            case 613:
+                message.order = 613;
                 break;
             case "NodeReportAdd":
             case 701:
@@ -5327,6 +5383,10 @@ export const protoManage = $root.protoManage = (() => {
                 case 4:
                 case 5:
                 case 6:
+                case 7:
+                case 8:
+                case 9:
+                case 10:
                     break;
                 }
             if (message.State != null && message.hasOwnProperty("State"))
@@ -5383,33 +5443,49 @@ export const protoManage = $root.protoManage = (() => {
             if (object.ReturnVal != null)
                 message.ReturnVal = String(object.ReturnVal);
             switch (object.ReturnType) {
-            case "Text":
+            case "Unsure":
             case 0:
                 message.ReturnType = 0;
                 break;
-            case "Json":
+            case "NotReturn":
             case 1:
                 message.ReturnType = 1;
                 break;
-            case "Link":
+            case "Error":
             case 2:
                 message.ReturnType = 2;
                 break;
-            case "Media":
+            case "Text":
             case 3:
                 message.ReturnType = 3;
                 break;
-            case "File":
+            case "Json":
             case 4:
                 message.ReturnType = 4;
                 break;
-            case "Table":
+            case "Link":
             case 5:
                 message.ReturnType = 5;
                 break;
-            case "Charts":
+            case "Image":
             case 6:
                 message.ReturnType = 6;
+                break;
+            case "Media":
+            case 7:
+                message.ReturnType = 7;
+                break;
+            case "File":
+            case 8:
+                message.ReturnType = 8;
+                break;
+            case "Table":
+            case 9:
+                message.ReturnType = 9;
+                break;
+            case "Charts":
+            case 10:
+                message.ReturnType = 10;
                 break;
             }
             switch (object.State) {
@@ -5464,7 +5540,7 @@ export const protoManage = $root.protoManage = (() => {
                     object.FuncID = options.longs === String ? "0" : 0;
                 object.Parameter = "";
                 object.ReturnVal = "";
-                object.ReturnType = options.enums === String ? "Text" : 0;
+                object.ReturnType = options.enums === String ? "Unsure" : 0;
                 object.State = options.enums === String ? "StateNot" : 0;
             }
             if (message.Base != null && message.hasOwnProperty("Base"))

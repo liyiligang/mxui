@@ -1,16 +1,9 @@
 <template>
-    <el-dialog
-        :modelValue="dialogModel"
-        width="660px"
-        top="10vh"
-        @close="dialogClose"
-        destroy-on-close>
-        <template v-slot:title>
-            <span class="card-dialog-title color-text-normal">{{dialogTitle}}</span>
-        </template>
-        <el-row v-loading="data.userSetLoading">
-            <el-row class="userSetTable">
-                <el-table :data="data.userSetList" ref="userSetTable" height="100%" highlight-current-row>
+    <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
+                     :title="title" width="660px">
+        <el-row class="userSetRow" v-loading="data.userSetLoading">
+            <el-row class="userSetTableRow" type="flex" justify="start" align="top">
+                <el-table class="userSetTable" :data="data.userSetList" ref="userSetTable" height="100%" highlight-current-row>
                     <el-table-column label="编号" type="index" align="center" width="50"></el-table-column>
                     <el-table-column label="用户名" align="center">
                         <template #default="scope">
@@ -47,8 +40,8 @@
                 <el-button :disabled="data.userSetAddFlag" type="primary" icon="el-icon-plus" circle @click="newUserSet"></el-button>
             </el-row>
         </el-row>
-    </el-dialog>
-    <Register v-model:dialogModel="data.userSetAddFlag" :useLevel="true" @registerSuccess="newUserSuccess"></Register>
+    </DialogViewFrame>
+    <Register v-model="data.userSetAddFlag" title="新增账号" :useLevel="true" @registerSuccess="newUserSuccess"></Register>
 </template>
 
 <script lang="ts">
@@ -58,6 +51,7 @@ import {convert} from "../../base/convert";
 import {request} from "../../base/request";
 import Register from "../../views/Register.vue";
 import LevelSelect from "./LevelSelect.vue";
+import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 import {ElMessage, ElTable} from "element-plus";
 
 interface UserSetEditInfo {
@@ -73,21 +67,21 @@ interface UserSetInfo {
 
 export default defineComponent ({
     name: "UserSet",
-    props:{
-        dialogTitle:{
-            type: String,
-            default: "",
-            required: true
-        },
-        dialogModel:{
-            type: Boolean,
-            default: false,
-            required: true
-        }
-    },
+    emits:['update:modelValue'],
     components: {
+        DialogViewFrame,
         Register,
         LevelSelect
+    },
+    props:{
+        modelValue:{
+            type: Boolean,
+            default: false,
+        },
+        title:{
+            type: String,
+            default: "",
+        }
     },
     setup(props, context){
 
@@ -166,13 +160,13 @@ export default defineComponent ({
         }
 
         const managerListUpdate = inject<Function>('managerListUpdate')
-        function dialogClose(){
+        function modelValueUpdate(val){
             if(managerListUpdate){
                 managerListUpdate()
             }
-            context.emit("update:dialogModel", false)
+            context.emit("update:modelValue", val)
         }
-        return {data, dialogClose, getUserStateColor, isEditing, getUserLevelColor, getUserLevelNameByTableIndex,
+        return {data, modelValueUpdate, getUserStateColor, isEditing, getUserLevelColor, getUserLevelNameByTableIndex,
             newUserSet, newUserSuccess, editUserSet, delUserSet, updateUserSet, cancelUserSet, userSetTable}
     }
 })
@@ -181,9 +175,23 @@ export default defineComponent ({
 
 <style scoped>
 
+.userSetRow{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.userSetTableRow{
+    width: 100%;
+    flex:auto;
+    overflow-y:scroll;
+}
+
 .userSetTable{
     width: 100%;
-    height: 420px;
+    height: 100%;
 }
 
 .userSetAddButtonRow{

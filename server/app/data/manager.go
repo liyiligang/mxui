@@ -69,29 +69,43 @@ func (data *Data) ManagerStateUpdate(protoManager *protoManage.Manager) error {
 	return nil
 }
 
-//更新管理员
+//更新管理员信息
 func (data *Data) ManagerUpdate(userID int64, protoManager *protoManage.Manager) error {
-	if protoManager.Base.ID == 0 {
-		protoManager.Base.ID = userID
-	}
-	if err := check.ManagerUpdateCheck(userID, protoManager); err != nil {
-		return err
-	}
-	if protoManager.Password != "" {
-		if err := check.ManagerUpdatePasswordCheck(protoManager); err != nil {
-			return err
-		}
-		ormManager, err := data.DB.FindManagerByID(orm.Manager{Base:orm.Base{ID: protoManager.Base.ID}})
-		if err != nil {
-			return err
-		}
-		if ormManager.Password != protoManager.Token {
-			return errors.New("原密码不正确")
-		}
-	}
 	ormBase, err := data.DB.UpdateManager(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID},
 		Password: protoManager.Password, NickName: protoManager.NickName,
 		Setting:protoManager.Setting, Level: int32(protoManager.Level)})
+	if err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
+	return nil
+}
+
+//更新管理员密码
+func (data *Data) ManagerUpdatePasswd(userID int64, protoManager *protoManage.Manager) error {
+	if err := check.ManagerUpdatePasswordCheck(protoManager); err != nil {
+		return err
+	}
+	ormManager, err := data.DB.FindManagerByID(orm.Manager{Base:orm.Base{ID: userID}})
+	if err != nil {
+		return err
+	}
+	if ormManager.Password != protoManager.Token {
+		return errors.New("原密码不正确")
+	}
+	ormBase, err := data.DB.UpdateManager(orm.Manager{Base: orm.Base{ID: userID},
+		Password: protoManager.Password})
+	if err != nil {
+		return err
+	}
+	convert.OrmBaseToProtoBase(ormBase, &protoManager.Base)
+	return nil
+}
+
+//更新管理员设置
+func (data *Data) ManagerUpdateSetting(userID int64, protoManager *protoManage.Manager) error {
+	ormBase, err := data.DB.UpdateManager(orm.Manager{Base: orm.Base{ID: userID},
+		Setting: protoManager.Setting})
 	if err != nil {
 		return err
 	}

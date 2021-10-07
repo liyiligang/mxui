@@ -146,6 +146,32 @@ export module request {
         })
     }
 
+    export function reqManagerUpdatePasswd(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdatePasswd, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqManagerUpdateSetting(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdateSetting, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqManagerDel(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
@@ -396,6 +422,32 @@ export module request {
                     resolve(ans)
                 }).catch(error => {
                     reject(error)
+            })
+        })
+    }
+
+    export function reqNodeFuncCallParameterByID(req:protoManage.NodeFuncCall):Promise<protoManage.NodeFuncCall> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeFuncCall.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncCallFindParameterByID, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.NodeFuncCall.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeFuncCallReturnValByID(req:protoManage.NodeFuncCall):Promise<protoManage.NodeFuncCall> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeFuncCall.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncCallFindReturnValByID, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.NodeFuncCall.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
             })
         })
     }

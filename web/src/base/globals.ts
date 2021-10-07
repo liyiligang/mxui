@@ -36,7 +36,7 @@ export module globals {
 			initCount:7
 		},
 		funcCallConfig:{
-			tablePageSize:50
+			tablePageSize:100
 		},
 		userInitSetting:{
 			isPageFix: false,

@@ -9,19 +9,7 @@
             <CardBase :id="nodeFunc.Base.ID" :time="nodeFunc.Base.UpdateTime"></CardBase>
         </template>
         <template v-slot:body>
-            <CardFuncCall @textClick=textClick name="调用" :state="convert.getNodeFuncCallStateName(nodeFuncCall.State)"
-                :stateColor="convert.getColorByState(nodeFuncCall.State)" :time="nodeFuncCall.Base?.UpdateTime"></CardFuncCall>
-
-            <el-dialog
-                v-model="data.dialogVisible"
-                width="500px"
-                top="12vh"
-                destroy-on-close>
-                <template v-slot:title>
-                    <span class="card-dialog-title" :class=convert.getColorByLevel(nodeFunc.Level)>{{nodeFunc.Name}}</span>
-                </template>
-                <NodeFuncCall :nodeFunc="nodeFunc"></NodeFuncCall>
-            </el-dialog>
+            <CardFuncCall :nodeFunc="nodeFunc"></CardFuncCall>
         </template>
     </CardViewFrame>
 </template>
@@ -42,7 +30,7 @@ import NodeFuncCall from "../../views/dialog/NodeFuncCall.vue"
 import {defaultVal} from "../../base/defaultVal";
 
 interface NodeFuncCardInfo {
-    dialogVisible:boolean
+
 }
 
 export default defineComponent ({
@@ -72,17 +60,13 @@ export default defineComponent ({
         NodeFuncHistory
     },
     setup(props, context){
-        const data = reactive<NodeFuncCardInfo>({dialogVisible:false})
-
-        function textClick(){
-            data.dialogVisible = true
-        }
+        const data = reactive<NodeFuncCardInfo>({})
 
         function closeNodeFunc(){
             context.emit('deleteNodeFunc', props.nodeFunc)
         }
 
-        return {data, textClick, request, protoManage, routerPath, convert, closeNodeFunc}
+        return {data, request, protoManage, routerPath, convert, closeNodeFunc}
     }
 })
 </script>

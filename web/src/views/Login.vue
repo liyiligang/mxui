@@ -18,7 +18,7 @@
             </el-row>
         </el-card>
     </el-row>
-    <Register v-model:dialogModel="data.registerVisible"></Register>
+    <Register v-model="data.registerVisible" title="注册帐号"></Register>
 </template>
 
 <script lang="ts">

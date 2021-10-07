@@ -96,7 +96,7 @@ export default defineComponent ({
                     globals.globalsData.managerSetting.setting = setting
                 }
                 watch(() => globals.globalsData.managerSetting.setting, (newValue) => {
-                    request.reqManagerUpdate(protoManage.Manager.create({
+                    request.reqManagerUpdateSetting(protoManage.Manager.create({
                         Setting:JSON.stringify(newValue)
                     })).then((response) => {}).catch(error => {}).finally(()=>{})
                 },{deep:true})

@@ -1,5 +1,5 @@
 <template>
-    <el-table :data="tableData" highlight-current-row height="361" v-elTableInfiniteScroll="tableLoad">
+    <el-table :data="tableData" highlight-current-row height="100%" v-elTableInfiniteScroll="tableLoad">
         <el-table-column label="编号" type="index" align="center" width="160"></el-table-column>
         <el-table-column label="报告值" align="center">
             <template #default="scope">

@@ -24,12 +24,10 @@ export default defineComponent ({
         size:{
             type: String,
             default: "",
-            required: false
         },
         modelValue:{
             type: Number,
             default: 0,
-            required: true
         }
     },
     setup(props, context){

@@ -33,11 +33,11 @@ func InitServer() (*App, error) {
 	app := App{AppTypeName: commonConst.ManageServerName}
 	app.InitConfig()
 	app.InitLogServer()
+	app.initAppData()
 	if err := app.InitBaseServer(); err != nil {
 		app.StopBaseServer()
 		return nil, err
 	}
-	app.initAppData()
 	Jlog.Info("服务已经全部启动")
 	return &app, nil
 }

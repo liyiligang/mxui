@@ -1,41 +1,30 @@
 <template>
-    <el-row type="flex" justify="center" align="middle" >
-        <el-tabs class="funcCallTabs" v-loading="data.loading" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
-            <el-tab-pane label="表单" name="form">
-                <el-row class="formRow" type="flex" justify="center" align="middle">
-                    <vue-form class="form" v-model="data.formData" :form-footer="data.formFooter"
-                              :ui-schema="data.uiSchema" :schema="data.schema"></vue-form>
-                </el-row>
-            </el-tab-pane>
-            <el-tab-pane label="JSON" name="json">
-                <JsonEdit class="json" ref="jsonEdit" :readOnly="false" :modes="['code', 'tree']" :id="'jsonEdit'+nodeFunc.Base.ID"
-                          :name="nodeFunc.Name" @jsonChanged=jsonChanged></JsonEdit>
-            </el-tab-pane>
-        </el-tabs>
+    <el-row class="nodeFuncCallRow">
+        <el-row class="nodeFuncCallTabsRow">
+            <el-tabs v-if="data.schema!==''" class="funcCallTabs" v-loading="data.loading" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
+                <el-tab-pane class="formPane" label="表单" name="form">
+                    <el-row class="formRow" type="flex" justify="start" align="top">
+                        <vue-form class="form" v-model="data.formData" :form-footer="data.formFooter"
+                                  :ui-schema="data.uiSchema" :schema="data.schema"></vue-form>
+                    </el-row>
+                </el-tab-pane>
+                <el-tab-pane class="jsonPane" label="JSON" name="json">
+                        <JsonEdit ref="jsonEdit" :readOnly="false" :modes="['code', 'tree']" :id="'jsonEdit'+nodeFunc.Base.ID"
+                                  :name="nodeFunc.Name" @jsonChanged=jsonChanged></JsonEdit>
+                </el-tab-pane>
+            </el-tabs>
+            <Empty v-else class="funcCallEmpty" description="此方法沒有设置参数"></Empty>
+        </el-row>
         <el-row type="flex" justify="center" align="middle">
             <el-button class="funcCallButton" type="primary" @click=reset :disabled="data.loading">重置</el-button>
             <el-button class="funcCallButton" type="primary" @click=funcCall :disabled="data.loading">提交</el-button>
         </el-row>
     </el-row>
 
-    <el-dialog
-        v-model="data.dialogVisible"
-        width="620px"
-        top="12vh"
-        destroy-on-close
-        :fullscreen="data.fullScreen"
-        :custom-class="getFuncCallReturnView()">
-        <template v-slot:title>
-            <el-row class="funcCallTitleRow" type="flex" justify="space-between" align="middle" >
-                <span class="card-dialog-title" :class=convert.getColorByLevel(nodeFunc.Level)>{{nodeFunc.Name}}</span>
-                <i class="funcCallIcon" :class="[convert.getNodeFuncCallStateIcon(data.nodeFuncCall.State),
-                convert.getColorByState(data.nodeFuncCall.State)]"></i>
-                <el-button size="small" @click="setFullScreen"></el-button>
-                <div></div>
-            </el-row>
-        </template>
+    <DialogViewFrame v-model="data.returnValVisible" :title="nodeFunc.Name"
+                     :level="nodeFunc.Level" width="620px">
         <NodeFuncReturn :nodeFuncCall="data.nodeFuncCall"></NodeFuncReturn>
-    </el-dialog>
+    </DialogViewFrame>
 </template>
 
 <script lang="ts">
@@ -47,7 +36,8 @@ import {request} from "../../base/request";
 import {convert} from "../../base/convert"
 import JsonEdit from "../../components/json/JsonEdit.vue";
 import NodeFuncReturn from "./NodeFuncReturn.vue";
-import {ElMessage} from "element-plus";
+import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
+import Empty from "../../components/Empty.vue"
 
 interface NodeFuncCallInfo {
     formData:{}
@@ -58,7 +48,7 @@ interface NodeFuncCallInfo {
     loading: boolean
     tabActiveName:string
     funcCallID:number
-    dialogVisible:boolean
+    returnValVisible:boolean
     nodeFuncCall:protoManage.NodeFuncCall
     fullScreen:boolean
 }
@@ -66,19 +56,25 @@ interface NodeFuncCallInfo {
 export default defineComponent ({
     name: "NodeFuncCall",
     components: {
+        Empty,
         JsonEdit,
-        NodeFuncReturn
+        NodeFuncReturn,
+        DialogViewFrame
     },
     props:{
         nodeFunc:{
             type: protoManage.NodeFunc,
             default: defaultVal.getDefaultProtoNodeFunc()
+        },
+        nodeFuncCall:{
+            type: protoManage.NodeFuncCall,
+            default: defaultVal.getDefaultProtoNodeFuncCall()
         }
     },
     setup(props){
         const data = reactive<NodeFuncCallInfo>({formData:{}, resetData:"", uiSchema:{},
             schema:globals.getJson(props.nodeFunc.Schema), formFooter:{show: false},
-            loading:false, tabActiveName:"form", funcCallID:0, dialogVisible:false, fullScreen:false,
+            loading:false, tabActiveName:"form", funcCallID:0, returnValVisible:false, fullScreen:false,
             nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall()})
         if (typeof data.schema === "object") {
             traversalSchema(data.schema)
@@ -86,9 +82,12 @@ export default defineComponent ({
 
         const jsonEdit = ref<typeof JsonEdit>(JsonEdit);
         onMounted(()=>{
+            if (props.nodeFuncCall.Parameter != ""){
+                data.formData = globals.getJson(props.nodeFuncCall.Parameter)
+            }
             data.resetData = JSON.stringify(data.formData)
-            jsonEdit.value.setJsonValueSchema(data.schema)
-            jsonEdit.value.setJsonValue(data.formData)
+            setJsonEditSchemaValue(data.schema)
+            setJsonEditValue(data.formData)
         })
 
         function traversalSchema(obj:object){
@@ -110,17 +109,17 @@ export default defineComponent ({
             if (tab.props.name == "form"){
                 jsonValidate()
             }else  if (tab.props.name == "json") {
-                jsonEdit.value.setJsonValue(data.formData)
+                setJsonEditValue(data.formData)
             }
         }
 
         function reset(){
             data.formData = globals.getJson(data.resetData)
-            jsonEdit.value.setJsonValue(data.formData)
+            setJsonEditValue(data.formData)
         }
 
         async function funcCall() {
-            jsonEdit.value.setJsonValue(data.formData)
+            setJsonEditValue(data.formData)
             if (! await jsonValidate()){
                return
             }
@@ -147,9 +146,8 @@ export default defineComponent ({
                 if (returnVal.Error != null && returnVal.Error != ""){
                     globals.viewError(returnVal.Error)
                 }else{
-                    data.dialogVisible = true
+                    data.returnValVisible = true
                     data.nodeFuncCall = protoManage.NodeFuncCall.create(returnVal.NodeFuncCall)
-                    ElMessage.success("调用成功");
                 }
             }
         }
@@ -158,27 +156,32 @@ export default defineComponent ({
             data.formData = globals.getJson(jsonValue)
         }
 
-        function setFullScreen() {
-            data.fullScreen = !data.fullScreen
+        function setJsonEditValue(value:object) {
+            if (data.schema != ''){
+                jsonEdit.value.setJsonValue(value)
+            }
         }
 
-        function getFuncCallReturnView() {
-            return data.fullScreen?"funcCallReturnFullScreen":"funcCallReturnView"
+        function setJsonEditSchemaValue(value:object) {
+            if (data.schema != ''){
+                jsonEdit.value.setJsonValueSchema(value)
+            }
         }
 
         async function jsonValidate(): Promise<boolean> {
             let isOK = true
-            await jsonEdit.value.validate().then((response) => {
-                if (response.length > 0) {
-                    globals.viewError("参数校验失败(" + response[0].message + ")")
-                    isOK = false
-                }
-            })
+            if (data.schema != ''){
+                await jsonEdit.value.validate().then((response) => {
+                    if (response.length > 0) {
+                        globals.viewError("参数校验失败(" + response[0].message + ")")
+                        isOK = false
+                    }
+                })
+            }
             return isOK
         }
 
-        return {data, funcCall, reset, jsonChanged, tabClick, setFullScreen, getFuncCallReturnView,
-            jsonEdit, convert}
+        return {data, funcCall, reset, jsonChanged, tabClick, jsonEdit, convert}
     }
 })
 </script>
@@ -187,45 +190,63 @@ export default defineComponent ({
 @import "../../css/card.css";
 @import "../../css/color.css";
 
-.formRow{
-    height: 320px;
-    overflow-y:scroll;
-    margin-bottom: 5px;
+.nodeFuncCallRow{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
 }
+
+.nodeFuncCallTabsRow{
+    width: 100%;
+    flex: auto;
+}
+
+.funcCallTabs{
+    width: 100%;
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.funcCallEmpty{
+    width: 100%;
+    height: 100%;
+}
+
+.formPane{
+    height: 100%;
+    width: 100%;
+    overflow-y:scroll;
+}
+
+.formRow{
+    height: 0;
+    width: 100%;
+}
+
 .form{
     margin-right: 6px;
 }
-.json{
-    height: 320px;
-    margin-bottom: 5px;
+
+.jsonPane{
+    height: 100%;
+    width: 100%;
 }
+
 .funcCallButton{
     width: 80px;
     margin-top: 20px;
 }
 
-.funcCallTabs{
-    width: 100%;
-    height: 100%;
-}
-
-.funcCallTitleRow{
-    width: 100%;
-}
-
-.funcCallIcon{
-    font-size: 32px;
-    margin-right: 60px;
-}
-
 </style>
 
 <style>
-.funcCallReturnView .el-dialog__body{
-    height: calc(80vh - 125px);
-}
 
-.funcCallReturnFullScreen .el-dialog__body{
-    height: calc(100vh - 125px);
+.funcCallTabs .el-tabs__content{
+    height: 100%;
+    overflow:visible;
 }
 </style>

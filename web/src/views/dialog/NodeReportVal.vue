@@ -1,18 +1,18 @@
 <template>
-    <el-row type="flex" justify="center" align="middle">
-        <Empty v-if="data.nodeReportValList.length==0" class="tableReportValBodyEmpty"></Empty>
-        <el-row class="tableReportValMainView" v-else>
-            <el-row class="tableReportValBodyView" v-loading="data.loading" element-loading-text="请等待结果返回..." type="flex" justify="space-between" align="middle">
-                <el-tabs class="tableReportValTabs" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
-                    <el-tab-pane label="折线" name="line">
-                        <Line class="tableReportValLine" :lineData="data.nodeReportValList"></Line>
+    <el-row class="nodeReportValMainRow" type="flex" justify="center" align="middle">
+        <Empty v-if="data.nodeReportValList.length==0" class="nodeReportValEmpty"></Empty>
+        <el-row v-else class="nodeReportValContentRow">
+            <el-row class="nodeReportValTabsRow" v-loading="data.loading" element-loading-text="请等待结果返回...">
+                <el-tabs class="nodeReportValTabs" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
+                    <el-tab-pane class="linePane" label="折线" name="line">
+                        <Line :lineData="data.nodeReportValList"></Line>
                     </el-tab-pane>
-                    <el-tab-pane label="表格" name="table">
-                        <NodeReportValTable class="tableReportValTable" :tableData="data.nodeReportValList"></NodeReportValTable>
+                    <el-tab-pane class="tablePane" label="表格" name="table">
+                        <NodeReportValTable :tableData="data.nodeReportValList"></NodeReportValTable>
                     </el-tab-pane>
                 </el-tabs>
             </el-row>
-            <el-row class="tableReportValFooterView" type="flex" justify="space-around" align="middle">
+            <el-row class="nodeReportValButtonRow" type="flex" justify="space-around" align="middle">
                 <el-row type="flex" justify="center" align="middle">
                     <div class="color-text-normal">结果集：</div>
                     <el-select class="tableReportValSelect" v-model="data.selectGetCountValue" @change="selectGetCountChanged"
@@ -140,25 +140,51 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 
-.tableReportValBodyEmpty{
+.nodeReportValMainRow{
     width: 100%;
-    height: 460px;
+    height: 100%;
 }
 
-.tableReportValMainView{
+.nodeReportValEmpty{
     width: 100%;
+    height: 100%;
 }
 
-.tableReportValBodyView{
+.nodeReportValContentRow{
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
     flex-wrap: nowrap;
 }
 
-.tableReportValTabs{
+.nodeReportValTabsRow{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.nodeReportValTabs{
+    width: 100%;
+    height: 100%;
+    flex: auto;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow: hidden;
+}
+
+.linePane{
+    height: 100%;
     width: 100%;
 }
 
-.tableReportValFooterView{
+.tablePane{
+    height: 100%;
+    width: 100%;
+}
+
+.nodeReportValButtonRow{
     margin-top: 20px;
     width: 100%;
 }
@@ -172,5 +198,12 @@ export default defineComponent ({
     /*padding: 0px;*/
     /*font-size:30px;*/
     /*margin-right: 15px;*/
+}
+</style>
+
+<style>
+.nodeReportValTabs .el-tabs__content{
+    height: 100%;
+    overflow-y: scroll;
 }
 </style>

@@ -1,13 +1,6 @@
 <template>
-    <el-dialog
-        :modelValue="dialogModel"
-        width="280px"
-        top="18vh"
-        @close="dialogClose"
-        destroy-on-close>
-        <template v-slot:title>
-            <span class="card-dialog-title color-text-normal">{{"注册帐号"}}</span>
-        </template>
+    <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
+                     :title="title" width="280px" :close-full-screen="true" :close-fix-height="true">
         <el-row v-loading="data.isLoad" type="flex" justify="center" align="middle">
             <el-input class="registerInput" v-model="data.manager.NickName" placeholder="昵称" clearable></el-input>
             <el-input class="registerInput" v-model="data.manager.Name" placeholder="用户名" clearable></el-input>
@@ -16,7 +9,7 @@
             <LevelSelect v-if="useLevel" class="registerSelect" v-model="data.manager.Level"></LevelSelect>
             <el-button class="registerButton" size="medium" type="primary" round @click="register">注册</el-button>
         </el-row>
-    </el-dialog>
+    </DialogViewFrame>
 </template>
 
 <script lang="ts">
@@ -25,6 +18,7 @@ import { request } from "../base/request";
 import {protoManage} from "../proto/manage";
 import {ElMessage} from "element-plus";
 import LevelSelect from "../components/setting/LevelSelect.vue";
+import DialogViewFrame from "../views/dialog/DialogViewFrame.vue";
 
 
 interface RegisterInfo {
@@ -35,15 +29,19 @@ interface RegisterInfo {
 
 export default defineComponent ({
     name: "Register",
+    emits:['registerSuccess', 'update:modelValue'],
     components: {
+        DialogViewFrame,
         LevelSelect
     },
-    emits:['registerSuccess', 'update:dialogModel'],
     props:{
-        dialogModel:{
+        modelValue:{
             type: Boolean,
             default: false,
-            required: true
+        },
+        title:{
+            type: String,
+            default: "",
         },
         useLevel:{
             type: Boolean,
@@ -61,8 +59,8 @@ export default defineComponent ({
             data.passwordConfirm = ""
         }
 
-        function dialogClose(){
-            context.emit("update:dialogModel", false)
+        function modelValueUpdate(val:boolean){
+            context.emit("update:modelValue", val)
             dataInit()
         }
 
@@ -74,26 +72,28 @@ export default defineComponent ({
             return true
         }
 
+        function registerSuccess() {
+            ElMessage.success("注册成功")
+            context.emit("registerSuccess")
+            modelValueUpdate(false)
+        }
+
         function register(){
             if (registerCheck()){
                 data.isLoad = true
 
                 if (props.useLevel) {
                     request.reqManagerAdd(data.manager).then((response) => {
-                        ElMessage.success("注册成功")
-                        context.emit("registerSuccess")
-                        dialogClose()
+                        registerSuccess()
                     }).catch(error => {}).finally(()=>{data.isLoad = false})
                 }else {
                     request.reqManagerRegister(data.manager).then((response) => {
-                        ElMessage.success("注册成功")
-                        context.emit("registerSuccess")
-                        dialogClose()
+                        registerSuccess()
                     }).catch(error => {}).finally(()=>{data.isLoad = false})
                 }
             }
         }
-        return {data, dialogClose, register}
+        return {data, modelValueUpdate, register}
     }
 })
 </script>

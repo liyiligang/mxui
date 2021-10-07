@@ -1,16 +1,9 @@
 <template>
-    <el-dialog
-        :modelValue="dialogModel"
-        width="660px"
-        top="10vh"
-        @close="dialogClose"
-        destroy-on-close>
-        <template v-slot:title>
-            <span class="card-dialog-title color-text-normal">{{dialogTitle}}</span>
-        </template>
-        <el-row v-loading="data.topLinkLoading">
-            <el-row class="topMenuSetTable">
-                <el-table :data="data.topLinkList" ref="topMenuSetTable" height="100%" highlight-current-row>
+    <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
+                     :title="title" width="660px">
+        <el-row v-loading="data.topLinkLoading" class="topMenuSetRow">
+            <el-row class="topMenuSetTableRow">
+                <el-table class="topMenuSetTable" :data="data.topLinkList" ref="topMenuSetTable" height="100%" highlight-current-row>
                     <el-table-column label="编号" type="index" align="center" width="50"></el-table-column>
                     <el-table-column label="名称" align="center" width="120">
                         <template #default="scope">
@@ -42,13 +35,14 @@
                 <el-button :disabled="data.topLinkAddFlag" type="primary" icon="el-icon-plus" circle @click="newTopLink"></el-button>
             </el-row>
         </el-row>
-    </el-dialog>
+    </DialogViewFrame>
 </template>
 
 <script lang="ts">
 import {defineComponent, inject, onMounted, reactive, ref, nextTick} from "vue";
 import {request} from "../../base/request";
 import {protoManage} from "../../proto/manage";
+import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 import {ElMessage, ElTable} from "element-plus";
 
 interface TopLinkEditInfo {
@@ -64,20 +58,19 @@ interface TopMenuSetInfo {
 
 export default defineComponent ({
     name: "TopMenuSet",
+    emits:['update:modelValue'],
+    components: {
+        DialogViewFrame
+    },
     props:{
-        dialogTitle:{
-            type: String,
-            default: "",
-            required: true
-        },
-        dialogModel:{
+        modelValue:{
             type: Boolean,
             default: false,
-            required: true
+        },
+        title:{
+            type: String,
+            default: "",
         }
-    },
-    components: {
-
     },
     setup(props, context){
         const data = reactive<TopMenuSetInfo>({topLinkList:[], topLinkEditList:[], topLinkAddFlag:false, topLinkLoading:true})
@@ -157,13 +150,13 @@ export default defineComponent ({
         }
 
         const topLinkListUpdate = inject<Function>('topLinkListUpdate')
-        function dialogClose(){
+        function modelValueUpdate(){
             if(topLinkListUpdate){
                 topLinkListUpdate()
             }
-            context.emit("update:dialogModel", false)
+            context.emit("update:modelValue", false)
         }
-        return {data, dialogClose, editTopLink, isEditing, newTopLink,
+        return {data, modelValueUpdate, editTopLink, isEditing, newTopLink,
             delTopLink, updateTopLink, cancelTopLink, topMenuSetTable}
     }
 })
@@ -173,9 +166,23 @@ export default defineComponent ({
 @import "../../css/color.css";
 @import "../../css/card.css";
 
+.topMenuSetRow{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.topMenuSetTableRow{
+    width: 100%;
+    flex:auto;
+    overflow-y:scroll;
+}
+
 .topMenuSetTable{
     width: 100%;
-    height: 420px;
+    height: 100%;
 }
 
 .topMenuSetAddButtonRow{

@@ -1,13 +1,6 @@
 <template>
-    <el-dialog
-        :modelValue="dialogModel"
-        width="650px"
-        top="18vh"
-        @close="dialogClose"
-        destroy-on-close>
-        <template v-slot:title>
-            <span class="card-dialog-title color-text-normal">{{dialogTitle}}</span>
-        </template>
+    <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
+                     :title="title" width="620px" :close-full-screen="true" :close-fix-height="true">
         <el-row class="systemSetMainRow">
             <el-row class="systemSetGroupRow">
                 <el-row class="systemSetItemRow">
@@ -21,7 +14,7 @@
                     <el-row class="systemSetBlockRow">
                         <div>修改密码：</div>
                         <el-button size="small" @click="updatePassword">修改</el-button>
-                        <PasswordReset v-model:dialogModel="data.passwordResetVisible"></PasswordReset>
+                        <PasswordReset v-model="data.passwordResetVisible" title="修改密码"></PasswordReset>
                     </el-row>
                     <el-row class="systemSetBlockRow">
                         <div>退出登录：</div>
@@ -36,7 +29,7 @@
                 </el-row>
             </el-row>
         </el-row>
-    </el-dialog>
+    </DialogViewFrame>
 </template>
 
 <script lang="ts">
@@ -44,6 +37,7 @@ import {defineComponent, reactive} from "vue";
 import {globals} from "../../base/globals";
 import PasswordReset from "./PasswordReset.vue";
 import AutoRefresh from "./AutoRefresh.vue";
+import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 
 interface SystemSetInfo {
     passwordResetVisible:boolean
@@ -51,19 +45,19 @@ interface SystemSetInfo {
 
 export default defineComponent ({
     name: "SystemSet",
+    emits:['update:modelValue'],
     props:{
-        dialogTitle:{
-            type: String,
-            default: "",
-            required: true
-        },
-        dialogModel:{
+        modelValue:{
             type: Boolean,
             default: false,
-            required: true
+        },
+        title:{
+            type: String,
+            default: "",
         }
     },
     components: {
+        DialogViewFrame,
         PasswordReset,
         AutoRefresh
     },
@@ -77,11 +71,11 @@ export default defineComponent ({
             globals.reLogin()
         }
 
-        function dialogClose(){
-            context.emit("update:dialogModel", false)
+        function modelValueUpdate(val){
+            context.emit("update:modelValue", val)
         }
 
-        return {data, globals, dialogClose, updatePassword, exitLogin}
+        return {data, globals, updatePassword, exitLogin, modelValueUpdate}
     }
 })
 </script>

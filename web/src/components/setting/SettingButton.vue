@@ -9,9 +9,9 @@
             </el-dropdown-menu>
         </template>
     </el-dropdown>
-    <SystemSet v-if="data.systemSetVisible == true" :dialogTitle="DropdownFlag.System"  v-model:dialogModel="data.systemSetVisible"></SystemSet>
-    <UserSet v-if="data.userSetVisible == true" :dialogTitle="DropdownFlag.User"  v-model:dialogModel="data.userSetVisible"></UserSet>
-    <TopMenuSet v-if="data.topMenuSetVisible == true" :dialogTitle="DropdownFlag.Top"  v-model:dialogModel="data.topMenuSetVisible"></TopMenuSet>
+    <SystemSet v-model="data.systemSetVisible" :title="DropdownFlag.System"></SystemSet>
+    <UserSet v-model="data.userSetVisible" :title="DropdownFlag.User"></UserSet>
+    <TopMenuSet v-model="data.topMenuSetVisible" :title="DropdownFlag.Top"></TopMenuSet>
 </template>
 
 <script lang="ts">

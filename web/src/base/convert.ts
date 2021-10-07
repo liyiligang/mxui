@@ -119,14 +119,32 @@ export module convert {
         return "el-icon-question"
     }
 
+    export function getNodeFuncParameterTypeName():string {
+        return "表单"
+    }
+
     export function getNodeFuncReturnTypeName(type: protoManage.NodeFuncReturnType|undefined|null):string {
         switch (type) {
+            case protoManage.NodeFuncReturnType.NotReturn:
+                return "无"
+            case protoManage.NodeFuncReturnType.Error:
+                return "错误"
             case protoManage.NodeFuncReturnType.Text:
                 return "文本"
             case protoManage.NodeFuncReturnType.Json:
-                return "Json"
+                return "对象"
             case protoManage.NodeFuncReturnType.Link:
                 return "链接"
+            case protoManage.NodeFuncReturnType.Image:
+                return "图片"
+            case protoManage.NodeFuncReturnType.Media:
+                return "媒体"
+            case protoManage.NodeFuncReturnType.File:
+                return "文件"
+            case protoManage.NodeFuncReturnType.Table:
+                return "表格"
+            case protoManage.NodeFuncReturnType.Charts:
+                return "图表"
         }
         return "未知"
     }

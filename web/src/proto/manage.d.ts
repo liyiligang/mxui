@@ -16,10 +16,12 @@ export namespace protoManage {
         ManagerAdd = 103,
         ManagerDel = 104,
         ManagerUpdate = 105,
-        ManagerFindNickName = 106,
-        ManagerFindLowLevel = 107,
-        ManagerFindByID = 108,
-        ManagerFindByLevel = 109,
+        ManagerUpdatePasswd = 106,
+        ManagerUpdateSetting = 107,
+        ManagerFindNickName = 108,
+        ManagerFindLowLevel = 109,
+        ManagerFindByID = 110,
+        ManagerFindByLevel = 111,
         NodeGroupAdd = 201,
         NodeGroupDel = 202,
         NodeGroupFind = 203,
@@ -48,8 +50,10 @@ export namespace protoManage {
         NodeFuncFindByID = 607,
         NodeFuncCallReq = 608,
         NodeFuncCallAns = 609,
-        NodeFuncCallFind = 611,
-        NodeFuncCallFindByID = 610,
+        NodeFuncCallFind = 610,
+        NodeFuncCallFindByID = 611,
+        NodeFuncCallFindParameterByID = 612,
+        NodeFuncCallFindReturnValByID = 613,
         NodeReportAdd = 701,
         NodeReportDel = 702,
         NodeReportDelAllWithNodeID = 703,
@@ -82,13 +86,17 @@ export namespace protoManage {
 
     /** NodeFuncReturnType enum. */
     enum NodeFuncReturnType {
-        Text = 0,
-        Json = 1,
-        Link = 2,
-        Media = 3,
-        File = 4,
-        Table = 5,
-        Charts = 6
+        Unsure = 0,
+        NotReturn = 1,
+        Error = 2,
+        Text = 3,
+        Json = 4,
+        Link = 5,
+        Image = 6,
+        Media = 7,
+        File = 8,
+        Table = 9,
+        Charts = 10
     }
 
     /** NotifySenderType enum. */

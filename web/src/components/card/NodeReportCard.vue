@@ -12,16 +12,10 @@
             <CardReportVal @textClick=textClick name="报告值" :value="nodeReportVal.Value" :stateColor="convert.getColorByState(nodeReportVal.State)"
                            :time="nodeReportVal.Base?.UpdateTime"></CardReportVal>
 
-            <el-dialog
-                v-model="data.dialogVisible"
-                width="860px"
-                top="10vh"
-                destroy-on-close>
-                <template v-slot:title>
-                    <span class="card-dialog-title" :class=convert.getColorByLevel(nodeReport.Level)>{{nodeReport.Name}}</span>
-                </template>
+            <DialogViewFrame v-model="data.dialogVisible" :title="nodeReport.Name"
+                             :level="nodeReport.Level" width="860px">
                 <NodeReportVal :nodeReport="nodeReport"></NodeReportVal>
-            </el-dialog>
+            </DialogViewFrame>
         </template>
     </CardViewFrame>
 </template>
@@ -34,6 +28,7 @@ import CardBase from "../cardItem/CardBase.vue"
 import CardViewFrame from "./CardViewFrame.vue"
 import CardReportVal from "../cardItem/CardReportVal.vue"
 import NodeReportVal from "../../views/dialog/NodeReportVal.vue"
+import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 import {routerPath} from "../../router";
 import {protoManage} from "../../proto/manage"
 import {request} from "../../base/request";
@@ -67,7 +62,8 @@ export default defineComponent ({
         CardViewFrame,
         CardInfo,
         CardReportVal,
-        NodeReportVal
+        NodeReportVal,
+        DialogViewFrame
     },
     setup(props, context){
         const data = reactive<NodeReportCardInfo>({dialogVisible:false})
