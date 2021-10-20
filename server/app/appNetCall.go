@@ -438,5 +438,5 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 }
 
 func (app *App) RpcStreamError(text string, err error){
-	Jlog.Error(text, "err", err)
+	Jlog.Warn(text, "err", err)
 }

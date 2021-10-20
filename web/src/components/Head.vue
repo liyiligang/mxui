@@ -6,7 +6,10 @@
                 <el-link v-for="i in data.topLinkList" class="headLink" type="primary" :underline="false" :href="i.Url" target="_blank">{{i.Name}}</el-link>
             </el-row>
             <el-divider class="headDivider" direction="vertical"></el-divider>
-            <SettingButton></SettingButton>
+            <el-row class="headButtonRow">
+                <AutoRefreshSwitch v-model:isAutoRefresh="globals.globalsData.managerSetting.setting.autoRefresh"></AutoRefreshSwitch>
+                <SettingButton></SettingButton>
+            </el-row>
         </el-row>
     </el-row>
 </template>
@@ -17,6 +20,7 @@ import {request} from "../base/request";
 import {globals} from "../base/globals";
 import {protoManage} from "../proto/manage";
 import SettingButton from "./setting/SettingButton.vue";
+import AutoRefreshSwitch from "./control/AutoRefreshSwitch.vue"
 
 interface HeadInfo {
     topLinkList: protoManage.ITopLink[]
@@ -25,7 +29,8 @@ interface HeadInfo {
 export default defineComponent ({
     name: "Head",
     components: {
-        SettingButton
+        SettingButton,
+        AutoRefreshSwitch
     },
     setup(){
         const data = reactive<HeadInfo>({topLinkList:[]})
@@ -60,7 +65,7 @@ export default defineComponent ({
             reqManagerList()
         }
         provide('managerListUpdate', ManagerListUpdate)
-        return {data}
+        return {data, globals}
     }
 })
 </script>
@@ -102,7 +107,11 @@ export default defineComponent ({
 
 .headDivider{
     margin-left: 10px;
-    margin-right: 30px;
+    margin-right: 15px;
     height: 22px;
+}
+
+.headButtonRow{
+
 }
 </style>

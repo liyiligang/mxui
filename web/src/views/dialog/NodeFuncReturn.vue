@@ -1,5 +1,6 @@
 <template>
-    <el-row class="mainRow" type="flex" justify="center" align="middle">
+    <el-row class="mainRow" v-loading="loading" element-loading-background="rgba(255, 255, 255, 0.6)"
+            type="flex" justify="center" align="middle">
         <el-row v-if="nodeFuncCall.ReturnType===protoManage.NodeFuncReturnType.NotReturn"
                 class="contextRow" type="flex" justify="center" align="middle">
             <Empty class="contextEmpty" description="此次调用方法沒有返回值"></Empty>
@@ -77,6 +78,10 @@ export default defineComponent ({
         nodeFuncCall:{
             type: protoManage.NodeFuncCall,
             default: defaultVal.getDefaultProtoNodeFuncCall()
+        },
+        loading:{
+            type: Boolean,
+            default: false
         }
     },
     setup(props){

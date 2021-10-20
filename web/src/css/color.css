@@ -37,3 +37,16 @@
 .color-text-unnecessary{
     color: #C0C4CC;
 }
+
+.el-table .table-color-state-info {
+    --el-table-tr-background-color: var(--el-color-info-light);
+}
+.el-table .table-color-state-success {
+    --el-table-tr-background-color: var(--el-color-success-lighter);
+}
+.el-table .table-color-state-warning {
+    --el-table-tr-background-color: var(--el-color-warning-lighter);
+}
+.el-table .table-color-state-danger {
+    --el-table-tr-background-color: var(--el-color-error-lighter);
+}

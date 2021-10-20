@@ -1,6 +1,6 @@
 <template>
     <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
-                     :title="title" width="660px">
+                     :title="title" width="660px" show-full-screen fixHeight>
         <el-row v-loading="data.topLinkLoading" class="topMenuSetRow">
             <el-row class="topMenuSetTableRow">
                 <el-table class="topMenuSetTable" :data="data.topLinkList" ref="topMenuSetTable" height="100%" highlight-current-row>

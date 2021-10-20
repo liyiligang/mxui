@@ -86,7 +86,7 @@ export namespace protoManage {
 
     /** NodeFuncReturnType enum. */
     enum NodeFuncReturnType {
-        Unsure = 0,
+        Unknown = 0,
         NotReturn = 1,
         Error = 2,
         Text = 3,
@@ -97,6 +97,13 @@ export namespace protoManage {
         File = 8,
         Table = 9,
         Charts = 10
+    }
+
+    /** NodeReportType enum. */
+    enum NodeReportType {
+        NodeReportTypeUnknown = 0,
+        NodeReportTypeTable = 1,
+        NodeReportTypeLine = 2
     }
 
     /** NotifySenderType enum. */
@@ -623,6 +630,9 @@ export namespace protoManage {
         /** Filter ID */
         ID?: (number|null);
 
+        /** Filter IDSign */
+        IDSign?: (string|null);
+
         /** Filter GroupID */
         GroupID?: (number|null);
 
@@ -662,12 +672,6 @@ export namespace protoManage {
         /** Filter LevelLow */
         LevelLow?: (protoManage.Level|null);
 
-        /** Filter PageSize */
-        PageSize?: (number|null);
-
-        /** Filter PageNum */
-        PageNum?: (number|null);
-
         /** Filter SenderName */
         SenderName?: (string|null);
 
@@ -682,6 +686,12 @@ export namespace protoManage {
 
         /** Filter Message */
         Message?: (string|null);
+
+        /** Filter PageSize */
+        PageSize?: (number|null);
+
+        /** Filter PageNum */
+        PageNum?: (number|null);
     }
 
     /** Represents a Filter. */
@@ -695,6 +705,9 @@ export namespace protoManage {
 
         /** Filter ID. */
         public ID: number;
+
+        /** Filter IDSign. */
+        public IDSign: string;
 
         /** Filter GroupID. */
         public GroupID: number;
@@ -735,12 +748,6 @@ export namespace protoManage {
         /** Filter LevelLow. */
         public LevelLow: protoManage.Level;
 
-        /** Filter PageSize. */
-        public PageSize: number;
-
-        /** Filter PageNum. */
-        public PageNum: number;
-
         /** Filter SenderName. */
         public SenderName: string;
 
@@ -755,6 +762,12 @@ export namespace protoManage {
 
         /** Filter Message. */
         public Message: string;
+
+        /** Filter PageSize. */
+        public PageSize: number;
+
+        /** Filter PageNum. */
+        public PageNum: number;
 
         /**
          * Creates a new Filter instance using the specified properties.
@@ -1745,8 +1758,17 @@ export namespace protoManage {
         /** NodeReport Name */
         Name?: (string|null);
 
+        /** NodeReport Type */
+        Type?: (protoManage.NodeReportType|null);
+
         /** NodeReport Func */
         Func?: (string|null);
+
+        /** NodeReport Schema */
+        Schema?: (string|null);
+
+        /** NodeReport Interval */
+        Interval?: (number|null);
 
         /** NodeReport Level */
         Level?: (protoManage.Level|null);
@@ -1773,8 +1795,17 @@ export namespace protoManage {
         /** NodeReport Name. */
         public Name: string;
 
+        /** NodeReport Type. */
+        public Type: protoManage.NodeReportType;
+
         /** NodeReport Func. */
         public Func: string;
+
+        /** NodeReport Schema. */
+        public Schema: string;
+
+        /** NodeReport Interval. */
+        public Interval: number;
 
         /** NodeReport Level. */
         public Level: protoManage.Level;
@@ -1863,7 +1894,7 @@ export namespace protoManage {
         ReportID?: (number|null);
 
         /** NodeReportVal Value */
-        Value?: (number|null);
+        Value?: (string|null);
 
         /** NodeReportVal State */
         State?: (protoManage.State|null);
@@ -1885,7 +1916,7 @@ export namespace protoManage {
         public ReportID: number;
 
         /** NodeReportVal Value. */
-        public Value: number;
+        public Value: string;
 
         /** NodeReportVal State. */
         public State: protoManage.State;
@@ -1978,6 +2009,9 @@ export namespace protoManage {
 
         /** NodeNotify State */
         State?: (protoManage.State|null);
+
+        /** NodeNotify showPop */
+        showPop?: (boolean|null);
     }
 
     /** Represents a NodeNotify. */
@@ -2003,6 +2037,9 @@ export namespace protoManage {
 
         /** NodeNotify State. */
         public State: protoManage.State;
+
+        /** NodeNotify showPop. */
+        public showPop: boolean;
 
         /**
          * Creates a new NodeNotify instance using the specified properties.

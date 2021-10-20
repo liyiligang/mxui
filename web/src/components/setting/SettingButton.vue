@@ -69,7 +69,6 @@ export default defineComponent ({
 .settingButton{
     border:0px;
     padding: 0px;
-    font-size:30px;
-    margin-right: 15px;
+    font-size:25px;
 }
 </style>

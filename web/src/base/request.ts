@@ -10,6 +10,9 @@ export module request {
         if (globals.isNull(filter.ID)){
             filter.ID = 0
         }
+        if (globals.isNull(filter.IDSign) || filter.IDSign == ""){
+            filter.IDSign = "="
+        }
         if (globals.isNull(filter.GroupID)){
             filter.GroupID = 0
         }

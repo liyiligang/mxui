@@ -21,9 +21,9 @@
         </el-row>
     </el-row>
 
-    <DialogViewFrame v-model="data.returnValVisible" :title="nodeFunc.Name"
-                     :level="nodeFunc.Level" width="620px">
-        <NodeFuncReturn :nodeFuncCall="data.nodeFuncCall"></NodeFuncReturn>
+    <DialogViewFrame v-model="data.returnValVisible" :title="nodeFunc.Name" show-full-screen fixHeight
+                     :level="nodeFunc.Level" width="620px" show-refresh @refresh="funcCallRefresh">
+        <NodeFuncReturn :nodeFuncCall="data.nodeFuncCall" :loading="data.returnLoading"></NodeFuncReturn>
     </DialogViewFrame>
 </template>
 
@@ -46,6 +46,7 @@ interface NodeFuncCallInfo {
     formFooter:{}
     resetData:string
     loading: boolean
+    returnLoading: boolean
     tabActiveName:string
     funcCallID:number
     returnValVisible:boolean
@@ -74,8 +75,8 @@ export default defineComponent ({
     setup(props){
         const data = reactive<NodeFuncCallInfo>({formData:{}, resetData:"", uiSchema:{},
             schema:globals.getJson(props.nodeFunc.Schema), formFooter:{show: false},
-            loading:false, tabActiveName:"form", funcCallID:0, returnValVisible:false, fullScreen:false,
-            nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall()})
+            loading:false, returnLoading: false, tabActiveName:"form", funcCallID:0, returnValVisible:false,
+            fullScreen:false, nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall()})
         if (typeof data.schema === "object") {
             traversalSchema(data.schema)
         }
@@ -146,10 +147,16 @@ export default defineComponent ({
                 if (returnVal.Error != null && returnVal.Error != ""){
                     globals.viewError(returnVal.Error)
                 }else{
-                    data.returnValVisible = true
                     data.nodeFuncCall = protoManage.NodeFuncCall.create(returnVal.NodeFuncCall)
+                    data.returnValVisible = true
+                    data.returnLoading = false
                 }
             }
+        }
+
+        function funcCallRefresh(){
+            data.returnLoading = true
+            funcCall()
         }
 
         function jsonChanged(jsonValue:string) {
@@ -181,7 +188,7 @@ export default defineComponent ({
             return isOK
         }
 
-        return {data, funcCall, reset, jsonChanged, tabClick, jsonEdit, convert}
+        return {data, funcCall, reset, funcCallRefresh, jsonChanged, tabClick, jsonEdit, convert}
     }
 })
 </script>

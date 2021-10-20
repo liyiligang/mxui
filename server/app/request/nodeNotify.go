@@ -17,7 +17,7 @@ func (request *Request) ReqNodeNotifyAdd(nodeID int64, message []byte) error {
 	if err != nil {
 		return err
 	}
-	return request.Data.NodeNotifyAdd(&nodeNotify, true)
+	return request.Data.NodeNotifyAdd(&nodeNotify, nodeNotify.ShowPop)
 }
 
 func (request *Request) SaveNodeNotify(senderID int64, senderType protoManage.NotifySenderType,

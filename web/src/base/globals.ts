@@ -40,7 +40,8 @@ export module globals {
 		},
 		userInitSetting:{
 			isPageFix: false,
-			autoUpdateInterval: 10
+			autoRefresh: false,
+			autoUpdateInterval: 2,
 		}
 	}
 

@@ -193,6 +193,9 @@ func OrmNodeReportToProtoNodeReport(ormNodeReport *orm.NodeReport, protoNodeRepo
 	protoNodeReport.NodeID = ormNodeReport.NodeID
 	protoNodeReport.Name = ormNodeReport.Name
 	protoNodeReport.Func = ormNodeReport.Func
+	protoNodeReport.Type = protoManage.NodeReportType(ormNodeReport.Type)
+	protoNodeReport.Schema = ormNodeReport.Schema
+	protoNodeReport.Interval = ormNodeReport.Interval
 	protoNodeReport.Level = protoManage.Level(ormNodeReport.Level)
 	protoNodeReport.State = protoManage.State(ormNodeReport.State)
 }

@@ -1,6 +1,6 @@
 <template>
     <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
-                     :title="title" width="660px">
+                     :title="title" width="660px" show-full-screen fixHeight>
         <el-row class="userSetRow" v-loading="data.userSetLoading">
             <el-row class="userSetTableRow" type="flex" justify="start" align="top">
                 <el-table class="userSetTable" :data="data.userSetList" ref="userSetTable" height="100%" highlight-current-row>

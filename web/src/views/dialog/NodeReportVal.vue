@@ -1,36 +1,28 @@
 <template>
-    <el-row class="nodeReportValMainRow" type="flex" justify="center" align="middle">
+    <el-row class="nodeReportValMainRow" v-loading="data.loading" element-loading-text="请等待结果返回..." type="flex" justify="center" align="middle">
         <Empty v-if="data.nodeReportValList.length==0" class="nodeReportValEmpty"></Empty>
         <el-row v-else class="nodeReportValContentRow">
-            <el-row class="nodeReportValTabsRow" v-loading="data.loading" element-loading-text="请等待结果返回...">
-                <el-tabs class="nodeReportValTabs" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
-                    <el-tab-pane class="linePane" label="折线" name="line">
-                        <Line :lineData="data.nodeReportValList"></Line>
-                    </el-tab-pane>
-                    <el-tab-pane class="tablePane" label="表格" name="table">
-                        <NodeReportValTable :tableData="data.nodeReportValList"></NodeReportValTable>
-                    </el-tab-pane>
-                </el-tabs>
-            </el-row>
-            <el-row class="nodeReportValButtonRow" type="flex" justify="space-around" align="middle">
-                <el-row type="flex" justify="center" align="middle">
-                    <div class="color-text-normal">结果集：</div>
-                    <el-select class="tableReportValSelect" v-model="data.selectGetCountValue" @change="selectGetCountChanged"
-                               :disabled="data.loading" default-first-option placeholder="请输入请求数目">
-                        <el-option v-for="i in data.selectGetCountOptions" :key="i" :label="getCountSelectLabel(i)" :value="i"></el-option>
-                    </el-select>
-                </el-row>
-                <el-button class="refreshButton" :disabled="data.loading" @click="refreshButtonClick">刷新</el-button>
-                <el-row type="flex" justify="center" align="middle">
-                    <div class="color-text-normal">自动刷新：</div>
-                    <el-select class="tableReportValSelect" v-model="data.selectAutoRefreshValue" @change="selectAutoRefreshChanged"
-                               :disabled="data.loading" default-first-option placeholder="请输入自动刷新时间">
-                        <el-option v-for="i in data.selectAutoRefreshOptions" :key="i" :label="autoRefreshSelectLabel(i)" :value="i"></el-option>
-                    </el-select>
-                </el-row>
-            </el-row>
+            <NodeReportValLine v-if="nodeReport.Type===protoManage.NodeReportType.NodeReportTypeLine" :line-schema="globals.getJson(nodeReport.Schema)"
+                               :line-data="data.nodeReportValList"></NodeReportValLine>
+            <NodeReportValTable v-else :table-data="data.nodeReportValList"
+                                :table-schema="globals.getJson(nodeReport.Schema)"></NodeReportValTable>
         </el-row>
     </el-row>
+    <DialogViewFrame v-model="data.setDialogVisible" title="设置" width="380px" @closed="setViewClose">
+        <el-row class="nodeReportValSetRow"  type="flex" justify="center" align="middle">
+            <el-form label-width="120px" label-position="left" :model="data.setData">
+                <el-form-item label="结果集(条):">
+                    <el-input-number v-model="data.setData.requestCount" size="medium" :min="1" />
+                </el-form-item>
+                <el-form-item label="数据同步(秒/次):">
+                    <el-input-number v-model="data.setData.autoRefresh" size="medium" :min="0.1" :precision="2" />
+                </el-form-item>
+                <el-form-item>
+                    <el-button class="nodeReportValSetButton" type="primary" @click="setDataChanged">确定</el-button>
+                </el-form-item>
+            </el-form>
+        </el-row>
+    </DialogViewFrame>
 </template>
 
 <script lang="ts">
@@ -38,27 +30,31 @@ import {defineComponent, reactive, onMounted, getCurrentInstance, onUnmounted} f
 import {protoManage} from "../../proto/manage";
 import {globals} from "../../base/globals";
 import NodeReportValTable from "../../components/table/NodeReportValTable.vue"
-import Line from "../../components/echarts/Line.vue"
+import NodeReportValLine from "../../components/echarts/NodeReportValLine.vue"
 import Empty from "../../components/Empty.vue"
+import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 import {request} from "../../base/request";
-import {ElMessage} from "element-plus";
 import {refresh} from "../../base/refresh";
 
 interface NodeReportValInfo {
     loading: boolean
     tabActiveName:string
     nodeReportValList:protoManage.INodeFuncCall[]
-    selectGetCountValue:string
-    selectGetCountOptions: Array<string>
-    selectAutoRefreshValue:string
-    selectAutoRefreshOptions: Array<string>
+    setDialogVisible:boolean
+    setData:{
+        requestCount:number
+        autoRefresh:number
+        autoRefreshState:boolean
+    }
+    setDataOld:string
 }
 
 export default defineComponent ({
     name: "NodeReportVal",
     components: {
         NodeReportValTable,
-        Line,
+        NodeReportValLine,
+        DialogViewFrame,
         Empty
     },
     props:{
@@ -68,71 +64,80 @@ export default defineComponent ({
         }
     },
     setup(props){
-        const data = reactive<NodeReportValInfo>({loading:false, tabActiveName:"line",
-            nodeReportValList:[], selectGetCountValue:"100", selectGetCountOptions:["50", "100", "200", "500", "1000"],
-            selectAutoRefreshValue:"0", selectAutoRefreshOptions:["2", "5", "10", "30", "0"]})
+        const data = reactive<NodeReportValInfo>({loading:false, setDialogVisible:false, tabActiveName:"line",
+            nodeReportValList:[], setData:{requestCount:100, autoRefresh:2, autoRefreshState:false}, setDataOld:""})
         const instance = getCurrentInstance()
 
         onMounted(()=>{
+            data.setDataOld = JSON.stringify(data.setData)
             reqNodeReportValList()
         })
         onUnmounted(()=>{
             refresh.removeUserAutoRefresh(instance?.uid)
         })
+
         function reqNodeReportValList(){
             data.loading = true
-            let getNodeReportValList = ()=>{
-                request.reqNodeReportValList(protoManage.Filter.create({
-                    ReportID:Number(props.nodeReport.Base?.ID),
-                    PageSize:Number(data.selectGetCountValue),
-                    PageNum:Number(1)
-                })).then((response) => {
-                    data.nodeReportValList.length = 0
-                    for (let i = 0; i < response.NodeReportValList.length; i++){
-                        data.nodeReportValList.push(response.NodeReportValList[i])
+            request.reqNodeReportValList(protoManage.Filter.create({
+                ReportID:props.nodeReport.Base?.ID,
+                PageSize:data.setData.requestCount,
+                PageNum:1
+            })).then((response) => {
+                data.nodeReportValList.length = 0
+                for (let i = 0; i < response.NodeReportValList.length; i++){
+                    data.nodeReportValList.push(response.NodeReportValList[i])
+                }
+                refresh.addUserAutoRefresh(instance?.uid, data.setData.autoRefresh, updateNodeReportValList)
+            }).catch(error => {}).finally(()=>{data.loading = false})
+        }
+
+        function updateNodeReportValList(){
+            if (data.loading || !data.setData.autoRefreshState){
+                return
+            }
+            let id = 0
+            if (data.nodeReportValList.length > 0){
+                id = Number(data.nodeReportValList[0].Base?.ID)
+            }
+            request.reqNodeReportValList(protoManage.Filter.create({
+                ID: id,
+                IDSign:">",
+                ReportID:props.nodeReport.Base?.ID,
+                PageSize:data.setData.requestCount,
+                PageNum:1
+            })).then((response) => {
+                for (let i = response.NodeReportValList.length - 1; i >= 0; i--){
+                    if (data.nodeReportValList.length >= data.setData.requestCount){
+                        data.nodeReportValList.pop()
                     }
-                }).catch(error => {}).finally(()=>{data.loading = false})
-            }
-            refresh.addUserAutoRefresh(instance?.uid, Number(data.selectAutoRefreshValue), getNodeReportValList)
+                    data.nodeReportValList.unshift(response.NodeReportValList[i])
+                }
+            }).catch(error => {}).finally(()=>{})
         }
 
-        function getCountSelectLabel(val:string){
-            return val+"条"
+        function showSettingView(){
+            data.setDialogVisible = true
         }
 
-        function autoRefreshSelectLabel(val:string){
-            if (val == "0"){
-                return "关闭"
-            }
-            return val+"秒/次"
+        function setViewClose() {
+            data.setData = Object(globals.getJson(data.setDataOld))
         }
 
-        function refreshButtonClick(){
+        function setDataChanged() {
+            data.setDataOld = JSON.stringify(data.setData)
             reqNodeReportValList()
+            data.setDialogVisible = false
         }
 
-        function selectGetCountChanged() {
-            if (!globals.isPositiveIntWithStr(data.selectGetCountValue)){
-                ElMessage.error("请输入一个正整数");
-                return
+        function autoRefreshStateChanged(state:boolean) {
+            data.setData.autoRefreshState = state
+            if (data.setData.autoRefreshState){
+                refresh.updateUserAutoRefresh(instance?.uid, data.setData.autoRefresh, true)
             }
-            reqNodeReportValList()
         }
 
-        function selectAutoRefreshChanged() {
-            if (!globals.isNoNegativeIntWithStr(data.selectAutoRefreshValue)){
-                ElMessage.error("请输入一个非负整数");
-                return
-            }
-            refresh.updateUserAutoRefresh(instance?.uid, Number(data.selectAutoRefreshValue), true)
-        }
-
-        function tabClick(tab, event) {
-
-        }
-
-        return {data, tabClick, selectGetCountChanged, selectAutoRefreshChanged, getCountSelectLabel, autoRefreshSelectLabel,
-            refreshButtonClick}
+        return {data, globals, protoManage, setDataChanged, reqNodeReportValList, autoRefreshStateChanged,
+            showSettingView, setViewClose}
     }
 })
 </script>
@@ -153,57 +158,14 @@ export default defineComponent ({
 .nodeReportValContentRow{
     width: 100%;
     height: 100%;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
 }
 
-.nodeReportValTabsRow{
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.nodeReportValTabs{
-    width: 100%;
-    height: 100%;
-    flex: auto;
-    display: flex;
-    flex-direction: column;
-    flex-wrap: nowrap;
-    overflow: hidden;
-}
-
-.linePane{
-    height: 100%;
+.nodeReportValSetRow{
     width: 100%;
 }
 
-.tablePane{
-    height: 100%;
-    width: 100%;
+.nodeReportValSetButton{
+    margin-top: 10px;
 }
 
-.nodeReportValButtonRow{
-    margin-top: 20px;
-    width: 100%;
-}
-
-.tableReportValSelect{
-    width: 150px;
-}
-
-.refreshButton{
-    /*border:0px;*/
-    /*padding: 0px;*/
-    /*font-size:30px;*/
-    /*margin-right: 15px;*/
-}
-</style>
-
-<style>
-.nodeReportValTabs .el-tabs__content{
-    height: 100%;
-    overflow-y: scroll;
-}
 </style>

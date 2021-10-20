@@ -35,7 +35,7 @@ type Manager struct {
 type TopLink struct {
 	Base
 	Name  				string	`gorm:"UNIQUE;"`
-	Url					string	`gorm:"UNIQUE; SIZE:1024;"`
+	Url					string	`gorm:"UNIQUE;"`
 	State				int32	`gorm:"NOT NULL;"`
 }
 
@@ -69,7 +69,7 @@ type NodeFunc struct {
 	NodeID       		int64	`gorm:"NOT NULL; UNIQUE_INDEX:NodeFuncIndex;"`
 	Name 				string	`gorm:"NOT NULL; UNIQUE_INDEX:NodeFuncIndex;"`
 	Func     			string	`gorm:"NOT NULL;"`
-	Schema     			string	`gorm:"NOT NULL; SIZE:10240;"`
+	Schema     			string	`gorm:"NOT NULL;"`
 	Level				int32	`gorm:"NOT NULL;"`
 	State				int32	`gorm:"NOT NULL;"`
 }
@@ -89,6 +89,9 @@ type NodeReport struct {
 	NodeID       		int64 	`gorm:"NOT NULL; UNIQUE_INDEX:NodeReportIndex;"`
 	Name     			string	`gorm:"NOT NULL; UNIQUE_INDEX:NodeReportIndex;"`
 	Func     			string	`gorm:"NOT NULL;"`
+	Schema     			string	`gorm:"NOT NULL;"`
+	Interval			int64	`gorm:"NOT NULL;"`
+	Type     			int32	`gorm:"NOT NULL;"`
 	Level				int32	`gorm:"NOT NULL;"`
 	State				int32	`gorm:"NOT NULL;"`
 }
@@ -96,7 +99,7 @@ type NodeReport struct {
 type NodeReportVal struct {
 	Base
 	ReportID       		int64	`gorm:"NOT NULL; INDEX:NodeReportValIndex;"`
-	Value  				float64	`gorm:"NOT NULL;"`
+	Value  				string	`gorm:"NOT NULL;"`
 	State				int32	`gorm:"NOT NULL;"`
 }
 

@@ -5,12 +5,12 @@
                            @clickParameter="clickParameter" @clickReturnVal="clickReturnVal"></NodeFuncCallTable>
     </el-row>
 
-    <DialogViewFrame v-model="data.parameterVisible" :title="nodeFunc.Name"
+    <DialogViewFrame v-model="data.parameterVisible" :title="nodeFunc.Name" show-full-screen fixHeight
                      :level="nodeFunc.Level" width="500px">
         <NodeFuncCall :nodeFunc="nodeFunc" :nodeFuncCall="data.nodeFuncCall"></NodeFuncCall>
     </DialogViewFrame>
 
-    <DialogViewFrame v-model="data.returnValVisible" :title="nodeFunc.Name"
+    <DialogViewFrame v-model="data.returnValVisible" :title="nodeFunc.Name" show-full-screen fixHeight
                      :level="nodeFunc.Level" width="620px">
         <NodeFuncReturn :nodeFuncCall="data.nodeFuncCall"></NodeFuncReturn>
     </DialogViewFrame>

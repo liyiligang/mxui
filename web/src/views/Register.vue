@@ -1,6 +1,6 @@
 <template>
     <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
-                     :title="title" width="280px" :close-full-screen="true" :close-fix-height="true">
+                     :title="title" width="280px">
         <el-row v-loading="data.isLoad" type="flex" justify="center" align="middle">
             <el-input class="registerInput" v-model="data.manager.NickName" placeholder="昵称" clearable></el-input>
             <el-input class="registerInput" v-model="data.manager.Name" placeholder="用户名" clearable></el-input>

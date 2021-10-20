@@ -5,12 +5,12 @@
     </el-row>
 
     <DialogViewFrame v-model="data.callVisible" :title="nodeFunc.Name"
-                     :level="nodeFunc.Level" width="500px">
+                     :level="nodeFunc.Level" width="500px" show-full-screen fixHeight>
         <NodeFuncCall :nodeFunc="nodeFunc"></NodeFuncCall>
     </DialogViewFrame>
 
     <DialogViewFrame v-model="data.historyVisible" :title="nodeFunc.Name"
-                     :level="nodeFunc.Level" width="620px" :close-full-screen="true">
+                     :level="nodeFunc.Level" width="620px" fixHeight>
         <NodeFuncHistory :nodeFunc="nodeFunc"></NodeFuncHistory>
     </DialogViewFrame>
 </template>

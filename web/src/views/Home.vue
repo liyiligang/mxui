@@ -100,12 +100,12 @@ export default defineComponent ({
                         Setting:JSON.stringify(newValue)
                     })).then((response) => {}).catch(error => {}).finally(()=>{})
                 },{deep:true})
-                refresh.watchGlobalAutoRefresh()
             }else{
                 if (data != ""){
                     ElMessage.error("用户配置解析失败, 将使用默认配置")
                 }
             }
+            refresh.watchGlobalAutoRefresh()
         }
     }
 })

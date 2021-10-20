@@ -17,16 +17,16 @@ export module convert {
         return "color-state-main"
     }
 
-    export function getViewColorByState(state: protoManage.State|undefined|null):string {
+    export function getTableRowColorByState(state: protoManage.State|undefined|null):string {
         switch (state) {
             case protoManage.State.StateUnknow:
-                return "color-state-main"
+                return "table-color-state-info"
             case protoManage.State.StateNormal:
-                return "color-state-success"
+                return "table-color-state-success"
             case protoManage.State.StateWarn:
-                return "color-state-warning"
+                return "table-color-state-warning"
             case protoManage.State.StateError:
-                return "color-state-danger"
+                return "table-color-state-danger"
         }
         return ""
     }
@@ -147,6 +147,35 @@ export module convert {
                 return "图表"
         }
         return "未知"
+    }
+
+    export function getNodeReportIntervalStr(interval: number):string {
+        if (interval <= 0) {
+            return "手动"
+        }
+        let conf = [{max:1000, name:"毫秒"}, {max:60, name:"秒"},{max:60, name:"分"},
+            {max:24, name:"时"}, {max:30, name:"天"}]
+
+        let calc = function (index:number, val:number):string {
+            if (index >= conf.length){
+                return ""
+            }
+            let f = conf[index]
+            if (index == conf.length - 1){
+                return val + f.name
+            }
+            if (val >= f.max){
+                let c = parseInt(String(val / f.max))
+                let y = val % f.max
+                let ys = ""
+                if (y > 0) {
+                    ys = y + f.name
+                }
+                return calc(index + 1, c) + ys
+            }
+            return val + f.name
+        }
+        return calc(0, interval) + "/次"
     }
 
     export function isGrayByState(state: protoManage.State):boolean {

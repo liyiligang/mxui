@@ -69,7 +69,7 @@ export default defineComponent ({
         }
 
         function getTableRowState({ row, rowIndex }) {
-            return convert.getViewColorByState(props.options.Row[rowIndex].State)
+            return convert.getTableRowColorByState(props.options.Row[rowIndex].State)
         }
 
         function initDataColIndex() {

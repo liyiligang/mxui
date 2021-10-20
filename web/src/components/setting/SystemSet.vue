@@ -1,6 +1,5 @@
 <template>
-    <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
-                     :title="title" width="620px" :close-full-screen="true" :close-fix-height="true">
+    <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate" :title="title" width="620px">
         <el-row class="systemSetMainRow">
             <el-row class="systemSetGroupRow">
                 <el-row class="systemSetItemRow">
@@ -23,7 +22,7 @@
                 </el-row>
                 <el-row class="systemSetItemRow">
                     <el-row class="systemSetBlockRow">
-                        <div>自动刷新：</div>
+                        <div>数据同步(秒/次)：</div>
                         <AutoRefresh></AutoRefresh>
                     </el-row>
                 </el-row>

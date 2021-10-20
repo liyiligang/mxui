@@ -35,7 +35,6 @@ func (data *Data) NodeNotifyFind(req *protoManage.ReqNodeNotifyList) (*protoMana
 		return nil, err
 	}
 	protoNodeNotifyList := convert.OrmNodeNotifyListToProtoNodeNotifyList(ormNotifyList)
-
 	ormNodeList, err := data.DB.FindNodeByNodeNotify(req.Filter)
 	if err != nil {
 		return nil, err

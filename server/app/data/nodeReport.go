@@ -15,8 +15,9 @@ func (data *Data) NodeReportAdd(protoNodeReport *protoManage.NodeReport) error {
 		return err
 	}
 	ormNodeReport := &orm.NodeReport{NodeID: protoNodeReport.NodeID, Name: protoNodeReport.Name,
-		Func: protoNodeReport.Func, Level: int32(protoNodeReport.Level),
-		State: int32(protoManage.State_StateNormal)}
+		Func: protoNodeReport.Func, Schema: protoNodeReport.Schema, Type: int32(protoNodeReport.Type),
+		Interval: protoNodeReport.Interval,
+		Level: int32(protoNodeReport.Level), State: int32(protoManage.State_StateNormal)}
 	if err := data.DB.AddNodeReport(ormNodeReport); err != nil {
 		return err
 	}
@@ -120,7 +121,9 @@ func (data *Data) NodeReportLevelCheck(userID int64, funcID int64) error {
 //更新节点报告信息
 func (data *Data) NodeReportInfoUpdate(protoNodeReport *protoManage.NodeReport) error {
 	return data.DB.UpdateNodeReportInfo(orm.NodeReport{Base: orm.Base{ID: protoNodeReport.Base.ID},
-		Func: protoNodeReport.Func, Level: int32(protoNodeReport.Level), State: int32(protoManage.State_StateNormal)})
+		Func: protoNodeReport.Func, Schema: protoNodeReport.Schema, Type: int32(protoNodeReport.Type),
+		Interval: protoNodeReport.Interval,
+		Level: int32(protoNodeReport.Level), State: int32(protoManage.State_StateNormal)})
 }
 
 //按节点ID更新节点报告状态

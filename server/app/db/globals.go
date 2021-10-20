@@ -12,7 +12,7 @@ type Server struct {
 //设置过滤器参数
 func (db *Server) SetFilter(tx *gorm.DB, filter protoManage.Filter) *gorm.DB {
 	if filter.ID != 0 {
-		tx.Where("id = ?", filter.ID)
+		tx.Where("id" + filter.IDSign + "?", filter.ID)
 	}
 	if filter.GroupID != 0 {
 		tx.Where("groupID = ?", filter.GroupID)

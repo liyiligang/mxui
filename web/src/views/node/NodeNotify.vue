@@ -3,7 +3,6 @@
         <el-row class="nodeNotifyFilter" type="flex" justify="start" align="middle">
             <NodeNotifyMessageFilter></NodeNotifyMessageFilter>
             <NodeNotifyFormFilter></NodeNotifyFormFilter>
-            <AutoRefreshSwitch v-model:isAutoRefresh="data.isAutoRefresh"></AutoRefreshSwitch>
         </el-row>
         <el-row class="nodeNotifyFrame">
             <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
@@ -26,7 +25,6 @@ import NodeViewFrame from "./NodeViewFrame.vue"
 import NodeNotifyTable from "../../components/table/NodeNotifyTable.vue"
 import SelectFilter from "../../components/fifter/NodeNotifyMessageFilter.vue"
 import NodeNotifyFormFilter from "../../components/fifter/NodeNotifyFormFilter.vue"
-import AutoRefreshSwitch from "../../components/control/AutoRefreshSwitch.vue"
 import NodeNotifyMessageFilter from "../../components/fifter/NodeNotifyMessageFilter.vue"
 
 
@@ -35,7 +33,6 @@ interface NodeNotifyInfo {
     nodeMap: Map<number, protoManage.INode>
     pageTotal:number
     isLoading:boolean
-    isAutoRefresh:boolean
     refreshFlag:number
 }
 
@@ -47,11 +44,10 @@ export default defineComponent ({
         SelectFilter,
         NodeNotifyMessageFilter,
         NodeNotifyFormFilter,
-        AutoRefreshSwitch
     },
     setup(){
         const data = reactive<NodeNotifyInfo>({nodeNotifyList:[], nodeMap:new Map<number, protoManage.INode>(),
-            isLoading:false, pageTotal:0, refreshFlag:0, isAutoRefresh:false})
+            isLoading:false, pageTotal:0, refreshFlag:0})
         const route = useRoute()
         const instance = getCurrentInstance()
 
@@ -68,9 +64,6 @@ export default defineComponent ({
             data.refreshFlag++
             data.isLoading = true
             let getNodeNotifyList = (flag:number)=>{
-                if (!data.isLoading && !data.isAutoRefresh){
-                    return
-                }
                 request.reqNodeNotifyList(protoManage.Filter.create({
                     PageSize:Number(route.query.pageSize),
                     PageNum:Number(route.query.pageNum),

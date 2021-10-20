@@ -1,6 +1,5 @@
 <template>
-    <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
-                     :title="title" width="260px" :close-full-screen="true" :close-fix-height="true">
+    <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate" :title="title" width="260px">
         <el-row v-loading="data.isLoad" type="flex" justify="center" align="middle">
             <el-input class="passwordResetInput" v-model="data.manager.Token" placeholder="原密码" clearable show-password></el-input>
             <el-input class="passwordResetInput" v-model="data.manager.Password" placeholder="密码" clearable show-password></el-input>
