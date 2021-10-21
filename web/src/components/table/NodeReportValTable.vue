@@ -1,6 +1,6 @@
 <template>
     <el-table :data="tableData" highlight-current-row height="100%" :row-class-name="tableRowClassName">
-        <el-table-column label="编号" type="index" align="center" width="80"></el-table-column>
+        <el-table-column label="编号" type="index" :index="indexMethod" align="center" width="80"></el-table-column>
         <el-table-column v-for="(v, i) of tableSchema.CategoryList" :prop="v.Name" :label="v.Name"
                        resizable align="center" :min-width="v.Width" >
             <template #default="scope">
@@ -43,6 +43,10 @@ export default defineComponent ({
         },
     },
     setup(props){
+        function indexMethod(index) {
+            return index+1
+        }
+
         function getStateColor(rowIndex, valIndex){
             let valObj = globals.getJson(String(props.tableData[rowIndex].Value))
             if (valObj.ValueList[valIndex]){
@@ -65,7 +69,7 @@ export default defineComponent ({
         function tableRowClassName({ row, rowIndex }){
             return ''
         }
-        return {getTime, getStateColor, getValue, tableRowClassName}
+        return {indexMethod, getTime, getStateColor, getValue, tableRowClassName}
     }
 })
 </script>

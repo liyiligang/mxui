@@ -1,7 +1,7 @@
 <template>
     <el-table class="notifyTable" :data="tableData" height="100%" highlight-current-row v-elTableInfiniteScroll="tableLoad">
-        <el-table-column label="编号" type="index" align="center" width="120"></el-table-column>
-        <el-table-column label="通知者" align="center" width="220">
+        <el-table-column label="编号" type="index" :index="indexMethod" align="center" width="120"></el-table-column>
+        <el-table-column label="通知者" align="center" width="200">
             <template #default="scope">
                 <div>{{getSenderName(scope.$index)}}</div>
             </template>
@@ -108,10 +108,14 @@ export default defineComponent ({
             return convert.timeStampToFormatDate(props.tableData[index].Base?.UpdateTime)
         }
 
+        function indexMethod(index) {
+            return props.tableData[index].Base?.ID
+        }
+
         function tableLoad(){
 
         }
-        return {getSenderName, getSenderType, getStateColor, getMessage, getTime, tableLoad}
+        return {getSenderName, getSenderType, getStateColor, getMessage, getTime, indexMethod, tableLoad}
     }
 })
 </script>

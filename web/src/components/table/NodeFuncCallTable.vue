@@ -2,7 +2,7 @@
     <el-table
         ref="funcCallTable" :data="tableData" @current-change="tableSelect"
         v-elTableInfiniteScroll="tableLoad" height="100%" highlight-current-row>
-        <el-table-column label="编号" type="index" align="center" width="80"></el-table-column>
+        <el-table-column label="编号" type="index" :index="indexMethod" align="center" width="80"></el-table-column>
         <el-table-column label="调用者" align="center" width="100">
             <template #default="scope">
                 <div>{{getManagerNickName(scope.$index)}}</div>
@@ -56,6 +56,9 @@ export default defineComponent ({
         },
     },
     setup(props, context){
+        function indexMethod(index) {
+            return props.tableData[index].Base?.ID
+        }
         function tableLoad(){
             context.emit('tableLoad')
         }
@@ -93,7 +96,7 @@ export default defineComponent ({
         }
         return {tableLoad, tableSetCurrentRow, tableSelect, getTime, getState, getStateColor,
             getManagerNickName, clickParameter, clickReturnVal, getParameterTypeName,
-            getReturnValTypeName, funcCallTable}
+            getReturnValTypeName, indexMethod, funcCallTable}
     }
 })
 </script>

@@ -4,7 +4,7 @@
         <el-row class="userSetRow" v-loading="data.userSetLoading">
             <el-row class="userSetTableRow" type="flex" justify="start" align="top">
                 <el-table class="userSetTable" :data="data.userSetList" ref="userSetTable" height="100%" highlight-current-row>
-                    <el-table-column label="编号" type="index" align="center" width="50"></el-table-column>
+                    <el-table-column label="编号" type="index" :index="indexMethod" align="center" width="50"></el-table-column>
                     <el-table-column label="用户名" align="center">
                         <template #default="scope">
                             <div :class="[getUserStateColor(scope.$index)]">{{scope.row.Name}}</div>
@@ -102,6 +102,10 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{data.userSetLoading = false})
         }
 
+        function indexMethod(index) {
+            return data.userSetList[index].Base?.ID
+        }
+
         function getUserStateColor(index){
             return convert.getColorByManagerState(data.userSetList[index].State)
         }
@@ -167,7 +171,7 @@ export default defineComponent ({
             context.emit("update:modelValue", val)
         }
         return {data, modelValueUpdate, getUserStateColor, isEditing, getUserLevelColor, getUserLevelNameByTableIndex,
-            newUserSet, newUserSuccess, editUserSet, delUserSet, updateUserSet, cancelUserSet, userSetTable}
+            newUserSet, newUserSuccess, editUserSet, delUserSet, updateUserSet, cancelUserSet, indexMethod, userSetTable}
     }
 })
 

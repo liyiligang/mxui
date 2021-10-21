@@ -4,7 +4,7 @@
         <el-row v-loading="data.topLinkLoading" class="topMenuSetRow">
             <el-row class="topMenuSetTableRow">
                 <el-table class="topMenuSetTable" :data="data.topLinkList" ref="topMenuSetTable" height="100%" highlight-current-row>
-                    <el-table-column label="编号" type="index" align="center" width="50"></el-table-column>
+                    <el-table-column label="编号" type="index" :index="indexMethod" align="center" width="50"></el-table-column>
                     <el-table-column label="名称" align="center" width="120">
                         <template #default="scope">
                             <el-input v-if="isEditing(scope.$index)" size="small" v-model="scope.row.Name" placeholder="名称"></el-input>
@@ -89,6 +89,10 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{data.topLinkLoading = false})
         }
 
+        function indexMethod(index) {
+            return data.topLinkList[index].Base?.ID
+        }
+
         function isEditing(index){
             return data.topLinkEditList[index].isEdit
         }
@@ -156,7 +160,7 @@ export default defineComponent ({
             }
             context.emit("update:modelValue", false)
         }
-        return {data, modelValueUpdate, editTopLink, isEditing, newTopLink,
+        return {data, indexMethod, modelValueUpdate, editTopLink, isEditing, newTopLink,
             delTopLink, updateTopLink, cancelTopLink, topMenuSetTable}
     }
 })

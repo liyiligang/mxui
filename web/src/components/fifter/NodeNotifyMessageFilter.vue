@@ -1,7 +1,7 @@
 <template>
     <el-row class="nodeNotifyMessage" @keyup.enter.native="searchWithContent()">
         <el-input class="nodeNotifyMessageInput" v-model="data.senderMessage"
-                  placeholder="搜索内容" clearable @clear="searchWithContent()">
+                  placeholder="搜索消息内容" clearable @clear="searchWithContent()">
             <template #append>
                 <el-button icon="el-icon-search" @click="searchWithContent()"></el-button>
             </template>
