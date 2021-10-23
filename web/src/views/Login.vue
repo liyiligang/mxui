@@ -2,7 +2,7 @@
     <el-row class="loginMain" type="flex" justify="center" align="middle" @keyup.enter.native="loginByName()">
         <el-card v-show="data.isShowLogin" class="loginCard" v-loading="data.isLoad" element-loading-text="登录中...">
             <el-row type="flex" justify="center" align="middle">
-                <img class="loginLogo" src="../assets/logo.png" alt="admin">
+                <img class="loginLogo" src="../assets/logo.svg" alt="admin">
                 <el-row v-if="data.hasSystemInit" type="flex" justify="center" align="middle">
                     <el-input class="loginInput" v-model="data.username" placeholder="用户名" clearable></el-input>
                     <el-input class="loginInput" v-model="data.password" placeholder="密码" clearable show-password></el-input>

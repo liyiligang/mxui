@@ -1,18 +1,20 @@
 <template>
     <el-tooltip effect="light" :content="getAutoRefreshTooltip()" placement="bottom">
-        <el-button :class="getAutoRefreshButtonColor()" class="autoRefreshButton" plain icon="el-icon-refresh"
-                   @click="autoRefreshButtonClick"></el-button>
+        <el-button class="autoRefreshButton" plain @click="autoRefreshButtonClick">
+            <el-icon> <Refresh class="autoRefreshIcon" :class="getAutoRefreshButtonColor()"/> </el-icon>
+        </el-button>
     </el-tooltip>
 </template>
 
 <script lang="ts">
 import {defineComponent} from "vue";
 import {globals} from "../../base/globals";
+import {Refresh} from "@element-plus/icons";
 
 export default defineComponent ({
     name: "AutoRefreshButton",
     components: {
-
+        Refresh
     },
     props:{
         isAutoRefresh:{
@@ -27,7 +29,7 @@ export default defineComponent ({
         }
 
         function getAutoRefreshButtonColor():string{
-            return props.isAutoRefresh?"color-state-success" : ""
+            return props.isAutoRefresh?"color-state-success" : "color-text-normal"
         }
 
         function autoRefreshButtonClick(event){
@@ -45,6 +47,10 @@ export default defineComponent ({
 .autoRefreshButton{
     border:0;
     padding:0;
+    margin-left:0 !important;
+}
+
+.autoRefreshIcon{
     font-size:25px;
 }
 </style>

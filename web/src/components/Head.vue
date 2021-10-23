@@ -119,7 +119,7 @@ export default defineComponent ({
 
 .headButtonRow{
     height: 100%;
-    width: 100px;
+    width: 128px;
     margin-top: 4px;
 }
 </style>
