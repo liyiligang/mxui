@@ -16,9 +16,9 @@
 
 <script lang="ts">
 import {defineComponent, reactive} from "vue";
-import SystemSet from "./SystemSet.vue";
-import TopMenuSet from "./TopMenuSet.vue";
-import UserSet from "./UserSet.vue";
+import SystemSet from "../setting/SystemSet.vue";
+import TopMenuSet from "../setting/TopMenuSet.vue";
+import UserSet from "../setting/UserSet.vue";
 
 enum DropdownFlag {
 	System = "系统设置",
@@ -67,8 +67,8 @@ export default defineComponent ({
 @import "../../css/color.css";
 
 .settingButton{
-    border:0px;
-    padding: 0px;
+    border:0;
+    padding:0;
     font-size:25px;
 }
 </style>

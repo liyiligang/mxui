@@ -1,18 +1,19 @@
 <template>
     <el-row class="home flex-row-center-start">
-        <el-row class="homeView flex-row-center-start">
-            <el-row class="headView">
-                <Head></Head>
+        <el-row class="headView">
+            <Head></Head>
+        </el-row>
+        <el-divider class="headDivider"></el-divider>
+        <el-row class="bodyView flex-row-start-start-nowrap">
+            <el-row class="asideView">
+                <Sidebar></Sidebar>
             </el-row>
-            <el-divider class="headDivider"></el-divider>
-            <el-row class="bodyView flex-row-start-start-nowrap">
-                <el-row class="asideView">
-                    <Aside></Aside>
-                </el-row>
-                <el-divider class="asideDivider" direction="vertical"></el-divider>
-                <el-row class="routerView">
-                    <router-view></router-view>
-                </el-row>
+            <el-divider class="asideDivider" direction="vertical"></el-divider>
+            <el-row class="routerView">
+                <router-view></router-view>
+            </el-row>
+            <el-row v-if="showToolbar()" class="toolbarView">
+                <el-divider class="toolbarDivider" direction="vertical"></el-divider>
             </el-row>
         </el-row>
     </el-row>
@@ -21,7 +22,7 @@
 <script lang="ts">
 import {defineComponent, onMounted, reactive, watch} from "vue";
 import Head from "../components/Head.vue";
-import Aside from "../components/Aside.vue";
+import Sidebar from "../components/Sidebar.vue";
 import NodeGroup from "./node/NodeGroup.vue";
 import Node from "./node/Node.vue";
 import NodeLink from "./node/NodeLink.vue";
@@ -42,7 +43,7 @@ export default defineComponent ({
     name: "Home",
     components: {
         Head,
-        Aside,
+        Sidebar,
         NodeGroup,
         Node,
         NodeLink,
@@ -93,6 +94,12 @@ export default defineComponent ({
             }
             refresh.watchGlobalAutoRefresh()
         }
+
+        function showToolbar():boolean {
+            return globals.globalsData.tempSetting.setting.dataFilterView
+        }
+
+        return {showToolbar}
     }
 })
 </script>
@@ -106,43 +113,48 @@ export default defineComponent ({
     overflow-x:hidden;
 }
 
-.homeView{
-    width: 92%;
-    height: 100%;
-}
-
 .headView{
     width: 100%;
-    height: 12%;
+    height: 80px;
 }
 
 .headDivider{
-    margin-top: 0.1%;
-    margin-bottom: 1%;
+    margin: 0;
 }
 
 .bodyView{
     width: 100%;
-    min-height: 85.7%;
-    max-height: 85.7%;
+    height: calc(100% - 81px);
 }
 
 .asideView{
-    min-width: 15%;
-    max-width: 15%;
+    min-width: 240px;
+    max-width: 240px;
     height: 100%;
-    overflow-y:scroll;
+    overflow-y:auto;
 }
 
 .asideDivider{
-    margin: 0px;
+    margin: 0;
     height: 100%;
-    width: 1px;
 }
 
 .routerView{
+    margin-top: 2px;
     flex: auto;
+    height: calc(100% - 2px);
+    overflow-y:auto;
+}
+
+.toolbarView{
+    min-width: 324px;
+    max-width: 324px;
     height: 100%;
-    overflow-y:scroll;
+    overflow-y:auto;
+}
+
+.toolbarDivider{
+    margin-left: 9px;
+    height: 100%;
 }
 </style>

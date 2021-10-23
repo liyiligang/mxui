@@ -38,17 +38,21 @@ export module globals {
 		funcCallConfig:{
 			tablePageSize:100
 		},
-		userInitSetting:{
+		userSetSave:{
 			isPageFix: false,
-			autoRefresh: false,
 			autoUpdateInterval: 2,
+		},
+		userSetTemp:{
+			autoRefresh: false,
+			dataFilterView: false,
 		}
 	}
 
 	export let globalsData = {
 		manager:protoManage.Manager.create(),
 		managerList:new Map<number, protoManage.IManager>(),
-		managerSetting:reactive({setting:globals.globalsConfig.userInitSetting}),
+		managerSetting:reactive({setting:globals.globalsConfig.userSetSave}),
+		tempSetting:reactive({setting:globals.globalsConfig.userSetTemp}),
 		wsMessage:{
 			order:protoManage.Order.Unknow,
 			message:reactive({

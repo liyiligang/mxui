@@ -15,7 +15,7 @@ export module refresh {
         watch(() => globals.globalsData.managerSetting.setting.autoUpdateInterval, () => {
             updateAllGlobalAutoRefresh(true)
         })
-        watch(() => globals.globalsData.managerSetting.setting.autoRefresh, () => {
+        watch(() => globals.globalsData.tempSetting.setting.autoRefresh, () => {
             updateAllGlobalAutoRefresh(true)
         })
     }
@@ -31,7 +31,7 @@ export module refresh {
         callback(...args)
         let handle:AutoRefreshHandle = {timeout:null, call:callback, parameter:args}
         globalAutoRefreshMap.set(uid, handle)
-        if (globals.globalsData.managerSetting.setting.autoRefresh &&
+        if (globals.globalsData.tempSetting.setting.autoRefresh &&
             globals.globalsData.managerSetting.setting.autoUpdateInterval != 0){
             handle.timeout = setInterval(callback, globals.globalsData.managerSetting.setting.autoUpdateInterval*1000, ...args)
         }
@@ -51,7 +51,7 @@ export module refresh {
             return
         }
         clearHandleTimeout(handle)
-        if (globals.globalsData.managerSetting.setting.autoRefresh &&
+        if (globals.globalsData.tempSetting.setting.autoRefresh &&
             globals.globalsData.managerSetting.setting.autoUpdateInterval != 0){
             if (immediately){
                 handle.call(...handle.parameter)

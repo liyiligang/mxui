@@ -1,23 +1,13 @@
 <template>
     <el-menu class="menu" @select="menuSelect" :default-active="data.activeName" :default-openeds="data.activeSubMenu">
-        <el-sub-menu index="1">
-            <template #title>
-                <span class="submenuSpanOne">分组</span>
-            </template>
-            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeGroup" >集群</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeType" >服务</el-menu-item>
-        </el-sub-menu>
-        <el-sub-menu index="2">
-            <template #title>
-                <span class="submenuSpanOne">功能</span>
-            </template>
-            <el-menu-item class="submenuSpanTwo" :index="routerName.node">节点</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeLink">连接</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeFunc">方法</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeReport">报告</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeNotify">通知</el-menu-item>
-            <el-menu-item class="submenuSpanTwo" :index="routerName.nodeTest">测试</el-menu-item>
-        </el-sub-menu>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeGroup" >集群</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeType" >服务</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.node">节点</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeLink">连接</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeFunc">方法</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeReport">报告</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeNotify">通知</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeTest">测试</el-menu-item>
     </el-menu>
 </template>
 
@@ -26,20 +16,19 @@ import {defineComponent, onMounted, reactive} from "vue";
 import { routerPath, routerName } from "../router";
 import { globals } from "../base/globals";
 import {useRoute} from "vue-router";
-import {protoManage} from "../proto/manage";
 
-interface AsideInfo {
+interface SidebarInfo {
     activeName:String
     activeSubMenu:Array<String>
 }
 
 export default defineComponent ({
-    name: "Aside",
+    name: "Sidebar",
     components: {
 
     },
     setup(){
-        const data = reactive<AsideInfo>({activeName:routerName.nodeGroup, activeSubMenu:["1", "2"]})
+        const data = reactive<SidebarInfo>({activeName:routerName.nodeGroup, activeSubMenu:["1", "2"]})
         const route = useRoute()
         onMounted(()=>{
             if (route.name == null){
@@ -94,6 +83,7 @@ export default defineComponent ({
     height: 100%;
 }
 .submenuSpanOne {
+    text-align: center;
     font-size:18px;
 }
 .submenuSpanTwo {

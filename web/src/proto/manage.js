@@ -187,6 +187,22 @@ export const protoManage = $root.protoManage = (() => {
     })();
 
     /**
+     * NodeLinkType enum.
+     * @name protoManage.NodeLinkType
+     * @enum {number}
+     * @property {number} NodeLinkTypeUnknown=0 NodeLinkTypeUnknown value
+     * @property {number} NodeLinkTypeClient=1 NodeLinkTypeClient value
+     * @property {number} NodeLinkTypeServer=2 NodeLinkTypeServer value
+     */
+    protoManage.NodeLinkType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "NodeLinkTypeUnknown"] = 0;
+        values[valuesById[1] = "NodeLinkTypeClient"] = 1;
+        values[valuesById[2] = "NodeLinkTypeServer"] = 2;
+        return values;
+    })();
+
+    /**
      * NodeFuncReturnType enum.
      * @name protoManage.NodeFuncReturnType
      * @enum {number}

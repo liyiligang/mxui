@@ -3,10 +3,10 @@ import App from './App.vue'
 import './index.css'
 import router from './router'
 import ElementPlus from 'element-plus'
-import VueForm from '@lljj/vue3-form-element';
 import 'element-plus/dist/index.css'
-import 'dayjs/locale/zh-cn'
 import locale from 'element-plus/lib/locale/lang/zh-cn'
+import VueForm from '@lljj/vue3-form-element';
+import 'dayjs/locale/zh-cn'
 import elTableInfiniteScroll from "./components/tableInfiniteScroll";
 import JsonViewer from "vue3-json-viewer"
 import "echarts";

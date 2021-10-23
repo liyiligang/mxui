@@ -84,6 +84,13 @@ export namespace protoManage {
         LevelSuper = 4
     }
 
+    /** NodeLinkType enum. */
+    enum NodeLinkType {
+        NodeLinkTypeUnknown = 0,
+        NodeLinkTypeClient = 1,
+        NodeLinkTypeServer = 2
+    }
+
     /** NodeFuncReturnType enum. */
     enum NodeFuncReturnType {
         Unknown = 0,

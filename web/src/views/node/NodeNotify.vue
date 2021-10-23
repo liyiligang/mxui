@@ -1,9 +1,9 @@
 <template>
     <el-row class="nodeNotify">
-        <el-row class="nodeNotifyFilter" type="flex" justify="start" align="middle">
-            <NodeNotifyMessageFilter></NodeNotifyMessageFilter>
-            <NodeNotifyFormFilter></NodeNotifyFormFilter>
-        </el-row>
+<!--        <el-row class="nodeNotifyFilter" type="flex" justify="start" align="middle">-->
+<!--            <NodeNotifyMessageFilter></NodeNotifyMessageFilter>-->
+<!--            <NodeNotifyFormFilter></NodeNotifyFormFilter>-->
+<!--        </el-row>-->
         <el-row class="nodeNotifyFrame">
             <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
                 <el-row class="nodeNotifyTableRow">

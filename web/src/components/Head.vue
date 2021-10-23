@@ -1,13 +1,14 @@
 <template>
-    <el-row class="head" type="flex" justify="space-between" align="middle">
-        <img class="headLogo" src="../assets/logo.png" alt="admin">
+    <el-row class="headRow" type="flex" justify="space-between" align="middle">
+        <img class="headLogo" src="../assets/logo.svg" alt="admin">
         <el-row class="headContentRow" type="flex" justify="end" align="middle">
             <el-row class="headLinkRow">
                 <el-link v-for="i in data.topLinkList" class="headLink" type="primary" :underline="false" :href="i.Url" target="_blank">{{i.Name}}</el-link>
             </el-row>
-            <el-divider class="headDivider" direction="vertical"></el-divider>
-            <el-row class="headButtonRow">
-                <AutoRefreshSwitch v-model:isAutoRefresh="globals.globalsData.managerSetting.setting.autoRefresh"></AutoRefreshSwitch>
+            <el-divider class="headLinkDivider" direction="vertical"></el-divider>
+            <el-row class="headButtonRow" type="flex" justify="space-around" align="middle">
+                <FilterButton  v-model:show-filter-view="globals.globalsData.tempSetting.setting.dataFilterView"></FilterButton>
+                <AutoRefreshButton v-model:is-auto-refresh="globals.globalsData.tempSetting.setting.autoRefresh"></AutoRefreshButton>
                 <SettingButton></SettingButton>
             </el-row>
         </el-row>
@@ -19,8 +20,9 @@ import {defineComponent, onMounted, reactive, ref, provide} from "vue";
 import {request} from "../base/request";
 import {globals} from "../base/globals";
 import {protoManage} from "../proto/manage";
-import SettingButton from "./setting/SettingButton.vue";
-import AutoRefreshSwitch from "./control/AutoRefreshSwitch.vue"
+import SettingButton from "./headButton/SettingButton.vue";
+import FilterButton from "./headButton/FilterButton.vue";
+import AutoRefreshButton from "./headButton/AutoRefreshButton.vue"
 
 interface HeadInfo {
     topLinkList: protoManage.ITopLink[]
@@ -29,8 +31,9 @@ interface HeadInfo {
 export default defineComponent ({
     name: "Head",
     components: {
+        FilterButton,
         SettingButton,
-        AutoRefreshSwitch
+        AutoRefreshButton
     },
     setup(){
         const data = reactive<HeadInfo>({topLinkList:[]})
@@ -71,14 +74,16 @@ export default defineComponent ({
 </script>
 
 <style scoped>
-.head{
+.headRow{
     width: 100%;
     height: 100%;
+    margin-right: 60px;
+    margin-left: 60px;
     flex-wrap: nowrap;
 }
 
 .headLogo{
-    width: 150px;
+    width: 130px;
 }
 
 .headContentRow{
@@ -95,7 +100,7 @@ export default defineComponent ({
     flex-direction: row-reverse;
     align-content: center;
     white-space: nowrap;
-    overflow-x:scroll;
+    overflow-x:auto;
     margin-left: 10px;
 }
 
@@ -105,13 +110,16 @@ export default defineComponent ({
     margin-right: 15px;
 }
 
-.headDivider{
+.headLinkDivider{
     margin-left: 10px;
     margin-right: 15px;
+    margin-top: 3px;
     height: 22px;
 }
 
 .headButtonRow{
-
+    height: 100%;
+    width: 100px;
+    margin-top: 4px;
 }
 </style>

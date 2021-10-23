@@ -6,12 +6,11 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, watch} from "vue";
+import {defineComponent} from "vue";
 import {globals} from "../../base/globals";
-import {ElMessage} from "element-plus";
 
 export default defineComponent ({
-    name: "AutoRefreshSwitch",
+    name: "AutoRefreshButton",
     components: {
 
     },
@@ -22,12 +21,6 @@ export default defineComponent ({
         }
     },
     setup(props, context){
-
-        watch(() => globals.globalsData.managerSetting.setting.autoUpdateInterval, (newVal) => {
-            if (newVal <= 0){
-                context.emit("update:isAutoRefresh", false)
-            }
-        })
 
         function getAutoRefreshTooltip():string{
             return props.isAutoRefresh?"自动同步已开启" : "自动同步已停止"
@@ -50,9 +43,8 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 .autoRefreshButton{
-    border:0px;
-    padding: 0px;
+    border:0;
+    padding:0;
     font-size:25px;
-    margin-right: 12px;
 }
 </style>
