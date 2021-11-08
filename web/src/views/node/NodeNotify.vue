@@ -26,6 +26,7 @@ import NodeNotifyTable from "../../components/table/NodeNotifyTable.vue"
 import SelectFilter from "../../components/fifter/NodeNotifyMessageFilter.vue"
 import NodeNotifyFormFilter from "../../components/fifter/NodeNotifyFormFilter.vue"
 import NodeNotifyMessageFilter from "../../components/fifter/NodeNotifyMessageFilter.vue"
+import {convert} from "../../base/convert";
 
 
 interface NodeNotifyInfo {
@@ -54,9 +55,11 @@ export default defineComponent ({
         onBeforeRouteUpdate(to => {
             initNodeNotify(to)
         })
+
         onMounted(()=>{
             initNodeNotify(route)
         })
+
         onUnmounted(()=>{
             refresh.removeGlobalAutoRefresh(instance?.uid)
         })
@@ -64,15 +67,16 @@ export default defineComponent ({
             data.refreshFlag++
             data.isLoading = true
             let getNodeNotifyList = (flag:number)=>{
-                request.reqNodeNotifyList(protoManage.Filter.create({
-                    PageSize:Number(route.query.pageSize),
-                    PageNum:Number(route.query.pageNum),
-                    SenderName:String(route.query.senderName),
-                    SenderType:Number(route.query.senderType),
-                    State:Number(route.query.senderState),
-                    SenderBeginTime:Number(route.query.senderBeginTime),
-                    SenderEndTime:Number(route.query.senderEndTime),
-                    Message:String(route.query.senderMessage),
+                request.reqNodeNotifyList(protoManage.ReqNodeNotifyList.create({
+                    Page:protoManage.Page.create({
+                        Count:Number(route.query.pageSize),
+                        Num:Number(route.query.pageNum) - 1,
+                    }),
+                    SenderName:convert.dataToArray(route.query.senderName),
+                    SenderType:convert.dataToArray(route.query.senderType),
+                    State:convert.dataToArray(route.query.senderState),
+                    SenderTime:convert.dataToTimeArray(route.query.senderTime),
+                    Message:convert.dataToArray(route.query.senderMessage),
                 })).then((response) => {
                     if (flag != data.refreshFlag){
                         return

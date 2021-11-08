@@ -77,6 +77,20 @@ export module convert {
         return "未知"
     }
 
+    export function getStateViewType(level: protoManage.State|undefined|null):string {
+        switch (level) {
+            case protoManage.State.StateUnknow:
+                return "info"
+            case protoManage.State.StateNormal:
+                return "success"
+            case protoManage.State.StateWarn:
+                return "warning"
+            case protoManage.State.StateError:
+                return "danger"
+        }
+        return ""
+    }
+
     export function getManagerLevelName(level: protoManage.Level|undefined|null):string {
         switch (level) {
             case protoManage.Level.LevelPrimary:
@@ -89,6 +103,20 @@ export module convert {
                 return "超级管理员"
         }
         return "无"
+    }
+
+    export function getLevelViewType(level: protoManage.Level|undefined|null):string {
+        switch (level) {
+            case protoManage.Level.LevelPrimary:
+                return ""
+            case protoManage.Level.LevelIntermediate:
+                return "success"
+            case protoManage.Level.LevelSenior:
+                return "warning"
+            case protoManage.Level.LevelSuper:
+                return "danger"
+        }
+        return "info"
     }
 
     export function getNodeFuncCallStateName(state: protoManage.State|undefined|null):string {
@@ -221,10 +249,30 @@ export module convert {
     }
 
     export function dateStringToTimeStamp(dateStr:string):number {
-        return new Date(dateStr).getTime() / 1000
+        return new Date(dateStr).getTime()
     }
 
     export function timeStampToDateString(timeStamp:number):string {
-        return new Date(timeStamp*1000).toLocaleString()
+        return new Date(timeStamp).toLocaleString()
+    }
+
+    export function dataToArray(data:any):any[] {
+        if (data == undefined) {
+            return data
+        }
+        return Array.isArray(data) ? data : [data]
+    }
+
+    export function dataToTimeArray(query:any):any[] {
+        let senderTimeArray = convert.dataToArray(query)
+        let protoSenderTime = new Array<protoManage.Time>()
+        if (senderTimeArray) {
+            for (let item of senderTimeArray) {
+                let senderTime = String(item).split("-")
+                let time = protoManage.Time.create({BeginTime: Number(senderTime[0]), EndTime: Number(senderTime[1])})
+                protoSenderTime.push(time)
+            }
+        }
+        return protoSenderTime
     }
 }

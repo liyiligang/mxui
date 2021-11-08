@@ -7,9 +7,11 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from "vue";
+import {defineComponent, onMounted} from "vue";
 import {globals} from "../../base/globals";
 import {Refresh} from "@element-plus/icons";
+import {useRoute} from "vue-router";
+import {routerPath} from "../../router";
 
 export default defineComponent ({
     name: "AutoRefreshButton",
@@ -24,6 +26,15 @@ export default defineComponent ({
     },
     setup(props, context){
 
+        const route = useRoute()
+
+        onMounted(()=>{
+            let autoRefresh =  route.query.autoRefresh
+            if (autoRefresh){
+                context.emit("update:isAutoRefresh", true)
+            }
+        })
+
         function getAutoRefreshTooltip():string{
             return props.isAutoRefresh?"自动同步已开启" : "自动同步已停止"
         }
@@ -35,6 +46,7 @@ export default defineComponent ({
         function autoRefreshButtonClick(event){
             globals.elButtonBlur(event)
             context.emit("update:isAutoRefresh", !props.isAutoRefresh)
+            routerPath.toPath(String(route.name), {withPageNum:true, withPageSize:true}, route)
         }
 
         return {autoRefreshButtonClick, getAutoRefreshTooltip, getAutoRefreshButtonColor}

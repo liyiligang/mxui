@@ -12,8 +12,9 @@
             <el-row class="routerView">
                 <router-view></router-view>
             </el-row>
-            <el-row v-if="showToolbar()" class="toolbarView">
+            <el-row v-show="showToolbar()" class="toolbarView">
                 <el-divider class="toolbarDivider" direction="vertical"></el-divider>
+                <FilterViewFrame class="toolbarMain"></FilterViewFrame>
             </el-row>
         </el-row>
     </el-row>
@@ -30,6 +31,7 @@ import NodeFunc from "./node/NodeFunc.vue";
 import NodeReport from "./node/NodeReport.vue";
 import NodeNotify from "./node/NodeNotify.vue";
 import NodeTest from "./node/NodeTest.vue";
+import FilterViewFrame from "../components/toolbar/filter/FilterViewFrame.vue";
 import {websocket} from "../base/websocket";
 import {protoManage} from "../proto/manage";
 import {globals} from "../base/globals";
@@ -50,10 +52,11 @@ export default defineComponent ({
         NodeFunc,
         NodeReport,
         NodeNotify,
-        NodeTest
+        NodeTest,
+        FilterViewFrame
     },
     setup() {
-        globals.globalsData.manager.Token = <string>localStorage.getItem(globals.globalsConfig.localStorageKey.token)
+        globals.globalsData.manager.info.Token = <string>localStorage.getItem(globals.globalsConfig.localStorageKey.token)
         onMounted(()=>{
             initWs()
             initUserInfo()
@@ -61,7 +64,7 @@ export default defineComponent ({
 
         function initWs(){
             let msg = protoManage.Manager.create({
-                Token:globals.globalsData.manager.Token
+                Token:globals.globalsData.manager.info.Token
             })
             let byte = protoManage.Manager.encode(msg).finish()
             let str = convert.uint8ArrayToString(byte)
@@ -70,8 +73,8 @@ export default defineComponent ({
 
         function initUserInfo(){
             request.reqManagerByID(protoManage.Manager.create({})).then((response) => {
-                response.Token = globals.globalsData.manager.Token
-                globals.globalsData.manager = response
+                response.Token = globals.globalsData.manager.info.Token
+                globals.globalsData.manager.info = reactive(response)
                 initUserSetting(response.Setting)
             }).catch(error => {}).finally(()=>{})
         }
@@ -147,14 +150,20 @@ export default defineComponent ({
 }
 
 .toolbarView{
-    min-width: 324px;
-    max-width: 324px;
+    min-width: 326px;
+    max-width: 326px;
     height: 100%;
-    overflow-y:auto;
 }
 
 .toolbarDivider{
-    margin-left: 9px;
+    margin-left: 7px;
+    margin-right: 0;
     height: 100%;
+}
+
+.toolbarMain{
+    height: 100%;
+    width: 317px;
+    overflow-y:auto;
 }
 </style>

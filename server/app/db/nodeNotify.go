@@ -13,11 +13,11 @@ func (db *Server) AddNodeNotify(nodeNotify orm.NodeNotify) error {
 }
 
 //获取节点通知信息
-func (db *Server) FindNodeNotify(filter protoManage.Filter) ([]orm.NodeNotify, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
+func (db *Server) FindNodeNotify(req *protoManage.ReqNodeNotifyList) ([]orm.NodeNotify, error) {
+	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx = db.SetNodeNotifyFilter(tx, req)
 	var nodeNotifyList []orm.NodeNotify
-	err := tx.Order("id desc").Find(&nodeNotifyList).Error
+	err := tx.Debug().Order("id desc").Find(&nodeNotifyList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nodeNotifyList, nil
 	}
@@ -25,9 +25,9 @@ func (db *Server) FindNodeNotify(filter protoManage.Filter) ([]orm.NodeNotify, e
 }
 
 //获取节点通知中节点ID对应的节点信息
-func (db *Server) FindNodeByNodeNotify(filter protoManage.Filter) ([]orm.Node, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
+func (db *Server) FindNodeByNodeNotify(req *protoManage.ReqNodeNotifyList) ([]orm.Node, error) {
+	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx = db.SetNodeNotifyFilter(tx, req)
 	subQuery1 := tx.Model(&orm.NodeNotify{}).Order("id desc")
 	subQuery2 := db.Gorm.Select("t.senderID").Where("senderType=?", protoManage.NotifySenderType_NotifySenderTypeNode).
 		Table("(?) as t", subQuery1)
@@ -37,9 +37,9 @@ func (db *Server) FindNodeByNodeNotify(filter protoManage.Filter) ([]orm.Node, e
 }
 
 //获取节点通知计数
-func (db *Server) FindNodeNotifyCount(filter protoManage.Filter) (int64, error) {
+func (db *Server) FindNodeNotifyCount(req *protoManage.ReqNodeNotifyList) (int64, error) {
 	tx := db.Gorm.Model(&orm.NodeNotify{})
-	tx = db.SetFilter(tx, filter)
+	tx = db.SetNodeNotifyFilter(tx, req)
 	var count int64
 	err := tx.Count(&count).Error
 	return count, err
@@ -53,15 +53,61 @@ func (db *Server) FindNodeNotifyByNodeID(nodeID int64, offset int, num int) ([]o
 	return nodeNotifyList, err
 }
 
-//查询通知记录
-//func (db *Server) dbFindNotifyRecord(num int32, offset int32, startDate string, endDate string, word string, messageType int32) ([]orm.Notifyrecord, bool) {
-//	var notifyRecord []orm.Notifyrecord
-//	db := db.Gorm.gormDB.Where("orderid LIKE ? OR message LIKE ? OR Sendername LIKE ?", "%"+word+"%", "%"+word+"%", "%"+word+"%")
-//	db = db.Where("updated_at BETWEEN ? AND ?", startDate, endDate)
-//	if messageType >= 0 {
-//		db = db.Where("messagetype = ?", messageType)
-//	}
-//	errors := db.Order("recordid desc").Offset(int(offset)).Limit(int(num)).Find(&notifyRecord).Error
-//	return notifyRecord, app.dbExecSuccess(errors)
-//}
+//节点通知过滤器
+func (db *Server) SetNodeNotifyFilter(tx *gorm.DB, req *protoManage.ReqNodeNotifyList) *gorm.DB {
+	sql := db.spliceSql("message like ?", len(req.Message), "or")
+	var message []interface{}
+	for _, item := range req.Message {
+		message = append(message, "%"+item+"%")
+	}
+	tx.Where(sql, message...)
+
+	sql = db.spliceSql("state = ?", len(req.State), "or")
+	var state []interface{}
+	for _, item := range req.State {
+		state = append(state, item)
+	}
+	tx.Where(sql, state...)
+
+	sql = db.spliceSql("(senderID = any(select id from node where name like ? and senderType = ?)) or " +
+		"(senderID = any(select id from manager where nickName like ? and senderType = ?))", len(req.SenderName), "or")
+	var senderName []interface{}
+	for _, item := range req.SenderName {
+		senderName = append(senderName, "%"+item+"%")
+		senderName = append(senderName, protoManage.NotifySenderType_NotifySenderTypeNode)
+		senderName = append(senderName, "%"+item+"%")
+		senderName = append(senderName, protoManage.NotifySenderType_NotifySenderTypeUser)
+	}
+	tx.Where(sql, senderName...)
+
+	sql = db.spliceSql("senderType = ?", len(req.SenderType), "or")
+	var senderType []interface{}
+	for _, item := range req.SenderType {
+		senderType = append(senderType, item)
+	}
+	tx.Where(sql, senderType...)
+
+	sql = ""
+	var senderTime []interface{}
+	for index, item := range req.SenderTime {
+		if item.BeginTime > 0 {
+			sql += "(UNIX_TIMESTAMP(updatedAt) >= ?"
+			senderTime = append(senderTime, item.BeginTime)
+			if item.EndTime > 0 {
+				sql += " and UNIX_TIMESTAMP(updatedAt) <= ?)"
+				senderTime = append(senderTime, item.EndTime)
+			}else {
+				sql += ")"
+			}
+		}else {
+			sql += "(UNIX_TIMESTAMP(updatedAt) <= ?)"
+			senderTime = append(senderTime, item.EndTime)
+		}
+		if index < len(req.SenderTime)-1 {
+			sql += " "+ "or" + " "
+		}
+	}
+	tx.Where(sql, senderTime...)
+	return tx
+}
 

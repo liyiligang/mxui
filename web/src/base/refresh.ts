@@ -16,7 +16,7 @@ export module refresh {
             updateAllGlobalAutoRefresh(true)
         })
         watch(() => globals.globalsData.tempSetting.setting.autoRefresh, () => {
-            updateAllGlobalAutoRefresh(true)
+            updateAllGlobalAutoRefresh(false)
         })
     }
 

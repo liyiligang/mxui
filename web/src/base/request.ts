@@ -455,10 +455,9 @@ export module request {
         })
     }
 
-    export function reqNodeNotifyList(filter:protoManage.Filter):Promise<protoManage.AnsNodeNotifyList> {
+    export function reqNodeNotifyList(req:protoManage.ReqNodeNotifyList):Promise<protoManage.AnsNodeNotifyList> {
         return new Promise((resolve, reject)=>{
-            filter = checkFilterPara(filter)
-            let req = protoManage.ReqNodeNotifyList.create({filter:filter})
+            // filter = checkFilterPara(filter)
             let msg = protoManage.ReqNodeNotifyList.encode(req).finish()
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeNotifyFind, message:msg}))
                 .then((response) => {
@@ -579,7 +578,7 @@ export module request {
 
     export function httpRequest(req:protoManage.HttpMessage):Promise<protoManage.HttpMessage> {
         return new Promise((resolve, reject)=>{
-            req.token = globals.globalsData.manager.Token
+            req.token = globals.globalsData.manager.info.Token
             let buf = protoManage.HttpMessage.encode(req).finish()
             let blob = new Blob([buf], {type: 'buffer'});
 
@@ -591,10 +590,10 @@ export module request {
                 timeout: globals.globalsConfig.httpConfig.requestTimeout,
             }).then(response => {
                 if (response.status == 200) {
-                    let ans = protoManage.HttpMessage.decode(new Uint8Array(response.data))
+                    let ans = protoManage.HttpMessage.decode(new Uint8Array(<Uint8Array>response.data))
                     resolve(ans)
                 }else {
-                    httpError(response.status, response.data)
+                    httpError(response.status, <Uint8Array>response.data)
                     reject(response)
                 }
             }).catch(error => {

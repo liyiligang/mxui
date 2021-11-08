@@ -62,7 +62,7 @@ export default defineComponent ({
 
         function loginFinish(manager:protoManage.Manager){
             ElMessage.success("登录成功");
-            globals.globalsData.manager = protoManage.Manager.create(manager)
+            globals.globalsData.manager.info = protoManage.Manager.create(manager)
             localStorage.setItem(globals.globalsConfig.localStorageKey.token,  manager.Token);
             routerPath.toGroupAll()
         }

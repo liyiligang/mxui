@@ -30,17 +30,17 @@
 
 //节点通知查询
 func (data *Data) NodeNotifyFind(req *protoManage.ReqNodeNotifyList) (*protoManage.AnsNodeNotifyList, error) {
-	ormNotifyList, err := data.DB.FindNodeNotify(req.Filter)
+	ormNotifyList, err := data.DB.FindNodeNotify(req)
 	if err != nil {
 		return nil, err
 	}
 	protoNodeNotifyList := convert.OrmNodeNotifyListToProtoNodeNotifyList(ormNotifyList)
-	ormNodeList, err := data.DB.FindNodeByNodeNotify(req.Filter)
+	ormNodeList, err := data.DB.FindNodeByNodeNotify(req)
 	if err != nil {
 		return nil, err
 	}
 	protoNodeList := convert.OrmNodeListToProtoNodeList(ormNodeList)
-	count, err := data.DB.FindNodeNotifyCount(req.Filter)
+	count, err := data.DB.FindNodeNotifyCount(req)
 	if err != nil {
 		return nil, err
 	}

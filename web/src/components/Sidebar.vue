@@ -1,6 +1,6 @@
 <template>
     <el-menu class="menu" @select="menuSelect" :default-active="data.activeName" :default-openeds="data.activeSubMenu">
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeGroup" >集群</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeGroup" >分组</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeType" >服务</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.node">节点</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeLink">连接</el-menu-item>
@@ -40,25 +40,13 @@ export default defineComponent ({
         function menuSelect(key:string, keyPath:string){
             switch (key) {
                 case routerName.nodeGroup:
-                    routerPath.toGroupAll()
-                    break
                 case routerName.nodeType:
-                    routerPath.toTypeAll()
-                    break
                 case routerName.node:
-                    routerPath.toNodeAll()
-                    break
                 case routerName.nodeLink:
-                    routerPath.toNodeLinkAll()
-                    break
                 case routerName.nodeFunc:
-                    routerPath.toNodeFuncAll()
-                    break
                 case routerName.nodeReport:
-                    routerPath.toNodeReportAll()
-                    break
                 case routerName.nodeNotify:
-                    routerPath.toNodeNotifyAll()
+                    routerPath.toPath(key, {initPageNum:true, withPageSize:true}, route)
                     break
                 case routerName.nodeTest:
                     routerPath.toNodeTestAll()

@@ -1,4 +1,4 @@
-import {createRouter, createWebHistory} from "vue-router";
+import {createRouter, createWebHistory, LocationQueryRaw, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import Login from "./views/Login.vue";
 import Home from "./views/Home.vue";
 import NodeGroup from "./views/node/NodeGroup.vue";
@@ -12,8 +12,10 @@ import NodeTest from "./views/node/NodeTest.vue";
 import NotFound from "./views/NotFound.vue";
 import {protoManage} from "./proto/manage"
 import {globals} from "./base/globals";
+import merge from "webpack-merge";
 
 export const routerName = {
+    login:"login",
     nodeGroup:"nodeGroup",
     nodeType:"nodeType",
     node:"node",
@@ -22,6 +24,15 @@ export const routerName = {
     nodeReport:"nodeReport",
     nodeNotify:"nodeNotify",
     nodeTest:"nodeTest"
+}
+
+export interface routerPathInitConfig {
+    initPageNum? :boolean
+    withPageNum? :boolean
+    initPageSize? :boolean
+    withPageSize? :boolean
+    disableFilter? :boolean
+    disableAutoRefresh? :boolean
 }
 
 const router = createRouter({
@@ -56,6 +67,40 @@ router.beforeEach((to, from, next) => {
 });
 
 export module routerPath {
+
+    export function toPath(name:string, config:routerPathInitConfig, route:RouteLocationNormalizedLoaded){
+        let query:LocationQueryRaw = {}
+        if (config.initPageNum) {query.pageNum = globals.globalsConfig.pageConfig.initNum}
+        if (config.withPageNum) {
+            if (route.query.pageNum != undefined) {
+                query.pageNum = route.query.pageNum
+            }else {
+                query.pageNum = globals.globalsConfig.pageConfig.initNum
+            }
+        }
+        if (config.initPageSize) { query.pageSize = globals.globalsConfig.pageConfig.initSize }
+        if (config.withPageSize) {
+            if (route.query.pageSize != undefined) {
+                query.pageSize = route.query.pageSize
+            }else {
+                query.pageSize = globals.globalsConfig.pageConfig.initSize
+            }
+        }
+
+        if (!config.disableFilter && globals.globalsData.tempSetting.setting.dataFilterView){
+            query.filter = "true"
+            query = merge<any>(query, globals.getDataFilterQuery(name))
+        }
+
+        if (!config.disableAutoRefresh && globals.globalsData.tempSetting.setting.autoRefresh){
+            query.autoRefresh = "true"
+        }
+
+        router.push({
+            name: name,
+            query:query
+        }).then()
+    }
 
     export function toLogin(){
         router.push({

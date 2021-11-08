@@ -40,7 +40,7 @@ export default defineComponent ({
         function initLevelSelect(){
            let levelList = <Array<protoManage.Level>>Object.values(protoManage.Level)
             for(let level of levelList) {
-                if (level > protoManage.Level.LevelNot && level < globals.globalsData.manager.Level){
+                if (level > protoManage.Level.LevelNot && level < globals.globalsData.manager.info.Level){
                     data.levelSelectOptions.push(level)
                 }
             }

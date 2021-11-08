@@ -847,6 +847,198 @@ export namespace protoManage {
         public toJSON(): { [k: string]: any };
     }
 
+    /** Properties of a Page. */
+    interface IPage {
+
+        /** Page Count */
+        Count?: (number|null);
+
+        /** Page Num */
+        Num?: (number|null);
+    }
+
+    /** Represents a Page. */
+    class Page implements IPage {
+
+        /**
+         * Constructs a new Page.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IPage);
+
+        /** Page Count. */
+        public Count: number;
+
+        /** Page Num. */
+        public Num: number;
+
+        /**
+         * Creates a new Page instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Page instance
+         */
+        public static create(properties?: protoManage.IPage): protoManage.Page;
+
+        /**
+         * Encodes the specified Page message. Does not implicitly {@link protoManage.Page.verify|verify} messages.
+         * @param message Page message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IPage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Page message, length delimited. Does not implicitly {@link protoManage.Page.verify|verify} messages.
+         * @param message Page message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IPage, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Page message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Page
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.Page;
+
+        /**
+         * Decodes a Page message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Page
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.Page;
+
+        /**
+         * Verifies a Page message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Page message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Page
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.Page;
+
+        /**
+         * Creates a plain object from a Page message. Also converts values to other types if specified.
+         * @param message Page
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.Page, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Page to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a Time. */
+    interface ITime {
+
+        /** Time BeginTime */
+        BeginTime?: (number|null);
+
+        /** Time EndTime */
+        EndTime?: (number|null);
+    }
+
+    /** Represents a Time. */
+    class Time implements ITime {
+
+        /**
+         * Constructs a new Time.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.ITime);
+
+        /** Time BeginTime. */
+        public BeginTime: number;
+
+        /** Time EndTime. */
+        public EndTime: number;
+
+        /**
+         * Creates a new Time instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns Time instance
+         */
+        public static create(properties?: protoManage.ITime): protoManage.Time;
+
+        /**
+         * Encodes the specified Time message. Does not implicitly {@link protoManage.Time.verify|verify} messages.
+         * @param message Time message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.ITime, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified Time message, length delimited. Does not implicitly {@link protoManage.Time.verify|verify} messages.
+         * @param message Time message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.ITime, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a Time message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns Time
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.Time;
+
+        /**
+         * Decodes a Time message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns Time
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.Time;
+
+        /**
+         * Verifies a Time message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a Time message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns Time
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.Time;
+
+        /**
+         * Creates a plain object from a Time message. Also converts values to other types if specified.
+         * @param message Time
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.Time, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this Time to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
     /** Properties of a Manager. */
     interface IManager {
 
@@ -4408,8 +4600,23 @@ export namespace protoManage {
     /** Properties of a ReqNodeNotifyList. */
     interface IReqNodeNotifyList {
 
-        /** ReqNodeNotifyList filter */
-        filter?: (protoManage.IFilter|null);
+        /** ReqNodeNotifyList Message */
+        Message?: (string[]|null);
+
+        /** ReqNodeNotifyList State */
+        State?: (protoManage.State[]|null);
+
+        /** ReqNodeNotifyList SenderName */
+        SenderName?: (string[]|null);
+
+        /** ReqNodeNotifyList SenderType */
+        SenderType?: (protoManage.NotifySenderType[]|null);
+
+        /** ReqNodeNotifyList SenderTime */
+        SenderTime?: (protoManage.ITime[]|null);
+
+        /** ReqNodeNotifyList Page */
+        Page?: (protoManage.IPage|null);
     }
 
     /** Represents a ReqNodeNotifyList. */
@@ -4421,8 +4628,23 @@ export namespace protoManage {
          */
         constructor(properties?: protoManage.IReqNodeNotifyList);
 
-        /** ReqNodeNotifyList filter. */
-        public filter?: (protoManage.IFilter|null);
+        /** ReqNodeNotifyList Message. */
+        public Message: string[];
+
+        /** ReqNodeNotifyList State. */
+        public State: protoManage.State[];
+
+        /** ReqNodeNotifyList SenderName. */
+        public SenderName: string[];
+
+        /** ReqNodeNotifyList SenderType. */
+        public SenderType: protoManage.NotifySenderType[];
+
+        /** ReqNodeNotifyList SenderTime. */
+        public SenderTime: protoManage.ITime[];
+
+        /** ReqNodeNotifyList Page. */
+        public Page?: (protoManage.IPage|null);
 
         /**
          * Creates a new ReqNodeNotifyList instance using the specified properties.

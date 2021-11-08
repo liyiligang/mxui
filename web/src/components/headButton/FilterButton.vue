@@ -8,9 +8,12 @@
 
 <script lang="ts">
 
-import {defineComponent} from "vue";
+import {defineComponent, onMounted} from "vue";
 import {Filter} from "@element-plus/icons";
 import {globals} from "../../base/globals";
+import {LocationQueryRaw, useRoute, useRouter} from "vue-router";
+import merge from "webpack-merge";
+import {routerPath} from "../../router";
 
 export default defineComponent ({
     name: "FilterButton",
@@ -24,6 +27,16 @@ export default defineComponent ({
         }
     },
     setup(props, context){
+
+        const route = useRoute()
+
+        onMounted(()=>{
+            let filter =  route.query.filter
+            if (filter){
+                context.emit("update:showFilterView", true)
+            }
+        })
+
         function getFilterTooltip():string{
             return props.showFilterView?"过滤器已激活" : "过滤器未激活"
         }
@@ -35,6 +48,7 @@ export default defineComponent ({
         function filterButtonClick(event){
             globals.elButtonBlur(event)
             context.emit("update:showFilterView", !props.showFilterView)
+            routerPath.toPath(String(route.name), {withPageNum:true, withPageSize:true}, route)
         }
         return {filterButtonClick, getFilterTooltip, getFilterButtonColor}
     }
