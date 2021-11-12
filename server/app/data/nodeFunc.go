@@ -89,28 +89,23 @@ func (data *Data) NodeFuncFindIDByIndex(protoNodeFunc *protoManage.NodeFunc) err
 }
 
 //查找节点方法信息
-func (data *Data) NodeFuncFind(req protoManage.ReqNodeFuncList) (*protoManage.AnsNodeFuncList, error) {
-	ormFuncList, err := data.DB.FindNodeFunc(req.Filter)
+func (data *Data) NodeFuncFind(req *protoManage.ReqNodeFuncList) (*protoManage.AnsNodeFuncList, error) {
+	ormFuncList, err := data.DB.FindNodeFunc(req)
 	if err != nil {
 		return nil, err
 	}
 	protoNodeFuncList := convert.OrmNodeFuncListToProtoNodeFuncList(ormFuncList)
-	ormNodeList, err := data.DB.FindNodeByNodeFunc(req.Filter)
+	ormNodeList, err := data.DB.FindNodeByNodeFunc(req)
 	if err != nil {
 		return nil, err
 	}
 	protoNodeList := convert.OrmNodeListToProtoNodeList(ormNodeList)
-	ormNodeFuncCall, err := data.DB.FindLastNodeFuncCallByNodeFunc(req.Filter)
+	count, err := data.DB.FindNodeFuncCount(req)
 	if err != nil {
 		return nil, err
 	}
-	protoNodeFuncCall := convert.OrmNodeFuncCallListToProtoNodeFuncCallList(ormNodeFuncCall)
-	count, err := data.DB.FindNodeFuncCount(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	return &protoManage.AnsNodeFuncList{NodeFuncList: protoNodeFuncList, NodeList: protoNodeList,
-		NodeFuncCallList: protoNodeFuncCall,Length:count}, nil
+	return &protoManage.AnsNodeFuncList{NodeFuncList: protoNodeFuncList,
+		NodeList: protoNodeList, Length:count}, nil
 }
 
 //节点方法接口权限验证

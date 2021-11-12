@@ -26,8 +26,8 @@ func (request *Request) ReqNodeReportFind(userID int64, message []byte)([]byte, 
 	if err != nil {
 		return nil, err
 	}
-	req.Filter.LevelLow = level
-	ans, err := request.Data.NodeReportFind(req)
+	req.LevelMax = level
+	ans, err := request.Data.NodeReportFind(&req)
 	if err != nil {
 		return nil, err
 	}

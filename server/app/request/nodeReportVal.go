@@ -14,11 +14,11 @@ func (request *Request) ReqNodeReportValFind(userID int64, message []byte)([]byt
 	if err != nil {
 		return nil, err
 	}
-	err = request.Data.NodeReportLevelCheck(userID, req.Filter.ReportID)
+	err = request.Data.NodeReportLevelCheck(userID, req.ReportID)
 	if err != nil {
 		return nil, err
 	}
-	ans, err := request.Data.NodeReportValFind(req)
+	ans, err := request.Data.NodeReportValFind(&req)
 	if err != nil {
 		return nil, err
 	}

@@ -22,25 +22,11 @@ export namespace protoManage {
         ManagerFindLowLevel = 109,
         ManagerFindByID = 110,
         ManagerFindByLevel = 111,
-        NodeGroupAdd = 201,
-        NodeGroupDel = 202,
-        NodeGroupFind = 203,
-        NodeGroupFindByID = 204,
-        NodeTypeAdd = 301,
-        NodeTypeDel = 302,
-        NodeTypeFind = 303,
-        NodeTypeFindByID = 304,
         NodeAdd = 401,
         NodeDel = 402,
         NodeUpdateState = 403,
         NodeFind = 404,
         NodeFindByID = 405,
-        NodeLinkAdd = 501,
-        NodeLinkDel = 502,
-        NodeLinkDelAllWithNodeID = 503,
-        NodeLinkUpdateState = 504,
-        NodeLinkFind = 505,
-        NodeLinkFindByID = 506,
         NodeFuncAdd = 601,
         NodeFuncDel = 602,
         NodeFuncDelAllWithNodeID = 603,
@@ -84,13 +70,6 @@ export namespace protoManage {
         LevelSuper = 4
     }
 
-    /** NodeLinkType enum. */
-    enum NodeLinkType {
-        NodeLinkTypeUnknown = 0,
-        NodeLinkTypeClient = 1,
-        NodeLinkTypeServer = 2
-    }
-
     /** NodeFuncReturnType enum. */
     enum NodeFuncReturnType {
         Unknown = 0,
@@ -126,8 +105,9 @@ export namespace protoManage {
         HttpErrorMarshal = 601,
         HttpErrorUnmarshal = 602,
         HttpErrorRegister = 603,
-        HttpErrorLogin = 604,
-        HttpErrorRequest = 605
+        HttpErrorLoginWithAccount = 604,
+        HttpErrorLoginWithToken = 605,
+        HttpErrorRequest = 606
     }
 
     /** Properties of a Message. */
@@ -506,342 +486,6 @@ export namespace protoManage {
 
         /**
          * Converts this Base to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a StateCount. */
-    interface IStateCount {
-
-        /** StateCount ID */
-        ID?: (number|null);
-
-        /** StateCount NotCount */
-        NotCount?: (number|null);
-
-        /** StateCount NormalCount */
-        NormalCount?: (number|null);
-
-        /** StateCount WarnCount */
-        WarnCount?: (number|null);
-
-        /** StateCount ErrorCount */
-        ErrorCount?: (number|null);
-
-        /** StateCount UnknowCount */
-        UnknowCount?: (number|null);
-    }
-
-    /** Represents a StateCount. */
-    class StateCount implements IStateCount {
-
-        /**
-         * Constructs a new StateCount.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IStateCount);
-
-        /** StateCount ID. */
-        public ID: number;
-
-        /** StateCount NotCount. */
-        public NotCount: number;
-
-        /** StateCount NormalCount. */
-        public NormalCount: number;
-
-        /** StateCount WarnCount. */
-        public WarnCount: number;
-
-        /** StateCount ErrorCount. */
-        public ErrorCount: number;
-
-        /** StateCount UnknowCount. */
-        public UnknowCount: number;
-
-        /**
-         * Creates a new StateCount instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns StateCount instance
-         */
-        public static create(properties?: protoManage.IStateCount): protoManage.StateCount;
-
-        /**
-         * Encodes the specified StateCount message. Does not implicitly {@link protoManage.StateCount.verify|verify} messages.
-         * @param message StateCount message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IStateCount, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified StateCount message, length delimited. Does not implicitly {@link protoManage.StateCount.verify|verify} messages.
-         * @param message StateCount message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IStateCount, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a StateCount message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns StateCount
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.StateCount;
-
-        /**
-         * Decodes a StateCount message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns StateCount
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.StateCount;
-
-        /**
-         * Verifies a StateCount message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a StateCount message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns StateCount
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.StateCount;
-
-        /**
-         * Creates a plain object from a StateCount message. Also converts values to other types if specified.
-         * @param message StateCount
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.StateCount, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this StateCount to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a Filter. */
-    interface IFilter {
-
-        /** Filter ID */
-        ID?: (number|null);
-
-        /** Filter IDSign */
-        IDSign?: (string|null);
-
-        /** Filter GroupID */
-        GroupID?: (number|null);
-
-        /** Filter TypeID */
-        TypeID?: (number|null);
-
-        /** Filter NodeID */
-        NodeID?: (number|null);
-
-        /** Filter SourceID */
-        SourceID?: (number|null);
-
-        /** Filter TargetID */
-        TargetID?: (number|null);
-
-        /** Filter FuncID */
-        FuncID?: (number|null);
-
-        /** Filter ReportID */
-        ReportID?: (number|null);
-
-        /** Filter Name */
-        Name?: (string|null);
-
-        /** Filter Flag */
-        Flag?: (string|null);
-
-        /** Filter Value */
-        Value?: (string|null);
-
-        /** Filter State */
-        State?: (protoManage.State|null);
-
-        /** Filter Level */
-        Level?: (protoManage.Level|null);
-
-        /** Filter LevelLow */
-        LevelLow?: (protoManage.Level|null);
-
-        /** Filter SenderName */
-        SenderName?: (string|null);
-
-        /** Filter SenderType */
-        SenderType?: (protoManage.NotifySenderType|null);
-
-        /** Filter SenderBeginTime */
-        SenderBeginTime?: (number|null);
-
-        /** Filter SenderEndTime */
-        SenderEndTime?: (number|null);
-
-        /** Filter Message */
-        Message?: (string|null);
-
-        /** Filter PageSize */
-        PageSize?: (number|null);
-
-        /** Filter PageNum */
-        PageNum?: (number|null);
-    }
-
-    /** Represents a Filter. */
-    class Filter implements IFilter {
-
-        /**
-         * Constructs a new Filter.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IFilter);
-
-        /** Filter ID. */
-        public ID: number;
-
-        /** Filter IDSign. */
-        public IDSign: string;
-
-        /** Filter GroupID. */
-        public GroupID: number;
-
-        /** Filter TypeID. */
-        public TypeID: number;
-
-        /** Filter NodeID. */
-        public NodeID: number;
-
-        /** Filter SourceID. */
-        public SourceID: number;
-
-        /** Filter TargetID. */
-        public TargetID: number;
-
-        /** Filter FuncID. */
-        public FuncID: number;
-
-        /** Filter ReportID. */
-        public ReportID: number;
-
-        /** Filter Name. */
-        public Name: string;
-
-        /** Filter Flag. */
-        public Flag: string;
-
-        /** Filter Value. */
-        public Value: string;
-
-        /** Filter State. */
-        public State: protoManage.State;
-
-        /** Filter Level. */
-        public Level: protoManage.Level;
-
-        /** Filter LevelLow. */
-        public LevelLow: protoManage.Level;
-
-        /** Filter SenderName. */
-        public SenderName: string;
-
-        /** Filter SenderType. */
-        public SenderType: protoManage.NotifySenderType;
-
-        /** Filter SenderBeginTime. */
-        public SenderBeginTime: number;
-
-        /** Filter SenderEndTime. */
-        public SenderEndTime: number;
-
-        /** Filter Message. */
-        public Message: string;
-
-        /** Filter PageSize. */
-        public PageSize: number;
-
-        /** Filter PageNum. */
-        public PageNum: number;
-
-        /**
-         * Creates a new Filter instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns Filter instance
-         */
-        public static create(properties?: protoManage.IFilter): protoManage.Filter;
-
-        /**
-         * Encodes the specified Filter message. Does not implicitly {@link protoManage.Filter.verify|verify} messages.
-         * @param message Filter message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IFilter, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified Filter message, length delimited. Does not implicitly {@link protoManage.Filter.verify|verify} messages.
-         * @param message Filter message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IFilter, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a Filter message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns Filter
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.Filter;
-
-        /**
-         * Decodes a Filter message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns Filter
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.Filter;
-
-        /**
-         * Verifies a Filter message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a Filter message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns Filter
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.Filter;
-
-        /**
-         * Creates a plain object from a Filter message. Also converts values to other types if specified.
-         * @param message Filter
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.Filter, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this Filter to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -1279,209 +923,11 @@ export namespace protoManage {
         public toJSON(): { [k: string]: any };
     }
 
-    /** Properties of a NodeGroup. */
-    interface INodeGroup {
-
-        /** NodeGroup Base */
-        Base?: (protoManage.IBase|null);
-
-        /** NodeGroup Name */
-        Name?: (string|null);
-    }
-
-    /** Represents a NodeGroup. */
-    class NodeGroup implements INodeGroup {
-
-        /**
-         * Constructs a new NodeGroup.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.INodeGroup);
-
-        /** NodeGroup Base. */
-        public Base?: (protoManage.IBase|null);
-
-        /** NodeGroup Name. */
-        public Name: string;
-
-        /**
-         * Creates a new NodeGroup instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns NodeGroup instance
-         */
-        public static create(properties?: protoManage.INodeGroup): protoManage.NodeGroup;
-
-        /**
-         * Encodes the specified NodeGroup message. Does not implicitly {@link protoManage.NodeGroup.verify|verify} messages.
-         * @param message NodeGroup message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.INodeGroup, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified NodeGroup message, length delimited. Does not implicitly {@link protoManage.NodeGroup.verify|verify} messages.
-         * @param message NodeGroup message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.INodeGroup, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a NodeGroup message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns NodeGroup
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.NodeGroup;
-
-        /**
-         * Decodes a NodeGroup message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns NodeGroup
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.NodeGroup;
-
-        /**
-         * Verifies a NodeGroup message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a NodeGroup message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns NodeGroup
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.NodeGroup;
-
-        /**
-         * Creates a plain object from a NodeGroup message. Also converts values to other types if specified.
-         * @param message NodeGroup
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.NodeGroup, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this NodeGroup to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a NodeType. */
-    interface INodeType {
-
-        /** NodeType Base */
-        Base?: (protoManage.IBase|null);
-
-        /** NodeType Name */
-        Name?: (string|null);
-    }
-
-    /** Represents a NodeType. */
-    class NodeType implements INodeType {
-
-        /**
-         * Constructs a new NodeType.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.INodeType);
-
-        /** NodeType Base. */
-        public Base?: (protoManage.IBase|null);
-
-        /** NodeType Name. */
-        public Name: string;
-
-        /**
-         * Creates a new NodeType instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns NodeType instance
-         */
-        public static create(properties?: protoManage.INodeType): protoManage.NodeType;
-
-        /**
-         * Encodes the specified NodeType message. Does not implicitly {@link protoManage.NodeType.verify|verify} messages.
-         * @param message NodeType message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.INodeType, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified NodeType message, length delimited. Does not implicitly {@link protoManage.NodeType.verify|verify} messages.
-         * @param message NodeType message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.INodeType, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a NodeType message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns NodeType
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.NodeType;
-
-        /**
-         * Decodes a NodeType message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns NodeType
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.NodeType;
-
-        /**
-         * Verifies a NodeType message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a NodeType message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns NodeType
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.NodeType;
-
-        /**
-         * Creates a plain object from a NodeType message. Also converts values to other types if specified.
-         * @param message NodeType
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.NodeType, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this NodeType to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
     /** Properties of a Node. */
     interface INode {
 
         /** Node Base */
         Base?: (protoManage.IBase|null);
-
-        /** Node GroupID */
-        GroupID?: (number|null);
-
-        /** Node TypeID */
-        TypeID?: (number|null);
 
         /** Node Name */
         Name?: (string|null);
@@ -1501,12 +947,6 @@ export namespace protoManage {
 
         /** Node Base. */
         public Base?: (protoManage.IBase|null);
-
-        /** Node GroupID. */
-        public GroupID: number;
-
-        /** Node TypeID. */
-        public TypeID: number;
 
         /** Node Name. */
         public Name: string;
@@ -1580,114 +1020,6 @@ export namespace protoManage {
 
         /**
          * Converts this Node to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a NodeLink. */
-    interface INodeLink {
-
-        /** NodeLink Base */
-        Base?: (protoManage.IBase|null);
-
-        /** NodeLink SourceID */
-        SourceID?: (number|null);
-
-        /** NodeLink TargetID */
-        TargetID?: (number|null);
-
-        /** NodeLink State */
-        State?: (protoManage.State|null);
-    }
-
-    /** Represents a NodeLink. */
-    class NodeLink implements INodeLink {
-
-        /**
-         * Constructs a new NodeLink.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.INodeLink);
-
-        /** NodeLink Base. */
-        public Base?: (protoManage.IBase|null);
-
-        /** NodeLink SourceID. */
-        public SourceID: number;
-
-        /** NodeLink TargetID. */
-        public TargetID: number;
-
-        /** NodeLink State. */
-        public State: protoManage.State;
-
-        /**
-         * Creates a new NodeLink instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns NodeLink instance
-         */
-        public static create(properties?: protoManage.INodeLink): protoManage.NodeLink;
-
-        /**
-         * Encodes the specified NodeLink message. Does not implicitly {@link protoManage.NodeLink.verify|verify} messages.
-         * @param message NodeLink message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.INodeLink, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified NodeLink message, length delimited. Does not implicitly {@link protoManage.NodeLink.verify|verify} messages.
-         * @param message NodeLink message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.INodeLink, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a NodeLink message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns NodeLink
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.NodeLink;
-
-        /**
-         * Decodes a NodeLink message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns NodeLink
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.NodeLink;
-
-        /**
-         * Verifies a NodeLink message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a NodeLink message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns NodeLink
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.NodeLink;
-
-        /**
-         * Creates a plain object from a NodeLink message. Also converts values to other types if specified.
-         * @param message NodeLink
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.NodeLink, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this NodeLink to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -2314,12 +1646,6 @@ export namespace protoManage {
     /** Properties of a ReqNodeLogin. */
     interface IReqNodeLogin {
 
-        /** ReqNodeLogin NodeGroup */
-        NodeGroup?: (protoManage.INodeGroup|null);
-
-        /** ReqNodeLogin NodeType */
-        NodeType?: (protoManage.INodeType|null);
-
         /** ReqNodeLogin Node */
         Node?: (protoManage.INode|null);
     }
@@ -2332,12 +1658,6 @@ export namespace protoManage {
          * @param [properties] Properties to set
          */
         constructor(properties?: protoManage.IReqNodeLogin);
-
-        /** ReqNodeLogin NodeGroup. */
-        public NodeGroup?: (protoManage.INodeGroup|null);
-
-        /** ReqNodeLogin NodeType. */
-        public NodeType?: (protoManage.INodeType|null);
 
         /** ReqNodeLogin Node. */
         public Node?: (protoManage.INode|null);
@@ -2418,9 +1738,6 @@ export namespace protoManage {
 
         /** ReqNodeOnline Node */
         Node?: (protoManage.INode|null);
-
-        /** ReqNodeOnline NodeLinkList */
-        NodeLinkList?: (protoManage.INodeLink[]|null);
     }
 
     /** Represents a ReqNodeOnline. */
@@ -2434,9 +1751,6 @@ export namespace protoManage {
 
         /** ReqNodeOnline Node. */
         public Node?: (protoManage.INode|null);
-
-        /** ReqNodeOnline NodeLinkList. */
-        public NodeLinkList: protoManage.INodeLink[];
 
         /**
          * Creates a new ReqNodeOnline instance using the specified properties.
@@ -2857,395 +2171,23 @@ export namespace protoManage {
         public toJSON(): { [k: string]: any };
     }
 
-    /** Properties of a ReqNodeGroupList. */
-    interface IReqNodeGroupList {
-
-        /** ReqNodeGroupList filter */
-        filter?: (protoManage.IFilter|null);
-    }
-
-    /** Represents a ReqNodeGroupList. */
-    class ReqNodeGroupList implements IReqNodeGroupList {
-
-        /**
-         * Constructs a new ReqNodeGroupList.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IReqNodeGroupList);
-
-        /** ReqNodeGroupList filter. */
-        public filter?: (protoManage.IFilter|null);
-
-        /**
-         * Creates a new ReqNodeGroupList instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns ReqNodeGroupList instance
-         */
-        public static create(properties?: protoManage.IReqNodeGroupList): protoManage.ReqNodeGroupList;
-
-        /**
-         * Encodes the specified ReqNodeGroupList message. Does not implicitly {@link protoManage.ReqNodeGroupList.verify|verify} messages.
-         * @param message ReqNodeGroupList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IReqNodeGroupList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified ReqNodeGroupList message, length delimited. Does not implicitly {@link protoManage.ReqNodeGroupList.verify|verify} messages.
-         * @param message ReqNodeGroupList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IReqNodeGroupList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a ReqNodeGroupList message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns ReqNodeGroupList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeGroupList;
-
-        /**
-         * Decodes a ReqNodeGroupList message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns ReqNodeGroupList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeGroupList;
-
-        /**
-         * Verifies a ReqNodeGroupList message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a ReqNodeGroupList message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns ReqNodeGroupList
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeGroupList;
-
-        /**
-         * Creates a plain object from a ReqNodeGroupList message. Also converts values to other types if specified.
-         * @param message ReqNodeGroupList
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.ReqNodeGroupList, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this ReqNodeGroupList to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of an AnsNodeGroupList. */
-    interface IAnsNodeGroupList {
-
-        /** AnsNodeGroupList Length */
-        Length?: (number|null);
-
-        /** AnsNodeGroupList NodeGroupList */
-        NodeGroupList?: (protoManage.INodeGroup[]|null);
-
-        /** AnsNodeGroupList NodeStateCountList */
-        NodeStateCountList?: (protoManage.IStateCount[]|null);
-    }
-
-    /** Represents an AnsNodeGroupList. */
-    class AnsNodeGroupList implements IAnsNodeGroupList {
-
-        /**
-         * Constructs a new AnsNodeGroupList.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IAnsNodeGroupList);
-
-        /** AnsNodeGroupList Length. */
-        public Length: number;
-
-        /** AnsNodeGroupList NodeGroupList. */
-        public NodeGroupList: protoManage.INodeGroup[];
-
-        /** AnsNodeGroupList NodeStateCountList. */
-        public NodeStateCountList: protoManage.IStateCount[];
-
-        /**
-         * Creates a new AnsNodeGroupList instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns AnsNodeGroupList instance
-         */
-        public static create(properties?: protoManage.IAnsNodeGroupList): protoManage.AnsNodeGroupList;
-
-        /**
-         * Encodes the specified AnsNodeGroupList message. Does not implicitly {@link protoManage.AnsNodeGroupList.verify|verify} messages.
-         * @param message AnsNodeGroupList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IAnsNodeGroupList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified AnsNodeGroupList message, length delimited. Does not implicitly {@link protoManage.AnsNodeGroupList.verify|verify} messages.
-         * @param message AnsNodeGroupList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IAnsNodeGroupList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes an AnsNodeGroupList message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns AnsNodeGroupList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.AnsNodeGroupList;
-
-        /**
-         * Decodes an AnsNodeGroupList message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns AnsNodeGroupList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.AnsNodeGroupList;
-
-        /**
-         * Verifies an AnsNodeGroupList message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates an AnsNodeGroupList message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns AnsNodeGroupList
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.AnsNodeGroupList;
-
-        /**
-         * Creates a plain object from an AnsNodeGroupList message. Also converts values to other types if specified.
-         * @param message AnsNodeGroupList
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.AnsNodeGroupList, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this AnsNodeGroupList to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a ReqNodeTypeList. */
-    interface IReqNodeTypeList {
-
-        /** ReqNodeTypeList filter */
-        filter?: (protoManage.IFilter|null);
-    }
-
-    /** Represents a ReqNodeTypeList. */
-    class ReqNodeTypeList implements IReqNodeTypeList {
-
-        /**
-         * Constructs a new ReqNodeTypeList.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IReqNodeTypeList);
-
-        /** ReqNodeTypeList filter. */
-        public filter?: (protoManage.IFilter|null);
-
-        /**
-         * Creates a new ReqNodeTypeList instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns ReqNodeTypeList instance
-         */
-        public static create(properties?: protoManage.IReqNodeTypeList): protoManage.ReqNodeTypeList;
-
-        /**
-         * Encodes the specified ReqNodeTypeList message. Does not implicitly {@link protoManage.ReqNodeTypeList.verify|verify} messages.
-         * @param message ReqNodeTypeList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IReqNodeTypeList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified ReqNodeTypeList message, length delimited. Does not implicitly {@link protoManage.ReqNodeTypeList.verify|verify} messages.
-         * @param message ReqNodeTypeList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IReqNodeTypeList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a ReqNodeTypeList message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns ReqNodeTypeList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeTypeList;
-
-        /**
-         * Decodes a ReqNodeTypeList message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns ReqNodeTypeList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeTypeList;
-
-        /**
-         * Verifies a ReqNodeTypeList message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a ReqNodeTypeList message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns ReqNodeTypeList
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeTypeList;
-
-        /**
-         * Creates a plain object from a ReqNodeTypeList message. Also converts values to other types if specified.
-         * @param message ReqNodeTypeList
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.ReqNodeTypeList, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this ReqNodeTypeList to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of an AnsNodeTypeList. */
-    interface IAnsNodeTypeList {
-
-        /** AnsNodeTypeList Length */
-        Length?: (number|null);
-
-        /** AnsNodeTypeList NodeTypeList */
-        NodeTypeList?: (protoManage.INodeType[]|null);
-
-        /** AnsNodeTypeList NodeStateCountList */
-        NodeStateCountList?: (protoManage.IStateCount[]|null);
-    }
-
-    /** Represents an AnsNodeTypeList. */
-    class AnsNodeTypeList implements IAnsNodeTypeList {
-
-        /**
-         * Constructs a new AnsNodeTypeList.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IAnsNodeTypeList);
-
-        /** AnsNodeTypeList Length. */
-        public Length: number;
-
-        /** AnsNodeTypeList NodeTypeList. */
-        public NodeTypeList: protoManage.INodeType[];
-
-        /** AnsNodeTypeList NodeStateCountList. */
-        public NodeStateCountList: protoManage.IStateCount[];
-
-        /**
-         * Creates a new AnsNodeTypeList instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns AnsNodeTypeList instance
-         */
-        public static create(properties?: protoManage.IAnsNodeTypeList): protoManage.AnsNodeTypeList;
-
-        /**
-         * Encodes the specified AnsNodeTypeList message. Does not implicitly {@link protoManage.AnsNodeTypeList.verify|verify} messages.
-         * @param message AnsNodeTypeList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IAnsNodeTypeList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified AnsNodeTypeList message, length delimited. Does not implicitly {@link protoManage.AnsNodeTypeList.verify|verify} messages.
-         * @param message AnsNodeTypeList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IAnsNodeTypeList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes an AnsNodeTypeList message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns AnsNodeTypeList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.AnsNodeTypeList;
-
-        /**
-         * Decodes an AnsNodeTypeList message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns AnsNodeTypeList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.AnsNodeTypeList;
-
-        /**
-         * Verifies an AnsNodeTypeList message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates an AnsNodeTypeList message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns AnsNodeTypeList
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.AnsNodeTypeList;
-
-        /**
-         * Creates a plain object from an AnsNodeTypeList message. Also converts values to other types if specified.
-         * @param message AnsNodeTypeList
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.AnsNodeTypeList, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this AnsNodeTypeList to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
     /** Properties of a ReqNodeList. */
     interface IReqNodeList {
 
-        /** ReqNodeList filter */
-        filter?: (protoManage.IFilter|null);
+        /** ReqNodeList ID */
+        ID?: (number[]|null);
+
+        /** ReqNodeList Name */
+        Name?: (string[]|null);
+
+        /** ReqNodeList State */
+        State?: (protoManage.State[]|null);
+
+        /** ReqNodeList UpdateTime */
+        UpdateTime?: (protoManage.ITime[]|null);
+
+        /** ReqNodeList Page */
+        Page?: (protoManage.IPage|null);
     }
 
     /** Represents a ReqNodeList. */
@@ -3257,8 +2199,20 @@ export namespace protoManage {
          */
         constructor(properties?: protoManage.IReqNodeList);
 
-        /** ReqNodeList filter. */
-        public filter?: (protoManage.IFilter|null);
+        /** ReqNodeList ID. */
+        public ID: number[];
+
+        /** ReqNodeList Name. */
+        public Name: string[];
+
+        /** ReqNodeList State. */
+        public State: protoManage.State[];
+
+        /** ReqNodeList UpdateTime. */
+        public UpdateTime: protoManage.ITime[];
+
+        /** ReqNodeList Page. */
+        public Page?: (protoManage.IPage|null);
 
         /**
          * Creates a new ReqNodeList instance using the specified properties.
@@ -3339,24 +2293,6 @@ export namespace protoManage {
 
         /** AnsNodeList NodeList */
         NodeList?: (protoManage.INode[]|null);
-
-        /** AnsNodeList NodeGroupList */
-        NodeGroupList?: (protoManage.INodeGroup[]|null);
-
-        /** AnsNodeList NodeTypeList */
-        NodeTypeList?: (protoManage.INodeType[]|null);
-
-        /** AnsNodeList NodeLinkSourceStateCountList */
-        NodeLinkSourceStateCountList?: (protoManage.IStateCount[]|null);
-
-        /** AnsNodeList NodeLinkTargetStateCountList */
-        NodeLinkTargetStateCountList?: (protoManage.IStateCount[]|null);
-
-        /** AnsNodeList NodeFuncStateCountList */
-        NodeFuncStateCountList?: (protoManage.IStateCount[]|null);
-
-        /** AnsNodeList NodeReportStateCountList */
-        NodeReportStateCountList?: (protoManage.IStateCount[]|null);
     }
 
     /** Represents an AnsNodeList. */
@@ -3373,24 +2309,6 @@ export namespace protoManage {
 
         /** AnsNodeList NodeList. */
         public NodeList: protoManage.INode[];
-
-        /** AnsNodeList NodeGroupList. */
-        public NodeGroupList: protoManage.INodeGroup[];
-
-        /** AnsNodeList NodeTypeList. */
-        public NodeTypeList: protoManage.INodeType[];
-
-        /** AnsNodeList NodeLinkSourceStateCountList. */
-        public NodeLinkSourceStateCountList: protoManage.IStateCount[];
-
-        /** AnsNodeList NodeLinkTargetStateCountList. */
-        public NodeLinkTargetStateCountList: protoManage.IStateCount[];
-
-        /** AnsNodeList NodeFuncStateCountList. */
-        public NodeFuncStateCountList: protoManage.IStateCount[];
-
-        /** AnsNodeList NodeReportStateCountList. */
-        public NodeReportStateCountList: protoManage.IStateCount[];
 
         /**
          * Creates a new AnsNodeList instance using the specified properties.
@@ -3463,203 +2381,32 @@ export namespace protoManage {
         public toJSON(): { [k: string]: any };
     }
 
-    /** Properties of a ReqNodeLinkList. */
-    interface IReqNodeLinkList {
-
-        /** ReqNodeLinkList filter */
-        filter?: (protoManage.IFilter|null);
-    }
-
-    /** Represents a ReqNodeLinkList. */
-    class ReqNodeLinkList implements IReqNodeLinkList {
-
-        /**
-         * Constructs a new ReqNodeLinkList.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IReqNodeLinkList);
-
-        /** ReqNodeLinkList filter. */
-        public filter?: (protoManage.IFilter|null);
-
-        /**
-         * Creates a new ReqNodeLinkList instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns ReqNodeLinkList instance
-         */
-        public static create(properties?: protoManage.IReqNodeLinkList): protoManage.ReqNodeLinkList;
-
-        /**
-         * Encodes the specified ReqNodeLinkList message. Does not implicitly {@link protoManage.ReqNodeLinkList.verify|verify} messages.
-         * @param message ReqNodeLinkList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IReqNodeLinkList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified ReqNodeLinkList message, length delimited. Does not implicitly {@link protoManage.ReqNodeLinkList.verify|verify} messages.
-         * @param message ReqNodeLinkList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IReqNodeLinkList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a ReqNodeLinkList message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns ReqNodeLinkList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeLinkList;
-
-        /**
-         * Decodes a ReqNodeLinkList message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns ReqNodeLinkList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeLinkList;
-
-        /**
-         * Verifies a ReqNodeLinkList message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a ReqNodeLinkList message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns ReqNodeLinkList
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeLinkList;
-
-        /**
-         * Creates a plain object from a ReqNodeLinkList message. Also converts values to other types if specified.
-         * @param message ReqNodeLinkList
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.ReqNodeLinkList, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this ReqNodeLinkList to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of an AnsNodeLinkList. */
-    interface IAnsNodeLinkList {
-
-        /** AnsNodeLinkList Length */
-        Length?: (number|null);
-
-        /** AnsNodeLinkList NodeLinkList */
-        NodeLinkList?: (protoManage.INodeLink[]|null);
-
-        /** AnsNodeLinkList NodeList */
-        NodeList?: (protoManage.INode[]|null);
-    }
-
-    /** Represents an AnsNodeLinkList. */
-    class AnsNodeLinkList implements IAnsNodeLinkList {
-
-        /**
-         * Constructs a new AnsNodeLinkList.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IAnsNodeLinkList);
-
-        /** AnsNodeLinkList Length. */
-        public Length: number;
-
-        /** AnsNodeLinkList NodeLinkList. */
-        public NodeLinkList: protoManage.INodeLink[];
-
-        /** AnsNodeLinkList NodeList. */
-        public NodeList: protoManage.INode[];
-
-        /**
-         * Creates a new AnsNodeLinkList instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns AnsNodeLinkList instance
-         */
-        public static create(properties?: protoManage.IAnsNodeLinkList): protoManage.AnsNodeLinkList;
-
-        /**
-         * Encodes the specified AnsNodeLinkList message. Does not implicitly {@link protoManage.AnsNodeLinkList.verify|verify} messages.
-         * @param message AnsNodeLinkList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IAnsNodeLinkList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified AnsNodeLinkList message, length delimited. Does not implicitly {@link protoManage.AnsNodeLinkList.verify|verify} messages.
-         * @param message AnsNodeLinkList message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IAnsNodeLinkList, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes an AnsNodeLinkList message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns AnsNodeLinkList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.AnsNodeLinkList;
-
-        /**
-         * Decodes an AnsNodeLinkList message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns AnsNodeLinkList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.AnsNodeLinkList;
-
-        /**
-         * Verifies an AnsNodeLinkList message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates an AnsNodeLinkList message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns AnsNodeLinkList
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.AnsNodeLinkList;
-
-        /**
-         * Creates a plain object from an AnsNodeLinkList message. Also converts values to other types if specified.
-         * @param message AnsNodeLinkList
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.AnsNodeLinkList, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this AnsNodeLinkList to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
     /** Properties of a ReqNodeFuncList. */
     interface IReqNodeFuncList {
 
-        /** ReqNodeFuncList filter */
-        filter?: (protoManage.IFilter|null);
+        /** ReqNodeFuncList ID */
+        ID?: (number[]|null);
+
+        /** ReqNodeFuncList Name */
+        Name?: (string[]|null);
+
+        /** ReqNodeFuncList Level */
+        Level?: (protoManage.Level[]|null);
+
+        /** ReqNodeFuncList LevelMax */
+        LevelMax?: (protoManage.Level|null);
+
+        /** ReqNodeFuncList NodeID */
+        NodeID?: (number[]|null);
+
+        /** ReqNodeFuncList NodeName */
+        NodeName?: (string[]|null);
+
+        /** ReqNodeFuncList UpdateTime */
+        UpdateTime?: (protoManage.ITime[]|null);
+
+        /** ReqNodeFuncList Page */
+        Page?: (protoManage.IPage|null);
     }
 
     /** Represents a ReqNodeFuncList. */
@@ -3671,8 +2418,29 @@ export namespace protoManage {
          */
         constructor(properties?: protoManage.IReqNodeFuncList);
 
-        /** ReqNodeFuncList filter. */
-        public filter?: (protoManage.IFilter|null);
+        /** ReqNodeFuncList ID. */
+        public ID: number[];
+
+        /** ReqNodeFuncList Name. */
+        public Name: string[];
+
+        /** ReqNodeFuncList Level. */
+        public Level: protoManage.Level[];
+
+        /** ReqNodeFuncList LevelMax. */
+        public LevelMax: protoManage.Level;
+
+        /** ReqNodeFuncList NodeID. */
+        public NodeID: number[];
+
+        /** ReqNodeFuncList NodeName. */
+        public NodeName: string[];
+
+        /** ReqNodeFuncList UpdateTime. */
+        public UpdateTime: protoManage.ITime[];
+
+        /** ReqNodeFuncList Page. */
+        public Page?: (protoManage.IPage|null);
 
         /**
          * Creates a new ReqNodeFuncList instance using the specified properties.
@@ -3756,9 +2524,6 @@ export namespace protoManage {
 
         /** AnsNodeFuncList NodeList */
         NodeList?: (protoManage.INode[]|null);
-
-        /** AnsNodeFuncList NodeFuncCallList */
-        NodeFuncCallList?: (protoManage.INodeFuncCall[]|null);
     }
 
     /** Represents an AnsNodeFuncList. */
@@ -3778,9 +2543,6 @@ export namespace protoManage {
 
         /** AnsNodeFuncList NodeList. */
         public NodeList: protoManage.INode[];
-
-        /** AnsNodeFuncList NodeFuncCallList. */
-        public NodeFuncCallList: protoManage.INodeFuncCall[];
 
         /**
          * Creates a new AnsNodeFuncList instance using the specified properties.
@@ -3856,8 +2618,29 @@ export namespace protoManage {
     /** Properties of a ReqNodeReportList. */
     interface IReqNodeReportList {
 
-        /** ReqNodeReportList filter */
-        filter?: (protoManage.IFilter|null);
+        /** ReqNodeReportList ID */
+        ID?: (number[]|null);
+
+        /** ReqNodeReportList Name */
+        Name?: (string[]|null);
+
+        /** ReqNodeReportList Level */
+        Level?: (protoManage.Level[]|null);
+
+        /** ReqNodeReportList LevelMax */
+        LevelMax?: (protoManage.Level|null);
+
+        /** ReqNodeReportList NodeID */
+        NodeID?: (number[]|null);
+
+        /** ReqNodeReportList NodeName */
+        NodeName?: (string[]|null);
+
+        /** ReqNodeReportList UpdateTime */
+        UpdateTime?: (protoManage.ITime[]|null);
+
+        /** ReqNodeReportList Page */
+        Page?: (protoManage.IPage|null);
     }
 
     /** Represents a ReqNodeReportList. */
@@ -3869,8 +2652,29 @@ export namespace protoManage {
          */
         constructor(properties?: protoManage.IReqNodeReportList);
 
-        /** ReqNodeReportList filter. */
-        public filter?: (protoManage.IFilter|null);
+        /** ReqNodeReportList ID. */
+        public ID: number[];
+
+        /** ReqNodeReportList Name. */
+        public Name: string[];
+
+        /** ReqNodeReportList Level. */
+        public Level: protoManage.Level[];
+
+        /** ReqNodeReportList LevelMax. */
+        public LevelMax: protoManage.Level;
+
+        /** ReqNodeReportList NodeID. */
+        public NodeID: number[];
+
+        /** ReqNodeReportList NodeName. */
+        public NodeName: string[];
+
+        /** ReqNodeReportList UpdateTime. */
+        public UpdateTime: protoManage.ITime[];
+
+        /** ReqNodeReportList Page. */
+        public Page?: (protoManage.IPage|null);
 
         /**
          * Creates a new ReqNodeReportList instance using the specified properties.
@@ -3954,9 +2758,6 @@ export namespace protoManage {
 
         /** AnsNodeReportList NodeList */
         NodeList?: (protoManage.INode[]|null);
-
-        /** AnsNodeReportList NodeReportValList */
-        NodeReportValList?: (protoManage.INodeReportVal[]|null);
     }
 
     /** Represents an AnsNodeReportList. */
@@ -3976,9 +2777,6 @@ export namespace protoManage {
 
         /** AnsNodeReportList NodeList. */
         public NodeList: protoManage.INode[];
-
-        /** AnsNodeReportList NodeReportValList. */
-        public NodeReportValList: protoManage.INodeReportVal[];
 
         /**
          * Creates a new AnsNodeReportList instance using the specified properties.
@@ -4240,8 +3038,11 @@ export namespace protoManage {
     /** Properties of a ReqNodeFuncCallList. */
     interface IReqNodeFuncCallList {
 
-        /** ReqNodeFuncCallList filter */
-        filter?: (protoManage.IFilter|null);
+        /** ReqNodeFuncCallList FuncID */
+        FuncID?: (number|null);
+
+        /** ReqNodeFuncCallList Page */
+        Page?: (protoManage.IPage|null);
     }
 
     /** Represents a ReqNodeFuncCallList. */
@@ -4253,8 +3054,11 @@ export namespace protoManage {
          */
         constructor(properties?: protoManage.IReqNodeFuncCallList);
 
-        /** ReqNodeFuncCallList filter. */
-        public filter?: (protoManage.IFilter|null);
+        /** ReqNodeFuncCallList FuncID. */
+        public FuncID: number;
+
+        /** ReqNodeFuncCallList Page. */
+        public Page?: (protoManage.IPage|null);
 
         /**
          * Creates a new ReqNodeFuncCallList instance using the specified properties.
@@ -4420,8 +3224,14 @@ export namespace protoManage {
     /** Properties of a ReqNodeReportValList. */
     interface IReqNodeReportValList {
 
-        /** ReqNodeReportValList filter */
-        filter?: (protoManage.IFilter|null);
+        /** ReqNodeReportValList ID */
+        ID?: (number|null);
+
+        /** ReqNodeReportValList ReportID */
+        ReportID?: (number|null);
+
+        /** ReqNodeReportValList Page */
+        Page?: (protoManage.IPage|null);
     }
 
     /** Represents a ReqNodeReportValList. */
@@ -4433,8 +3243,14 @@ export namespace protoManage {
          */
         constructor(properties?: protoManage.IReqNodeReportValList);
 
-        /** ReqNodeReportValList filter. */
-        public filter?: (protoManage.IFilter|null);
+        /** ReqNodeReportValList ID. */
+        public ID: number;
+
+        /** ReqNodeReportValList ReportID. */
+        public ReportID: number;
+
+        /** ReqNodeReportValList Page. */
+        public Page?: (protoManage.IPage|null);
 
         /**
          * Creates a new ReqNodeReportValList instance using the specified properties.

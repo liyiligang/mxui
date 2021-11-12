@@ -26,7 +26,7 @@ import { defineComponent, reactive, onMounted, watchEffect} from "vue";
 import {protoManage} from "../proto/manage"
 import {globals} from "../base/globals"
 import {request} from "../base/request"
-import {routerPath} from '../router'
+import {routerName, routerPath} from '../router'
 import {ElMessage} from "element-plus";
 import Register from "./Register.vue";
 
@@ -62,9 +62,8 @@ export default defineComponent ({
 
         function loginFinish(manager:protoManage.Manager){
             ElMessage.success("登录成功");
-            globals.globalsData.manager.info = protoManage.Manager.create(manager)
             localStorage.setItem(globals.globalsConfig.localStorageKey.token,  manager.Token);
-            routerPath.toGroupAll()
+            routerPath.toPath(routerName.node, {initPageNum:true, initPageSize:true})
         }
 
         function loginByToken(){
@@ -104,7 +103,7 @@ export default defineComponent ({
 
         watchEffect(registerVisibleChanged)
         function registerVisibleChanged(){
-            if (data.registerVisible == false){
+            if (!data.registerVisible){
                 findSystemInitState()
             }
         }

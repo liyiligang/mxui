@@ -7,7 +7,6 @@ package app
 
 import (
 	"github.com/liyiligang/base/commonConst"
-	"github.com/liyiligang/base/component/Jdiscovery"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/klee/app/data"
 	"github.com/liyiligang/klee/app/db"
@@ -22,7 +21,6 @@ type App struct {
 	HttpServer      *http.Server
 	RpcServer       *grpc.Server
 	DBServer		db.Server
-	Discovery 		*Jdiscovery.Discovery
 	Data            data.Data
 	Request			request.Request
 	Gateway			gateway.Gateway
@@ -52,12 +50,6 @@ func (app *App) InitBaseServer() error {
 	if err := app.InitRpcServer(); err != nil {
 		return err
 	}
-	if err := app.InitDiscovery(); err != nil {
-		return err
-	}
-	if err := app.registerNode(); err != nil {
-		return err
-	}
 	Jlog.Info("组件已经全部启动")
 	return nil
 }
@@ -66,8 +58,6 @@ func (app *App) StopBaseServer() {
 	app.StopDBServer()
 	app.StopWebServer()
 	app.StopRpcServer()
-	app.unRegisterNode()
-	app.StopDiscovery()
 	Jlog.Info("组件已经全部停止")
 }
 

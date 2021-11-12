@@ -17,7 +17,7 @@ func (db *Server) FindNodeNotify(req *protoManage.ReqNodeNotifyList) ([]orm.Node
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeNotifyFilter(tx, req)
 	var nodeNotifyList []orm.NodeNotify
-	err := tx.Debug().Order("id desc").Find(&nodeNotifyList).Error
+	err := tx.Order("id desc").Find(&nodeNotifyList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nodeNotifyList, nil
 	}

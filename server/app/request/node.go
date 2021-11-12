@@ -13,16 +13,6 @@ func (request *Request) ReqNodeLogin(message []byte, addr string) (int64, []byte
 	if err != nil {
 		return 0, nil, err
 	}
-	err = request.Data.NodeGroupFindOrAddByName(&reqNodeLogin.NodeGroup)
-	if err != nil {
-		return 0, nil, err
-	}
-	err = request.Data.NodeTypeFindOrAddByName(&reqNodeLogin.NodeType)
-	if err != nil {
-		return 0, nil, err
-	}
-	reqNodeLogin.Node.GroupID = reqNodeLogin.NodeGroup.Base.ID
-	reqNodeLogin.Node.TypeID = reqNodeLogin.NodeType.Base.ID
 	err = request.Data.NodeFindOrAddByName(&reqNodeLogin.Node)
 	if err != nil {
 		return 0, nil, err
@@ -49,14 +39,6 @@ func (request *Request) ReqNodeOnline(nodeID int64, message []byte) error {
 		}
 		request.Data.NodeStateUpdate(&reqNodeOnline.Node)
 	}
-
-	for _, nodeLink := range reqNodeOnline.NodeLinkList {
-		err = check.BaseIDCheck(nodeLink.SourceID, nodeID)
-		if err != nil {
-			return err
-		}
-		request.Data.NodeLinkUpdateOrAdd(&nodeLink)
-	}
 	return nil
 }
 
@@ -64,10 +46,6 @@ func (request *Request) ReqNodeOnline(nodeID int64, message []byte) error {
 func (request *Request) ReqNodeOffline(nodeID int64) {
 	err := request.Data.NodeStateUpdate(&protoManage.Node{Base: protoManage.Base{ID: nodeID},
 		State: protoManage.State_StateUnknow})
-	if err != nil {
-		Jlog.Error(err.Error())
-	}
-	err = request.Data.NodeLinkStateUpdateByNodeID(&protoManage.NodeLink{SourceID: nodeID, TargetID: nodeID, State: protoManage.State_StateUnknow})
 	if err != nil {
 		Jlog.Error(err.Error())
 	}
@@ -103,7 +81,7 @@ func (request *Request) ReqNodeFind(userID int64, message []byte)([]byte, error)
 	if err != nil {
 		return nil, err
 	}
-	ans, err := request.Data.NodeFind(req)
+	ans, err := request.Data.NodeFind(&req)
 	if err != nil {
 		return nil, err
 	}

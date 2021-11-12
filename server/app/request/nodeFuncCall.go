@@ -14,11 +14,11 @@ func (request *Request) ReqNodeFuncCallFind(userID int64, message []byte)([]byte
 	if err != nil {
 		return nil, err
 	}
-	err = request.Data.NodeFuncLevelCheck(userID, req.Filter.FuncID)
+	err = request.Data.NodeFuncLevelCheck(userID, req.FuncID)
 	if err != nil {
 		return nil, err
 	}
-	ans, err := request.Data.NodeFuncCallFind(req)
+	ans, err := request.Data.NodeFuncCallFind(&req)
 	if err != nil {
 		return nil, err
 	}

@@ -37,9 +37,9 @@ func (db *Server) UpdateNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) error {
 }
 
 //获取节点方法调用信息
-func (db *Server) FindNodeFuncCall(filter protoManage.Filter) ([]orm.NodeFuncCall, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
+func (db *Server) FindNodeFuncCall(req *protoManage.ReqNodeFuncCallList) ([]orm.NodeFuncCall, error) {
+	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx = db.SetNodeFuncCallFilter(tx, req)
 	var NodeFuncCallList []orm.NodeFuncCall
 	err := tx.Order("id desc").Select("id", "updatedAt",
 		"managerID", "funcID", "returnType", "state").Find(&NodeFuncCallList).Error
@@ -70,9 +70,9 @@ func (db *Server) FindNodeFuncCallReturnValByID(nodeFuncCall orm.NodeFuncCall) (
 }
 
 //获取节点方法调用中节点方法ID对应的最后一次调用信息
-func (db *Server) FindLastNodeFuncCallByNodeFunc(filter protoManage.Filter) ([]orm.NodeFuncCall, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
+func (db *Server) FindLastNodeFuncCallByNodeFunc(req *protoManage.ReqNodeFuncCallList) ([]orm.NodeFuncCall, error) {
+	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx = db.SetNodeFuncCallFilter(tx, req)
 	subQuery1 := tx.Model(&orm.NodeFunc{})
 	subQuery2 := db.Gorm.Select("t.id").Table("(?) as t", subQuery1)
 	subQuery3 := db.Gorm.Select("max(id)").Table("nodeFuncCall").
@@ -80,4 +80,12 @@ func (db *Server) FindLastNodeFuncCallByNodeFunc(filter protoManage.Filter) ([]o
 	var nodeFuncCallList []orm.NodeFuncCall
 	err := db.Gorm.Where("id = any(?)", subQuery3).Find(&nodeFuncCallList).Error
 	return nodeFuncCallList, err
+}
+
+//节点方法调用过滤器
+func (db *Server) SetNodeFuncCallFilter(tx *gorm.DB, req *protoManage.ReqNodeFuncCallList) *gorm.DB {
+	if req.FuncID != 0 {
+		tx.Where("funcID = ?", req.FuncID)
+	}
+	return tx
 }

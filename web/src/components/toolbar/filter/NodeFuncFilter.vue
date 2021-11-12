@@ -1,8 +1,9 @@
 <template>
+    <FilterInput v-show="false" name="节点ID" sign="nodeID" @submit="submit"></FilterInput>
     <FilterInput name="节点名" sign="nodeName" @submit="submit"></FilterInput>
     <FilterInput name="节点方法名" sign="name" @submit="submit"></FilterInput>
     <FilterSelect name="权限" sign="level" :options="data.nodeFuncLevelOptions" @submit="submit"></FilterSelect>
-    <FilterDateTimeRangePicker name="更新时间" sign="time" @submit="submit"></FilterDateTimeRangePicker>
+    <FilterDateTimeRangePicker name="更新时间" sign="updateTime" @submit="submit"></FilterDateTimeRangePicker>
 </template>
 
 <script lang="ts">

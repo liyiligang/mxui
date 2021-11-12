@@ -1,9 +1,5 @@
 <template>
     <el-row class="nodeNotify">
-<!--        <el-row class="nodeNotifyFilter" type="flex" justify="start" align="middle">-->
-<!--            <NodeNotifyMessageFilter></NodeNotifyMessageFilter>-->
-<!--            <NodeNotifyFormFilter></NodeNotifyFormFilter>-->
-<!--        </el-row>-->
         <el-row class="nodeNotifyFrame">
             <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
                 <el-row class="nodeNotifyTableRow">
@@ -23,9 +19,6 @@ import {globals} from "../../base/globals";
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute, useRouter} from "vue-router";
 import NodeViewFrame from "./NodeViewFrame.vue"
 import NodeNotifyTable from "../../components/table/NodeNotifyTable.vue"
-import SelectFilter from "../../components/fifter/NodeNotifyMessageFilter.vue"
-import NodeNotifyFormFilter from "../../components/fifter/NodeNotifyFormFilter.vue"
-import NodeNotifyMessageFilter from "../../components/fifter/NodeNotifyMessageFilter.vue"
 import {convert} from "../../base/convert";
 
 
@@ -41,10 +34,7 @@ export default defineComponent ({
     name: "NodeNotify",
     components: {
         NodeViewFrame,
-        NodeNotifyTable,
-        SelectFilter,
-        NodeNotifyMessageFilter,
-        NodeNotifyFormFilter,
+        NodeNotifyTable
     },
     setup(){
         const data = reactive<NodeNotifyInfo>({nodeNotifyList:[], nodeMap:new Map<number, protoManage.INode>(),

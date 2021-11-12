@@ -145,10 +145,7 @@ func (app *App) httpRequestNoToken(userID int64, req *protoManage.HttpMessage) (
 
 	switch req.Order {
 	case protoManage.Order_ManagerLogin:
-		ansMsg, err = app.Request.ReqManagerLogin(userID, req.Message)
-		if err != nil {
-			errCode = protoManage.HttpError_HttpErrorLogin
-		}
+		ansMsg, err , errCode = app.Request.ReqManagerLogin(userID, req.Message)
 		break
 	case protoManage.Order_ManagerRegister:
 		ansMsg, err = app.Request.ReqManagerRegister(userID, req.Message)
@@ -214,29 +211,14 @@ func (app *App) httpRequestWithToken(userID int64, req *protoManage.HttpMessage)
 	case protoManage.Order_TopLinkUpdate:
 		ansMsg, err = app.Request.ReqTopLinkUpdate(userID, req.Message)
 		break
-	case protoManage.Order_NodeGroupFind:
-		ansMsg, err = app.Request.ReqNodeGroupFind(userID, req.Message)
-		break
-	case protoManage.Order_NodeTypeFind:
-		ansMsg, err = app.Request.ReqNodeTypeFind(userID, req.Message)
-		break
 	case protoManage.Order_NodeFind:
 		ansMsg, err = app.Request.ReqNodeFind(userID, req.Message)
-		break
-	case protoManage.Order_NodeLinkFind:
-		ansMsg, err = app.Request.ReqNodeLinkFind(userID, req.Message)
 		break
 	case protoManage.Order_NodeFuncFind:
 		ansMsg, err = app.Request.ReqNodeFuncFind(userID, req.Message)
 		break
 	case protoManage.Order_NodeReportFind:
 		ansMsg, err = app.Request.ReqNodeReportFind(userID, req.Message)
-		break
-	case protoManage.Order_NodeGroupFindByID:
-		ansMsg, err = app.Request.ReqNodeGroupFindByID(userID, req.Message)
-		break
-	case protoManage.Order_NodeTypeFindByID:
-		ansMsg, err = app.Request.ReqNodeTypeFindByID(userID, req.Message)
 		break
 	case protoManage.Order_NodeFindByID:
 		ansMsg, err = app.Request.ReqNodeFindByID(userID, req.Message)
@@ -264,9 +246,6 @@ func (app *App) httpRequestWithToken(userID int64, req *protoManage.HttpMessage)
 		break
 	case protoManage.Order_NodeDel:
 		ansMsg, err = app.Request.ReqNodeDel(userID, req.Message)
-		break
-	case protoManage.Order_NodeLinkDel:
-		ansMsg, err = app.Request.ReqNodeLinkDel(userID, req.Message)
 		break
 	case protoManage.Order_NodeFuncDel:
 		ansMsg, err = app.Request.ReqNodeFuncDel(userID, req.Message)
@@ -416,9 +395,6 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 	switch res.Order {
 	case protoManage.Order_NodeUpdateState:
 		err = app.Request.ReqNodeStateUpdate(nodeID, res.Message)
-		break
-	case protoManage.Order_NodeLinkUpdateState:
-		err = app.Request.ReqNodeLinkUpdate(nodeID, res.Message)
 		break
 	case protoManage.Order_NodeFuncCallAns:
 		err = app.Request.AnsNodeFuncCall(nodeID, res.Message)

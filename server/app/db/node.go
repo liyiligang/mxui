@@ -23,9 +23,9 @@ func (db *Server) UpdateNodeState(node orm.Node) error {
 }
 
 //获取节点信息
-func (db *Server) FindNode(filter protoManage.Filter) ([]orm.Node, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
+func (db *Server) FindNode(req *protoManage.ReqNodeList) ([]orm.Node, error) {
+	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx = db.SetNodeFilter(tx, req)
 	var nodeList []orm.Node
 	err := tx.Find(&nodeList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -35,52 +35,12 @@ func (db *Server) FindNode(filter protoManage.Filter) ([]orm.Node, error) {
 }
 
 //获取节点计数
-func (db *Server) FindNodeCount(filter protoManage.Filter) (int64, error) {
+func (db *Server) FindNodeCount(req *protoManage.ReqNodeList) (int64, error) {
 	tx := db.Gorm.Model(&orm.Node{})
-	tx = db.SetFilter(tx, filter)
+	tx = db.SetNodeFilter(tx, req)
 	var count int64
 	err := tx.Count(&count).Error
 	return count, err
-}
-
-//获取节点状态统计
-func (db *Server) FindNodeStateCount(filter protoManage.Filter, groupField string) ([]orm.StateCount, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
-	subQuery1 := tx.Model(&orm.NodeGroup{})
-	subQuery2 := db.Gorm.Select("t.id").
-		Table("(?) as t", subQuery1)
-	var ormStateCountList []orm.StateCount
-	err := db.Gorm.Model(&orm.Node{}).Select(groupField + " as parentID, count(state) as stateCount, state").Where(groupField+" = any(?)", subQuery2).
-		Group(groupField).Group("state").Order(groupField).Order("state").Find(&ormStateCountList).Error
-	if err != nil {
-		return nil, err
-	}
-	return ormStateCountList, nil
-}
-
-//获取节点中节点组ID对应的节点组信息
-func (db *Server) FindNodeGroupByNode(filter protoManage.Filter) ([]orm.NodeGroup, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
-	subQuery1 := tx.Model(&orm.Node{})
-	subQuery2 := db.Gorm.Select("t.groupID").
-		Table("(?) as t", subQuery1)
-	var nodeGroupList []orm.NodeGroup
-	err := db.Gorm.Where("id = any(?)", subQuery2).Find(&nodeGroupList).Error
-	return nodeGroupList, err
-}
-
-//获取节点中节点类型ID对应的节点类型信息
-func (db *Server) FindNodeTypeByNode(filter protoManage.Filter) ([]orm.NodeType, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
-	subQuery1 := tx.Model(&orm.Node{})
-	subQuery2 := db.Gorm.Select("t.typeID").
-		Table("(?) as t", subQuery1)
-	var nodeTypeList []orm.NodeType
-	err := db.Gorm.Where("id = any(?)", subQuery2).Find(&nodeTypeList).Error
-	return nodeTypeList, err
 }
 
 //按ID获取指定节点
@@ -91,21 +51,53 @@ func (db *Server) FindNodeByID(node orm.Node) (*orm.Node, error) {
 
 //按节点名获取指定节点
 func (db *Server) FindNodeByName(node orm.Node) (*orm.Node, error) {
-	err := db.Gorm.Where("name = ? and groupID = ? and typeID = ?",
-		node.Name, node.GroupID, node.TypeID).First(&node).Error
+	err := db.Gorm.Where("name = ?", node.Name).First(&node).Error
 	return &node, err
 }
 
-//按节点组ID获取节点计数
-func (db *Server) CountAllNodeByGroupID(node orm.Node) (int64, error) {
-	var count int64
-	err := db.Gorm.Model(&orm.Node{}).Where("groupID = ?", node.GroupID).Count(&count).Error
-	return count, err
-}
+//节点过滤器
+func (db *Server) SetNodeFilter(tx *gorm.DB, req *protoManage.ReqNodeList) *gorm.DB {
+	sql := db.spliceSql("id = ?", len(req.ID), "or")
+	var id []interface{}
+	for _, item := range req.ID {
+		id = append(id, item)
+	}
+	tx.Where(sql, id...)
 
-//按节点类型ID获取节点计数
-func (db *Server) CountAllNodeByTypeID(node orm.Node) (int64, error) {
-	var count int64
-	err := db.Gorm.Model(&orm.Node{}).Where("typeID = ?", node.TypeID).Count(&count).Error
-	return count, err
+	sql = db.spliceSql("name like ?", len(req.Name), "or")
+	var name []interface{}
+	for _, item := range req.Name {
+		name = append(name, "%"+item+"%")
+	}
+	tx.Where(sql, name...)
+
+	sql = db.spliceSql("state = ?", len(req.State), "or")
+	var state []interface{}
+	for _, item := range req.State {
+		state = append(state, item)
+	}
+	tx.Where(sql, state...)
+
+	sql = ""
+	var senderTime []interface{}
+	for index, item := range req.UpdateTime {
+		if item.BeginTime > 0 {
+			sql += "(UNIX_TIMESTAMP(updatedAt) >= ?"
+			senderTime = append(senderTime, item.BeginTime)
+			if item.EndTime > 0 {
+				sql += " and UNIX_TIMESTAMP(updatedAt) <= ?)"
+				senderTime = append(senderTime, item.EndTime)
+			}else {
+				sql += ")"
+			}
+		}else {
+			sql += "(UNIX_TIMESTAMP(updatedAt) <= ?)"
+			senderTime = append(senderTime, item.EndTime)
+		}
+		if index < len(req.UpdateTime)-1 {
+			sql += " "+ "or" + " "
+		}
+	}
+	tx.Where(sql, senderTime...)
+	return tx
 }

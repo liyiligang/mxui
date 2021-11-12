@@ -1,7 +1,7 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
         <NodeFuncCard  v-for="i in data.nodeFuncList" :nodeFunc="i" @deleteNodeFunc="deleteNodeFunc"
-                       :node=data.nodeMap.get(i.NodeID) :nodeFuncCall=data.nodeFuncCallMap.get(i.Base.ID)>
+                       :node=data.nodeMap.get(Number(i.NodeID))>
         </NodeFuncCard>
     </NodeViewFrame>
 </template>
@@ -17,11 +17,11 @@ import Load from "../../components/Load.vue"
 import NodeViewFrame from "./NodeViewFrame.vue"
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {refresh} from "../../base/refresh";
+import {convert} from "../../base/convert";
 
 interface NodeFuncInfo {
     nodeFuncList: protoManage.INodeFunc[]
     nodeMap: Map<number, protoManage.INode>
-    nodeFuncCallMap: Map<number, protoManage.INodeFuncCall>
     pageTotal:number
     isLoading:boolean
     refreshFlag:number
@@ -38,7 +38,7 @@ export default defineComponent ({
     },
     setup(){
         const data = reactive<NodeFuncInfo>({nodeFuncList:[], nodeMap:new Map<number, protoManage.INode>(),
-            nodeFuncCallMap:new Map<number, protoManage.INodeFuncCall>(), pageTotal:0, isLoading:false, refreshFlag:0})
+            pageTotal:0, isLoading:false, refreshFlag:0})
         const route = useRoute()
         const instance = getCurrentInstance()
 
@@ -55,13 +55,17 @@ export default defineComponent ({
             data.refreshFlag++
             data.isLoading = true
             let getNodeFuncList = (flag:number)=>{
-                request.reqNodeFuncList(protoManage.Filter.create({
-                    ID:Number(route.query.id),
-                    NodeID:Number(route.query.nodeID),
-                    Name:String(route.query.name),
-                    State:Number(route.query.state),
-                    PageSize:Number(route.query.pageSize),
-                    PageNum:Number(route.query.pageNum)
+                request.reqNodeFuncList(protoManage.ReqNodeFuncList.create({
+                    Page:protoManage.Page.create({
+                        Count:Number(route.query.pageSize),
+                        Num:Number(route.query.pageNum) - 1,
+                    }),
+                    ID:convert.dataToArray(route.query.id),
+                    Name:convert.dataToArray(route.query.name),
+                    Level:convert.dataToArray(route.query.level),
+                    NodeID:convert.dataToArray(route.query.nodeID),
+                    NodeName:convert.dataToArray(route.query.nodeName),
+                    UpdateTime:convert.dataToTimeArray(route.query.updateTime),
                 })).then((response) => {
                     if (flag != data.refreshFlag){
                         return
@@ -73,12 +77,6 @@ export default defineComponent ({
                         let key = Number(response.NodeList[i].Base?.ID)
                         let val = response.NodeList[i]
                         data.nodeMap.set(key, val)
-                    }
-                    data.nodeFuncCallMap.clear()
-                    for (let i = 0; i < response.NodeFuncCallList.length; i++){
-                        let key = Number(response.NodeFuncCallList[i].FuncID)
-                        let val = response.NodeFuncCallList[i]
-                        data.nodeFuncCallMap.set(key, val)
                     }
                 }).catch(error => {}).finally(()=>{
                     if (flag != data.refreshFlag){
@@ -104,7 +102,6 @@ export default defineComponent ({
                     data.nodeFuncList.splice(i, 1)
                 }
             }
-            data.nodeFuncCallMap.delete(nodeFuncID)
             data.pageTotal = data.nodeFuncList.length
         }
         

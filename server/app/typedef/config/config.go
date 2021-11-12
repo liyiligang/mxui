@@ -10,8 +10,7 @@ var LocalConfig Config
 type Config struct {
 	Debug bool `toml:"Debug"`
 	Node  struct {
-		NodeGroup string `toml:"NodeGroup"`
-		NodeName  string `toml:"NodeName"`
+		NodeName string `toml:"NodeName"`
 	} `toml:"Node"`
 	Log struct {
 		Path    string `toml:"Path"`
@@ -24,14 +23,8 @@ type Config struct {
 		StartDuration int    `toml:"StartDuration"`
 		StopDuration  int    `toml:"StopDuration"`
 	} `toml:"Token"`
-	IP struct {
-		PublicIP  string `toml:"PublicIP"`
-		PrivateIP string `toml:"PrivateIP"`
-	} `toml:"IP"`
 	DB struct {
-		Name        string `toml:"Name"`
-		Account     string `toml:"Account"`
-		Set         string `toml:"Set"`
+		Connect     string `toml:"Connect"`
 		MaxConn     int    `toml:"MaxConn"`
 		MaxKeepConn int    `toml:"MaxKeepConn"`
 		MaxLifeTime int    `toml:"MaxLifeTime"`
@@ -59,9 +52,4 @@ type Config struct {
 			WebManagePath string `toml:"WebManagePath"`
 		} `toml:"StaticFiles"`
 	} `toml:"Http"`
-	Etcd struct {
-		EtcdAddr        string `toml:"EtcdAddr"`
-		ConnectWaitTime int    `toml:"ConnectWaitTime"`
-		RequestTimeout  int    `toml:"RequestTimeout"`
-	} `toml:"Etcd"`
 }

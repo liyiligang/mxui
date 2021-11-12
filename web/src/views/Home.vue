@@ -24,9 +24,7 @@
 import {defineComponent, onMounted, reactive, watch} from "vue";
 import Head from "../components/Head.vue";
 import Sidebar from "../components/Sidebar.vue";
-import NodeGroup from "./node/NodeGroup.vue";
 import Node from "./node/Node.vue";
-import NodeLink from "./node/NodeLink.vue";
 import NodeFunc from "./node/NodeFunc.vue";
 import NodeReport from "./node/NodeReport.vue";
 import NodeNotify from "./node/NodeNotify.vue";
@@ -46,9 +44,7 @@ export default defineComponent ({
     components: {
         Head,
         Sidebar,
-        NodeGroup,
         Node,
-        NodeLink,
         NodeFunc,
         NodeReport,
         NodeNotify,
@@ -134,6 +130,7 @@ export default defineComponent ({
     min-width: 240px;
     max-width: 240px;
     height: 100%;
+    margin-top: 25px;
     overflow-y:auto;
 }
 

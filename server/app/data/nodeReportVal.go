@@ -12,8 +12,8 @@ import (
 )
 
 //查找节点报告值信息
-func (data *Data) NodeReportValFind(req protoManage.ReqNodeReportValList) (*protoManage.AnsNodeReportValList, error) {
-	ormReportValList, err := data.DB.FindNodeReportVal(req.Filter)
+func (data *Data) NodeReportValFind(req *protoManage.ReqNodeReportValList) (*protoManage.AnsNodeReportValList, error) {
+	ormReportValList, err := data.DB.FindNodeReportVal(req)
 	if err != nil {
 		return nil, err
 	}

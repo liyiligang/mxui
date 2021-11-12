@@ -77,28 +77,23 @@ func (data *Data) NodeReportFindIDByIndex(protoNodeReport *protoManage.NodeRepor
 }
 
 //查找节点报告信息
-func (data *Data) NodeReportFind(req protoManage.ReqNodeReportList) (*protoManage.AnsNodeReportList, error) {
-	ormReportList, err := data.DB.FindNodeReport(req.Filter)
+func (data *Data) NodeReportFind(req *protoManage.ReqNodeReportList) (*protoManage.AnsNodeReportList, error) {
+	ormReportList, err := data.DB.FindNodeReport(req)
 	if err != nil {
 		return nil, err
 	}
 	protoNodeReportList := convert.OrmNodeReportListToProtoNodeReportList(ormReportList)
-	ormNodeList, err := data.DB.FindNodeByNodeReport(req.Filter)
+	ormNodeList, err := data.DB.FindNodeByNodeReport(req)
 	if err != nil {
 		return nil, err
 	}
 	protoNodeList := convert.OrmNodeListToProtoNodeList(ormNodeList)
-	ormNodeReportVal, err := data.DB.FindLastNodeReportValByNodeReport(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	protoNodeReportVal := convert.OrmNodeReportValListToProtoNodeReportValList(ormNodeReportVal)
-	count, err := data.DB.FindNodeReportCount(req.Filter)
+	count, err := data.DB.FindNodeReportCount(req)
 	if err != nil {
 		return nil, err
 	}
 	return &protoManage.AnsNodeReportList{NodeReportList: protoNodeReportList,
-		NodeList: protoNodeList, NodeReportValList: protoNodeReportVal, Length:count}, nil
+		NodeList: protoNodeList, Length:count}, nil
 }
 
 //节点报告接口权限验证

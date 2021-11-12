@@ -27,7 +27,6 @@
 	 return nil
  }
 
-
 //节点通知查询
 func (data *Data) NodeNotifyFind(req *protoManage.ReqNodeNotifyList) (*protoManage.AnsNodeNotifyList, error) {
 	ormNotifyList, err := data.DB.FindNodeNotify(req)

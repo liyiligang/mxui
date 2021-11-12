@@ -19,21 +19,16 @@
 
 <script lang="ts">
 
-import {defineComponent, PropType, reactive} from "vue";
-
-export interface FilterTagInfo {
-    sign:string
-    type:string
-    value:string
-}
+import {defineComponent, PropType} from "vue";
+import {filter} from "../../../base/filter";
 
 export default defineComponent ({
     name: "FilterViewTag",
     emits:['clearTags', 'clearTag'],
     props:{
         tagMap:{
-            type: Object as PropType<Map<string, Map<string, FilterTagInfo>>>,
-            default: new Map<string, Map<string, FilterTagInfo>>()
+            type: Object as PropType<Map<string, Map<string, filter.FilterTagInfo>>>,
+            default: new Map<string, Map<string, filter.FilterTagInfo>>()
         }
     },
     setup(props, context){

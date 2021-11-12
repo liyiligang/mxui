@@ -66,8 +66,8 @@ func (data *Data) NodeFuncCallAns(ans *protoManage.AnsNodeFuncCall) error {
 }
 
 //查找节点方法调用信息
-func (data *Data) NodeFuncCallFind(req protoManage.ReqNodeFuncCallList) (*protoManage.AnsNodeFuncCallList, error) {
-	ormFuncCallList, err := data.DB.FindNodeFuncCall(req.Filter)
+func (data *Data) NodeFuncCallFind(req *protoManage.ReqNodeFuncCallList) (*protoManage.AnsNodeFuncCallList, error) {
+	ormFuncCallList, err := data.DB.FindNodeFuncCall(req)
 	if err != nil {
 		return nil, err
 	}

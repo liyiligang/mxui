@@ -13,9 +13,9 @@ import (
 )
 
 //获取节点报告值信息
-func (db *Server) FindNodeReportVal(filter protoManage.Filter) ([]orm.NodeReportVal, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
+func (db *Server) FindNodeReportVal(req *protoManage.ReqNodeReportValList) ([]orm.NodeReportVal, error) {
+	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx = db.SetNodeReportValFilter(tx, req)
 	var NodeReportValList []orm.NodeReportVal
 	err := tx.Order("id desc").Find(&NodeReportValList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -39,9 +39,9 @@ func (db *Server) DelNodeReportValByNodeID(nodeID int64) error {
 }
 
 //获取节点报告中节点报告ID对应的最后一次报告值
-func (db *Server) FindLastNodeReportValByNodeReport(filter protoManage.Filter) ([]orm.NodeReportVal, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
+func (db *Server) FindLastNodeReportValByNodeReport(req *protoManage.ReqNodeReportValList) ([]orm.NodeReportVal, error) {
+	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx = db.SetNodeReportValFilter(tx, req)
 	subQuery1 := tx.Model(&orm.NodeReport{})
 	subQuery2 := db.Gorm.Select("t.id").Table("(?) as t", subQuery1)
 	subQuery3 := db.Gorm.Select("max(id)").Table("nodeReportVal").
@@ -49,4 +49,15 @@ func (db *Server) FindLastNodeReportValByNodeReport(filter protoManage.Filter) (
 	var nodeReportValList []orm.NodeReportVal
 	err := db.Gorm.Where("id = any(?)", subQuery3).Find(&nodeReportValList).Error
 	return nodeReportValList, err
+}
+
+//节点报告过滤器
+func (db *Server) SetNodeReportValFilter(tx *gorm.DB, req *protoManage.ReqNodeReportValList) *gorm.DB {
+	if req.ReportID != 0 {
+		tx.Where("reportID = ?", req.ReportID)
+	}
+	if req.ID != 0 {
+		tx.Where("id > ?", req.ID)
+	}
+	return tx
 }

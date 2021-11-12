@@ -36,9 +36,9 @@ func (db *Server) UpdateNodeFuncInfo(nodeFunc orm.NodeFunc) error {
 }
 
 //获取节点方法信息
-func (db *Server) FindNodeFunc(filter protoManage.Filter) ([]orm.NodeFunc, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
+func (db *Server) FindNodeFunc(req *protoManage.ReqNodeFuncList) ([]orm.NodeFunc, error) {
+	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx = db.SetNodeFuncFilter(tx, req)
 	var nodeFuncList []orm.NodeFunc
 	err := tx.Find(&nodeFuncList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
@@ -48,34 +48,18 @@ func (db *Server) FindNodeFunc(filter protoManage.Filter) ([]orm.NodeFunc, error
 }
 
 //获取节点方法计数
-func (db *Server) FindNodeFuncCount(filter protoManage.Filter) (int64, error) {
+func (db *Server) FindNodeFuncCount(req *protoManage.ReqNodeFuncList) (int64, error) {
 	tx := db.Gorm.Model(&orm.NodeFunc{})
-	tx = db.SetFilter(tx, filter)
+	tx = db.SetNodeFuncFilter(tx, req)
 	var count int64
 	err := tx.Count(&count).Error
 	return count, err
 }
 
-//获取节点方法状态统计
-func (db *Server) FindNodeFuncStateCount(filter protoManage.Filter) ([]orm.StateCount, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
-	subQuery1 := tx.Model(&orm.Node{})
-	subQuery2 := db.Gorm.Select("t.id").
-		Table("(?) as t", subQuery1)
-	var ormStateCountList []orm.StateCount
-	err := db.Gorm.Model(&orm.NodeFunc{}).Select("nodeID as parentID, count(state) as stateCount, state").Where("nodeID = any(?)", subQuery2).
-		Group("nodeID").Group("state").Order("nodeID").Order("state").Find(&ormStateCountList).Error
-	if err != nil {
-		return nil, err
-	}
-	return ormStateCountList, nil
-}
-
 //获取节点方法中节点ID对应的节点信息
-func (db *Server) FindNodeByNodeFunc(filter protoManage.Filter) ([]orm.Node, error) {
-	tx := db.Gorm.Offset(int(filter.PageSize*filter.PageNum)).Limit(int(filter.PageSize))
-	tx = db.SetFilter(tx, filter)
+func (db *Server) FindNodeByNodeFunc(req *protoManage.ReqNodeFuncList) ([]orm.Node, error) {
+	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx = db.SetNodeFuncFilter(tx, req)
 	subQuery1 := tx.Model(&orm.NodeFunc{})
 	subQuery2 := db.Gorm.Select("t.nodeID").
 		Table("(?) as t", subQuery1)
@@ -97,4 +81,65 @@ func (db *Server) FindNodeFuncByIndex(nodeFunc orm.NodeFunc) (*orm.NodeFunc, err
 	return &nodeFunc, err
 }
 
+//节点方法过滤器
+func (db *Server) SetNodeFuncFilter(tx *gorm.DB, req *protoManage.ReqNodeFuncList) *gorm.DB {
+	sql := db.spliceSql("id = ?", len(req.ID), "or")
+	var id []interface{}
+	for _, item := range req.ID {
+		id = append(id, item)
+	}
+	tx.Where(sql, id...)
 
+	sql = db.spliceSql("nodeID = ?", len(req.NodeID), "or")
+	var nodeID []interface{}
+	for _, item := range req.NodeID {
+		nodeID = append(nodeID, item)
+	}
+	tx.Where(sql, nodeID...)
+
+	sql = db.spliceSql("name like ?", len(req.Name), "or")
+	var name []interface{}
+	for _, item := range req.Name {
+		name = append(name, "%"+item+"%")
+	}
+	tx.Where(sql, name...)
+
+	sql = db.spliceSql("nodeID = any(select id from node where name like ?)", len(req.NodeName), "or")
+	var nodeName []interface{}
+	for _, item := range req.NodeName {
+		nodeName = append(nodeName, "%"+item+"%")
+	}
+	tx.Where(sql, nodeName...)
+
+	sql = db.spliceSql("level = ?", len(req.Level), "or")
+	var level []interface{}
+	for _, item := range req.Level {
+		level = append(level, item)
+	}
+	tx.Where(sql, level...)
+
+	tx.Where("level <= ?", req.LevelMax)
+
+	sql = ""
+	var senderTime []interface{}
+	for index, item := range req.UpdateTime {
+		if item.BeginTime > 0 {
+			sql += "(UNIX_TIMESTAMP(updatedAt) >= ?"
+			senderTime = append(senderTime, item.BeginTime)
+			if item.EndTime > 0 {
+				sql += " and UNIX_TIMESTAMP(updatedAt) <= ?)"
+				senderTime = append(senderTime, item.EndTime)
+			}else {
+				sql += ")"
+			}
+		}else {
+			sql += "(UNIX_TIMESTAMP(updatedAt) <= ?)"
+			senderTime = append(senderTime, item.EndTime)
+		}
+		if index < len(req.UpdateTime)-1 {
+			sql += " "+ "or" + " "
+		}
+	}
+	tx.Where(sql, senderTime...)
+	return tx
+}

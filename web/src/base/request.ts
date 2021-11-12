@@ -6,70 +6,70 @@ import {routerPath} from "../router";
 
 export module request {
 
-    export function checkFilterPara(filter:protoManage.Filter):protoManage.Filter {
-        if (globals.isNull(filter.ID)){
-            filter.ID = 0
-        }
-        if (globals.isNull(filter.IDSign) || filter.IDSign == ""){
-            filter.IDSign = "="
-        }
-        if (globals.isNull(filter.GroupID)){
-            filter.GroupID = 0
-        }
-        if (globals.isNull(filter.TypeID)){
-            filter.TypeID = 0
-        }
-        if (globals.isNull(filter.NodeID)){
-            filter.NodeID = 0
-        }
-        if (globals.isNull(filter.SourceID)){
-            filter.SourceID = 0
-        }
-        if (globals.isNull(filter.TargetID)){
-            filter.TargetID = 0
-        }
-        if (globals.isNull(filter.FuncID)){
-            filter.FuncID = 0
-        }
-        if (globals.isNull(filter.ReportID)){
-            filter.ReportID = 0
-        }
-        if (globals.isNull(filter.Name)){
-            filter.Name = ""
-        }
-        if (globals.isNull(filter.Flag)){
-            filter.Flag = ""
-        }
-        if (globals.isNull(filter.Value)){
-            filter.Value = ""
-        }
-        if (globals.isNull(filter.State)){
-            filter.State = protoManage.State.StateNot
-        }
-        if (globals.isNull(filter.SenderName)){
-            filter.SenderName = ""
-        }
-        if (globals.isNull(filter.SenderType)){
-            filter.SenderType = protoManage.NotifySenderType.NotifySenderTypeUnknow
-        }
-        if (globals.isNull(filter.SenderBeginTime)){
-            filter.SenderBeginTime = 0
-        }
-        if (globals.isNull(filter.SenderEndTime)){
-            filter.SenderEndTime = 0
-        }
-        if (globals.isNull(filter.Message)){
-            filter.Message = ""
-        }
-        if (globals.isNull(filter.PageSize)){
-            filter.PageSize = globals.globalsConfig.pageConfig.initSize
-        }
-        if (globals.isNull(filter.PageNum)){
-            filter.PageNum = globals.globalsConfig.pageConfig.initNum
-        }
-        filter.PageNum-=1
-        return filter
-    }
+    // export function checkFilterPara(filter:protoManage.Filter):protoManage.Filter {
+    //     if (globals.isNull(filter.ID)){
+    //         filter.ID = 0
+    //     }
+    //     if (globals.isNull(filter.IDSign) || filter.IDSign == ""){
+    //         filter.IDSign = "="
+    //     }
+    //     if (globals.isNull(filter.GroupID)){
+    //         filter.GroupID = 0
+    //     }
+    //     if (globals.isNull(filter.TypeID)){
+    //         filter.TypeID = 0
+    //     }
+    //     if (globals.isNull(filter.NodeID)){
+    //         filter.NodeID = 0
+    //     }
+    //     if (globals.isNull(filter.SourceID)){
+    //         filter.SourceID = 0
+    //     }
+    //     if (globals.isNull(filter.TargetID)){
+    //         filter.TargetID = 0
+    //     }
+    //     if (globals.isNull(filter.FuncID)){
+    //         filter.FuncID = 0
+    //     }
+    //     if (globals.isNull(filter.ReportID)){
+    //         filter.ReportID = 0
+    //     }
+    //     if (globals.isNull(filter.Name)){
+    //         filter.Name = ""
+    //     }
+    //     if (globals.isNull(filter.Flag)){
+    //         filter.Flag = ""
+    //     }
+    //     if (globals.isNull(filter.Value)){
+    //         filter.Value = ""
+    //     }
+    //     if (globals.isNull(filter.State)){
+    //         filter.State = protoManage.State.StateNot
+    //     }
+    //     if (globals.isNull(filter.SenderName)){
+    //         filter.SenderName = ""
+    //     }
+    //     if (globals.isNull(filter.SenderType)){
+    //         filter.SenderType = protoManage.NotifySenderType.NotifySenderTypeUnknow
+    //     }
+    //     if (globals.isNull(filter.SenderBeginTime)){
+    //         filter.SenderBeginTime = 0
+    //     }
+    //     if (globals.isNull(filter.SenderEndTime)){
+    //         filter.SenderEndTime = 0
+    //     }
+    //     if (globals.isNull(filter.Message)){
+    //         filter.Message = ""
+    //     }
+    //     if (globals.isNull(filter.PageSize)){
+    //         filter.PageSize = globals.globalsConfig.pageConfig.initSize
+    //     }
+    //     if (globals.isNull(filter.PageNum)){
+    //         filter.PageNum = globals.globalsConfig.pageConfig.initNum
+    //     }
+    //     filter.PageNum-=1
+    //     return filter
+    // }
 
     export function reqManagerRegister(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
@@ -281,41 +281,9 @@ export module request {
             })
         })
     }
-    
-    export function reqNodeGroupList(filter:protoManage.Filter):Promise<protoManage.AnsNodeGroupList> {
-        return new Promise((resolve, reject)=>{
-            filter = checkFilterPara(filter)
-            let req = protoManage.ReqNodeGroupList.create({filter:filter})
-            let msg = protoManage.ReqNodeGroupList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeGroupFind, message:msg}))
-            .then((response) => {
-                let ans = protoManage.AnsNodeGroupList.decode(response.message)
-                resolve(ans)
-            }).catch(error => {
-                reject(error)
-            })
-        })
-    }
 
-    export function reqNodeTypeList(filter:protoManage.Filter):Promise<protoManage.AnsNodeTypeList> {
+    export function reqNodeList(req:protoManage.ReqNodeList):Promise<protoManage.AnsNodeList> {
         return new Promise((resolve, reject)=>{
-            filter = checkFilterPara(filter)
-            let req = protoManage.ReqNodeTypeList.create({filter:filter})
-            let msg = protoManage.ReqNodeTypeList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeTypeFind, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.AnsNodeTypeList.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqNodeList(filter:protoManage.Filter):Promise<protoManage.AnsNodeList> {
-        return new Promise((resolve, reject)=>{
-            filter = checkFilterPara(filter)
-            let req = protoManage.ReqNodeList.create({filter:filter})
             let msg = protoManage.ReqNodeList.encode(req).finish()
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFind, message:msg}))
                 .then((response) => {
@@ -327,26 +295,8 @@ export module request {
         })
     }
 
-
-    export function reqNodeLinkList(filter:protoManage.Filter):Promise<protoManage.AnsNodeLinkList> {
+    export function reqNodeFuncList(req:protoManage.ReqNodeFuncList):Promise<protoManage.AnsNodeFuncList> {
         return new Promise((resolve, reject)=>{
-            filter = checkFilterPara(filter)
-            let req = protoManage.ReqNodeLinkList.create({filter:filter})
-            let msg = protoManage.ReqNodeLinkList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeLinkFind, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.AnsNodeLinkList.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqNodeFuncList(filter:protoManage.Filter):Promise<protoManage.AnsNodeFuncList> {
-        return new Promise((resolve, reject)=>{
-            filter = checkFilterPara(filter)
-            let req = protoManage.ReqNodeFuncList.create({filter:filter})
             let msg = protoManage.ReqNodeFuncList.encode(req).finish()
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncFind, message:msg}))
                 .then((response) => {
@@ -358,10 +308,8 @@ export module request {
         })
     }
 
-    export function reqNodeReportList(filter:protoManage.Filter):Promise<protoManage.AnsNodeReportList> {
+    export function reqNodeReportList(req:protoManage.ReqNodeReportList):Promise<protoManage.AnsNodeReportList> {
         return new Promise((resolve, reject)=>{
-            filter = checkFilterPara(filter)
-            let req = protoManage.ReqNodeReportList.create({filter:filter})
             let msg = protoManage.ReqNodeReportList.encode(req).finish()
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeReportFind, message:msg}))
                 .then((response) => {
@@ -373,10 +321,8 @@ export module request {
         })
     }
 
-    export function reqNodeFuncCallList(filter:protoManage.Filter):Promise<protoManage.AnsNodeFuncCallList> {
+    export function reqNodeFuncCallList(req:protoManage.ReqNodeFuncCallList):Promise<protoManage.AnsNodeFuncCallList> {
         return new Promise((resolve, reject)=>{
-            filter = checkFilterPara(filter)
-            let req = protoManage.ReqNodeFuncCallList.create({filter:filter})
             let msg = protoManage.ReqNodeFuncCallList.encode(req).finish()
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncCallFind, message:msg}))
                 .then((response) => {
@@ -388,10 +334,8 @@ export module request {
         })
     }
 
-    export function reqNodeReportValList(filter:protoManage.Filter):Promise<protoManage.AnsNodeReportValList> {
+    export function reqNodeReportValList(req:protoManage.ReqNodeReportValList):Promise<protoManage.AnsNodeReportValList> {
         return new Promise((resolve, reject)=>{
-            filter = checkFilterPara(filter)
-            let req = protoManage.ReqNodeReportValList.create({filter:filter})
             let msg = protoManage.ReqNodeReportValList.encode(req).finish()
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeReportValFind, message:msg}))
                 .then((response) => {
@@ -457,7 +401,6 @@ export module request {
 
     export function reqNodeNotifyList(req:protoManage.ReqNodeNotifyList):Promise<protoManage.AnsNodeNotifyList> {
         return new Promise((resolve, reject)=>{
-            // filter = checkFilterPara(filter)
             let msg = protoManage.ReqNodeNotifyList.encode(req).finish()
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeNotifyFind, message:msg}))
                 .then((response) => {
@@ -475,19 +418,6 @@ export module request {
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeDel, message:msg}))
                 .then((response) => {
                     let ans = protoManage.Node.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqNodeLinkDel(req:protoManage.NodeLink):Promise<protoManage.NodeLink> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.NodeLink.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeLinkDel, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.NodeLink.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -530,34 +460,6 @@ export module request {
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
-            })
-        })
-    }
-
-    export function reqNodeGroupByID(id: number):Promise<protoManage.NodeGroup> {
-        return new Promise((resolve, reject)=>{
-            let req = protoManage.NodeGroup.create({Base:protoManage.Base.create({ID:id})})
-            let msg = protoManage.NodeGroup.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeGroupFindByID, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.NodeGroup.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqNodeTypeByID(id: number):Promise<protoManage.NodeType> {
-        return new Promise((resolve, reject)=>{
-            let req = protoManage.NodeType.create({Base:protoManage.Base.create({ID:id})})
-            let msg = protoManage.NodeType.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeTypeFindByID, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.NodeType.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
             })
         })
     }
@@ -619,8 +521,11 @@ export module request {
             case protoManage.HttpError.HttpErrorRegister:
                 ElMessage.error("注册失败（" + str+"）");
                 break
-            case protoManage.HttpError.HttpErrorLogin:
+            case protoManage.HttpError.HttpErrorLoginWithAccount:
                 ElMessage.error("登录失败（" + str+"）");
+                break
+            case protoManage.HttpError.HttpErrorLoginWithToken:
+                ElMessage.error("校验失败（" + str+"）");
                 globals.reLogin()
                 break
             case protoManage.HttpError.HttpErrorRequest:

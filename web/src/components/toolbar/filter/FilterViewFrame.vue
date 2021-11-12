@@ -1,6 +1,6 @@
 <template>
     <el-row class="filterViewFrameRow flex-row-center-start">
-        <FilterViewTag class="filterViewTag" :tag-map="globals.getRouteDataFilter(String(route.name))" @clearTags="clearTags" @clearTag="clearTag"></FilterViewTag>
+        <FilterViewTag class="filterViewTag" :tag-map="filter.getFilterDataWithRouterName(String(route.name))" @clearTags="clearTags" @clearTag="clearTag"></FilterViewTag>
         <el-divider class="filterViewDivider"></el-divider>
         <el-row class="filterRow" type="flex" justify="start" align="top">
             <NodeFilter v-if="route.name === routerName.node" @addTag="addTag"></NodeFilter>
@@ -14,14 +14,14 @@
 <script lang="ts">
 
 import {defineComponent, onMounted, reactive} from "vue";
-import FilterViewTag, {FilterTagInfo} from "./FilterViewTag.vue";
+import FilterViewTag from "./FilterViewTag.vue";
 import NodeFilter from "./NodeFilter.vue";
 import NodeFuncFilter from "./NodeFuncFilter.vue";
 import NodeReportFilter from "./NodeReportFilter.vue";
 import NodeNotifyFilter from "./NodeNotifyFilter.vue";
-import {globals} from "../../../base/globals";
+import {filter} from "../../../base/filter";
 import {routerName, routerPath} from "../../../router";
-import {useRoute, useRouter} from "vue-router";
+import {useRoute} from "vue-router";
 
 interface FilterViewFrameInfo {
 
@@ -39,7 +39,6 @@ export default defineComponent ({
     setup(){
 
         const route = useRoute()
-        const router = useRouter()
         const data = reactive<FilterViewFrameInfo>({})
 
         onMounted(()=>{
@@ -47,41 +46,17 @@ export default defineComponent ({
         })
 
         function addTag(itemName, tagName, filterTagInfo, repeatTips){
-            let filterMap = globals.getRouteDataFilter(String(route.name))
-            if (itemName.trim() == "" || tagName.trim() == "" || filterTagInfo.sign.trim() == ""){
-                globals.viewWarn("无效的标签")
-                return
-            }
-            if (!filterMap.has(itemName)){
-                filterMap.set(itemName, new Map<string, FilterTagInfo>())
-            }
-            let item =  filterMap.get(itemName)
-            if (!item){
-                return
-            }
-            console.log(1212, repeatTips)
-            if (repeatTips && item.has(tagName)){
-                globals.viewWarn(tagName  + " 已添加在<" + itemName + ">中")
-                return
-            }
-            item.set(tagName, filterTagInfo)
+            filter.addTag(String(route.name), itemName, tagName, filterTagInfo, repeatTips)
             setRouteQuery()
         }
 
         function clearTags(itemName){
-            globals.getRouteDataFilter(String(route.name)).delete(itemName)
+            filter.clearTags(String(route.name), itemName)
             setRouteQuery()
         }
 
         function clearTag(itemName, tagName){
-            let filterMap = globals.getRouteDataFilter(String(route.name))
-            let item = filterMap.get(itemName)
-            if (item){
-                item.delete(tagName)
-                if (item.size <= 0){
-                    filterMap.delete(itemName)
-                }
-            }
+            filter.clearTag(String(route.name), itemName, tagName)
             setRouteQuery()
         }
 
@@ -89,7 +64,7 @@ export default defineComponent ({
             routerPath.toPath(String(route.name), {initPageNum:true, withPageSize:true}, route)
         }
 
-        return {data, addTag, clearTags, clearTag, route, globals, routerName}
+        return {data, addTag, clearTags, clearTag, route, filter, routerName}
     }
 })
 </script>
@@ -105,7 +80,7 @@ export default defineComponent ({
 
 .filterViewTag{
     width: 100%;
-    min-height: 40%;
+    min-height: 38%;
     margin-left: 10px;
     margin-right: 10px;
     margin-top: 15px;

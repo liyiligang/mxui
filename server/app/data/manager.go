@@ -114,32 +114,32 @@ func (data *Data) ManagerUpdateSetting(userID int64, protoManager *protoManage.M
 }
 
 //管理员登录
-func (data *Data) ManagerLogin(manager *protoManage.Manager) error {
+func (data *Data) ManagerLogin(manager *protoManage.Manager) (error, protoManage.HttpError) {
 	var ormManager *orm.Manager
 	var err error
 	if manager.Token != "" {
 		userID, err := Jtoken.ParseToken(manager.Token, config.LocalConfig.Token.Key)
 		if err != nil {
-			return errors.New("token已失效, 请使用账户密码登录")
+			return errors.New("token已失效, 请使用账户密码登录"), protoManage.HttpError_HttpErrorLoginWithToken
 		}
 		ormManager, err = data.DB.FindManagerByToken(orm.Manager{Base: orm.Base{ID: userID}, Token: manager.Token})
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return errors.New("token已失效, 请使用账户密码登录")
+				return errors.New("token已失效, 请使用账户密码登录"), protoManage.HttpError_HttpErrorLoginWithToken
 			}
-			return err
+			return err, protoManage.HttpError_HttpErrorLoginWithToken
 		}
 	}else {
 		ormManager, err = data.DB.FindManagerByUserNameAndPassword(orm.Manager{Name: manager.Name, Password: manager.Password})
 		if err != nil {
 			if errors.Is(err, gorm.ErrRecordNotFound) {
-				return errors.New("用户名或密码不正确")
+				return errors.New("用户名或密码不正确"), protoManage.HttpError_HttpErrorLoginWithAccount
 			}
-			return err
+			return err, protoManage.HttpError_HttpErrorLoginWithAccount
 		}
 	}
 	convert.OrmManagerToProtoManager(ormManager, manager)
-	return data.ManagerTokenUpdate(manager)
+	return data.ManagerTokenUpdate(manager), protoManage.HttpError_HttpErrorNull
 }
 
 //查找管理员昵称

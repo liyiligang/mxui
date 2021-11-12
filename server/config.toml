@@ -1,7 +1,6 @@
 Debug = true
 
 [Node]
-NodeGroup = '测试服'
 NodeName = '管控中心'
 
 [Log]
@@ -15,14 +14,8 @@ Key = 'ChYzvtt8ixVbM%Eo'    #Token密钥
 StartDuration = 0           #Token多久后生效(小时, 0:立即生效)
 StopDuration = 1000         #Token生效后多久后失效(小时, 0:立即失效)
 
-[IP]
-PublicIP = ''               #本机公网IP, 空为自动获取
-PrivateIP = ''              #本机内网IP, 空为自动获取
-
 [DB]
-Name = 'manage'
-Account = 'root:p5KtKI3^@tcp(116.62.58.166:3306)/'
-Set = '?charset=utf8mb4&parseTime=True&loc=Local'
+Connect = 'root:p5KtKI3^@tcp(116.62.58.166:3306)/manage?charset=utf8mb4&parseTime=True&loc=Local'
 MaxConn =  0            #最大连接数, 0表示不限制
 MaxKeepConn = 2         #最大保持连接数(长连接)
 MaxLifeTime = 21        #数据库请求超时时间(秒, 0:表示立即拒绝请求)
@@ -50,8 +43,5 @@ PongWaitTime = 0     #Pong请求超时时间(秒, 0:永远超时, 负数: 立即
 [Http.StaticFiles]
 WebManagePath = '../../../bin/web/'
 
-[Etcd]
-EtcdAddr = '116.62.58.166:2379'
-ConnectWaitTime = 5     #连接超时时间(秒, 0:永远不超时, 负数: 立即超时)
-RequestTimeout = 5      #请求超时时间(秒, 0:永远不超时, 负数: 立即超时)
+
 

@@ -1,9 +1,9 @@
 <template>
     <el-row class="flex-row-center-start">
-        <FilterInput name="分组名" sign="groupName" @submit="submit"></FilterInput>
+        <FilterInput v-show="false" name="ID" sign="id" @submit="submit"></FilterInput>
         <FilterInput name="节点名" sign="name" @submit="submit"></FilterInput>
         <FilterSelect name="状态" sign="state" :options="data.nodeStateOptions" @submit="submit"></FilterSelect>
-        <FilterDateTimeRangePicker name="更新时间" sign="time" @submit="submit"></FilterDateTimeRangePicker>
+        <FilterDateTimeRangePicker name="更新时间" sign="updateTime" @submit="submit"></FilterDateTimeRangePicker>
     </el-row>
 </template>
 

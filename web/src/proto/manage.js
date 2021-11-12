@@ -38,25 +38,11 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} ManagerFindLowLevel=109 ManagerFindLowLevel value
      * @property {number} ManagerFindByID=110 ManagerFindByID value
      * @property {number} ManagerFindByLevel=111 ManagerFindByLevel value
-     * @property {number} NodeGroupAdd=201 NodeGroupAdd value
-     * @property {number} NodeGroupDel=202 NodeGroupDel value
-     * @property {number} NodeGroupFind=203 NodeGroupFind value
-     * @property {number} NodeGroupFindByID=204 NodeGroupFindByID value
-     * @property {number} NodeTypeAdd=301 NodeTypeAdd value
-     * @property {number} NodeTypeDel=302 NodeTypeDel value
-     * @property {number} NodeTypeFind=303 NodeTypeFind value
-     * @property {number} NodeTypeFindByID=304 NodeTypeFindByID value
      * @property {number} NodeAdd=401 NodeAdd value
      * @property {number} NodeDel=402 NodeDel value
      * @property {number} NodeUpdateState=403 NodeUpdateState value
      * @property {number} NodeFind=404 NodeFind value
      * @property {number} NodeFindByID=405 NodeFindByID value
-     * @property {number} NodeLinkAdd=501 NodeLinkAdd value
-     * @property {number} NodeLinkDel=502 NodeLinkDel value
-     * @property {number} NodeLinkDelAllWithNodeID=503 NodeLinkDelAllWithNodeID value
-     * @property {number} NodeLinkUpdateState=504 NodeLinkUpdateState value
-     * @property {number} NodeLinkFind=505 NodeLinkFind value
-     * @property {number} NodeLinkFindByID=506 NodeLinkFindByID value
      * @property {number} NodeFuncAdd=601 NodeFuncAdd value
      * @property {number} NodeFuncDel=602 NodeFuncDel value
      * @property {number} NodeFuncDelAllWithNodeID=603 NodeFuncDelAllWithNodeID value
@@ -101,25 +87,11 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[109] = "ManagerFindLowLevel"] = 109;
         values[valuesById[110] = "ManagerFindByID"] = 110;
         values[valuesById[111] = "ManagerFindByLevel"] = 111;
-        values[valuesById[201] = "NodeGroupAdd"] = 201;
-        values[valuesById[202] = "NodeGroupDel"] = 202;
-        values[valuesById[203] = "NodeGroupFind"] = 203;
-        values[valuesById[204] = "NodeGroupFindByID"] = 204;
-        values[valuesById[301] = "NodeTypeAdd"] = 301;
-        values[valuesById[302] = "NodeTypeDel"] = 302;
-        values[valuesById[303] = "NodeTypeFind"] = 303;
-        values[valuesById[304] = "NodeTypeFindByID"] = 304;
         values[valuesById[401] = "NodeAdd"] = 401;
         values[valuesById[402] = "NodeDel"] = 402;
         values[valuesById[403] = "NodeUpdateState"] = 403;
         values[valuesById[404] = "NodeFind"] = 404;
         values[valuesById[405] = "NodeFindByID"] = 405;
-        values[valuesById[501] = "NodeLinkAdd"] = 501;
-        values[valuesById[502] = "NodeLinkDel"] = 502;
-        values[valuesById[503] = "NodeLinkDelAllWithNodeID"] = 503;
-        values[valuesById[504] = "NodeLinkUpdateState"] = 504;
-        values[valuesById[505] = "NodeLinkFind"] = 505;
-        values[valuesById[506] = "NodeLinkFindByID"] = 506;
         values[valuesById[601] = "NodeFuncAdd"] = 601;
         values[valuesById[602] = "NodeFuncDel"] = 602;
         values[valuesById[603] = "NodeFuncDelAllWithNodeID"] = 603;
@@ -183,22 +155,6 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[2] = "LevelIntermediate"] = 2;
         values[valuesById[3] = "LevelSenior"] = 3;
         values[valuesById[4] = "LevelSuper"] = 4;
-        return values;
-    })();
-
-    /**
-     * NodeLinkType enum.
-     * @name protoManage.NodeLinkType
-     * @enum {number}
-     * @property {number} NodeLinkTypeUnknown=0 NodeLinkTypeUnknown value
-     * @property {number} NodeLinkTypeClient=1 NodeLinkTypeClient value
-     * @property {number} NodeLinkTypeServer=2 NodeLinkTypeServer value
-     */
-    protoManage.NodeLinkType = (function() {
-        const valuesById = {}, values = Object.create(valuesById);
-        values[valuesById[0] = "NodeLinkTypeUnknown"] = 0;
-        values[valuesById[1] = "NodeLinkTypeClient"] = 1;
-        values[valuesById[2] = "NodeLinkTypeServer"] = 2;
         return values;
     })();
 
@@ -274,8 +230,9 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} HttpErrorMarshal=601 HttpErrorMarshal value
      * @property {number} HttpErrorUnmarshal=602 HttpErrorUnmarshal value
      * @property {number} HttpErrorRegister=603 HttpErrorRegister value
-     * @property {number} HttpErrorLogin=604 HttpErrorLogin value
-     * @property {number} HttpErrorRequest=605 HttpErrorRequest value
+     * @property {number} HttpErrorLoginWithAccount=604 HttpErrorLoginWithAccount value
+     * @property {number} HttpErrorLoginWithToken=605 HttpErrorLoginWithToken value
+     * @property {number} HttpErrorRequest=606 HttpErrorRequest value
      */
     protoManage.HttpError = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -283,8 +240,9 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[601] = "HttpErrorMarshal"] = 601;
         values[valuesById[602] = "HttpErrorUnmarshal"] = 602;
         values[valuesById[603] = "HttpErrorRegister"] = 603;
-        values[valuesById[604] = "HttpErrorLogin"] = 604;
-        values[valuesById[605] = "HttpErrorRequest"] = 605;
+        values[valuesById[604] = "HttpErrorLoginWithAccount"] = 604;
+        values[valuesById[605] = "HttpErrorLoginWithToken"] = 605;
+        values[valuesById[606] = "HttpErrorRequest"] = 606;
         return values;
     })();
 
@@ -454,25 +412,11 @@ export const protoManage = $root.protoManage = (() => {
                 case 109:
                 case 110:
                 case 111:
-                case 201:
-                case 202:
-                case 203:
-                case 204:
-                case 301:
-                case 302:
-                case 303:
-                case 304:
                 case 401:
                 case 402:
                 case 403:
                 case 404:
                 case 405:
-                case 501:
-                case 502:
-                case 503:
-                case 504:
-                case 505:
-                case 506:
                 case 601:
                 case 602:
                 case 603:
@@ -589,38 +533,6 @@ export const protoManage = $root.protoManage = (() => {
             case 111:
                 message.order = 111;
                 break;
-            case "NodeGroupAdd":
-            case 201:
-                message.order = 201;
-                break;
-            case "NodeGroupDel":
-            case 202:
-                message.order = 202;
-                break;
-            case "NodeGroupFind":
-            case 203:
-                message.order = 203;
-                break;
-            case "NodeGroupFindByID":
-            case 204:
-                message.order = 204;
-                break;
-            case "NodeTypeAdd":
-            case 301:
-                message.order = 301;
-                break;
-            case "NodeTypeDel":
-            case 302:
-                message.order = 302;
-                break;
-            case "NodeTypeFind":
-            case 303:
-                message.order = 303;
-                break;
-            case "NodeTypeFindByID":
-            case 304:
-                message.order = 304;
-                break;
             case "NodeAdd":
             case 401:
                 message.order = 401;
@@ -640,30 +552,6 @@ export const protoManage = $root.protoManage = (() => {
             case "NodeFindByID":
             case 405:
                 message.order = 405;
-                break;
-            case "NodeLinkAdd":
-            case 501:
-                message.order = 501;
-                break;
-            case "NodeLinkDel":
-            case 502:
-                message.order = 502;
-                break;
-            case "NodeLinkDelAllWithNodeID":
-            case 503:
-                message.order = 503;
-                break;
-            case "NodeLinkUpdateState":
-            case 504:
-                message.order = 504;
-                break;
-            case "NodeLinkFind":
-            case 505:
-                message.order = 505;
-                break;
-            case "NodeLinkFindByID":
-            case 506:
-                message.order = 506;
                 break;
             case "NodeFuncAdd":
             case 601:
@@ -990,25 +878,11 @@ export const protoManage = $root.protoManage = (() => {
                 case 109:
                 case 110:
                 case 111:
-                case 201:
-                case 202:
-                case 203:
-                case 204:
-                case 301:
-                case 302:
-                case 303:
-                case 304:
                 case 401:
                 case 402:
                 case 403:
                 case 404:
                 case 405:
-                case 501:
-                case 502:
-                case 503:
-                case 504:
-                case 505:
-                case 506:
                 case 601:
                 case 602:
                 case 603:
@@ -1128,38 +1002,6 @@ export const protoManage = $root.protoManage = (() => {
             case 111:
                 message.order = 111;
                 break;
-            case "NodeGroupAdd":
-            case 201:
-                message.order = 201;
-                break;
-            case "NodeGroupDel":
-            case 202:
-                message.order = 202;
-                break;
-            case "NodeGroupFind":
-            case 203:
-                message.order = 203;
-                break;
-            case "NodeGroupFindByID":
-            case 204:
-                message.order = 204;
-                break;
-            case "NodeTypeAdd":
-            case 301:
-                message.order = 301;
-                break;
-            case "NodeTypeDel":
-            case 302:
-                message.order = 302;
-                break;
-            case "NodeTypeFind":
-            case 303:
-                message.order = 303;
-                break;
-            case "NodeTypeFindByID":
-            case 304:
-                message.order = 304;
-                break;
             case "NodeAdd":
             case 401:
                 message.order = 401;
@@ -1179,30 +1021,6 @@ export const protoManage = $root.protoManage = (() => {
             case "NodeFindByID":
             case 405:
                 message.order = 405;
-                break;
-            case "NodeLinkAdd":
-            case 501:
-                message.order = 501;
-                break;
-            case "NodeLinkDel":
-            case 502:
-                message.order = 502;
-                break;
-            case "NodeLinkDelAllWithNodeID":
-            case 503:
-                message.order = 503;
-                break;
-            case "NodeLinkUpdateState":
-            case 504:
-                message.order = 504;
-                break;
-            case "NodeLinkFind":
-            case 505:
-                message.order = 505;
-                break;
-            case "NodeLinkFindByID":
-            case 506:
-                message.order = 506;
                 break;
             case "NodeFuncAdd":
             case 601:
@@ -1724,1308 +1542,6 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         return Base;
-    })();
-
-    protoManage.StateCount = (function() {
-
-        /**
-         * Properties of a StateCount.
-         * @memberof protoManage
-         * @interface IStateCount
-         * @property {number|null} [ID] StateCount ID
-         * @property {number|null} [NotCount] StateCount NotCount
-         * @property {number|null} [NormalCount] StateCount NormalCount
-         * @property {number|null} [WarnCount] StateCount WarnCount
-         * @property {number|null} [ErrorCount] StateCount ErrorCount
-         * @property {number|null} [UnknowCount] StateCount UnknowCount
-         */
-
-        /**
-         * Constructs a new StateCount.
-         * @memberof protoManage
-         * @classdesc Represents a StateCount.
-         * @implements IStateCount
-         * @constructor
-         * @param {protoManage.IStateCount=} [properties] Properties to set
-         */
-        function StateCount(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * StateCount ID.
-         * @member {number} ID
-         * @memberof protoManage.StateCount
-         * @instance
-         */
-        StateCount.prototype.ID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * StateCount NotCount.
-         * @member {number} NotCount
-         * @memberof protoManage.StateCount
-         * @instance
-         */
-        StateCount.prototype.NotCount = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * StateCount NormalCount.
-         * @member {number} NormalCount
-         * @memberof protoManage.StateCount
-         * @instance
-         */
-        StateCount.prototype.NormalCount = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * StateCount WarnCount.
-         * @member {number} WarnCount
-         * @memberof protoManage.StateCount
-         * @instance
-         */
-        StateCount.prototype.WarnCount = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * StateCount ErrorCount.
-         * @member {number} ErrorCount
-         * @memberof protoManage.StateCount
-         * @instance
-         */
-        StateCount.prototype.ErrorCount = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * StateCount UnknowCount.
-         * @member {number} UnknowCount
-         * @memberof protoManage.StateCount
-         * @instance
-         */
-        StateCount.prototype.UnknowCount = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Creates a new StateCount instance using the specified properties.
-         * @function create
-         * @memberof protoManage.StateCount
-         * @static
-         * @param {protoManage.IStateCount=} [properties] Properties to set
-         * @returns {protoManage.StateCount} StateCount instance
-         */
-        StateCount.create = function create(properties) {
-            return new StateCount(properties);
-        };
-
-        /**
-         * Encodes the specified StateCount message. Does not implicitly {@link protoManage.StateCount.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.StateCount
-         * @static
-         * @param {protoManage.IStateCount} message StateCount message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        StateCount.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.ID != null && Object.hasOwnProperty.call(message, "ID"))
-                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.ID);
-            if (message.NotCount != null && Object.hasOwnProperty.call(message, "NotCount"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.NotCount);
-            if (message.NormalCount != null && Object.hasOwnProperty.call(message, "NormalCount"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.NormalCount);
-            if (message.WarnCount != null && Object.hasOwnProperty.call(message, "WarnCount"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.WarnCount);
-            if (message.ErrorCount != null && Object.hasOwnProperty.call(message, "ErrorCount"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.ErrorCount);
-            if (message.UnknowCount != null && Object.hasOwnProperty.call(message, "UnknowCount"))
-                writer.uint32(/* id 6, wireType 0 =*/48).int64(message.UnknowCount);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified StateCount message, length delimited. Does not implicitly {@link protoManage.StateCount.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.StateCount
-         * @static
-         * @param {protoManage.IStateCount} message StateCount message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        StateCount.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a StateCount message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.StateCount
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.StateCount} StateCount
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        StateCount.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.StateCount();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.ID = reader.int64();
-                    break;
-                case 2:
-                    message.NotCount = reader.int64();
-                    break;
-                case 3:
-                    message.NormalCount = reader.int64();
-                    break;
-                case 4:
-                    message.WarnCount = reader.int64();
-                    break;
-                case 5:
-                    message.ErrorCount = reader.int64();
-                    break;
-                case 6:
-                    message.UnknowCount = reader.int64();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a StateCount message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.StateCount
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.StateCount} StateCount
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        StateCount.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a StateCount message.
-         * @function verify
-         * @memberof protoManage.StateCount
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        StateCount.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.ID != null && message.hasOwnProperty("ID"))
-                if (!$util.isInteger(message.ID) && !(message.ID && $util.isInteger(message.ID.low) && $util.isInteger(message.ID.high)))
-                    return "ID: integer|Long expected";
-            if (message.NotCount != null && message.hasOwnProperty("NotCount"))
-                if (!$util.isInteger(message.NotCount) && !(message.NotCount && $util.isInteger(message.NotCount.low) && $util.isInteger(message.NotCount.high)))
-                    return "NotCount: integer|Long expected";
-            if (message.NormalCount != null && message.hasOwnProperty("NormalCount"))
-                if (!$util.isInteger(message.NormalCount) && !(message.NormalCount && $util.isInteger(message.NormalCount.low) && $util.isInteger(message.NormalCount.high)))
-                    return "NormalCount: integer|Long expected";
-            if (message.WarnCount != null && message.hasOwnProperty("WarnCount"))
-                if (!$util.isInteger(message.WarnCount) && !(message.WarnCount && $util.isInteger(message.WarnCount.low) && $util.isInteger(message.WarnCount.high)))
-                    return "WarnCount: integer|Long expected";
-            if (message.ErrorCount != null && message.hasOwnProperty("ErrorCount"))
-                if (!$util.isInteger(message.ErrorCount) && !(message.ErrorCount && $util.isInteger(message.ErrorCount.low) && $util.isInteger(message.ErrorCount.high)))
-                    return "ErrorCount: integer|Long expected";
-            if (message.UnknowCount != null && message.hasOwnProperty("UnknowCount"))
-                if (!$util.isInteger(message.UnknowCount) && !(message.UnknowCount && $util.isInteger(message.UnknowCount.low) && $util.isInteger(message.UnknowCount.high)))
-                    return "UnknowCount: integer|Long expected";
-            return null;
-        };
-
-        /**
-         * Creates a StateCount message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.StateCount
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.StateCount} StateCount
-         */
-        StateCount.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.StateCount)
-                return object;
-            let message = new $root.protoManage.StateCount();
-            if (object.ID != null)
-                if ($util.Long)
-                    (message.ID = $util.Long.fromValue(object.ID)).unsigned = false;
-                else if (typeof object.ID === "string")
-                    message.ID = parseInt(object.ID, 10);
-                else if (typeof object.ID === "number")
-                    message.ID = object.ID;
-                else if (typeof object.ID === "object")
-                    message.ID = new $util.LongBits(object.ID.low >>> 0, object.ID.high >>> 0).toNumber();
-            if (object.NotCount != null)
-                if ($util.Long)
-                    (message.NotCount = $util.Long.fromValue(object.NotCount)).unsigned = false;
-                else if (typeof object.NotCount === "string")
-                    message.NotCount = parseInt(object.NotCount, 10);
-                else if (typeof object.NotCount === "number")
-                    message.NotCount = object.NotCount;
-                else if (typeof object.NotCount === "object")
-                    message.NotCount = new $util.LongBits(object.NotCount.low >>> 0, object.NotCount.high >>> 0).toNumber();
-            if (object.NormalCount != null)
-                if ($util.Long)
-                    (message.NormalCount = $util.Long.fromValue(object.NormalCount)).unsigned = false;
-                else if (typeof object.NormalCount === "string")
-                    message.NormalCount = parseInt(object.NormalCount, 10);
-                else if (typeof object.NormalCount === "number")
-                    message.NormalCount = object.NormalCount;
-                else if (typeof object.NormalCount === "object")
-                    message.NormalCount = new $util.LongBits(object.NormalCount.low >>> 0, object.NormalCount.high >>> 0).toNumber();
-            if (object.WarnCount != null)
-                if ($util.Long)
-                    (message.WarnCount = $util.Long.fromValue(object.WarnCount)).unsigned = false;
-                else if (typeof object.WarnCount === "string")
-                    message.WarnCount = parseInt(object.WarnCount, 10);
-                else if (typeof object.WarnCount === "number")
-                    message.WarnCount = object.WarnCount;
-                else if (typeof object.WarnCount === "object")
-                    message.WarnCount = new $util.LongBits(object.WarnCount.low >>> 0, object.WarnCount.high >>> 0).toNumber();
-            if (object.ErrorCount != null)
-                if ($util.Long)
-                    (message.ErrorCount = $util.Long.fromValue(object.ErrorCount)).unsigned = false;
-                else if (typeof object.ErrorCount === "string")
-                    message.ErrorCount = parseInt(object.ErrorCount, 10);
-                else if (typeof object.ErrorCount === "number")
-                    message.ErrorCount = object.ErrorCount;
-                else if (typeof object.ErrorCount === "object")
-                    message.ErrorCount = new $util.LongBits(object.ErrorCount.low >>> 0, object.ErrorCount.high >>> 0).toNumber();
-            if (object.UnknowCount != null)
-                if ($util.Long)
-                    (message.UnknowCount = $util.Long.fromValue(object.UnknowCount)).unsigned = false;
-                else if (typeof object.UnknowCount === "string")
-                    message.UnknowCount = parseInt(object.UnknowCount, 10);
-                else if (typeof object.UnknowCount === "number")
-                    message.UnknowCount = object.UnknowCount;
-                else if (typeof object.UnknowCount === "object")
-                    message.UnknowCount = new $util.LongBits(object.UnknowCount.low >>> 0, object.UnknowCount.high >>> 0).toNumber();
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a StateCount message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.StateCount
-         * @static
-         * @param {protoManage.StateCount} message StateCount
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        StateCount.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.ID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.ID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.NotCount = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.NotCount = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.NormalCount = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.NormalCount = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.WarnCount = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.WarnCount = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.ErrorCount = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.ErrorCount = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.UnknowCount = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.UnknowCount = options.longs === String ? "0" : 0;
-            }
-            if (message.ID != null && message.hasOwnProperty("ID"))
-                if (typeof message.ID === "number")
-                    object.ID = options.longs === String ? String(message.ID) : message.ID;
-                else
-                    object.ID = options.longs === String ? $util.Long.prototype.toString.call(message.ID) : options.longs === Number ? new $util.LongBits(message.ID.low >>> 0, message.ID.high >>> 0).toNumber() : message.ID;
-            if (message.NotCount != null && message.hasOwnProperty("NotCount"))
-                if (typeof message.NotCount === "number")
-                    object.NotCount = options.longs === String ? String(message.NotCount) : message.NotCount;
-                else
-                    object.NotCount = options.longs === String ? $util.Long.prototype.toString.call(message.NotCount) : options.longs === Number ? new $util.LongBits(message.NotCount.low >>> 0, message.NotCount.high >>> 0).toNumber() : message.NotCount;
-            if (message.NormalCount != null && message.hasOwnProperty("NormalCount"))
-                if (typeof message.NormalCount === "number")
-                    object.NormalCount = options.longs === String ? String(message.NormalCount) : message.NormalCount;
-                else
-                    object.NormalCount = options.longs === String ? $util.Long.prototype.toString.call(message.NormalCount) : options.longs === Number ? new $util.LongBits(message.NormalCount.low >>> 0, message.NormalCount.high >>> 0).toNumber() : message.NormalCount;
-            if (message.WarnCount != null && message.hasOwnProperty("WarnCount"))
-                if (typeof message.WarnCount === "number")
-                    object.WarnCount = options.longs === String ? String(message.WarnCount) : message.WarnCount;
-                else
-                    object.WarnCount = options.longs === String ? $util.Long.prototype.toString.call(message.WarnCount) : options.longs === Number ? new $util.LongBits(message.WarnCount.low >>> 0, message.WarnCount.high >>> 0).toNumber() : message.WarnCount;
-            if (message.ErrorCount != null && message.hasOwnProperty("ErrorCount"))
-                if (typeof message.ErrorCount === "number")
-                    object.ErrorCount = options.longs === String ? String(message.ErrorCount) : message.ErrorCount;
-                else
-                    object.ErrorCount = options.longs === String ? $util.Long.prototype.toString.call(message.ErrorCount) : options.longs === Number ? new $util.LongBits(message.ErrorCount.low >>> 0, message.ErrorCount.high >>> 0).toNumber() : message.ErrorCount;
-            if (message.UnknowCount != null && message.hasOwnProperty("UnknowCount"))
-                if (typeof message.UnknowCount === "number")
-                    object.UnknowCount = options.longs === String ? String(message.UnknowCount) : message.UnknowCount;
-                else
-                    object.UnknowCount = options.longs === String ? $util.Long.prototype.toString.call(message.UnknowCount) : options.longs === Number ? new $util.LongBits(message.UnknowCount.low >>> 0, message.UnknowCount.high >>> 0).toNumber() : message.UnknowCount;
-            return object;
-        };
-
-        /**
-         * Converts this StateCount to JSON.
-         * @function toJSON
-         * @memberof protoManage.StateCount
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        StateCount.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return StateCount;
-    })();
-
-    protoManage.Filter = (function() {
-
-        /**
-         * Properties of a Filter.
-         * @memberof protoManage
-         * @interface IFilter
-         * @property {number|null} [ID] Filter ID
-         * @property {string|null} [IDSign] Filter IDSign
-         * @property {number|null} [GroupID] Filter GroupID
-         * @property {number|null} [TypeID] Filter TypeID
-         * @property {number|null} [NodeID] Filter NodeID
-         * @property {number|null} [SourceID] Filter SourceID
-         * @property {number|null} [TargetID] Filter TargetID
-         * @property {number|null} [FuncID] Filter FuncID
-         * @property {number|null} [ReportID] Filter ReportID
-         * @property {string|null} [Name] Filter Name
-         * @property {string|null} [Flag] Filter Flag
-         * @property {string|null} [Value] Filter Value
-         * @property {protoManage.State|null} [State] Filter State
-         * @property {protoManage.Level|null} [Level] Filter Level
-         * @property {protoManage.Level|null} [LevelLow] Filter LevelLow
-         * @property {string|null} [SenderName] Filter SenderName
-         * @property {protoManage.NotifySenderType|null} [SenderType] Filter SenderType
-         * @property {number|null} [SenderBeginTime] Filter SenderBeginTime
-         * @property {number|null} [SenderEndTime] Filter SenderEndTime
-         * @property {string|null} [Message] Filter Message
-         * @property {number|null} [PageSize] Filter PageSize
-         * @property {number|null} [PageNum] Filter PageNum
-         */
-
-        /**
-         * Constructs a new Filter.
-         * @memberof protoManage
-         * @classdesc Represents a Filter.
-         * @implements IFilter
-         * @constructor
-         * @param {protoManage.IFilter=} [properties] Properties to set
-         */
-        function Filter(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * Filter ID.
-         * @member {number} ID
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.ID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter IDSign.
-         * @member {string} IDSign
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.IDSign = "";
-
-        /**
-         * Filter GroupID.
-         * @member {number} GroupID
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.GroupID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter TypeID.
-         * @member {number} TypeID
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.TypeID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter NodeID.
-         * @member {number} NodeID
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.NodeID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter SourceID.
-         * @member {number} SourceID
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.SourceID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter TargetID.
-         * @member {number} TargetID
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.TargetID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter FuncID.
-         * @member {number} FuncID
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.FuncID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter ReportID.
-         * @member {number} ReportID
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.ReportID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter Name.
-         * @member {string} Name
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.Name = "";
-
-        /**
-         * Filter Flag.
-         * @member {string} Flag
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.Flag = "";
-
-        /**
-         * Filter Value.
-         * @member {string} Value
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.Value = "";
-
-        /**
-         * Filter State.
-         * @member {protoManage.State} State
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.State = 0;
-
-        /**
-         * Filter Level.
-         * @member {protoManage.Level} Level
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.Level = 0;
-
-        /**
-         * Filter LevelLow.
-         * @member {protoManage.Level} LevelLow
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.LevelLow = 0;
-
-        /**
-         * Filter SenderName.
-         * @member {string} SenderName
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.SenderName = "";
-
-        /**
-         * Filter SenderType.
-         * @member {protoManage.NotifySenderType} SenderType
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.SenderType = 0;
-
-        /**
-         * Filter SenderBeginTime.
-         * @member {number} SenderBeginTime
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.SenderBeginTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter SenderEndTime.
-         * @member {number} SenderEndTime
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.SenderEndTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter Message.
-         * @member {string} Message
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.Message = "";
-
-        /**
-         * Filter PageSize.
-         * @member {number} PageSize
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.PageSize = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Filter PageNum.
-         * @member {number} PageNum
-         * @memberof protoManage.Filter
-         * @instance
-         */
-        Filter.prototype.PageNum = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Creates a new Filter instance using the specified properties.
-         * @function create
-         * @memberof protoManage.Filter
-         * @static
-         * @param {protoManage.IFilter=} [properties] Properties to set
-         * @returns {protoManage.Filter} Filter instance
-         */
-        Filter.create = function create(properties) {
-            return new Filter(properties);
-        };
-
-        /**
-         * Encodes the specified Filter message. Does not implicitly {@link protoManage.Filter.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.Filter
-         * @static
-         * @param {protoManage.IFilter} message Filter message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Filter.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.ID != null && Object.hasOwnProperty.call(message, "ID"))
-                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.ID);
-            if (message.IDSign != null && Object.hasOwnProperty.call(message, "IDSign"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.IDSign);
-            if (message.GroupID != null && Object.hasOwnProperty.call(message, "GroupID"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.GroupID);
-            if (message.TypeID != null && Object.hasOwnProperty.call(message, "TypeID"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.TypeID);
-            if (message.NodeID != null && Object.hasOwnProperty.call(message, "NodeID"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int64(message.NodeID);
-            if (message.SourceID != null && Object.hasOwnProperty.call(message, "SourceID"))
-                writer.uint32(/* id 6, wireType 0 =*/48).int64(message.SourceID);
-            if (message.TargetID != null && Object.hasOwnProperty.call(message, "TargetID"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int64(message.TargetID);
-            if (message.FuncID != null && Object.hasOwnProperty.call(message, "FuncID"))
-                writer.uint32(/* id 8, wireType 0 =*/64).int64(message.FuncID);
-            if (message.ReportID != null && Object.hasOwnProperty.call(message, "ReportID"))
-                writer.uint32(/* id 9, wireType 0 =*/72).int64(message.ReportID);
-            if (message.Name != null && Object.hasOwnProperty.call(message, "Name"))
-                writer.uint32(/* id 10, wireType 2 =*/82).string(message.Name);
-            if (message.Flag != null && Object.hasOwnProperty.call(message, "Flag"))
-                writer.uint32(/* id 11, wireType 2 =*/90).string(message.Flag);
-            if (message.Value != null && Object.hasOwnProperty.call(message, "Value"))
-                writer.uint32(/* id 12, wireType 2 =*/98).string(message.Value);
-            if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 13, wireType 0 =*/104).int32(message.State);
-            if (message.Level != null && Object.hasOwnProperty.call(message, "Level"))
-                writer.uint32(/* id 14, wireType 0 =*/112).int32(message.Level);
-            if (message.LevelLow != null && Object.hasOwnProperty.call(message, "LevelLow"))
-                writer.uint32(/* id 15, wireType 0 =*/120).int32(message.LevelLow);
-            if (message.SenderName != null && Object.hasOwnProperty.call(message, "SenderName"))
-                writer.uint32(/* id 16, wireType 2 =*/130).string(message.SenderName);
-            if (message.SenderType != null && Object.hasOwnProperty.call(message, "SenderType"))
-                writer.uint32(/* id 17, wireType 0 =*/136).int32(message.SenderType);
-            if (message.SenderBeginTime != null && Object.hasOwnProperty.call(message, "SenderBeginTime"))
-                writer.uint32(/* id 18, wireType 0 =*/144).int64(message.SenderBeginTime);
-            if (message.SenderEndTime != null && Object.hasOwnProperty.call(message, "SenderEndTime"))
-                writer.uint32(/* id 19, wireType 0 =*/152).int64(message.SenderEndTime);
-            if (message.Message != null && Object.hasOwnProperty.call(message, "Message"))
-                writer.uint32(/* id 20, wireType 2 =*/162).string(message.Message);
-            if (message.PageSize != null && Object.hasOwnProperty.call(message, "PageSize"))
-                writer.uint32(/* id 21, wireType 0 =*/168).int64(message.PageSize);
-            if (message.PageNum != null && Object.hasOwnProperty.call(message, "PageNum"))
-                writer.uint32(/* id 22, wireType 0 =*/176).int64(message.PageNum);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified Filter message, length delimited. Does not implicitly {@link protoManage.Filter.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.Filter
-         * @static
-         * @param {protoManage.IFilter} message Filter message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        Filter.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a Filter message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.Filter
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.Filter} Filter
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Filter.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.Filter();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.ID = reader.int64();
-                    break;
-                case 2:
-                    message.IDSign = reader.string();
-                    break;
-                case 3:
-                    message.GroupID = reader.int64();
-                    break;
-                case 4:
-                    message.TypeID = reader.int64();
-                    break;
-                case 5:
-                    message.NodeID = reader.int64();
-                    break;
-                case 6:
-                    message.SourceID = reader.int64();
-                    break;
-                case 7:
-                    message.TargetID = reader.int64();
-                    break;
-                case 8:
-                    message.FuncID = reader.int64();
-                    break;
-                case 9:
-                    message.ReportID = reader.int64();
-                    break;
-                case 10:
-                    message.Name = reader.string();
-                    break;
-                case 11:
-                    message.Flag = reader.string();
-                    break;
-                case 12:
-                    message.Value = reader.string();
-                    break;
-                case 13:
-                    message.State = reader.int32();
-                    break;
-                case 14:
-                    message.Level = reader.int32();
-                    break;
-                case 15:
-                    message.LevelLow = reader.int32();
-                    break;
-                case 16:
-                    message.SenderName = reader.string();
-                    break;
-                case 17:
-                    message.SenderType = reader.int32();
-                    break;
-                case 18:
-                    message.SenderBeginTime = reader.int64();
-                    break;
-                case 19:
-                    message.SenderEndTime = reader.int64();
-                    break;
-                case 20:
-                    message.Message = reader.string();
-                    break;
-                case 21:
-                    message.PageSize = reader.int64();
-                    break;
-                case 22:
-                    message.PageNum = reader.int64();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a Filter message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.Filter
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.Filter} Filter
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        Filter.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a Filter message.
-         * @function verify
-         * @memberof protoManage.Filter
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        Filter.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.ID != null && message.hasOwnProperty("ID"))
-                if (!$util.isInteger(message.ID) && !(message.ID && $util.isInteger(message.ID.low) && $util.isInteger(message.ID.high)))
-                    return "ID: integer|Long expected";
-            if (message.IDSign != null && message.hasOwnProperty("IDSign"))
-                if (!$util.isString(message.IDSign))
-                    return "IDSign: string expected";
-            if (message.GroupID != null && message.hasOwnProperty("GroupID"))
-                if (!$util.isInteger(message.GroupID) && !(message.GroupID && $util.isInteger(message.GroupID.low) && $util.isInteger(message.GroupID.high)))
-                    return "GroupID: integer|Long expected";
-            if (message.TypeID != null && message.hasOwnProperty("TypeID"))
-                if (!$util.isInteger(message.TypeID) && !(message.TypeID && $util.isInteger(message.TypeID.low) && $util.isInteger(message.TypeID.high)))
-                    return "TypeID: integer|Long expected";
-            if (message.NodeID != null && message.hasOwnProperty("NodeID"))
-                if (!$util.isInteger(message.NodeID) && !(message.NodeID && $util.isInteger(message.NodeID.low) && $util.isInteger(message.NodeID.high)))
-                    return "NodeID: integer|Long expected";
-            if (message.SourceID != null && message.hasOwnProperty("SourceID"))
-                if (!$util.isInteger(message.SourceID) && !(message.SourceID && $util.isInteger(message.SourceID.low) && $util.isInteger(message.SourceID.high)))
-                    return "SourceID: integer|Long expected";
-            if (message.TargetID != null && message.hasOwnProperty("TargetID"))
-                if (!$util.isInteger(message.TargetID) && !(message.TargetID && $util.isInteger(message.TargetID.low) && $util.isInteger(message.TargetID.high)))
-                    return "TargetID: integer|Long expected";
-            if (message.FuncID != null && message.hasOwnProperty("FuncID"))
-                if (!$util.isInteger(message.FuncID) && !(message.FuncID && $util.isInteger(message.FuncID.low) && $util.isInteger(message.FuncID.high)))
-                    return "FuncID: integer|Long expected";
-            if (message.ReportID != null && message.hasOwnProperty("ReportID"))
-                if (!$util.isInteger(message.ReportID) && !(message.ReportID && $util.isInteger(message.ReportID.low) && $util.isInteger(message.ReportID.high)))
-                    return "ReportID: integer|Long expected";
-            if (message.Name != null && message.hasOwnProperty("Name"))
-                if (!$util.isString(message.Name))
-                    return "Name: string expected";
-            if (message.Flag != null && message.hasOwnProperty("Flag"))
-                if (!$util.isString(message.Flag))
-                    return "Flag: string expected";
-            if (message.Value != null && message.hasOwnProperty("Value"))
-                if (!$util.isString(message.Value))
-                    return "Value: string expected";
-            if (message.State != null && message.hasOwnProperty("State"))
-                switch (message.State) {
-                default:
-                    return "State: enum value expected";
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    break;
-                }
-            if (message.Level != null && message.hasOwnProperty("Level"))
-                switch (message.Level) {
-                default:
-                    return "Level: enum value expected";
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    break;
-                }
-            if (message.LevelLow != null && message.hasOwnProperty("LevelLow"))
-                switch (message.LevelLow) {
-                default:
-                    return "LevelLow: enum value expected";
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    break;
-                }
-            if (message.SenderName != null && message.hasOwnProperty("SenderName"))
-                if (!$util.isString(message.SenderName))
-                    return "SenderName: string expected";
-            if (message.SenderType != null && message.hasOwnProperty("SenderType"))
-                switch (message.SenderType) {
-                default:
-                    return "SenderType: enum value expected";
-                case 0:
-                case 1:
-                case 2:
-                    break;
-                }
-            if (message.SenderBeginTime != null && message.hasOwnProperty("SenderBeginTime"))
-                if (!$util.isInteger(message.SenderBeginTime) && !(message.SenderBeginTime && $util.isInteger(message.SenderBeginTime.low) && $util.isInteger(message.SenderBeginTime.high)))
-                    return "SenderBeginTime: integer|Long expected";
-            if (message.SenderEndTime != null && message.hasOwnProperty("SenderEndTime"))
-                if (!$util.isInteger(message.SenderEndTime) && !(message.SenderEndTime && $util.isInteger(message.SenderEndTime.low) && $util.isInteger(message.SenderEndTime.high)))
-                    return "SenderEndTime: integer|Long expected";
-            if (message.Message != null && message.hasOwnProperty("Message"))
-                if (!$util.isString(message.Message))
-                    return "Message: string expected";
-            if (message.PageSize != null && message.hasOwnProperty("PageSize"))
-                if (!$util.isInteger(message.PageSize) && !(message.PageSize && $util.isInteger(message.PageSize.low) && $util.isInteger(message.PageSize.high)))
-                    return "PageSize: integer|Long expected";
-            if (message.PageNum != null && message.hasOwnProperty("PageNum"))
-                if (!$util.isInteger(message.PageNum) && !(message.PageNum && $util.isInteger(message.PageNum.low) && $util.isInteger(message.PageNum.high)))
-                    return "PageNum: integer|Long expected";
-            return null;
-        };
-
-        /**
-         * Creates a Filter message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.Filter
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.Filter} Filter
-         */
-        Filter.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.Filter)
-                return object;
-            let message = new $root.protoManage.Filter();
-            if (object.ID != null)
-                if ($util.Long)
-                    (message.ID = $util.Long.fromValue(object.ID)).unsigned = false;
-                else if (typeof object.ID === "string")
-                    message.ID = parseInt(object.ID, 10);
-                else if (typeof object.ID === "number")
-                    message.ID = object.ID;
-                else if (typeof object.ID === "object")
-                    message.ID = new $util.LongBits(object.ID.low >>> 0, object.ID.high >>> 0).toNumber();
-            if (object.IDSign != null)
-                message.IDSign = String(object.IDSign);
-            if (object.GroupID != null)
-                if ($util.Long)
-                    (message.GroupID = $util.Long.fromValue(object.GroupID)).unsigned = false;
-                else if (typeof object.GroupID === "string")
-                    message.GroupID = parseInt(object.GroupID, 10);
-                else if (typeof object.GroupID === "number")
-                    message.GroupID = object.GroupID;
-                else if (typeof object.GroupID === "object")
-                    message.GroupID = new $util.LongBits(object.GroupID.low >>> 0, object.GroupID.high >>> 0).toNumber();
-            if (object.TypeID != null)
-                if ($util.Long)
-                    (message.TypeID = $util.Long.fromValue(object.TypeID)).unsigned = false;
-                else if (typeof object.TypeID === "string")
-                    message.TypeID = parseInt(object.TypeID, 10);
-                else if (typeof object.TypeID === "number")
-                    message.TypeID = object.TypeID;
-                else if (typeof object.TypeID === "object")
-                    message.TypeID = new $util.LongBits(object.TypeID.low >>> 0, object.TypeID.high >>> 0).toNumber();
-            if (object.NodeID != null)
-                if ($util.Long)
-                    (message.NodeID = $util.Long.fromValue(object.NodeID)).unsigned = false;
-                else if (typeof object.NodeID === "string")
-                    message.NodeID = parseInt(object.NodeID, 10);
-                else if (typeof object.NodeID === "number")
-                    message.NodeID = object.NodeID;
-                else if (typeof object.NodeID === "object")
-                    message.NodeID = new $util.LongBits(object.NodeID.low >>> 0, object.NodeID.high >>> 0).toNumber();
-            if (object.SourceID != null)
-                if ($util.Long)
-                    (message.SourceID = $util.Long.fromValue(object.SourceID)).unsigned = false;
-                else if (typeof object.SourceID === "string")
-                    message.SourceID = parseInt(object.SourceID, 10);
-                else if (typeof object.SourceID === "number")
-                    message.SourceID = object.SourceID;
-                else if (typeof object.SourceID === "object")
-                    message.SourceID = new $util.LongBits(object.SourceID.low >>> 0, object.SourceID.high >>> 0).toNumber();
-            if (object.TargetID != null)
-                if ($util.Long)
-                    (message.TargetID = $util.Long.fromValue(object.TargetID)).unsigned = false;
-                else if (typeof object.TargetID === "string")
-                    message.TargetID = parseInt(object.TargetID, 10);
-                else if (typeof object.TargetID === "number")
-                    message.TargetID = object.TargetID;
-                else if (typeof object.TargetID === "object")
-                    message.TargetID = new $util.LongBits(object.TargetID.low >>> 0, object.TargetID.high >>> 0).toNumber();
-            if (object.FuncID != null)
-                if ($util.Long)
-                    (message.FuncID = $util.Long.fromValue(object.FuncID)).unsigned = false;
-                else if (typeof object.FuncID === "string")
-                    message.FuncID = parseInt(object.FuncID, 10);
-                else if (typeof object.FuncID === "number")
-                    message.FuncID = object.FuncID;
-                else if (typeof object.FuncID === "object")
-                    message.FuncID = new $util.LongBits(object.FuncID.low >>> 0, object.FuncID.high >>> 0).toNumber();
-            if (object.ReportID != null)
-                if ($util.Long)
-                    (message.ReportID = $util.Long.fromValue(object.ReportID)).unsigned = false;
-                else if (typeof object.ReportID === "string")
-                    message.ReportID = parseInt(object.ReportID, 10);
-                else if (typeof object.ReportID === "number")
-                    message.ReportID = object.ReportID;
-                else if (typeof object.ReportID === "object")
-                    message.ReportID = new $util.LongBits(object.ReportID.low >>> 0, object.ReportID.high >>> 0).toNumber();
-            if (object.Name != null)
-                message.Name = String(object.Name);
-            if (object.Flag != null)
-                message.Flag = String(object.Flag);
-            if (object.Value != null)
-                message.Value = String(object.Value);
-            switch (object.State) {
-            case "StateNot":
-            case 0:
-                message.State = 0;
-                break;
-            case "StateUnknow":
-            case 1:
-                message.State = 1;
-                break;
-            case "StateNormal":
-            case 2:
-                message.State = 2;
-                break;
-            case "StateWarn":
-            case 3:
-                message.State = 3;
-                break;
-            case "StateError":
-            case 4:
-                message.State = 4;
-                break;
-            }
-            switch (object.Level) {
-            case "LevelNot":
-            case 0:
-                message.Level = 0;
-                break;
-            case "LevelPrimary":
-            case 1:
-                message.Level = 1;
-                break;
-            case "LevelIntermediate":
-            case 2:
-                message.Level = 2;
-                break;
-            case "LevelSenior":
-            case 3:
-                message.Level = 3;
-                break;
-            case "LevelSuper":
-            case 4:
-                message.Level = 4;
-                break;
-            }
-            switch (object.LevelLow) {
-            case "LevelNot":
-            case 0:
-                message.LevelLow = 0;
-                break;
-            case "LevelPrimary":
-            case 1:
-                message.LevelLow = 1;
-                break;
-            case "LevelIntermediate":
-            case 2:
-                message.LevelLow = 2;
-                break;
-            case "LevelSenior":
-            case 3:
-                message.LevelLow = 3;
-                break;
-            case "LevelSuper":
-            case 4:
-                message.LevelLow = 4;
-                break;
-            }
-            if (object.SenderName != null)
-                message.SenderName = String(object.SenderName);
-            switch (object.SenderType) {
-            case "NotifySenderTypeUnknow":
-            case 0:
-                message.SenderType = 0;
-                break;
-            case "NotifySenderTypeUser":
-            case 1:
-                message.SenderType = 1;
-                break;
-            case "NotifySenderTypeNode":
-            case 2:
-                message.SenderType = 2;
-                break;
-            }
-            if (object.SenderBeginTime != null)
-                if ($util.Long)
-                    (message.SenderBeginTime = $util.Long.fromValue(object.SenderBeginTime)).unsigned = false;
-                else if (typeof object.SenderBeginTime === "string")
-                    message.SenderBeginTime = parseInt(object.SenderBeginTime, 10);
-                else if (typeof object.SenderBeginTime === "number")
-                    message.SenderBeginTime = object.SenderBeginTime;
-                else if (typeof object.SenderBeginTime === "object")
-                    message.SenderBeginTime = new $util.LongBits(object.SenderBeginTime.low >>> 0, object.SenderBeginTime.high >>> 0).toNumber();
-            if (object.SenderEndTime != null)
-                if ($util.Long)
-                    (message.SenderEndTime = $util.Long.fromValue(object.SenderEndTime)).unsigned = false;
-                else if (typeof object.SenderEndTime === "string")
-                    message.SenderEndTime = parseInt(object.SenderEndTime, 10);
-                else if (typeof object.SenderEndTime === "number")
-                    message.SenderEndTime = object.SenderEndTime;
-                else if (typeof object.SenderEndTime === "object")
-                    message.SenderEndTime = new $util.LongBits(object.SenderEndTime.low >>> 0, object.SenderEndTime.high >>> 0).toNumber();
-            if (object.Message != null)
-                message.Message = String(object.Message);
-            if (object.PageSize != null)
-                if ($util.Long)
-                    (message.PageSize = $util.Long.fromValue(object.PageSize)).unsigned = false;
-                else if (typeof object.PageSize === "string")
-                    message.PageSize = parseInt(object.PageSize, 10);
-                else if (typeof object.PageSize === "number")
-                    message.PageSize = object.PageSize;
-                else if (typeof object.PageSize === "object")
-                    message.PageSize = new $util.LongBits(object.PageSize.low >>> 0, object.PageSize.high >>> 0).toNumber();
-            if (object.PageNum != null)
-                if ($util.Long)
-                    (message.PageNum = $util.Long.fromValue(object.PageNum)).unsigned = false;
-                else if (typeof object.PageNum === "string")
-                    message.PageNum = parseInt(object.PageNum, 10);
-                else if (typeof object.PageNum === "number")
-                    message.PageNum = object.PageNum;
-                else if (typeof object.PageNum === "object")
-                    message.PageNum = new $util.LongBits(object.PageNum.low >>> 0, object.PageNum.high >>> 0).toNumber();
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a Filter message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.Filter
-         * @static
-         * @param {protoManage.Filter} message Filter
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        Filter.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.ID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.ID = options.longs === String ? "0" : 0;
-                object.IDSign = "";
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.GroupID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.GroupID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.TypeID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.TypeID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.NodeID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.NodeID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.SourceID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.SourceID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.TargetID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.TargetID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.FuncID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.FuncID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.ReportID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.ReportID = options.longs === String ? "0" : 0;
-                object.Name = "";
-                object.Flag = "";
-                object.Value = "";
-                object.State = options.enums === String ? "StateNot" : 0;
-                object.Level = options.enums === String ? "LevelNot" : 0;
-                object.LevelLow = options.enums === String ? "LevelNot" : 0;
-                object.SenderName = "";
-                object.SenderType = options.enums === String ? "NotifySenderTypeUnknow" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.SenderBeginTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.SenderBeginTime = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.SenderEndTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.SenderEndTime = options.longs === String ? "0" : 0;
-                object.Message = "";
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.PageSize = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.PageSize = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.PageNum = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.PageNum = options.longs === String ? "0" : 0;
-            }
-            if (message.ID != null && message.hasOwnProperty("ID"))
-                if (typeof message.ID === "number")
-                    object.ID = options.longs === String ? String(message.ID) : message.ID;
-                else
-                    object.ID = options.longs === String ? $util.Long.prototype.toString.call(message.ID) : options.longs === Number ? new $util.LongBits(message.ID.low >>> 0, message.ID.high >>> 0).toNumber() : message.ID;
-            if (message.IDSign != null && message.hasOwnProperty("IDSign"))
-                object.IDSign = message.IDSign;
-            if (message.GroupID != null && message.hasOwnProperty("GroupID"))
-                if (typeof message.GroupID === "number")
-                    object.GroupID = options.longs === String ? String(message.GroupID) : message.GroupID;
-                else
-                    object.GroupID = options.longs === String ? $util.Long.prototype.toString.call(message.GroupID) : options.longs === Number ? new $util.LongBits(message.GroupID.low >>> 0, message.GroupID.high >>> 0).toNumber() : message.GroupID;
-            if (message.TypeID != null && message.hasOwnProperty("TypeID"))
-                if (typeof message.TypeID === "number")
-                    object.TypeID = options.longs === String ? String(message.TypeID) : message.TypeID;
-                else
-                    object.TypeID = options.longs === String ? $util.Long.prototype.toString.call(message.TypeID) : options.longs === Number ? new $util.LongBits(message.TypeID.low >>> 0, message.TypeID.high >>> 0).toNumber() : message.TypeID;
-            if (message.NodeID != null && message.hasOwnProperty("NodeID"))
-                if (typeof message.NodeID === "number")
-                    object.NodeID = options.longs === String ? String(message.NodeID) : message.NodeID;
-                else
-                    object.NodeID = options.longs === String ? $util.Long.prototype.toString.call(message.NodeID) : options.longs === Number ? new $util.LongBits(message.NodeID.low >>> 0, message.NodeID.high >>> 0).toNumber() : message.NodeID;
-            if (message.SourceID != null && message.hasOwnProperty("SourceID"))
-                if (typeof message.SourceID === "number")
-                    object.SourceID = options.longs === String ? String(message.SourceID) : message.SourceID;
-                else
-                    object.SourceID = options.longs === String ? $util.Long.prototype.toString.call(message.SourceID) : options.longs === Number ? new $util.LongBits(message.SourceID.low >>> 0, message.SourceID.high >>> 0).toNumber() : message.SourceID;
-            if (message.TargetID != null && message.hasOwnProperty("TargetID"))
-                if (typeof message.TargetID === "number")
-                    object.TargetID = options.longs === String ? String(message.TargetID) : message.TargetID;
-                else
-                    object.TargetID = options.longs === String ? $util.Long.prototype.toString.call(message.TargetID) : options.longs === Number ? new $util.LongBits(message.TargetID.low >>> 0, message.TargetID.high >>> 0).toNumber() : message.TargetID;
-            if (message.FuncID != null && message.hasOwnProperty("FuncID"))
-                if (typeof message.FuncID === "number")
-                    object.FuncID = options.longs === String ? String(message.FuncID) : message.FuncID;
-                else
-                    object.FuncID = options.longs === String ? $util.Long.prototype.toString.call(message.FuncID) : options.longs === Number ? new $util.LongBits(message.FuncID.low >>> 0, message.FuncID.high >>> 0).toNumber() : message.FuncID;
-            if (message.ReportID != null && message.hasOwnProperty("ReportID"))
-                if (typeof message.ReportID === "number")
-                    object.ReportID = options.longs === String ? String(message.ReportID) : message.ReportID;
-                else
-                    object.ReportID = options.longs === String ? $util.Long.prototype.toString.call(message.ReportID) : options.longs === Number ? new $util.LongBits(message.ReportID.low >>> 0, message.ReportID.high >>> 0).toNumber() : message.ReportID;
-            if (message.Name != null && message.hasOwnProperty("Name"))
-                object.Name = message.Name;
-            if (message.Flag != null && message.hasOwnProperty("Flag"))
-                object.Flag = message.Flag;
-            if (message.Value != null && message.hasOwnProperty("Value"))
-                object.Value = message.Value;
-            if (message.State != null && message.hasOwnProperty("State"))
-                object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
-            if (message.Level != null && message.hasOwnProperty("Level"))
-                object.Level = options.enums === String ? $root.protoManage.Level[message.Level] : message.Level;
-            if (message.LevelLow != null && message.hasOwnProperty("LevelLow"))
-                object.LevelLow = options.enums === String ? $root.protoManage.Level[message.LevelLow] : message.LevelLow;
-            if (message.SenderName != null && message.hasOwnProperty("SenderName"))
-                object.SenderName = message.SenderName;
-            if (message.SenderType != null && message.hasOwnProperty("SenderType"))
-                object.SenderType = options.enums === String ? $root.protoManage.NotifySenderType[message.SenderType] : message.SenderType;
-            if (message.SenderBeginTime != null && message.hasOwnProperty("SenderBeginTime"))
-                if (typeof message.SenderBeginTime === "number")
-                    object.SenderBeginTime = options.longs === String ? String(message.SenderBeginTime) : message.SenderBeginTime;
-                else
-                    object.SenderBeginTime = options.longs === String ? $util.Long.prototype.toString.call(message.SenderBeginTime) : options.longs === Number ? new $util.LongBits(message.SenderBeginTime.low >>> 0, message.SenderBeginTime.high >>> 0).toNumber() : message.SenderBeginTime;
-            if (message.SenderEndTime != null && message.hasOwnProperty("SenderEndTime"))
-                if (typeof message.SenderEndTime === "number")
-                    object.SenderEndTime = options.longs === String ? String(message.SenderEndTime) : message.SenderEndTime;
-                else
-                    object.SenderEndTime = options.longs === String ? $util.Long.prototype.toString.call(message.SenderEndTime) : options.longs === Number ? new $util.LongBits(message.SenderEndTime.low >>> 0, message.SenderEndTime.high >>> 0).toNumber() : message.SenderEndTime;
-            if (message.Message != null && message.hasOwnProperty("Message"))
-                object.Message = message.Message;
-            if (message.PageSize != null && message.hasOwnProperty("PageSize"))
-                if (typeof message.PageSize === "number")
-                    object.PageSize = options.longs === String ? String(message.PageSize) : message.PageSize;
-                else
-                    object.PageSize = options.longs === String ? $util.Long.prototype.toString.call(message.PageSize) : options.longs === Number ? new $util.LongBits(message.PageSize.low >>> 0, message.PageSize.high >>> 0).toNumber() : message.PageSize;
-            if (message.PageNum != null && message.hasOwnProperty("PageNum"))
-                if (typeof message.PageNum === "number")
-                    object.PageNum = options.longs === String ? String(message.PageNum) : message.PageNum;
-                else
-                    object.PageNum = options.longs === String ? $util.Long.prototype.toString.call(message.PageNum) : options.longs === Number ? new $util.LongBits(message.PageNum.low >>> 0, message.PageNum.high >>> 0).toNumber() : message.PageNum;
-            return object;
-        };
-
-        /**
-         * Converts this Filter to JSON.
-         * @function toJSON
-         * @memberof protoManage.Filter
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        Filter.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return Filter;
     })();
 
     protoManage.Page = (function() {
@@ -4194,436 +2710,6 @@ export const protoManage = $root.protoManage = (() => {
         return TopLink;
     })();
 
-    protoManage.NodeGroup = (function() {
-
-        /**
-         * Properties of a NodeGroup.
-         * @memberof protoManage
-         * @interface INodeGroup
-         * @property {protoManage.IBase|null} [Base] NodeGroup Base
-         * @property {string|null} [Name] NodeGroup Name
-         */
-
-        /**
-         * Constructs a new NodeGroup.
-         * @memberof protoManage
-         * @classdesc Represents a NodeGroup.
-         * @implements INodeGroup
-         * @constructor
-         * @param {protoManage.INodeGroup=} [properties] Properties to set
-         */
-        function NodeGroup(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * NodeGroup Base.
-         * @member {protoManage.IBase|null|undefined} Base
-         * @memberof protoManage.NodeGroup
-         * @instance
-         */
-        NodeGroup.prototype.Base = null;
-
-        /**
-         * NodeGroup Name.
-         * @member {string} Name
-         * @memberof protoManage.NodeGroup
-         * @instance
-         */
-        NodeGroup.prototype.Name = "";
-
-        /**
-         * Creates a new NodeGroup instance using the specified properties.
-         * @function create
-         * @memberof protoManage.NodeGroup
-         * @static
-         * @param {protoManage.INodeGroup=} [properties] Properties to set
-         * @returns {protoManage.NodeGroup} NodeGroup instance
-         */
-        NodeGroup.create = function create(properties) {
-            return new NodeGroup(properties);
-        };
-
-        /**
-         * Encodes the specified NodeGroup message. Does not implicitly {@link protoManage.NodeGroup.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.NodeGroup
-         * @static
-         * @param {protoManage.INodeGroup} message NodeGroup message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        NodeGroup.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.Base != null && Object.hasOwnProperty.call(message, "Base"))
-                $root.protoManage.Base.encode(message.Base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.Name != null && Object.hasOwnProperty.call(message, "Name"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.Name);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified NodeGroup message, length delimited. Does not implicitly {@link protoManage.NodeGroup.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.NodeGroup
-         * @static
-         * @param {protoManage.INodeGroup} message NodeGroup message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        NodeGroup.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a NodeGroup message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.NodeGroup
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.NodeGroup} NodeGroup
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        NodeGroup.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.NodeGroup();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.Base = $root.protoManage.Base.decode(reader, reader.uint32());
-                    break;
-                case 2:
-                    message.Name = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a NodeGroup message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.NodeGroup
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.NodeGroup} NodeGroup
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        NodeGroup.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a NodeGroup message.
-         * @function verify
-         * @memberof protoManage.NodeGroup
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        NodeGroup.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.Base != null && message.hasOwnProperty("Base")) {
-                let error = $root.protoManage.Base.verify(message.Base);
-                if (error)
-                    return "Base." + error;
-            }
-            if (message.Name != null && message.hasOwnProperty("Name"))
-                if (!$util.isString(message.Name))
-                    return "Name: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a NodeGroup message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.NodeGroup
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.NodeGroup} NodeGroup
-         */
-        NodeGroup.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.NodeGroup)
-                return object;
-            let message = new $root.protoManage.NodeGroup();
-            if (object.Base != null) {
-                if (typeof object.Base !== "object")
-                    throw TypeError(".protoManage.NodeGroup.Base: object expected");
-                message.Base = $root.protoManage.Base.fromObject(object.Base);
-            }
-            if (object.Name != null)
-                message.Name = String(object.Name);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a NodeGroup message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.NodeGroup
-         * @static
-         * @param {protoManage.NodeGroup} message NodeGroup
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        NodeGroup.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.Base = null;
-                object.Name = "";
-            }
-            if (message.Base != null && message.hasOwnProperty("Base"))
-                object.Base = $root.protoManage.Base.toObject(message.Base, options);
-            if (message.Name != null && message.hasOwnProperty("Name"))
-                object.Name = message.Name;
-            return object;
-        };
-
-        /**
-         * Converts this NodeGroup to JSON.
-         * @function toJSON
-         * @memberof protoManage.NodeGroup
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        NodeGroup.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return NodeGroup;
-    })();
-
-    protoManage.NodeType = (function() {
-
-        /**
-         * Properties of a NodeType.
-         * @memberof protoManage
-         * @interface INodeType
-         * @property {protoManage.IBase|null} [Base] NodeType Base
-         * @property {string|null} [Name] NodeType Name
-         */
-
-        /**
-         * Constructs a new NodeType.
-         * @memberof protoManage
-         * @classdesc Represents a NodeType.
-         * @implements INodeType
-         * @constructor
-         * @param {protoManage.INodeType=} [properties] Properties to set
-         */
-        function NodeType(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * NodeType Base.
-         * @member {protoManage.IBase|null|undefined} Base
-         * @memberof protoManage.NodeType
-         * @instance
-         */
-        NodeType.prototype.Base = null;
-
-        /**
-         * NodeType Name.
-         * @member {string} Name
-         * @memberof protoManage.NodeType
-         * @instance
-         */
-        NodeType.prototype.Name = "";
-
-        /**
-         * Creates a new NodeType instance using the specified properties.
-         * @function create
-         * @memberof protoManage.NodeType
-         * @static
-         * @param {protoManage.INodeType=} [properties] Properties to set
-         * @returns {protoManage.NodeType} NodeType instance
-         */
-        NodeType.create = function create(properties) {
-            return new NodeType(properties);
-        };
-
-        /**
-         * Encodes the specified NodeType message. Does not implicitly {@link protoManage.NodeType.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.NodeType
-         * @static
-         * @param {protoManage.INodeType} message NodeType message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        NodeType.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.Base != null && Object.hasOwnProperty.call(message, "Base"))
-                $root.protoManage.Base.encode(message.Base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.Name != null && Object.hasOwnProperty.call(message, "Name"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.Name);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified NodeType message, length delimited. Does not implicitly {@link protoManage.NodeType.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.NodeType
-         * @static
-         * @param {protoManage.INodeType} message NodeType message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        NodeType.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a NodeType message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.NodeType
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.NodeType} NodeType
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        NodeType.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.NodeType();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.Base = $root.protoManage.Base.decode(reader, reader.uint32());
-                    break;
-                case 2:
-                    message.Name = reader.string();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a NodeType message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.NodeType
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.NodeType} NodeType
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        NodeType.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a NodeType message.
-         * @function verify
-         * @memberof protoManage.NodeType
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        NodeType.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.Base != null && message.hasOwnProperty("Base")) {
-                let error = $root.protoManage.Base.verify(message.Base);
-                if (error)
-                    return "Base." + error;
-            }
-            if (message.Name != null && message.hasOwnProperty("Name"))
-                if (!$util.isString(message.Name))
-                    return "Name: string expected";
-            return null;
-        };
-
-        /**
-         * Creates a NodeType message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.NodeType
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.NodeType} NodeType
-         */
-        NodeType.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.NodeType)
-                return object;
-            let message = new $root.protoManage.NodeType();
-            if (object.Base != null) {
-                if (typeof object.Base !== "object")
-                    throw TypeError(".protoManage.NodeType.Base: object expected");
-                message.Base = $root.protoManage.Base.fromObject(object.Base);
-            }
-            if (object.Name != null)
-                message.Name = String(object.Name);
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a NodeType message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.NodeType
-         * @static
-         * @param {protoManage.NodeType} message NodeType
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        NodeType.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.Base = null;
-                object.Name = "";
-            }
-            if (message.Base != null && message.hasOwnProperty("Base"))
-                object.Base = $root.protoManage.Base.toObject(message.Base, options);
-            if (message.Name != null && message.hasOwnProperty("Name"))
-                object.Name = message.Name;
-            return object;
-        };
-
-        /**
-         * Converts this NodeType to JSON.
-         * @function toJSON
-         * @memberof protoManage.NodeType
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        NodeType.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return NodeType;
-    })();
-
     protoManage.Node = (function() {
 
         /**
@@ -4631,8 +2717,6 @@ export const protoManage = $root.protoManage = (() => {
          * @memberof protoManage
          * @interface INode
          * @property {protoManage.IBase|null} [Base] Node Base
-         * @property {number|null} [GroupID] Node GroupID
-         * @property {number|null} [TypeID] Node TypeID
          * @property {string|null} [Name] Node Name
          * @property {protoManage.State|null} [State] Node State
          */
@@ -4659,22 +2743,6 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         Node.prototype.Base = null;
-
-        /**
-         * Node GroupID.
-         * @member {number} GroupID
-         * @memberof protoManage.Node
-         * @instance
-         */
-        Node.prototype.GroupID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * Node TypeID.
-         * @member {number} TypeID
-         * @memberof protoManage.Node
-         * @instance
-         */
-        Node.prototype.TypeID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
          * Node Name.
@@ -4718,14 +2786,10 @@ export const protoManage = $root.protoManage = (() => {
                 writer = $Writer.create();
             if (message.Base != null && Object.hasOwnProperty.call(message, "Base"))
                 $root.protoManage.Base.encode(message.Base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.GroupID != null && Object.hasOwnProperty.call(message, "GroupID"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.GroupID);
-            if (message.TypeID != null && Object.hasOwnProperty.call(message, "TypeID"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.TypeID);
             if (message.Name != null && Object.hasOwnProperty.call(message, "Name"))
-                writer.uint32(/* id 4, wireType 2 =*/34).string(message.Name);
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.Name);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.State);
+                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.State);
             return writer;
         };
 
@@ -4764,15 +2828,9 @@ export const protoManage = $root.protoManage = (() => {
                     message.Base = $root.protoManage.Base.decode(reader, reader.uint32());
                     break;
                 case 2:
-                    message.GroupID = reader.int64();
-                    break;
-                case 3:
-                    message.TypeID = reader.int64();
-                    break;
-                case 4:
                     message.Name = reader.string();
                     break;
-                case 5:
+                case 3:
                     message.State = reader.int32();
                     break;
                 default:
@@ -4815,12 +2873,6 @@ export const protoManage = $root.protoManage = (() => {
                 if (error)
                     return "Base." + error;
             }
-            if (message.GroupID != null && message.hasOwnProperty("GroupID"))
-                if (!$util.isInteger(message.GroupID) && !(message.GroupID && $util.isInteger(message.GroupID.low) && $util.isInteger(message.GroupID.high)))
-                    return "GroupID: integer|Long expected";
-            if (message.TypeID != null && message.hasOwnProperty("TypeID"))
-                if (!$util.isInteger(message.TypeID) && !(message.TypeID && $util.isInteger(message.TypeID.low) && $util.isInteger(message.TypeID.high)))
-                    return "TypeID: integer|Long expected";
             if (message.Name != null && message.hasOwnProperty("Name"))
                 if (!$util.isString(message.Name))
                     return "Name: string expected";
@@ -4855,24 +2907,6 @@ export const protoManage = $root.protoManage = (() => {
                     throw TypeError(".protoManage.Node.Base: object expected");
                 message.Base = $root.protoManage.Base.fromObject(object.Base);
             }
-            if (object.GroupID != null)
-                if ($util.Long)
-                    (message.GroupID = $util.Long.fromValue(object.GroupID)).unsigned = false;
-                else if (typeof object.GroupID === "string")
-                    message.GroupID = parseInt(object.GroupID, 10);
-                else if (typeof object.GroupID === "number")
-                    message.GroupID = object.GroupID;
-                else if (typeof object.GroupID === "object")
-                    message.GroupID = new $util.LongBits(object.GroupID.low >>> 0, object.GroupID.high >>> 0).toNumber();
-            if (object.TypeID != null)
-                if ($util.Long)
-                    (message.TypeID = $util.Long.fromValue(object.TypeID)).unsigned = false;
-                else if (typeof object.TypeID === "string")
-                    message.TypeID = parseInt(object.TypeID, 10);
-                else if (typeof object.TypeID === "number")
-                    message.TypeID = object.TypeID;
-                else if (typeof object.TypeID === "object")
-                    message.TypeID = new $util.LongBits(object.TypeID.low >>> 0, object.TypeID.high >>> 0).toNumber();
             if (object.Name != null)
                 message.Name = String(object.Name);
             switch (object.State) {
@@ -4915,31 +2949,11 @@ export const protoManage = $root.protoManage = (() => {
             let object = {};
             if (options.defaults) {
                 object.Base = null;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.GroupID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.GroupID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.TypeID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.TypeID = options.longs === String ? "0" : 0;
                 object.Name = "";
                 object.State = options.enums === String ? "StateNot" : 0;
             }
             if (message.Base != null && message.hasOwnProperty("Base"))
                 object.Base = $root.protoManage.Base.toObject(message.Base, options);
-            if (message.GroupID != null && message.hasOwnProperty("GroupID"))
-                if (typeof message.GroupID === "number")
-                    object.GroupID = options.longs === String ? String(message.GroupID) : message.GroupID;
-                else
-                    object.GroupID = options.longs === String ? $util.Long.prototype.toString.call(message.GroupID) : options.longs === Number ? new $util.LongBits(message.GroupID.low >>> 0, message.GroupID.high >>> 0).toNumber() : message.GroupID;
-            if (message.TypeID != null && message.hasOwnProperty("TypeID"))
-                if (typeof message.TypeID === "number")
-                    object.TypeID = options.longs === String ? String(message.TypeID) : message.TypeID;
-                else
-                    object.TypeID = options.longs === String ? $util.Long.prototype.toString.call(message.TypeID) : options.longs === Number ? new $util.LongBits(message.TypeID.low >>> 0, message.TypeID.high >>> 0).toNumber() : message.TypeID;
             if (message.Name != null && message.hasOwnProperty("Name"))
                 object.Name = message.Name;
             if (message.State != null && message.hasOwnProperty("State"))
@@ -4959,321 +2973,6 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         return Node;
-    })();
-
-    protoManage.NodeLink = (function() {
-
-        /**
-         * Properties of a NodeLink.
-         * @memberof protoManage
-         * @interface INodeLink
-         * @property {protoManage.IBase|null} [Base] NodeLink Base
-         * @property {number|null} [SourceID] NodeLink SourceID
-         * @property {number|null} [TargetID] NodeLink TargetID
-         * @property {protoManage.State|null} [State] NodeLink State
-         */
-
-        /**
-         * Constructs a new NodeLink.
-         * @memberof protoManage
-         * @classdesc Represents a NodeLink.
-         * @implements INodeLink
-         * @constructor
-         * @param {protoManage.INodeLink=} [properties] Properties to set
-         */
-        function NodeLink(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * NodeLink Base.
-         * @member {protoManage.IBase|null|undefined} Base
-         * @memberof protoManage.NodeLink
-         * @instance
-         */
-        NodeLink.prototype.Base = null;
-
-        /**
-         * NodeLink SourceID.
-         * @member {number} SourceID
-         * @memberof protoManage.NodeLink
-         * @instance
-         */
-        NodeLink.prototype.SourceID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * NodeLink TargetID.
-         * @member {number} TargetID
-         * @memberof protoManage.NodeLink
-         * @instance
-         */
-        NodeLink.prototype.TargetID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * NodeLink State.
-         * @member {protoManage.State} State
-         * @memberof protoManage.NodeLink
-         * @instance
-         */
-        NodeLink.prototype.State = 0;
-
-        /**
-         * Creates a new NodeLink instance using the specified properties.
-         * @function create
-         * @memberof protoManage.NodeLink
-         * @static
-         * @param {protoManage.INodeLink=} [properties] Properties to set
-         * @returns {protoManage.NodeLink} NodeLink instance
-         */
-        NodeLink.create = function create(properties) {
-            return new NodeLink(properties);
-        };
-
-        /**
-         * Encodes the specified NodeLink message. Does not implicitly {@link protoManage.NodeLink.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.NodeLink
-         * @static
-         * @param {protoManage.INodeLink} message NodeLink message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        NodeLink.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.Base != null && Object.hasOwnProperty.call(message, "Base"))
-                $root.protoManage.Base.encode(message.Base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.SourceID != null && Object.hasOwnProperty.call(message, "SourceID"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.SourceID);
-            if (message.TargetID != null && Object.hasOwnProperty.call(message, "TargetID"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.TargetID);
-            if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.State);
-            return writer;
-        };
-
-        /**
-         * Encodes the specified NodeLink message, length delimited. Does not implicitly {@link protoManage.NodeLink.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.NodeLink
-         * @static
-         * @param {protoManage.INodeLink} message NodeLink message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        NodeLink.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a NodeLink message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.NodeLink
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.NodeLink} NodeLink
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        NodeLink.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.NodeLink();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.Base = $root.protoManage.Base.decode(reader, reader.uint32());
-                    break;
-                case 2:
-                    message.SourceID = reader.int64();
-                    break;
-                case 3:
-                    message.TargetID = reader.int64();
-                    break;
-                case 4:
-                    message.State = reader.int32();
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a NodeLink message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.NodeLink
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.NodeLink} NodeLink
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        NodeLink.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a NodeLink message.
-         * @function verify
-         * @memberof protoManage.NodeLink
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        NodeLink.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.Base != null && message.hasOwnProperty("Base")) {
-                let error = $root.protoManage.Base.verify(message.Base);
-                if (error)
-                    return "Base." + error;
-            }
-            if (message.SourceID != null && message.hasOwnProperty("SourceID"))
-                if (!$util.isInteger(message.SourceID) && !(message.SourceID && $util.isInteger(message.SourceID.low) && $util.isInteger(message.SourceID.high)))
-                    return "SourceID: integer|Long expected";
-            if (message.TargetID != null && message.hasOwnProperty("TargetID"))
-                if (!$util.isInteger(message.TargetID) && !(message.TargetID && $util.isInteger(message.TargetID.low) && $util.isInteger(message.TargetID.high)))
-                    return "TargetID: integer|Long expected";
-            if (message.State != null && message.hasOwnProperty("State"))
-                switch (message.State) {
-                default:
-                    return "State: enum value expected";
-                case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                    break;
-                }
-            return null;
-        };
-
-        /**
-         * Creates a NodeLink message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.NodeLink
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.NodeLink} NodeLink
-         */
-        NodeLink.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.NodeLink)
-                return object;
-            let message = new $root.protoManage.NodeLink();
-            if (object.Base != null) {
-                if (typeof object.Base !== "object")
-                    throw TypeError(".protoManage.NodeLink.Base: object expected");
-                message.Base = $root.protoManage.Base.fromObject(object.Base);
-            }
-            if (object.SourceID != null)
-                if ($util.Long)
-                    (message.SourceID = $util.Long.fromValue(object.SourceID)).unsigned = false;
-                else if (typeof object.SourceID === "string")
-                    message.SourceID = parseInt(object.SourceID, 10);
-                else if (typeof object.SourceID === "number")
-                    message.SourceID = object.SourceID;
-                else if (typeof object.SourceID === "object")
-                    message.SourceID = new $util.LongBits(object.SourceID.low >>> 0, object.SourceID.high >>> 0).toNumber();
-            if (object.TargetID != null)
-                if ($util.Long)
-                    (message.TargetID = $util.Long.fromValue(object.TargetID)).unsigned = false;
-                else if (typeof object.TargetID === "string")
-                    message.TargetID = parseInt(object.TargetID, 10);
-                else if (typeof object.TargetID === "number")
-                    message.TargetID = object.TargetID;
-                else if (typeof object.TargetID === "object")
-                    message.TargetID = new $util.LongBits(object.TargetID.low >>> 0, object.TargetID.high >>> 0).toNumber();
-            switch (object.State) {
-            case "StateNot":
-            case 0:
-                message.State = 0;
-                break;
-            case "StateUnknow":
-            case 1:
-                message.State = 1;
-                break;
-            case "StateNormal":
-            case 2:
-                message.State = 2;
-                break;
-            case "StateWarn":
-            case 3:
-                message.State = 3;
-                break;
-            case "StateError":
-            case 4:
-                message.State = 4;
-                break;
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a NodeLink message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.NodeLink
-         * @static
-         * @param {protoManage.NodeLink} message NodeLink
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        NodeLink.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults) {
-                object.Base = null;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.SourceID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.SourceID = options.longs === String ? "0" : 0;
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.TargetID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.TargetID = options.longs === String ? "0" : 0;
-                object.State = options.enums === String ? "StateNot" : 0;
-            }
-            if (message.Base != null && message.hasOwnProperty("Base"))
-                object.Base = $root.protoManage.Base.toObject(message.Base, options);
-            if (message.SourceID != null && message.hasOwnProperty("SourceID"))
-                if (typeof message.SourceID === "number")
-                    object.SourceID = options.longs === String ? String(message.SourceID) : message.SourceID;
-                else
-                    object.SourceID = options.longs === String ? $util.Long.prototype.toString.call(message.SourceID) : options.longs === Number ? new $util.LongBits(message.SourceID.low >>> 0, message.SourceID.high >>> 0).toNumber() : message.SourceID;
-            if (message.TargetID != null && message.hasOwnProperty("TargetID"))
-                if (typeof message.TargetID === "number")
-                    object.TargetID = options.longs === String ? String(message.TargetID) : message.TargetID;
-                else
-                    object.TargetID = options.longs === String ? $util.Long.prototype.toString.call(message.TargetID) : options.longs === Number ? new $util.LongBits(message.TargetID.low >>> 0, message.TargetID.high >>> 0).toNumber() : message.TargetID;
-            if (message.State != null && message.hasOwnProperty("State"))
-                object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
-            return object;
-        };
-
-        /**
-         * Converts this NodeLink to JSON.
-         * @function toJSON
-         * @memberof protoManage.NodeLink
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        NodeLink.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return NodeLink;
     })();
 
     protoManage.NodeFunc = (function() {
@@ -7251,8 +4950,6 @@ export const protoManage = $root.protoManage = (() => {
          * Properties of a ReqNodeLogin.
          * @memberof protoManage
          * @interface IReqNodeLogin
-         * @property {protoManage.INodeGroup|null} [NodeGroup] ReqNodeLogin NodeGroup
-         * @property {protoManage.INodeType|null} [NodeType] ReqNodeLogin NodeType
          * @property {protoManage.INode|null} [Node] ReqNodeLogin Node
          */
 
@@ -7270,22 +4967,6 @@ export const protoManage = $root.protoManage = (() => {
                     if (properties[keys[i]] != null)
                         this[keys[i]] = properties[keys[i]];
         }
-
-        /**
-         * ReqNodeLogin NodeGroup.
-         * @member {protoManage.INodeGroup|null|undefined} NodeGroup
-         * @memberof protoManage.ReqNodeLogin
-         * @instance
-         */
-        ReqNodeLogin.prototype.NodeGroup = null;
-
-        /**
-         * ReqNodeLogin NodeType.
-         * @member {protoManage.INodeType|null|undefined} NodeType
-         * @memberof protoManage.ReqNodeLogin
-         * @instance
-         */
-        ReqNodeLogin.prototype.NodeType = null;
 
         /**
          * ReqNodeLogin Node.
@@ -7319,12 +5000,8 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeLogin.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.NodeGroup != null && Object.hasOwnProperty.call(message, "NodeGroup"))
-                $root.protoManage.NodeGroup.encode(message.NodeGroup, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.NodeType != null && Object.hasOwnProperty.call(message, "NodeType"))
-                $root.protoManage.NodeType.encode(message.NodeType, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             if (message.Node != null && Object.hasOwnProperty.call(message, "Node"))
-                $root.protoManage.Node.encode(message.Node, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                $root.protoManage.Node.encode(message.Node, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             return writer;
         };
 
@@ -7360,12 +5037,6 @@ export const protoManage = $root.protoManage = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.NodeGroup = $root.protoManage.NodeGroup.decode(reader, reader.uint32());
-                    break;
-                case 2:
-                    message.NodeType = $root.protoManage.NodeType.decode(reader, reader.uint32());
-                    break;
-                case 3:
                     message.Node = $root.protoManage.Node.decode(reader, reader.uint32());
                     break;
                 default:
@@ -7403,16 +5074,6 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeLogin.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.NodeGroup != null && message.hasOwnProperty("NodeGroup")) {
-                let error = $root.protoManage.NodeGroup.verify(message.NodeGroup);
-                if (error)
-                    return "NodeGroup." + error;
-            }
-            if (message.NodeType != null && message.hasOwnProperty("NodeType")) {
-                let error = $root.protoManage.NodeType.verify(message.NodeType);
-                if (error)
-                    return "NodeType." + error;
-            }
             if (message.Node != null && message.hasOwnProperty("Node")) {
                 let error = $root.protoManage.Node.verify(message.Node);
                 if (error)
@@ -7433,16 +5094,6 @@ export const protoManage = $root.protoManage = (() => {
             if (object instanceof $root.protoManage.ReqNodeLogin)
                 return object;
             let message = new $root.protoManage.ReqNodeLogin();
-            if (object.NodeGroup != null) {
-                if (typeof object.NodeGroup !== "object")
-                    throw TypeError(".protoManage.ReqNodeLogin.NodeGroup: object expected");
-                message.NodeGroup = $root.protoManage.NodeGroup.fromObject(object.NodeGroup);
-            }
-            if (object.NodeType != null) {
-                if (typeof object.NodeType !== "object")
-                    throw TypeError(".protoManage.ReqNodeLogin.NodeType: object expected");
-                message.NodeType = $root.protoManage.NodeType.fromObject(object.NodeType);
-            }
             if (object.Node != null) {
                 if (typeof object.Node !== "object")
                     throw TypeError(".protoManage.ReqNodeLogin.Node: object expected");
@@ -7464,15 +5115,8 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults) {
-                object.NodeGroup = null;
-                object.NodeType = null;
+            if (options.defaults)
                 object.Node = null;
-            }
-            if (message.NodeGroup != null && message.hasOwnProperty("NodeGroup"))
-                object.NodeGroup = $root.protoManage.NodeGroup.toObject(message.NodeGroup, options);
-            if (message.NodeType != null && message.hasOwnProperty("NodeType"))
-                object.NodeType = $root.protoManage.NodeType.toObject(message.NodeType, options);
             if (message.Node != null && message.hasOwnProperty("Node"))
                 object.Node = $root.protoManage.Node.toObject(message.Node, options);
             return object;
@@ -7499,7 +5143,6 @@ export const protoManage = $root.protoManage = (() => {
          * @memberof protoManage
          * @interface IReqNodeOnline
          * @property {protoManage.INode|null} [Node] ReqNodeOnline Node
-         * @property {Array.<protoManage.INodeLink>|null} [NodeLinkList] ReqNodeOnline NodeLinkList
          */
 
         /**
@@ -7511,7 +5154,6 @@ export const protoManage = $root.protoManage = (() => {
          * @param {protoManage.IReqNodeOnline=} [properties] Properties to set
          */
         function ReqNodeOnline(properties) {
-            this.NodeLinkList = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -7525,14 +5167,6 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         ReqNodeOnline.prototype.Node = null;
-
-        /**
-         * ReqNodeOnline NodeLinkList.
-         * @member {Array.<protoManage.INodeLink>} NodeLinkList
-         * @memberof protoManage.ReqNodeOnline
-         * @instance
-         */
-        ReqNodeOnline.prototype.NodeLinkList = $util.emptyArray;
 
         /**
          * Creates a new ReqNodeOnline instance using the specified properties.
@@ -7560,9 +5194,6 @@ export const protoManage = $root.protoManage = (() => {
                 writer = $Writer.create();
             if (message.Node != null && Object.hasOwnProperty.call(message, "Node"))
                 $root.protoManage.Node.encode(message.Node, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.NodeLinkList != null && message.NodeLinkList.length)
-                for (let i = 0; i < message.NodeLinkList.length; ++i)
-                    $root.protoManage.NodeLink.encode(message.NodeLinkList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             return writer;
         };
 
@@ -7599,11 +5230,6 @@ export const protoManage = $root.protoManage = (() => {
                 switch (tag >>> 3) {
                 case 1:
                     message.Node = $root.protoManage.Node.decode(reader, reader.uint32());
-                    break;
-                case 2:
-                    if (!(message.NodeLinkList && message.NodeLinkList.length))
-                        message.NodeLinkList = [];
-                    message.NodeLinkList.push($root.protoManage.NodeLink.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -7645,15 +5271,6 @@ export const protoManage = $root.protoManage = (() => {
                 if (error)
                     return "Node." + error;
             }
-            if (message.NodeLinkList != null && message.hasOwnProperty("NodeLinkList")) {
-                if (!Array.isArray(message.NodeLinkList))
-                    return "NodeLinkList: array expected";
-                for (let i = 0; i < message.NodeLinkList.length; ++i) {
-                    let error = $root.protoManage.NodeLink.verify(message.NodeLinkList[i]);
-                    if (error)
-                        return "NodeLinkList." + error;
-                }
-            }
             return null;
         };
 
@@ -7674,16 +5291,6 @@ export const protoManage = $root.protoManage = (() => {
                     throw TypeError(".protoManage.ReqNodeOnline.Node: object expected");
                 message.Node = $root.protoManage.Node.fromObject(object.Node);
             }
-            if (object.NodeLinkList) {
-                if (!Array.isArray(object.NodeLinkList))
-                    throw TypeError(".protoManage.ReqNodeOnline.NodeLinkList: array expected");
-                message.NodeLinkList = [];
-                for (let i = 0; i < object.NodeLinkList.length; ++i) {
-                    if (typeof object.NodeLinkList[i] !== "object")
-                        throw TypeError(".protoManage.ReqNodeOnline.NodeLinkList: object expected");
-                    message.NodeLinkList[i] = $root.protoManage.NodeLink.fromObject(object.NodeLinkList[i]);
-                }
-            }
             return message;
         };
 
@@ -7700,17 +5307,10 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.arrays || options.defaults)
-                object.NodeLinkList = [];
             if (options.defaults)
                 object.Node = null;
             if (message.Node != null && message.hasOwnProperty("Node"))
                 object.Node = $root.protoManage.Node.toObject(message.Node, options);
-            if (message.NodeLinkList && message.NodeLinkList.length) {
-                object.NodeLinkList = [];
-                for (let j = 0; j < message.NodeLinkList.length; ++j)
-                    object.NodeLinkList[j] = $root.protoManage.NodeLink.toObject(message.NodeLinkList[j], options);
-            }
             return object;
         };
 
@@ -8464,975 +6064,17 @@ export const protoManage = $root.protoManage = (() => {
         return AnsManagerList;
     })();
 
-    protoManage.ReqNodeGroupList = (function() {
-
-        /**
-         * Properties of a ReqNodeGroupList.
-         * @memberof protoManage
-         * @interface IReqNodeGroupList
-         * @property {protoManage.IFilter|null} [filter] ReqNodeGroupList filter
-         */
-
-        /**
-         * Constructs a new ReqNodeGroupList.
-         * @memberof protoManage
-         * @classdesc Represents a ReqNodeGroupList.
-         * @implements IReqNodeGroupList
-         * @constructor
-         * @param {protoManage.IReqNodeGroupList=} [properties] Properties to set
-         */
-        function ReqNodeGroupList(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ReqNodeGroupList filter.
-         * @member {protoManage.IFilter|null|undefined} filter
-         * @memberof protoManage.ReqNodeGroupList
-         * @instance
-         */
-        ReqNodeGroupList.prototype.filter = null;
-
-        /**
-         * Creates a new ReqNodeGroupList instance using the specified properties.
-         * @function create
-         * @memberof protoManage.ReqNodeGroupList
-         * @static
-         * @param {protoManage.IReqNodeGroupList=} [properties] Properties to set
-         * @returns {protoManage.ReqNodeGroupList} ReqNodeGroupList instance
-         */
-        ReqNodeGroupList.create = function create(properties) {
-            return new ReqNodeGroupList(properties);
-        };
-
-        /**
-         * Encodes the specified ReqNodeGroupList message. Does not implicitly {@link protoManage.ReqNodeGroupList.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.ReqNodeGroupList
-         * @static
-         * @param {protoManage.IReqNodeGroupList} message ReqNodeGroupList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeGroupList.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.filter != null && Object.hasOwnProperty.call(message, "filter"))
-                $root.protoManage.Filter.encode(message.filter, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ReqNodeGroupList message, length delimited. Does not implicitly {@link protoManage.ReqNodeGroupList.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.ReqNodeGroupList
-         * @static
-         * @param {protoManage.IReqNodeGroupList} message ReqNodeGroupList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeGroupList.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a ReqNodeGroupList message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.ReqNodeGroupList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.ReqNodeGroupList} ReqNodeGroupList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeGroupList.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeGroupList();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.filter = $root.protoManage.Filter.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a ReqNodeGroupList message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.ReqNodeGroupList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.ReqNodeGroupList} ReqNodeGroupList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeGroupList.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a ReqNodeGroupList message.
-         * @function verify
-         * @memberof protoManage.ReqNodeGroupList
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ReqNodeGroupList.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.filter != null && message.hasOwnProperty("filter")) {
-                let error = $root.protoManage.Filter.verify(message.filter);
-                if (error)
-                    return "filter." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a ReqNodeGroupList message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.ReqNodeGroupList
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.ReqNodeGroupList} ReqNodeGroupList
-         */
-        ReqNodeGroupList.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.ReqNodeGroupList)
-                return object;
-            let message = new $root.protoManage.ReqNodeGroupList();
-            if (object.filter != null) {
-                if (typeof object.filter !== "object")
-                    throw TypeError(".protoManage.ReqNodeGroupList.filter: object expected");
-                message.filter = $root.protoManage.Filter.fromObject(object.filter);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ReqNodeGroupList message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.ReqNodeGroupList
-         * @static
-         * @param {protoManage.ReqNodeGroupList} message ReqNodeGroupList
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ReqNodeGroupList.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.filter = null;
-            if (message.filter != null && message.hasOwnProperty("filter"))
-                object.filter = $root.protoManage.Filter.toObject(message.filter, options);
-            return object;
-        };
-
-        /**
-         * Converts this ReqNodeGroupList to JSON.
-         * @function toJSON
-         * @memberof protoManage.ReqNodeGroupList
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ReqNodeGroupList.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return ReqNodeGroupList;
-    })();
-
-    protoManage.AnsNodeGroupList = (function() {
-
-        /**
-         * Properties of an AnsNodeGroupList.
-         * @memberof protoManage
-         * @interface IAnsNodeGroupList
-         * @property {number|null} [Length] AnsNodeGroupList Length
-         * @property {Array.<protoManage.INodeGroup>|null} [NodeGroupList] AnsNodeGroupList NodeGroupList
-         * @property {Array.<protoManage.IStateCount>|null} [NodeStateCountList] AnsNodeGroupList NodeStateCountList
-         */
-
-        /**
-         * Constructs a new AnsNodeGroupList.
-         * @memberof protoManage
-         * @classdesc Represents an AnsNodeGroupList.
-         * @implements IAnsNodeGroupList
-         * @constructor
-         * @param {protoManage.IAnsNodeGroupList=} [properties] Properties to set
-         */
-        function AnsNodeGroupList(properties) {
-            this.NodeGroupList = [];
-            this.NodeStateCountList = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * AnsNodeGroupList Length.
-         * @member {number} Length
-         * @memberof protoManage.AnsNodeGroupList
-         * @instance
-         */
-        AnsNodeGroupList.prototype.Length = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * AnsNodeGroupList NodeGroupList.
-         * @member {Array.<protoManage.INodeGroup>} NodeGroupList
-         * @memberof protoManage.AnsNodeGroupList
-         * @instance
-         */
-        AnsNodeGroupList.prototype.NodeGroupList = $util.emptyArray;
-
-        /**
-         * AnsNodeGroupList NodeStateCountList.
-         * @member {Array.<protoManage.IStateCount>} NodeStateCountList
-         * @memberof protoManage.AnsNodeGroupList
-         * @instance
-         */
-        AnsNodeGroupList.prototype.NodeStateCountList = $util.emptyArray;
-
-        /**
-         * Creates a new AnsNodeGroupList instance using the specified properties.
-         * @function create
-         * @memberof protoManage.AnsNodeGroupList
-         * @static
-         * @param {protoManage.IAnsNodeGroupList=} [properties] Properties to set
-         * @returns {protoManage.AnsNodeGroupList} AnsNodeGroupList instance
-         */
-        AnsNodeGroupList.create = function create(properties) {
-            return new AnsNodeGroupList(properties);
-        };
-
-        /**
-         * Encodes the specified AnsNodeGroupList message. Does not implicitly {@link protoManage.AnsNodeGroupList.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.AnsNodeGroupList
-         * @static
-         * @param {protoManage.IAnsNodeGroupList} message AnsNodeGroupList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AnsNodeGroupList.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.Length != null && Object.hasOwnProperty.call(message, "Length"))
-                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.Length);
-            if (message.NodeStateCountList != null && message.NodeStateCountList.length)
-                for (let i = 0; i < message.NodeStateCountList.length; ++i)
-                    $root.protoManage.StateCount.encode(message.NodeStateCountList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.NodeGroupList != null && message.NodeGroupList.length)
-                for (let i = 0; i < message.NodeGroupList.length; ++i)
-                    $root.protoManage.NodeGroup.encode(message.NodeGroupList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified AnsNodeGroupList message, length delimited. Does not implicitly {@link protoManage.AnsNodeGroupList.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.AnsNodeGroupList
-         * @static
-         * @param {protoManage.IAnsNodeGroupList} message AnsNodeGroupList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AnsNodeGroupList.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an AnsNodeGroupList message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.AnsNodeGroupList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.AnsNodeGroupList} AnsNodeGroupList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AnsNodeGroupList.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.AnsNodeGroupList();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.Length = reader.int64();
-                    break;
-                case 3:
-                    if (!(message.NodeGroupList && message.NodeGroupList.length))
-                        message.NodeGroupList = [];
-                    message.NodeGroupList.push($root.protoManage.NodeGroup.decode(reader, reader.uint32()));
-                    break;
-                case 2:
-                    if (!(message.NodeStateCountList && message.NodeStateCountList.length))
-                        message.NodeStateCountList = [];
-                    message.NodeStateCountList.push($root.protoManage.StateCount.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an AnsNodeGroupList message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.AnsNodeGroupList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.AnsNodeGroupList} AnsNodeGroupList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AnsNodeGroupList.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an AnsNodeGroupList message.
-         * @function verify
-         * @memberof protoManage.AnsNodeGroupList
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        AnsNodeGroupList.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.Length != null && message.hasOwnProperty("Length"))
-                if (!$util.isInteger(message.Length) && !(message.Length && $util.isInteger(message.Length.low) && $util.isInteger(message.Length.high)))
-                    return "Length: integer|Long expected";
-            if (message.NodeGroupList != null && message.hasOwnProperty("NodeGroupList")) {
-                if (!Array.isArray(message.NodeGroupList))
-                    return "NodeGroupList: array expected";
-                for (let i = 0; i < message.NodeGroupList.length; ++i) {
-                    let error = $root.protoManage.NodeGroup.verify(message.NodeGroupList[i]);
-                    if (error)
-                        return "NodeGroupList." + error;
-                }
-            }
-            if (message.NodeStateCountList != null && message.hasOwnProperty("NodeStateCountList")) {
-                if (!Array.isArray(message.NodeStateCountList))
-                    return "NodeStateCountList: array expected";
-                for (let i = 0; i < message.NodeStateCountList.length; ++i) {
-                    let error = $root.protoManage.StateCount.verify(message.NodeStateCountList[i]);
-                    if (error)
-                        return "NodeStateCountList." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates an AnsNodeGroupList message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.AnsNodeGroupList
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.AnsNodeGroupList} AnsNodeGroupList
-         */
-        AnsNodeGroupList.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.AnsNodeGroupList)
-                return object;
-            let message = new $root.protoManage.AnsNodeGroupList();
-            if (object.Length != null)
-                if ($util.Long)
-                    (message.Length = $util.Long.fromValue(object.Length)).unsigned = false;
-                else if (typeof object.Length === "string")
-                    message.Length = parseInt(object.Length, 10);
-                else if (typeof object.Length === "number")
-                    message.Length = object.Length;
-                else if (typeof object.Length === "object")
-                    message.Length = new $util.LongBits(object.Length.low >>> 0, object.Length.high >>> 0).toNumber();
-            if (object.NodeGroupList) {
-                if (!Array.isArray(object.NodeGroupList))
-                    throw TypeError(".protoManage.AnsNodeGroupList.NodeGroupList: array expected");
-                message.NodeGroupList = [];
-                for (let i = 0; i < object.NodeGroupList.length; ++i) {
-                    if (typeof object.NodeGroupList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeGroupList.NodeGroupList: object expected");
-                    message.NodeGroupList[i] = $root.protoManage.NodeGroup.fromObject(object.NodeGroupList[i]);
-                }
-            }
-            if (object.NodeStateCountList) {
-                if (!Array.isArray(object.NodeStateCountList))
-                    throw TypeError(".protoManage.AnsNodeGroupList.NodeStateCountList: array expected");
-                message.NodeStateCountList = [];
-                for (let i = 0; i < object.NodeStateCountList.length; ++i) {
-                    if (typeof object.NodeStateCountList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeGroupList.NodeStateCountList: object expected");
-                    message.NodeStateCountList[i] = $root.protoManage.StateCount.fromObject(object.NodeStateCountList[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an AnsNodeGroupList message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.AnsNodeGroupList
-         * @static
-         * @param {protoManage.AnsNodeGroupList} message AnsNodeGroupList
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        AnsNodeGroupList.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.arrays || options.defaults) {
-                object.NodeStateCountList = [];
-                object.NodeGroupList = [];
-            }
-            if (options.defaults)
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.Length = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.Length = options.longs === String ? "0" : 0;
-            if (message.Length != null && message.hasOwnProperty("Length"))
-                if (typeof message.Length === "number")
-                    object.Length = options.longs === String ? String(message.Length) : message.Length;
-                else
-                    object.Length = options.longs === String ? $util.Long.prototype.toString.call(message.Length) : options.longs === Number ? new $util.LongBits(message.Length.low >>> 0, message.Length.high >>> 0).toNumber() : message.Length;
-            if (message.NodeStateCountList && message.NodeStateCountList.length) {
-                object.NodeStateCountList = [];
-                for (let j = 0; j < message.NodeStateCountList.length; ++j)
-                    object.NodeStateCountList[j] = $root.protoManage.StateCount.toObject(message.NodeStateCountList[j], options);
-            }
-            if (message.NodeGroupList && message.NodeGroupList.length) {
-                object.NodeGroupList = [];
-                for (let j = 0; j < message.NodeGroupList.length; ++j)
-                    object.NodeGroupList[j] = $root.protoManage.NodeGroup.toObject(message.NodeGroupList[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this AnsNodeGroupList to JSON.
-         * @function toJSON
-         * @memberof protoManage.AnsNodeGroupList
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        AnsNodeGroupList.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return AnsNodeGroupList;
-    })();
-
-    protoManage.ReqNodeTypeList = (function() {
-
-        /**
-         * Properties of a ReqNodeTypeList.
-         * @memberof protoManage
-         * @interface IReqNodeTypeList
-         * @property {protoManage.IFilter|null} [filter] ReqNodeTypeList filter
-         */
-
-        /**
-         * Constructs a new ReqNodeTypeList.
-         * @memberof protoManage
-         * @classdesc Represents a ReqNodeTypeList.
-         * @implements IReqNodeTypeList
-         * @constructor
-         * @param {protoManage.IReqNodeTypeList=} [properties] Properties to set
-         */
-        function ReqNodeTypeList(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ReqNodeTypeList filter.
-         * @member {protoManage.IFilter|null|undefined} filter
-         * @memberof protoManage.ReqNodeTypeList
-         * @instance
-         */
-        ReqNodeTypeList.prototype.filter = null;
-
-        /**
-         * Creates a new ReqNodeTypeList instance using the specified properties.
-         * @function create
-         * @memberof protoManage.ReqNodeTypeList
-         * @static
-         * @param {protoManage.IReqNodeTypeList=} [properties] Properties to set
-         * @returns {protoManage.ReqNodeTypeList} ReqNodeTypeList instance
-         */
-        ReqNodeTypeList.create = function create(properties) {
-            return new ReqNodeTypeList(properties);
-        };
-
-        /**
-         * Encodes the specified ReqNodeTypeList message. Does not implicitly {@link protoManage.ReqNodeTypeList.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.ReqNodeTypeList
-         * @static
-         * @param {protoManage.IReqNodeTypeList} message ReqNodeTypeList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeTypeList.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.filter != null && Object.hasOwnProperty.call(message, "filter"))
-                $root.protoManage.Filter.encode(message.filter, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ReqNodeTypeList message, length delimited. Does not implicitly {@link protoManage.ReqNodeTypeList.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.ReqNodeTypeList
-         * @static
-         * @param {protoManage.IReqNodeTypeList} message ReqNodeTypeList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeTypeList.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a ReqNodeTypeList message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.ReqNodeTypeList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.ReqNodeTypeList} ReqNodeTypeList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeTypeList.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeTypeList();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.filter = $root.protoManage.Filter.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a ReqNodeTypeList message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.ReqNodeTypeList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.ReqNodeTypeList} ReqNodeTypeList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeTypeList.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a ReqNodeTypeList message.
-         * @function verify
-         * @memberof protoManage.ReqNodeTypeList
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ReqNodeTypeList.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.filter != null && message.hasOwnProperty("filter")) {
-                let error = $root.protoManage.Filter.verify(message.filter);
-                if (error)
-                    return "filter." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a ReqNodeTypeList message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.ReqNodeTypeList
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.ReqNodeTypeList} ReqNodeTypeList
-         */
-        ReqNodeTypeList.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.ReqNodeTypeList)
-                return object;
-            let message = new $root.protoManage.ReqNodeTypeList();
-            if (object.filter != null) {
-                if (typeof object.filter !== "object")
-                    throw TypeError(".protoManage.ReqNodeTypeList.filter: object expected");
-                message.filter = $root.protoManage.Filter.fromObject(object.filter);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ReqNodeTypeList message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.ReqNodeTypeList
-         * @static
-         * @param {protoManage.ReqNodeTypeList} message ReqNodeTypeList
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ReqNodeTypeList.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.filter = null;
-            if (message.filter != null && message.hasOwnProperty("filter"))
-                object.filter = $root.protoManage.Filter.toObject(message.filter, options);
-            return object;
-        };
-
-        /**
-         * Converts this ReqNodeTypeList to JSON.
-         * @function toJSON
-         * @memberof protoManage.ReqNodeTypeList
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ReqNodeTypeList.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return ReqNodeTypeList;
-    })();
-
-    protoManage.AnsNodeTypeList = (function() {
-
-        /**
-         * Properties of an AnsNodeTypeList.
-         * @memberof protoManage
-         * @interface IAnsNodeTypeList
-         * @property {number|null} [Length] AnsNodeTypeList Length
-         * @property {Array.<protoManage.INodeType>|null} [NodeTypeList] AnsNodeTypeList NodeTypeList
-         * @property {Array.<protoManage.IStateCount>|null} [NodeStateCountList] AnsNodeTypeList NodeStateCountList
-         */
-
-        /**
-         * Constructs a new AnsNodeTypeList.
-         * @memberof protoManage
-         * @classdesc Represents an AnsNodeTypeList.
-         * @implements IAnsNodeTypeList
-         * @constructor
-         * @param {protoManage.IAnsNodeTypeList=} [properties] Properties to set
-         */
-        function AnsNodeTypeList(properties) {
-            this.NodeTypeList = [];
-            this.NodeStateCountList = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * AnsNodeTypeList Length.
-         * @member {number} Length
-         * @memberof protoManage.AnsNodeTypeList
-         * @instance
-         */
-        AnsNodeTypeList.prototype.Length = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * AnsNodeTypeList NodeTypeList.
-         * @member {Array.<protoManage.INodeType>} NodeTypeList
-         * @memberof protoManage.AnsNodeTypeList
-         * @instance
-         */
-        AnsNodeTypeList.prototype.NodeTypeList = $util.emptyArray;
-
-        /**
-         * AnsNodeTypeList NodeStateCountList.
-         * @member {Array.<protoManage.IStateCount>} NodeStateCountList
-         * @memberof protoManage.AnsNodeTypeList
-         * @instance
-         */
-        AnsNodeTypeList.prototype.NodeStateCountList = $util.emptyArray;
-
-        /**
-         * Creates a new AnsNodeTypeList instance using the specified properties.
-         * @function create
-         * @memberof protoManage.AnsNodeTypeList
-         * @static
-         * @param {protoManage.IAnsNodeTypeList=} [properties] Properties to set
-         * @returns {protoManage.AnsNodeTypeList} AnsNodeTypeList instance
-         */
-        AnsNodeTypeList.create = function create(properties) {
-            return new AnsNodeTypeList(properties);
-        };
-
-        /**
-         * Encodes the specified AnsNodeTypeList message. Does not implicitly {@link protoManage.AnsNodeTypeList.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.AnsNodeTypeList
-         * @static
-         * @param {protoManage.IAnsNodeTypeList} message AnsNodeTypeList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AnsNodeTypeList.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.Length != null && Object.hasOwnProperty.call(message, "Length"))
-                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.Length);
-            if (message.NodeTypeList != null && message.NodeTypeList.length)
-                for (let i = 0; i < message.NodeTypeList.length; ++i)
-                    $root.protoManage.NodeType.encode(message.NodeTypeList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.NodeStateCountList != null && message.NodeStateCountList.length)
-                for (let i = 0; i < message.NodeStateCountList.length; ++i)
-                    $root.protoManage.StateCount.encode(message.NodeStateCountList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified AnsNodeTypeList message, length delimited. Does not implicitly {@link protoManage.AnsNodeTypeList.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.AnsNodeTypeList
-         * @static
-         * @param {protoManage.IAnsNodeTypeList} message AnsNodeTypeList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AnsNodeTypeList.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an AnsNodeTypeList message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.AnsNodeTypeList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.AnsNodeTypeList} AnsNodeTypeList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AnsNodeTypeList.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.AnsNodeTypeList();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.Length = reader.int64();
-                    break;
-                case 2:
-                    if (!(message.NodeTypeList && message.NodeTypeList.length))
-                        message.NodeTypeList = [];
-                    message.NodeTypeList.push($root.protoManage.NodeType.decode(reader, reader.uint32()));
-                    break;
-                case 3:
-                    if (!(message.NodeStateCountList && message.NodeStateCountList.length))
-                        message.NodeStateCountList = [];
-                    message.NodeStateCountList.push($root.protoManage.StateCount.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an AnsNodeTypeList message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.AnsNodeTypeList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.AnsNodeTypeList} AnsNodeTypeList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AnsNodeTypeList.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an AnsNodeTypeList message.
-         * @function verify
-         * @memberof protoManage.AnsNodeTypeList
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        AnsNodeTypeList.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.Length != null && message.hasOwnProperty("Length"))
-                if (!$util.isInteger(message.Length) && !(message.Length && $util.isInteger(message.Length.low) && $util.isInteger(message.Length.high)))
-                    return "Length: integer|Long expected";
-            if (message.NodeTypeList != null && message.hasOwnProperty("NodeTypeList")) {
-                if (!Array.isArray(message.NodeTypeList))
-                    return "NodeTypeList: array expected";
-                for (let i = 0; i < message.NodeTypeList.length; ++i) {
-                    let error = $root.protoManage.NodeType.verify(message.NodeTypeList[i]);
-                    if (error)
-                        return "NodeTypeList." + error;
-                }
-            }
-            if (message.NodeStateCountList != null && message.hasOwnProperty("NodeStateCountList")) {
-                if (!Array.isArray(message.NodeStateCountList))
-                    return "NodeStateCountList: array expected";
-                for (let i = 0; i < message.NodeStateCountList.length; ++i) {
-                    let error = $root.protoManage.StateCount.verify(message.NodeStateCountList[i]);
-                    if (error)
-                        return "NodeStateCountList." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates an AnsNodeTypeList message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.AnsNodeTypeList
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.AnsNodeTypeList} AnsNodeTypeList
-         */
-        AnsNodeTypeList.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.AnsNodeTypeList)
-                return object;
-            let message = new $root.protoManage.AnsNodeTypeList();
-            if (object.Length != null)
-                if ($util.Long)
-                    (message.Length = $util.Long.fromValue(object.Length)).unsigned = false;
-                else if (typeof object.Length === "string")
-                    message.Length = parseInt(object.Length, 10);
-                else if (typeof object.Length === "number")
-                    message.Length = object.Length;
-                else if (typeof object.Length === "object")
-                    message.Length = new $util.LongBits(object.Length.low >>> 0, object.Length.high >>> 0).toNumber();
-            if (object.NodeTypeList) {
-                if (!Array.isArray(object.NodeTypeList))
-                    throw TypeError(".protoManage.AnsNodeTypeList.NodeTypeList: array expected");
-                message.NodeTypeList = [];
-                for (let i = 0; i < object.NodeTypeList.length; ++i) {
-                    if (typeof object.NodeTypeList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeTypeList.NodeTypeList: object expected");
-                    message.NodeTypeList[i] = $root.protoManage.NodeType.fromObject(object.NodeTypeList[i]);
-                }
-            }
-            if (object.NodeStateCountList) {
-                if (!Array.isArray(object.NodeStateCountList))
-                    throw TypeError(".protoManage.AnsNodeTypeList.NodeStateCountList: array expected");
-                message.NodeStateCountList = [];
-                for (let i = 0; i < object.NodeStateCountList.length; ++i) {
-                    if (typeof object.NodeStateCountList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeTypeList.NodeStateCountList: object expected");
-                    message.NodeStateCountList[i] = $root.protoManage.StateCount.fromObject(object.NodeStateCountList[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an AnsNodeTypeList message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.AnsNodeTypeList
-         * @static
-         * @param {protoManage.AnsNodeTypeList} message AnsNodeTypeList
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        AnsNodeTypeList.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.arrays || options.defaults) {
-                object.NodeTypeList = [];
-                object.NodeStateCountList = [];
-            }
-            if (options.defaults)
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.Length = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.Length = options.longs === String ? "0" : 0;
-            if (message.Length != null && message.hasOwnProperty("Length"))
-                if (typeof message.Length === "number")
-                    object.Length = options.longs === String ? String(message.Length) : message.Length;
-                else
-                    object.Length = options.longs === String ? $util.Long.prototype.toString.call(message.Length) : options.longs === Number ? new $util.LongBits(message.Length.low >>> 0, message.Length.high >>> 0).toNumber() : message.Length;
-            if (message.NodeTypeList && message.NodeTypeList.length) {
-                object.NodeTypeList = [];
-                for (let j = 0; j < message.NodeTypeList.length; ++j)
-                    object.NodeTypeList[j] = $root.protoManage.NodeType.toObject(message.NodeTypeList[j], options);
-            }
-            if (message.NodeStateCountList && message.NodeStateCountList.length) {
-                object.NodeStateCountList = [];
-                for (let j = 0; j < message.NodeStateCountList.length; ++j)
-                    object.NodeStateCountList[j] = $root.protoManage.StateCount.toObject(message.NodeStateCountList[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this AnsNodeTypeList to JSON.
-         * @function toJSON
-         * @memberof protoManage.AnsNodeTypeList
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        AnsNodeTypeList.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return AnsNodeTypeList;
-    })();
-
     protoManage.ReqNodeList = (function() {
 
         /**
          * Properties of a ReqNodeList.
          * @memberof protoManage
          * @interface IReqNodeList
-         * @property {protoManage.IFilter|null} [filter] ReqNodeList filter
+         * @property {Array.<number>|null} [ID] ReqNodeList ID
+         * @property {Array.<string>|null} [Name] ReqNodeList Name
+         * @property {Array.<protoManage.State>|null} [State] ReqNodeList State
+         * @property {Array.<protoManage.ITime>|null} [UpdateTime] ReqNodeList UpdateTime
+         * @property {protoManage.IPage|null} [Page] ReqNodeList Page
          */
 
         /**
@@ -9444,6 +6086,10 @@ export const protoManage = $root.protoManage = (() => {
          * @param {protoManage.IReqNodeList=} [properties] Properties to set
          */
         function ReqNodeList(properties) {
+            this.ID = [];
+            this.Name = [];
+            this.State = [];
+            this.UpdateTime = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -9451,12 +6097,44 @@ export const protoManage = $root.protoManage = (() => {
         }
 
         /**
-         * ReqNodeList filter.
-         * @member {protoManage.IFilter|null|undefined} filter
+         * ReqNodeList ID.
+         * @member {Array.<number>} ID
          * @memberof protoManage.ReqNodeList
          * @instance
          */
-        ReqNodeList.prototype.filter = null;
+        ReqNodeList.prototype.ID = $util.emptyArray;
+
+        /**
+         * ReqNodeList Name.
+         * @member {Array.<string>} Name
+         * @memberof protoManage.ReqNodeList
+         * @instance
+         */
+        ReqNodeList.prototype.Name = $util.emptyArray;
+
+        /**
+         * ReqNodeList State.
+         * @member {Array.<protoManage.State>} State
+         * @memberof protoManage.ReqNodeList
+         * @instance
+         */
+        ReqNodeList.prototype.State = $util.emptyArray;
+
+        /**
+         * ReqNodeList UpdateTime.
+         * @member {Array.<protoManage.ITime>} UpdateTime
+         * @memberof protoManage.ReqNodeList
+         * @instance
+         */
+        ReqNodeList.prototype.UpdateTime = $util.emptyArray;
+
+        /**
+         * ReqNodeList Page.
+         * @member {protoManage.IPage|null|undefined} Page
+         * @memberof protoManage.ReqNodeList
+         * @instance
+         */
+        ReqNodeList.prototype.Page = null;
 
         /**
          * Creates a new ReqNodeList instance using the specified properties.
@@ -9482,8 +6160,26 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeList.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.filter != null && Object.hasOwnProperty.call(message, "filter"))
-                $root.protoManage.Filter.encode(message.filter, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.ID != null && message.ID.length) {
+                writer.uint32(/* id 1, wireType 2 =*/10).fork();
+                for (let i = 0; i < message.ID.length; ++i)
+                    writer.int64(message.ID[i]);
+                writer.ldelim();
+            }
+            if (message.Name != null && message.Name.length)
+                for (let i = 0; i < message.Name.length; ++i)
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.Name[i]);
+            if (message.State != null && message.State.length) {
+                writer.uint32(/* id 3, wireType 2 =*/26).fork();
+                for (let i = 0; i < message.State.length; ++i)
+                    writer.int32(message.State[i]);
+                writer.ldelim();
+            }
+            if (message.UpdateTime != null && message.UpdateTime.length)
+                for (let i = 0; i < message.UpdateTime.length; ++i)
+                    $root.protoManage.Time.encode(message.UpdateTime[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
+            if (message.Page != null && Object.hasOwnProperty.call(message, "Page"))
+                $root.protoManage.Page.encode(message.Page, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             return writer;
         };
 
@@ -9519,7 +6215,37 @@ export const protoManage = $root.protoManage = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.filter = $root.protoManage.Filter.decode(reader, reader.uint32());
+                    if (!(message.ID && message.ID.length))
+                        message.ID = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.ID.push(reader.int64());
+                    } else
+                        message.ID.push(reader.int64());
+                    break;
+                case 2:
+                    if (!(message.Name && message.Name.length))
+                        message.Name = [];
+                    message.Name.push(reader.string());
+                    break;
+                case 3:
+                    if (!(message.State && message.State.length))
+                        message.State = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.State.push(reader.int32());
+                    } else
+                        message.State.push(reader.int32());
+                    break;
+                case 4:
+                    if (!(message.UpdateTime && message.UpdateTime.length))
+                        message.UpdateTime = [];
+                    message.UpdateTime.push($root.protoManage.Time.decode(reader, reader.uint32()));
+                    break;
+                case 5:
+                    message.Page = $root.protoManage.Page.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -9556,10 +6282,48 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeList.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.filter != null && message.hasOwnProperty("filter")) {
-                let error = $root.protoManage.Filter.verify(message.filter);
+            if (message.ID != null && message.hasOwnProperty("ID")) {
+                if (!Array.isArray(message.ID))
+                    return "ID: array expected";
+                for (let i = 0; i < message.ID.length; ++i)
+                    if (!$util.isInteger(message.ID[i]) && !(message.ID[i] && $util.isInteger(message.ID[i].low) && $util.isInteger(message.ID[i].high)))
+                        return "ID: integer|Long[] expected";
+            }
+            if (message.Name != null && message.hasOwnProperty("Name")) {
+                if (!Array.isArray(message.Name))
+                    return "Name: array expected";
+                for (let i = 0; i < message.Name.length; ++i)
+                    if (!$util.isString(message.Name[i]))
+                        return "Name: string[] expected";
+            }
+            if (message.State != null && message.hasOwnProperty("State")) {
+                if (!Array.isArray(message.State))
+                    return "State: array expected";
+                for (let i = 0; i < message.State.length; ++i)
+                    switch (message.State[i]) {
+                    default:
+                        return "State: enum value[] expected";
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        break;
+                    }
+            }
+            if (message.UpdateTime != null && message.hasOwnProperty("UpdateTime")) {
+                if (!Array.isArray(message.UpdateTime))
+                    return "UpdateTime: array expected";
+                for (let i = 0; i < message.UpdateTime.length; ++i) {
+                    let error = $root.protoManage.Time.verify(message.UpdateTime[i]);
+                    if (error)
+                        return "UpdateTime." + error;
+                }
+            }
+            if (message.Page != null && message.hasOwnProperty("Page")) {
+                let error = $root.protoManage.Page.verify(message.Page);
                 if (error)
-                    return "filter." + error;
+                    return "Page." + error;
             }
             return null;
         };
@@ -9576,10 +6340,70 @@ export const protoManage = $root.protoManage = (() => {
             if (object instanceof $root.protoManage.ReqNodeList)
                 return object;
             let message = new $root.protoManage.ReqNodeList();
-            if (object.filter != null) {
-                if (typeof object.filter !== "object")
-                    throw TypeError(".protoManage.ReqNodeList.filter: object expected");
-                message.filter = $root.protoManage.Filter.fromObject(object.filter);
+            if (object.ID) {
+                if (!Array.isArray(object.ID))
+                    throw TypeError(".protoManage.ReqNodeList.ID: array expected");
+                message.ID = [];
+                for (let i = 0; i < object.ID.length; ++i)
+                    if ($util.Long)
+                        (message.ID[i] = $util.Long.fromValue(object.ID[i])).unsigned = false;
+                    else if (typeof object.ID[i] === "string")
+                        message.ID[i] = parseInt(object.ID[i], 10);
+                    else if (typeof object.ID[i] === "number")
+                        message.ID[i] = object.ID[i];
+                    else if (typeof object.ID[i] === "object")
+                        message.ID[i] = new $util.LongBits(object.ID[i].low >>> 0, object.ID[i].high >>> 0).toNumber();
+            }
+            if (object.Name) {
+                if (!Array.isArray(object.Name))
+                    throw TypeError(".protoManage.ReqNodeList.Name: array expected");
+                message.Name = [];
+                for (let i = 0; i < object.Name.length; ++i)
+                    message.Name[i] = String(object.Name[i]);
+            }
+            if (object.State) {
+                if (!Array.isArray(object.State))
+                    throw TypeError(".protoManage.ReqNodeList.State: array expected");
+                message.State = [];
+                for (let i = 0; i < object.State.length; ++i)
+                    switch (object.State[i]) {
+                    default:
+                    case "StateNot":
+                    case 0:
+                        message.State[i] = 0;
+                        break;
+                    case "StateUnknow":
+                    case 1:
+                        message.State[i] = 1;
+                        break;
+                    case "StateNormal":
+                    case 2:
+                        message.State[i] = 2;
+                        break;
+                    case "StateWarn":
+                    case 3:
+                        message.State[i] = 3;
+                        break;
+                    case "StateError":
+                    case 4:
+                        message.State[i] = 4;
+                        break;
+                    }
+            }
+            if (object.UpdateTime) {
+                if (!Array.isArray(object.UpdateTime))
+                    throw TypeError(".protoManage.ReqNodeList.UpdateTime: array expected");
+                message.UpdateTime = [];
+                for (let i = 0; i < object.UpdateTime.length; ++i) {
+                    if (typeof object.UpdateTime[i] !== "object")
+                        throw TypeError(".protoManage.ReqNodeList.UpdateTime: object expected");
+                    message.UpdateTime[i] = $root.protoManage.Time.fromObject(object.UpdateTime[i]);
+                }
+            }
+            if (object.Page != null) {
+                if (typeof object.Page !== "object")
+                    throw TypeError(".protoManage.ReqNodeList.Page: object expected");
+                message.Page = $root.protoManage.Page.fromObject(object.Page);
             }
             return message;
         };
@@ -9597,10 +6421,39 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
+            if (options.arrays || options.defaults) {
+                object.ID = [];
+                object.Name = [];
+                object.State = [];
+                object.UpdateTime = [];
+            }
             if (options.defaults)
-                object.filter = null;
-            if (message.filter != null && message.hasOwnProperty("filter"))
-                object.filter = $root.protoManage.Filter.toObject(message.filter, options);
+                object.Page = null;
+            if (message.ID && message.ID.length) {
+                object.ID = [];
+                for (let j = 0; j < message.ID.length; ++j)
+                    if (typeof message.ID[j] === "number")
+                        object.ID[j] = options.longs === String ? String(message.ID[j]) : message.ID[j];
+                    else
+                        object.ID[j] = options.longs === String ? $util.Long.prototype.toString.call(message.ID[j]) : options.longs === Number ? new $util.LongBits(message.ID[j].low >>> 0, message.ID[j].high >>> 0).toNumber() : message.ID[j];
+            }
+            if (message.Name && message.Name.length) {
+                object.Name = [];
+                for (let j = 0; j < message.Name.length; ++j)
+                    object.Name[j] = message.Name[j];
+            }
+            if (message.State && message.State.length) {
+                object.State = [];
+                for (let j = 0; j < message.State.length; ++j)
+                    object.State[j] = options.enums === String ? $root.protoManage.State[message.State[j]] : message.State[j];
+            }
+            if (message.UpdateTime && message.UpdateTime.length) {
+                object.UpdateTime = [];
+                for (let j = 0; j < message.UpdateTime.length; ++j)
+                    object.UpdateTime[j] = $root.protoManage.Time.toObject(message.UpdateTime[j], options);
+            }
+            if (message.Page != null && message.hasOwnProperty("Page"))
+                object.Page = $root.protoManage.Page.toObject(message.Page, options);
             return object;
         };
 
@@ -9626,12 +6479,6 @@ export const protoManage = $root.protoManage = (() => {
          * @interface IAnsNodeList
          * @property {number|null} [Length] AnsNodeList Length
          * @property {Array.<protoManage.INode>|null} [NodeList] AnsNodeList NodeList
-         * @property {Array.<protoManage.INodeGroup>|null} [NodeGroupList] AnsNodeList NodeGroupList
-         * @property {Array.<protoManage.INodeType>|null} [NodeTypeList] AnsNodeList NodeTypeList
-         * @property {Array.<protoManage.IStateCount>|null} [NodeLinkSourceStateCountList] AnsNodeList NodeLinkSourceStateCountList
-         * @property {Array.<protoManage.IStateCount>|null} [NodeLinkTargetStateCountList] AnsNodeList NodeLinkTargetStateCountList
-         * @property {Array.<protoManage.IStateCount>|null} [NodeFuncStateCountList] AnsNodeList NodeFuncStateCountList
-         * @property {Array.<protoManage.IStateCount>|null} [NodeReportStateCountList] AnsNodeList NodeReportStateCountList
          */
 
         /**
@@ -9644,12 +6491,6 @@ export const protoManage = $root.protoManage = (() => {
          */
         function AnsNodeList(properties) {
             this.NodeList = [];
-            this.NodeGroupList = [];
-            this.NodeTypeList = [];
-            this.NodeLinkSourceStateCountList = [];
-            this.NodeLinkTargetStateCountList = [];
-            this.NodeFuncStateCountList = [];
-            this.NodeReportStateCountList = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -9671,54 +6512,6 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         AnsNodeList.prototype.NodeList = $util.emptyArray;
-
-        /**
-         * AnsNodeList NodeGroupList.
-         * @member {Array.<protoManage.INodeGroup>} NodeGroupList
-         * @memberof protoManage.AnsNodeList
-         * @instance
-         */
-        AnsNodeList.prototype.NodeGroupList = $util.emptyArray;
-
-        /**
-         * AnsNodeList NodeTypeList.
-         * @member {Array.<protoManage.INodeType>} NodeTypeList
-         * @memberof protoManage.AnsNodeList
-         * @instance
-         */
-        AnsNodeList.prototype.NodeTypeList = $util.emptyArray;
-
-        /**
-         * AnsNodeList NodeLinkSourceStateCountList.
-         * @member {Array.<protoManage.IStateCount>} NodeLinkSourceStateCountList
-         * @memberof protoManage.AnsNodeList
-         * @instance
-         */
-        AnsNodeList.prototype.NodeLinkSourceStateCountList = $util.emptyArray;
-
-        /**
-         * AnsNodeList NodeLinkTargetStateCountList.
-         * @member {Array.<protoManage.IStateCount>} NodeLinkTargetStateCountList
-         * @memberof protoManage.AnsNodeList
-         * @instance
-         */
-        AnsNodeList.prototype.NodeLinkTargetStateCountList = $util.emptyArray;
-
-        /**
-         * AnsNodeList NodeFuncStateCountList.
-         * @member {Array.<protoManage.IStateCount>} NodeFuncStateCountList
-         * @memberof protoManage.AnsNodeList
-         * @instance
-         */
-        AnsNodeList.prototype.NodeFuncStateCountList = $util.emptyArray;
-
-        /**
-         * AnsNodeList NodeReportStateCountList.
-         * @member {Array.<protoManage.IStateCount>} NodeReportStateCountList
-         * @memberof protoManage.AnsNodeList
-         * @instance
-         */
-        AnsNodeList.prototype.NodeReportStateCountList = $util.emptyArray;
 
         /**
          * Creates a new AnsNodeList instance using the specified properties.
@@ -9749,24 +6542,6 @@ export const protoManage = $root.protoManage = (() => {
             if (message.NodeList != null && message.NodeList.length)
                 for (let i = 0; i < message.NodeList.length; ++i)
                     $root.protoManage.Node.encode(message.NodeList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.NodeGroupList != null && message.NodeGroupList.length)
-                for (let i = 0; i < message.NodeGroupList.length; ++i)
-                    $root.protoManage.NodeGroup.encode(message.NodeGroupList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            if (message.NodeTypeList != null && message.NodeTypeList.length)
-                for (let i = 0; i < message.NodeTypeList.length; ++i)
-                    $root.protoManage.NodeType.encode(message.NodeTypeList[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
-            if (message.NodeLinkSourceStateCountList != null && message.NodeLinkSourceStateCountList.length)
-                for (let i = 0; i < message.NodeLinkSourceStateCountList.length; ++i)
-                    $root.protoManage.StateCount.encode(message.NodeLinkSourceStateCountList[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
-            if (message.NodeLinkTargetStateCountList != null && message.NodeLinkTargetStateCountList.length)
-                for (let i = 0; i < message.NodeLinkTargetStateCountList.length; ++i)
-                    $root.protoManage.StateCount.encode(message.NodeLinkTargetStateCountList[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
-            if (message.NodeFuncStateCountList != null && message.NodeFuncStateCountList.length)
-                for (let i = 0; i < message.NodeFuncStateCountList.length; ++i)
-                    $root.protoManage.StateCount.encode(message.NodeFuncStateCountList[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
-            if (message.NodeReportStateCountList != null && message.NodeReportStateCountList.length)
-                for (let i = 0; i < message.NodeReportStateCountList.length; ++i)
-                    $root.protoManage.StateCount.encode(message.NodeReportStateCountList[i], writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
             return writer;
         };
 
@@ -9808,36 +6583,6 @@ export const protoManage = $root.protoManage = (() => {
                     if (!(message.NodeList && message.NodeList.length))
                         message.NodeList = [];
                     message.NodeList.push($root.protoManage.Node.decode(reader, reader.uint32()));
-                    break;
-                case 3:
-                    if (!(message.NodeGroupList && message.NodeGroupList.length))
-                        message.NodeGroupList = [];
-                    message.NodeGroupList.push($root.protoManage.NodeGroup.decode(reader, reader.uint32()));
-                    break;
-                case 4:
-                    if (!(message.NodeTypeList && message.NodeTypeList.length))
-                        message.NodeTypeList = [];
-                    message.NodeTypeList.push($root.protoManage.NodeType.decode(reader, reader.uint32()));
-                    break;
-                case 5:
-                    if (!(message.NodeLinkSourceStateCountList && message.NodeLinkSourceStateCountList.length))
-                        message.NodeLinkSourceStateCountList = [];
-                    message.NodeLinkSourceStateCountList.push($root.protoManage.StateCount.decode(reader, reader.uint32()));
-                    break;
-                case 6:
-                    if (!(message.NodeLinkTargetStateCountList && message.NodeLinkTargetStateCountList.length))
-                        message.NodeLinkTargetStateCountList = [];
-                    message.NodeLinkTargetStateCountList.push($root.protoManage.StateCount.decode(reader, reader.uint32()));
-                    break;
-                case 7:
-                    if (!(message.NodeFuncStateCountList && message.NodeFuncStateCountList.length))
-                        message.NodeFuncStateCountList = [];
-                    message.NodeFuncStateCountList.push($root.protoManage.StateCount.decode(reader, reader.uint32()));
-                    break;
-                case 8:
-                    if (!(message.NodeReportStateCountList && message.NodeReportStateCountList.length))
-                        message.NodeReportStateCountList = [];
-                    message.NodeReportStateCountList.push($root.protoManage.StateCount.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -9886,60 +6631,6 @@ export const protoManage = $root.protoManage = (() => {
                         return "NodeList." + error;
                 }
             }
-            if (message.NodeGroupList != null && message.hasOwnProperty("NodeGroupList")) {
-                if (!Array.isArray(message.NodeGroupList))
-                    return "NodeGroupList: array expected";
-                for (let i = 0; i < message.NodeGroupList.length; ++i) {
-                    let error = $root.protoManage.NodeGroup.verify(message.NodeGroupList[i]);
-                    if (error)
-                        return "NodeGroupList." + error;
-                }
-            }
-            if (message.NodeTypeList != null && message.hasOwnProperty("NodeTypeList")) {
-                if (!Array.isArray(message.NodeTypeList))
-                    return "NodeTypeList: array expected";
-                for (let i = 0; i < message.NodeTypeList.length; ++i) {
-                    let error = $root.protoManage.NodeType.verify(message.NodeTypeList[i]);
-                    if (error)
-                        return "NodeTypeList." + error;
-                }
-            }
-            if (message.NodeLinkSourceStateCountList != null && message.hasOwnProperty("NodeLinkSourceStateCountList")) {
-                if (!Array.isArray(message.NodeLinkSourceStateCountList))
-                    return "NodeLinkSourceStateCountList: array expected";
-                for (let i = 0; i < message.NodeLinkSourceStateCountList.length; ++i) {
-                    let error = $root.protoManage.StateCount.verify(message.NodeLinkSourceStateCountList[i]);
-                    if (error)
-                        return "NodeLinkSourceStateCountList." + error;
-                }
-            }
-            if (message.NodeLinkTargetStateCountList != null && message.hasOwnProperty("NodeLinkTargetStateCountList")) {
-                if (!Array.isArray(message.NodeLinkTargetStateCountList))
-                    return "NodeLinkTargetStateCountList: array expected";
-                for (let i = 0; i < message.NodeLinkTargetStateCountList.length; ++i) {
-                    let error = $root.protoManage.StateCount.verify(message.NodeLinkTargetStateCountList[i]);
-                    if (error)
-                        return "NodeLinkTargetStateCountList." + error;
-                }
-            }
-            if (message.NodeFuncStateCountList != null && message.hasOwnProperty("NodeFuncStateCountList")) {
-                if (!Array.isArray(message.NodeFuncStateCountList))
-                    return "NodeFuncStateCountList: array expected";
-                for (let i = 0; i < message.NodeFuncStateCountList.length; ++i) {
-                    let error = $root.protoManage.StateCount.verify(message.NodeFuncStateCountList[i]);
-                    if (error)
-                        return "NodeFuncStateCountList." + error;
-                }
-            }
-            if (message.NodeReportStateCountList != null && message.hasOwnProperty("NodeReportStateCountList")) {
-                if (!Array.isArray(message.NodeReportStateCountList))
-                    return "NodeReportStateCountList: array expected";
-                for (let i = 0; i < message.NodeReportStateCountList.length; ++i) {
-                    let error = $root.protoManage.StateCount.verify(message.NodeReportStateCountList[i]);
-                    if (error)
-                        return "NodeReportStateCountList." + error;
-                }
-            }
             return null;
         };
 
@@ -9974,66 +6665,6 @@ export const protoManage = $root.protoManage = (() => {
                     message.NodeList[i] = $root.protoManage.Node.fromObject(object.NodeList[i]);
                 }
             }
-            if (object.NodeGroupList) {
-                if (!Array.isArray(object.NodeGroupList))
-                    throw TypeError(".protoManage.AnsNodeList.NodeGroupList: array expected");
-                message.NodeGroupList = [];
-                for (let i = 0; i < object.NodeGroupList.length; ++i) {
-                    if (typeof object.NodeGroupList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeList.NodeGroupList: object expected");
-                    message.NodeGroupList[i] = $root.protoManage.NodeGroup.fromObject(object.NodeGroupList[i]);
-                }
-            }
-            if (object.NodeTypeList) {
-                if (!Array.isArray(object.NodeTypeList))
-                    throw TypeError(".protoManage.AnsNodeList.NodeTypeList: array expected");
-                message.NodeTypeList = [];
-                for (let i = 0; i < object.NodeTypeList.length; ++i) {
-                    if (typeof object.NodeTypeList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeList.NodeTypeList: object expected");
-                    message.NodeTypeList[i] = $root.protoManage.NodeType.fromObject(object.NodeTypeList[i]);
-                }
-            }
-            if (object.NodeLinkSourceStateCountList) {
-                if (!Array.isArray(object.NodeLinkSourceStateCountList))
-                    throw TypeError(".protoManage.AnsNodeList.NodeLinkSourceStateCountList: array expected");
-                message.NodeLinkSourceStateCountList = [];
-                for (let i = 0; i < object.NodeLinkSourceStateCountList.length; ++i) {
-                    if (typeof object.NodeLinkSourceStateCountList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeList.NodeLinkSourceStateCountList: object expected");
-                    message.NodeLinkSourceStateCountList[i] = $root.protoManage.StateCount.fromObject(object.NodeLinkSourceStateCountList[i]);
-                }
-            }
-            if (object.NodeLinkTargetStateCountList) {
-                if (!Array.isArray(object.NodeLinkTargetStateCountList))
-                    throw TypeError(".protoManage.AnsNodeList.NodeLinkTargetStateCountList: array expected");
-                message.NodeLinkTargetStateCountList = [];
-                for (let i = 0; i < object.NodeLinkTargetStateCountList.length; ++i) {
-                    if (typeof object.NodeLinkTargetStateCountList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeList.NodeLinkTargetStateCountList: object expected");
-                    message.NodeLinkTargetStateCountList[i] = $root.protoManage.StateCount.fromObject(object.NodeLinkTargetStateCountList[i]);
-                }
-            }
-            if (object.NodeFuncStateCountList) {
-                if (!Array.isArray(object.NodeFuncStateCountList))
-                    throw TypeError(".protoManage.AnsNodeList.NodeFuncStateCountList: array expected");
-                message.NodeFuncStateCountList = [];
-                for (let i = 0; i < object.NodeFuncStateCountList.length; ++i) {
-                    if (typeof object.NodeFuncStateCountList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeList.NodeFuncStateCountList: object expected");
-                    message.NodeFuncStateCountList[i] = $root.protoManage.StateCount.fromObject(object.NodeFuncStateCountList[i]);
-                }
-            }
-            if (object.NodeReportStateCountList) {
-                if (!Array.isArray(object.NodeReportStateCountList))
-                    throw TypeError(".protoManage.AnsNodeList.NodeReportStateCountList: array expected");
-                message.NodeReportStateCountList = [];
-                for (let i = 0; i < object.NodeReportStateCountList.length; ++i) {
-                    if (typeof object.NodeReportStateCountList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeList.NodeReportStateCountList: object expected");
-                    message.NodeReportStateCountList[i] = $root.protoManage.StateCount.fromObject(object.NodeReportStateCountList[i]);
-                }
-            }
             return message;
         };
 
@@ -10050,15 +6681,8 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.arrays || options.defaults) {
+            if (options.arrays || options.defaults)
                 object.NodeList = [];
-                object.NodeGroupList = [];
-                object.NodeTypeList = [];
-                object.NodeLinkSourceStateCountList = [];
-                object.NodeLinkTargetStateCountList = [];
-                object.NodeFuncStateCountList = [];
-                object.NodeReportStateCountList = [];
-            }
             if (options.defaults)
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, false);
@@ -10074,36 +6698,6 @@ export const protoManage = $root.protoManage = (() => {
                 object.NodeList = [];
                 for (let j = 0; j < message.NodeList.length; ++j)
                     object.NodeList[j] = $root.protoManage.Node.toObject(message.NodeList[j], options);
-            }
-            if (message.NodeGroupList && message.NodeGroupList.length) {
-                object.NodeGroupList = [];
-                for (let j = 0; j < message.NodeGroupList.length; ++j)
-                    object.NodeGroupList[j] = $root.protoManage.NodeGroup.toObject(message.NodeGroupList[j], options);
-            }
-            if (message.NodeTypeList && message.NodeTypeList.length) {
-                object.NodeTypeList = [];
-                for (let j = 0; j < message.NodeTypeList.length; ++j)
-                    object.NodeTypeList[j] = $root.protoManage.NodeType.toObject(message.NodeTypeList[j], options);
-            }
-            if (message.NodeLinkSourceStateCountList && message.NodeLinkSourceStateCountList.length) {
-                object.NodeLinkSourceStateCountList = [];
-                for (let j = 0; j < message.NodeLinkSourceStateCountList.length; ++j)
-                    object.NodeLinkSourceStateCountList[j] = $root.protoManage.StateCount.toObject(message.NodeLinkSourceStateCountList[j], options);
-            }
-            if (message.NodeLinkTargetStateCountList && message.NodeLinkTargetStateCountList.length) {
-                object.NodeLinkTargetStateCountList = [];
-                for (let j = 0; j < message.NodeLinkTargetStateCountList.length; ++j)
-                    object.NodeLinkTargetStateCountList[j] = $root.protoManage.StateCount.toObject(message.NodeLinkTargetStateCountList[j], options);
-            }
-            if (message.NodeFuncStateCountList && message.NodeFuncStateCountList.length) {
-                object.NodeFuncStateCountList = [];
-                for (let j = 0; j < message.NodeFuncStateCountList.length; ++j)
-                    object.NodeFuncStateCountList[j] = $root.protoManage.StateCount.toObject(message.NodeFuncStateCountList[j], options);
-            }
-            if (message.NodeReportStateCountList && message.NodeReportStateCountList.length) {
-                object.NodeReportStateCountList = [];
-                for (let j = 0; j < message.NodeReportStateCountList.length; ++j)
-                    object.NodeReportStateCountList[j] = $root.protoManage.StateCount.toObject(message.NodeReportStateCountList[j], options);
             }
             return object;
         };
@@ -10122,494 +6716,20 @@ export const protoManage = $root.protoManage = (() => {
         return AnsNodeList;
     })();
 
-    protoManage.ReqNodeLinkList = (function() {
-
-        /**
-         * Properties of a ReqNodeLinkList.
-         * @memberof protoManage
-         * @interface IReqNodeLinkList
-         * @property {protoManage.IFilter|null} [filter] ReqNodeLinkList filter
-         */
-
-        /**
-         * Constructs a new ReqNodeLinkList.
-         * @memberof protoManage
-         * @classdesc Represents a ReqNodeLinkList.
-         * @implements IReqNodeLinkList
-         * @constructor
-         * @param {protoManage.IReqNodeLinkList=} [properties] Properties to set
-         */
-        function ReqNodeLinkList(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ReqNodeLinkList filter.
-         * @member {protoManage.IFilter|null|undefined} filter
-         * @memberof protoManage.ReqNodeLinkList
-         * @instance
-         */
-        ReqNodeLinkList.prototype.filter = null;
-
-        /**
-         * Creates a new ReqNodeLinkList instance using the specified properties.
-         * @function create
-         * @memberof protoManage.ReqNodeLinkList
-         * @static
-         * @param {protoManage.IReqNodeLinkList=} [properties] Properties to set
-         * @returns {protoManage.ReqNodeLinkList} ReqNodeLinkList instance
-         */
-        ReqNodeLinkList.create = function create(properties) {
-            return new ReqNodeLinkList(properties);
-        };
-
-        /**
-         * Encodes the specified ReqNodeLinkList message. Does not implicitly {@link protoManage.ReqNodeLinkList.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.ReqNodeLinkList
-         * @static
-         * @param {protoManage.IReqNodeLinkList} message ReqNodeLinkList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeLinkList.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.filter != null && Object.hasOwnProperty.call(message, "filter"))
-                $root.protoManage.Filter.encode(message.filter, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ReqNodeLinkList message, length delimited. Does not implicitly {@link protoManage.ReqNodeLinkList.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.ReqNodeLinkList
-         * @static
-         * @param {protoManage.IReqNodeLinkList} message ReqNodeLinkList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeLinkList.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a ReqNodeLinkList message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.ReqNodeLinkList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.ReqNodeLinkList} ReqNodeLinkList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeLinkList.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeLinkList();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.filter = $root.protoManage.Filter.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a ReqNodeLinkList message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.ReqNodeLinkList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.ReqNodeLinkList} ReqNodeLinkList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeLinkList.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a ReqNodeLinkList message.
-         * @function verify
-         * @memberof protoManage.ReqNodeLinkList
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ReqNodeLinkList.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.filter != null && message.hasOwnProperty("filter")) {
-                let error = $root.protoManage.Filter.verify(message.filter);
-                if (error)
-                    return "filter." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a ReqNodeLinkList message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.ReqNodeLinkList
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.ReqNodeLinkList} ReqNodeLinkList
-         */
-        ReqNodeLinkList.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.ReqNodeLinkList)
-                return object;
-            let message = new $root.protoManage.ReqNodeLinkList();
-            if (object.filter != null) {
-                if (typeof object.filter !== "object")
-                    throw TypeError(".protoManage.ReqNodeLinkList.filter: object expected");
-                message.filter = $root.protoManage.Filter.fromObject(object.filter);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ReqNodeLinkList message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.ReqNodeLinkList
-         * @static
-         * @param {protoManage.ReqNodeLinkList} message ReqNodeLinkList
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ReqNodeLinkList.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.filter = null;
-            if (message.filter != null && message.hasOwnProperty("filter"))
-                object.filter = $root.protoManage.Filter.toObject(message.filter, options);
-            return object;
-        };
-
-        /**
-         * Converts this ReqNodeLinkList to JSON.
-         * @function toJSON
-         * @memberof protoManage.ReqNodeLinkList
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ReqNodeLinkList.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return ReqNodeLinkList;
-    })();
-
-    protoManage.AnsNodeLinkList = (function() {
-
-        /**
-         * Properties of an AnsNodeLinkList.
-         * @memberof protoManage
-         * @interface IAnsNodeLinkList
-         * @property {number|null} [Length] AnsNodeLinkList Length
-         * @property {Array.<protoManage.INodeLink>|null} [NodeLinkList] AnsNodeLinkList NodeLinkList
-         * @property {Array.<protoManage.INode>|null} [NodeList] AnsNodeLinkList NodeList
-         */
-
-        /**
-         * Constructs a new AnsNodeLinkList.
-         * @memberof protoManage
-         * @classdesc Represents an AnsNodeLinkList.
-         * @implements IAnsNodeLinkList
-         * @constructor
-         * @param {protoManage.IAnsNodeLinkList=} [properties] Properties to set
-         */
-        function AnsNodeLinkList(properties) {
-            this.NodeLinkList = [];
-            this.NodeList = [];
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * AnsNodeLinkList Length.
-         * @member {number} Length
-         * @memberof protoManage.AnsNodeLinkList
-         * @instance
-         */
-        AnsNodeLinkList.prototype.Length = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * AnsNodeLinkList NodeLinkList.
-         * @member {Array.<protoManage.INodeLink>} NodeLinkList
-         * @memberof protoManage.AnsNodeLinkList
-         * @instance
-         */
-        AnsNodeLinkList.prototype.NodeLinkList = $util.emptyArray;
-
-        /**
-         * AnsNodeLinkList NodeList.
-         * @member {Array.<protoManage.INode>} NodeList
-         * @memberof protoManage.AnsNodeLinkList
-         * @instance
-         */
-        AnsNodeLinkList.prototype.NodeList = $util.emptyArray;
-
-        /**
-         * Creates a new AnsNodeLinkList instance using the specified properties.
-         * @function create
-         * @memberof protoManage.AnsNodeLinkList
-         * @static
-         * @param {protoManage.IAnsNodeLinkList=} [properties] Properties to set
-         * @returns {protoManage.AnsNodeLinkList} AnsNodeLinkList instance
-         */
-        AnsNodeLinkList.create = function create(properties) {
-            return new AnsNodeLinkList(properties);
-        };
-
-        /**
-         * Encodes the specified AnsNodeLinkList message. Does not implicitly {@link protoManage.AnsNodeLinkList.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.AnsNodeLinkList
-         * @static
-         * @param {protoManage.IAnsNodeLinkList} message AnsNodeLinkList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AnsNodeLinkList.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.Length != null && Object.hasOwnProperty.call(message, "Length"))
-                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.Length);
-            if (message.NodeLinkList != null && message.NodeLinkList.length)
-                for (let i = 0; i < message.NodeLinkList.length; ++i)
-                    $root.protoManage.NodeLink.encode(message.NodeLinkList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.NodeList != null && message.NodeList.length)
-                for (let i = 0; i < message.NodeList.length; ++i)
-                    $root.protoManage.Node.encode(message.NodeList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified AnsNodeLinkList message, length delimited. Does not implicitly {@link protoManage.AnsNodeLinkList.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.AnsNodeLinkList
-         * @static
-         * @param {protoManage.IAnsNodeLinkList} message AnsNodeLinkList message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        AnsNodeLinkList.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes an AnsNodeLinkList message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.AnsNodeLinkList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.AnsNodeLinkList} AnsNodeLinkList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AnsNodeLinkList.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.AnsNodeLinkList();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.Length = reader.int64();
-                    break;
-                case 2:
-                    if (!(message.NodeLinkList && message.NodeLinkList.length))
-                        message.NodeLinkList = [];
-                    message.NodeLinkList.push($root.protoManage.NodeLink.decode(reader, reader.uint32()));
-                    break;
-                case 3:
-                    if (!(message.NodeList && message.NodeList.length))
-                        message.NodeList = [];
-                    message.NodeList.push($root.protoManage.Node.decode(reader, reader.uint32()));
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes an AnsNodeLinkList message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.AnsNodeLinkList
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.AnsNodeLinkList} AnsNodeLinkList
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        AnsNodeLinkList.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies an AnsNodeLinkList message.
-         * @function verify
-         * @memberof protoManage.AnsNodeLinkList
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        AnsNodeLinkList.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.Length != null && message.hasOwnProperty("Length"))
-                if (!$util.isInteger(message.Length) && !(message.Length && $util.isInteger(message.Length.low) && $util.isInteger(message.Length.high)))
-                    return "Length: integer|Long expected";
-            if (message.NodeLinkList != null && message.hasOwnProperty("NodeLinkList")) {
-                if (!Array.isArray(message.NodeLinkList))
-                    return "NodeLinkList: array expected";
-                for (let i = 0; i < message.NodeLinkList.length; ++i) {
-                    let error = $root.protoManage.NodeLink.verify(message.NodeLinkList[i]);
-                    if (error)
-                        return "NodeLinkList." + error;
-                }
-            }
-            if (message.NodeList != null && message.hasOwnProperty("NodeList")) {
-                if (!Array.isArray(message.NodeList))
-                    return "NodeList: array expected";
-                for (let i = 0; i < message.NodeList.length; ++i) {
-                    let error = $root.protoManage.Node.verify(message.NodeList[i]);
-                    if (error)
-                        return "NodeList." + error;
-                }
-            }
-            return null;
-        };
-
-        /**
-         * Creates an AnsNodeLinkList message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.AnsNodeLinkList
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.AnsNodeLinkList} AnsNodeLinkList
-         */
-        AnsNodeLinkList.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.AnsNodeLinkList)
-                return object;
-            let message = new $root.protoManage.AnsNodeLinkList();
-            if (object.Length != null)
-                if ($util.Long)
-                    (message.Length = $util.Long.fromValue(object.Length)).unsigned = false;
-                else if (typeof object.Length === "string")
-                    message.Length = parseInt(object.Length, 10);
-                else if (typeof object.Length === "number")
-                    message.Length = object.Length;
-                else if (typeof object.Length === "object")
-                    message.Length = new $util.LongBits(object.Length.low >>> 0, object.Length.high >>> 0).toNumber();
-            if (object.NodeLinkList) {
-                if (!Array.isArray(object.NodeLinkList))
-                    throw TypeError(".protoManage.AnsNodeLinkList.NodeLinkList: array expected");
-                message.NodeLinkList = [];
-                for (let i = 0; i < object.NodeLinkList.length; ++i) {
-                    if (typeof object.NodeLinkList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeLinkList.NodeLinkList: object expected");
-                    message.NodeLinkList[i] = $root.protoManage.NodeLink.fromObject(object.NodeLinkList[i]);
-                }
-            }
-            if (object.NodeList) {
-                if (!Array.isArray(object.NodeList))
-                    throw TypeError(".protoManage.AnsNodeLinkList.NodeList: array expected");
-                message.NodeList = [];
-                for (let i = 0; i < object.NodeList.length; ++i) {
-                    if (typeof object.NodeList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeLinkList.NodeList: object expected");
-                    message.NodeList[i] = $root.protoManage.Node.fromObject(object.NodeList[i]);
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from an AnsNodeLinkList message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.AnsNodeLinkList
-         * @static
-         * @param {protoManage.AnsNodeLinkList} message AnsNodeLinkList
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        AnsNodeLinkList.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.arrays || options.defaults) {
-                object.NodeLinkList = [];
-                object.NodeList = [];
-            }
-            if (options.defaults)
-                if ($util.Long) {
-                    let long = new $util.Long(0, 0, false);
-                    object.Length = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
-                } else
-                    object.Length = options.longs === String ? "0" : 0;
-            if (message.Length != null && message.hasOwnProperty("Length"))
-                if (typeof message.Length === "number")
-                    object.Length = options.longs === String ? String(message.Length) : message.Length;
-                else
-                    object.Length = options.longs === String ? $util.Long.prototype.toString.call(message.Length) : options.longs === Number ? new $util.LongBits(message.Length.low >>> 0, message.Length.high >>> 0).toNumber() : message.Length;
-            if (message.NodeLinkList && message.NodeLinkList.length) {
-                object.NodeLinkList = [];
-                for (let j = 0; j < message.NodeLinkList.length; ++j)
-                    object.NodeLinkList[j] = $root.protoManage.NodeLink.toObject(message.NodeLinkList[j], options);
-            }
-            if (message.NodeList && message.NodeList.length) {
-                object.NodeList = [];
-                for (let j = 0; j < message.NodeList.length; ++j)
-                    object.NodeList[j] = $root.protoManage.Node.toObject(message.NodeList[j], options);
-            }
-            return object;
-        };
-
-        /**
-         * Converts this AnsNodeLinkList to JSON.
-         * @function toJSON
-         * @memberof protoManage.AnsNodeLinkList
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        AnsNodeLinkList.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return AnsNodeLinkList;
-    })();
-
     protoManage.ReqNodeFuncList = (function() {
 
         /**
          * Properties of a ReqNodeFuncList.
          * @memberof protoManage
          * @interface IReqNodeFuncList
-         * @property {protoManage.IFilter|null} [filter] ReqNodeFuncList filter
+         * @property {Array.<number>|null} [ID] ReqNodeFuncList ID
+         * @property {Array.<string>|null} [Name] ReqNodeFuncList Name
+         * @property {Array.<protoManage.Level>|null} [Level] ReqNodeFuncList Level
+         * @property {protoManage.Level|null} [LevelMax] ReqNodeFuncList LevelMax
+         * @property {Array.<number>|null} [NodeID] ReqNodeFuncList NodeID
+         * @property {Array.<string>|null} [NodeName] ReqNodeFuncList NodeName
+         * @property {Array.<protoManage.ITime>|null} [UpdateTime] ReqNodeFuncList UpdateTime
+         * @property {protoManage.IPage|null} [Page] ReqNodeFuncList Page
          */
 
         /**
@@ -10621,6 +6741,12 @@ export const protoManage = $root.protoManage = (() => {
          * @param {protoManage.IReqNodeFuncList=} [properties] Properties to set
          */
         function ReqNodeFuncList(properties) {
+            this.ID = [];
+            this.Name = [];
+            this.Level = [];
+            this.NodeID = [];
+            this.NodeName = [];
+            this.UpdateTime = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -10628,12 +6754,68 @@ export const protoManage = $root.protoManage = (() => {
         }
 
         /**
-         * ReqNodeFuncList filter.
-         * @member {protoManage.IFilter|null|undefined} filter
+         * ReqNodeFuncList ID.
+         * @member {Array.<number>} ID
          * @memberof protoManage.ReqNodeFuncList
          * @instance
          */
-        ReqNodeFuncList.prototype.filter = null;
+        ReqNodeFuncList.prototype.ID = $util.emptyArray;
+
+        /**
+         * ReqNodeFuncList Name.
+         * @member {Array.<string>} Name
+         * @memberof protoManage.ReqNodeFuncList
+         * @instance
+         */
+        ReqNodeFuncList.prototype.Name = $util.emptyArray;
+
+        /**
+         * ReqNodeFuncList Level.
+         * @member {Array.<protoManage.Level>} Level
+         * @memberof protoManage.ReqNodeFuncList
+         * @instance
+         */
+        ReqNodeFuncList.prototype.Level = $util.emptyArray;
+
+        /**
+         * ReqNodeFuncList LevelMax.
+         * @member {protoManage.Level} LevelMax
+         * @memberof protoManage.ReqNodeFuncList
+         * @instance
+         */
+        ReqNodeFuncList.prototype.LevelMax = 0;
+
+        /**
+         * ReqNodeFuncList NodeID.
+         * @member {Array.<number>} NodeID
+         * @memberof protoManage.ReqNodeFuncList
+         * @instance
+         */
+        ReqNodeFuncList.prototype.NodeID = $util.emptyArray;
+
+        /**
+         * ReqNodeFuncList NodeName.
+         * @member {Array.<string>} NodeName
+         * @memberof protoManage.ReqNodeFuncList
+         * @instance
+         */
+        ReqNodeFuncList.prototype.NodeName = $util.emptyArray;
+
+        /**
+         * ReqNodeFuncList UpdateTime.
+         * @member {Array.<protoManage.ITime>} UpdateTime
+         * @memberof protoManage.ReqNodeFuncList
+         * @instance
+         */
+        ReqNodeFuncList.prototype.UpdateTime = $util.emptyArray;
+
+        /**
+         * ReqNodeFuncList Page.
+         * @member {protoManage.IPage|null|undefined} Page
+         * @memberof protoManage.ReqNodeFuncList
+         * @instance
+         */
+        ReqNodeFuncList.prototype.Page = null;
 
         /**
          * Creates a new ReqNodeFuncList instance using the specified properties.
@@ -10659,8 +6841,37 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeFuncList.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.filter != null && Object.hasOwnProperty.call(message, "filter"))
-                $root.protoManage.Filter.encode(message.filter, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.ID != null && message.ID.length) {
+                writer.uint32(/* id 1, wireType 2 =*/10).fork();
+                for (let i = 0; i < message.ID.length; ++i)
+                    writer.int64(message.ID[i]);
+                writer.ldelim();
+            }
+            if (message.Name != null && message.Name.length)
+                for (let i = 0; i < message.Name.length; ++i)
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.Name[i]);
+            if (message.Level != null && message.Level.length) {
+                writer.uint32(/* id 3, wireType 2 =*/26).fork();
+                for (let i = 0; i < message.Level.length; ++i)
+                    writer.int32(message.Level[i]);
+                writer.ldelim();
+            }
+            if (message.LevelMax != null && Object.hasOwnProperty.call(message, "LevelMax"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.LevelMax);
+            if (message.NodeID != null && message.NodeID.length) {
+                writer.uint32(/* id 5, wireType 2 =*/42).fork();
+                for (let i = 0; i < message.NodeID.length; ++i)
+                    writer.int64(message.NodeID[i]);
+                writer.ldelim();
+            }
+            if (message.NodeName != null && message.NodeName.length)
+                for (let i = 0; i < message.NodeName.length; ++i)
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.NodeName[i]);
+            if (message.UpdateTime != null && message.UpdateTime.length)
+                for (let i = 0; i < message.UpdateTime.length; ++i)
+                    $root.protoManage.Time.encode(message.UpdateTime[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.Page != null && Object.hasOwnProperty.call(message, "Page"))
+                $root.protoManage.Page.encode(message.Page, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
             return writer;
         };
 
@@ -10696,7 +6907,55 @@ export const protoManage = $root.protoManage = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.filter = $root.protoManage.Filter.decode(reader, reader.uint32());
+                    if (!(message.ID && message.ID.length))
+                        message.ID = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.ID.push(reader.int64());
+                    } else
+                        message.ID.push(reader.int64());
+                    break;
+                case 2:
+                    if (!(message.Name && message.Name.length))
+                        message.Name = [];
+                    message.Name.push(reader.string());
+                    break;
+                case 3:
+                    if (!(message.Level && message.Level.length))
+                        message.Level = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.Level.push(reader.int32());
+                    } else
+                        message.Level.push(reader.int32());
+                    break;
+                case 4:
+                    message.LevelMax = reader.int32();
+                    break;
+                case 5:
+                    if (!(message.NodeID && message.NodeID.length))
+                        message.NodeID = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.NodeID.push(reader.int64());
+                    } else
+                        message.NodeID.push(reader.int64());
+                    break;
+                case 6:
+                    if (!(message.NodeName && message.NodeName.length))
+                        message.NodeName = [];
+                    message.NodeName.push(reader.string());
+                    break;
+                case 7:
+                    if (!(message.UpdateTime && message.UpdateTime.length))
+                        message.UpdateTime = [];
+                    message.UpdateTime.push($root.protoManage.Time.decode(reader, reader.uint32()));
+                    break;
+                case 8:
+                    message.Page = $root.protoManage.Page.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -10733,10 +6992,73 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeFuncList.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.filter != null && message.hasOwnProperty("filter")) {
-                let error = $root.protoManage.Filter.verify(message.filter);
+            if (message.ID != null && message.hasOwnProperty("ID")) {
+                if (!Array.isArray(message.ID))
+                    return "ID: array expected";
+                for (let i = 0; i < message.ID.length; ++i)
+                    if (!$util.isInteger(message.ID[i]) && !(message.ID[i] && $util.isInteger(message.ID[i].low) && $util.isInteger(message.ID[i].high)))
+                        return "ID: integer|Long[] expected";
+            }
+            if (message.Name != null && message.hasOwnProperty("Name")) {
+                if (!Array.isArray(message.Name))
+                    return "Name: array expected";
+                for (let i = 0; i < message.Name.length; ++i)
+                    if (!$util.isString(message.Name[i]))
+                        return "Name: string[] expected";
+            }
+            if (message.Level != null && message.hasOwnProperty("Level")) {
+                if (!Array.isArray(message.Level))
+                    return "Level: array expected";
+                for (let i = 0; i < message.Level.length; ++i)
+                    switch (message.Level[i]) {
+                    default:
+                        return "Level: enum value[] expected";
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        break;
+                    }
+            }
+            if (message.LevelMax != null && message.hasOwnProperty("LevelMax"))
+                switch (message.LevelMax) {
+                default:
+                    return "LevelMax: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
+            if (message.NodeID != null && message.hasOwnProperty("NodeID")) {
+                if (!Array.isArray(message.NodeID))
+                    return "NodeID: array expected";
+                for (let i = 0; i < message.NodeID.length; ++i)
+                    if (!$util.isInteger(message.NodeID[i]) && !(message.NodeID[i] && $util.isInteger(message.NodeID[i].low) && $util.isInteger(message.NodeID[i].high)))
+                        return "NodeID: integer|Long[] expected";
+            }
+            if (message.NodeName != null && message.hasOwnProperty("NodeName")) {
+                if (!Array.isArray(message.NodeName))
+                    return "NodeName: array expected";
+                for (let i = 0; i < message.NodeName.length; ++i)
+                    if (!$util.isString(message.NodeName[i]))
+                        return "NodeName: string[] expected";
+            }
+            if (message.UpdateTime != null && message.hasOwnProperty("UpdateTime")) {
+                if (!Array.isArray(message.UpdateTime))
+                    return "UpdateTime: array expected";
+                for (let i = 0; i < message.UpdateTime.length; ++i) {
+                    let error = $root.protoManage.Time.verify(message.UpdateTime[i]);
+                    if (error)
+                        return "UpdateTime." + error;
+                }
+            }
+            if (message.Page != null && message.hasOwnProperty("Page")) {
+                let error = $root.protoManage.Page.verify(message.Page);
                 if (error)
-                    return "filter." + error;
+                    return "Page." + error;
             }
             return null;
         };
@@ -10753,10 +7075,113 @@ export const protoManage = $root.protoManage = (() => {
             if (object instanceof $root.protoManage.ReqNodeFuncList)
                 return object;
             let message = new $root.protoManage.ReqNodeFuncList();
-            if (object.filter != null) {
-                if (typeof object.filter !== "object")
-                    throw TypeError(".protoManage.ReqNodeFuncList.filter: object expected");
-                message.filter = $root.protoManage.Filter.fromObject(object.filter);
+            if (object.ID) {
+                if (!Array.isArray(object.ID))
+                    throw TypeError(".protoManage.ReqNodeFuncList.ID: array expected");
+                message.ID = [];
+                for (let i = 0; i < object.ID.length; ++i)
+                    if ($util.Long)
+                        (message.ID[i] = $util.Long.fromValue(object.ID[i])).unsigned = false;
+                    else if (typeof object.ID[i] === "string")
+                        message.ID[i] = parseInt(object.ID[i], 10);
+                    else if (typeof object.ID[i] === "number")
+                        message.ID[i] = object.ID[i];
+                    else if (typeof object.ID[i] === "object")
+                        message.ID[i] = new $util.LongBits(object.ID[i].low >>> 0, object.ID[i].high >>> 0).toNumber();
+            }
+            if (object.Name) {
+                if (!Array.isArray(object.Name))
+                    throw TypeError(".protoManage.ReqNodeFuncList.Name: array expected");
+                message.Name = [];
+                for (let i = 0; i < object.Name.length; ++i)
+                    message.Name[i] = String(object.Name[i]);
+            }
+            if (object.Level) {
+                if (!Array.isArray(object.Level))
+                    throw TypeError(".protoManage.ReqNodeFuncList.Level: array expected");
+                message.Level = [];
+                for (let i = 0; i < object.Level.length; ++i)
+                    switch (object.Level[i]) {
+                    default:
+                    case "LevelNot":
+                    case 0:
+                        message.Level[i] = 0;
+                        break;
+                    case "LevelPrimary":
+                    case 1:
+                        message.Level[i] = 1;
+                        break;
+                    case "LevelIntermediate":
+                    case 2:
+                        message.Level[i] = 2;
+                        break;
+                    case "LevelSenior":
+                    case 3:
+                        message.Level[i] = 3;
+                        break;
+                    case "LevelSuper":
+                    case 4:
+                        message.Level[i] = 4;
+                        break;
+                    }
+            }
+            switch (object.LevelMax) {
+            case "LevelNot":
+            case 0:
+                message.LevelMax = 0;
+                break;
+            case "LevelPrimary":
+            case 1:
+                message.LevelMax = 1;
+                break;
+            case "LevelIntermediate":
+            case 2:
+                message.LevelMax = 2;
+                break;
+            case "LevelSenior":
+            case 3:
+                message.LevelMax = 3;
+                break;
+            case "LevelSuper":
+            case 4:
+                message.LevelMax = 4;
+                break;
+            }
+            if (object.NodeID) {
+                if (!Array.isArray(object.NodeID))
+                    throw TypeError(".protoManage.ReqNodeFuncList.NodeID: array expected");
+                message.NodeID = [];
+                for (let i = 0; i < object.NodeID.length; ++i)
+                    if ($util.Long)
+                        (message.NodeID[i] = $util.Long.fromValue(object.NodeID[i])).unsigned = false;
+                    else if (typeof object.NodeID[i] === "string")
+                        message.NodeID[i] = parseInt(object.NodeID[i], 10);
+                    else if (typeof object.NodeID[i] === "number")
+                        message.NodeID[i] = object.NodeID[i];
+                    else if (typeof object.NodeID[i] === "object")
+                        message.NodeID[i] = new $util.LongBits(object.NodeID[i].low >>> 0, object.NodeID[i].high >>> 0).toNumber();
+            }
+            if (object.NodeName) {
+                if (!Array.isArray(object.NodeName))
+                    throw TypeError(".protoManage.ReqNodeFuncList.NodeName: array expected");
+                message.NodeName = [];
+                for (let i = 0; i < object.NodeName.length; ++i)
+                    message.NodeName[i] = String(object.NodeName[i]);
+            }
+            if (object.UpdateTime) {
+                if (!Array.isArray(object.UpdateTime))
+                    throw TypeError(".protoManage.ReqNodeFuncList.UpdateTime: array expected");
+                message.UpdateTime = [];
+                for (let i = 0; i < object.UpdateTime.length; ++i) {
+                    if (typeof object.UpdateTime[i] !== "object")
+                        throw TypeError(".protoManage.ReqNodeFuncList.UpdateTime: object expected");
+                    message.UpdateTime[i] = $root.protoManage.Time.fromObject(object.UpdateTime[i]);
+                }
+            }
+            if (object.Page != null) {
+                if (typeof object.Page !== "object")
+                    throw TypeError(".protoManage.ReqNodeFuncList.Page: object expected");
+                message.Page = $root.protoManage.Page.fromObject(object.Page);
             }
             return message;
         };
@@ -10774,10 +7199,58 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults)
-                object.filter = null;
-            if (message.filter != null && message.hasOwnProperty("filter"))
-                object.filter = $root.protoManage.Filter.toObject(message.filter, options);
+            if (options.arrays || options.defaults) {
+                object.ID = [];
+                object.Name = [];
+                object.Level = [];
+                object.NodeID = [];
+                object.NodeName = [];
+                object.UpdateTime = [];
+            }
+            if (options.defaults) {
+                object.LevelMax = options.enums === String ? "LevelNot" : 0;
+                object.Page = null;
+            }
+            if (message.ID && message.ID.length) {
+                object.ID = [];
+                for (let j = 0; j < message.ID.length; ++j)
+                    if (typeof message.ID[j] === "number")
+                        object.ID[j] = options.longs === String ? String(message.ID[j]) : message.ID[j];
+                    else
+                        object.ID[j] = options.longs === String ? $util.Long.prototype.toString.call(message.ID[j]) : options.longs === Number ? new $util.LongBits(message.ID[j].low >>> 0, message.ID[j].high >>> 0).toNumber() : message.ID[j];
+            }
+            if (message.Name && message.Name.length) {
+                object.Name = [];
+                for (let j = 0; j < message.Name.length; ++j)
+                    object.Name[j] = message.Name[j];
+            }
+            if (message.Level && message.Level.length) {
+                object.Level = [];
+                for (let j = 0; j < message.Level.length; ++j)
+                    object.Level[j] = options.enums === String ? $root.protoManage.Level[message.Level[j]] : message.Level[j];
+            }
+            if (message.LevelMax != null && message.hasOwnProperty("LevelMax"))
+                object.LevelMax = options.enums === String ? $root.protoManage.Level[message.LevelMax] : message.LevelMax;
+            if (message.NodeID && message.NodeID.length) {
+                object.NodeID = [];
+                for (let j = 0; j < message.NodeID.length; ++j)
+                    if (typeof message.NodeID[j] === "number")
+                        object.NodeID[j] = options.longs === String ? String(message.NodeID[j]) : message.NodeID[j];
+                    else
+                        object.NodeID[j] = options.longs === String ? $util.Long.prototype.toString.call(message.NodeID[j]) : options.longs === Number ? new $util.LongBits(message.NodeID[j].low >>> 0, message.NodeID[j].high >>> 0).toNumber() : message.NodeID[j];
+            }
+            if (message.NodeName && message.NodeName.length) {
+                object.NodeName = [];
+                for (let j = 0; j < message.NodeName.length; ++j)
+                    object.NodeName[j] = message.NodeName[j];
+            }
+            if (message.UpdateTime && message.UpdateTime.length) {
+                object.UpdateTime = [];
+                for (let j = 0; j < message.UpdateTime.length; ++j)
+                    object.UpdateTime[j] = $root.protoManage.Time.toObject(message.UpdateTime[j], options);
+            }
+            if (message.Page != null && message.hasOwnProperty("Page"))
+                object.Page = $root.protoManage.Page.toObject(message.Page, options);
             return object;
         };
 
@@ -10804,7 +7277,6 @@ export const protoManage = $root.protoManage = (() => {
          * @property {number|null} [Length] AnsNodeFuncList Length
          * @property {Array.<protoManage.INodeFunc>|null} [NodeFuncList] AnsNodeFuncList NodeFuncList
          * @property {Array.<protoManage.INode>|null} [NodeList] AnsNodeFuncList NodeList
-         * @property {Array.<protoManage.INodeFuncCall>|null} [NodeFuncCallList] AnsNodeFuncList NodeFuncCallList
          */
 
         /**
@@ -10818,7 +7290,6 @@ export const protoManage = $root.protoManage = (() => {
         function AnsNodeFuncList(properties) {
             this.NodeFuncList = [];
             this.NodeList = [];
-            this.NodeFuncCallList = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -10848,14 +7319,6 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         AnsNodeFuncList.prototype.NodeList = $util.emptyArray;
-
-        /**
-         * AnsNodeFuncList NodeFuncCallList.
-         * @member {Array.<protoManage.INodeFuncCall>} NodeFuncCallList
-         * @memberof protoManage.AnsNodeFuncList
-         * @instance
-         */
-        AnsNodeFuncList.prototype.NodeFuncCallList = $util.emptyArray;
 
         /**
          * Creates a new AnsNodeFuncList instance using the specified properties.
@@ -10889,9 +7352,6 @@ export const protoManage = $root.protoManage = (() => {
             if (message.NodeList != null && message.NodeList.length)
                 for (let i = 0; i < message.NodeList.length; ++i)
                     $root.protoManage.Node.encode(message.NodeList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            if (message.NodeFuncCallList != null && message.NodeFuncCallList.length)
-                for (let i = 0; i < message.NodeFuncCallList.length; ++i)
-                    $root.protoManage.NodeFuncCall.encode(message.NodeFuncCallList[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             return writer;
         };
 
@@ -10938,11 +7398,6 @@ export const protoManage = $root.protoManage = (() => {
                     if (!(message.NodeList && message.NodeList.length))
                         message.NodeList = [];
                     message.NodeList.push($root.protoManage.Node.decode(reader, reader.uint32()));
-                    break;
-                case 4:
-                    if (!(message.NodeFuncCallList && message.NodeFuncCallList.length))
-                        message.NodeFuncCallList = [];
-                    message.NodeFuncCallList.push($root.protoManage.NodeFuncCall.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -11000,15 +7455,6 @@ export const protoManage = $root.protoManage = (() => {
                         return "NodeList." + error;
                 }
             }
-            if (message.NodeFuncCallList != null && message.hasOwnProperty("NodeFuncCallList")) {
-                if (!Array.isArray(message.NodeFuncCallList))
-                    return "NodeFuncCallList: array expected";
-                for (let i = 0; i < message.NodeFuncCallList.length; ++i) {
-                    let error = $root.protoManage.NodeFuncCall.verify(message.NodeFuncCallList[i]);
-                    if (error)
-                        return "NodeFuncCallList." + error;
-                }
-            }
             return null;
         };
 
@@ -11053,16 +7499,6 @@ export const protoManage = $root.protoManage = (() => {
                     message.NodeList[i] = $root.protoManage.Node.fromObject(object.NodeList[i]);
                 }
             }
-            if (object.NodeFuncCallList) {
-                if (!Array.isArray(object.NodeFuncCallList))
-                    throw TypeError(".protoManage.AnsNodeFuncList.NodeFuncCallList: array expected");
-                message.NodeFuncCallList = [];
-                for (let i = 0; i < object.NodeFuncCallList.length; ++i) {
-                    if (typeof object.NodeFuncCallList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeFuncList.NodeFuncCallList: object expected");
-                    message.NodeFuncCallList[i] = $root.protoManage.NodeFuncCall.fromObject(object.NodeFuncCallList[i]);
-                }
-            }
             return message;
         };
 
@@ -11082,7 +7518,6 @@ export const protoManage = $root.protoManage = (() => {
             if (options.arrays || options.defaults) {
                 object.NodeFuncList = [];
                 object.NodeList = [];
-                object.NodeFuncCallList = [];
             }
             if (options.defaults)
                 if ($util.Long) {
@@ -11104,11 +7539,6 @@ export const protoManage = $root.protoManage = (() => {
                 object.NodeList = [];
                 for (let j = 0; j < message.NodeList.length; ++j)
                     object.NodeList[j] = $root.protoManage.Node.toObject(message.NodeList[j], options);
-            }
-            if (message.NodeFuncCallList && message.NodeFuncCallList.length) {
-                object.NodeFuncCallList = [];
-                for (let j = 0; j < message.NodeFuncCallList.length; ++j)
-                    object.NodeFuncCallList[j] = $root.protoManage.NodeFuncCall.toObject(message.NodeFuncCallList[j], options);
             }
             return object;
         };
@@ -11133,7 +7563,14 @@ export const protoManage = $root.protoManage = (() => {
          * Properties of a ReqNodeReportList.
          * @memberof protoManage
          * @interface IReqNodeReportList
-         * @property {protoManage.IFilter|null} [filter] ReqNodeReportList filter
+         * @property {Array.<number>|null} [ID] ReqNodeReportList ID
+         * @property {Array.<string>|null} [Name] ReqNodeReportList Name
+         * @property {Array.<protoManage.Level>|null} [Level] ReqNodeReportList Level
+         * @property {protoManage.Level|null} [LevelMax] ReqNodeReportList LevelMax
+         * @property {Array.<number>|null} [NodeID] ReqNodeReportList NodeID
+         * @property {Array.<string>|null} [NodeName] ReqNodeReportList NodeName
+         * @property {Array.<protoManage.ITime>|null} [UpdateTime] ReqNodeReportList UpdateTime
+         * @property {protoManage.IPage|null} [Page] ReqNodeReportList Page
          */
 
         /**
@@ -11145,6 +7582,12 @@ export const protoManage = $root.protoManage = (() => {
          * @param {protoManage.IReqNodeReportList=} [properties] Properties to set
          */
         function ReqNodeReportList(properties) {
+            this.ID = [];
+            this.Name = [];
+            this.Level = [];
+            this.NodeID = [];
+            this.NodeName = [];
+            this.UpdateTime = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -11152,12 +7595,68 @@ export const protoManage = $root.protoManage = (() => {
         }
 
         /**
-         * ReqNodeReportList filter.
-         * @member {protoManage.IFilter|null|undefined} filter
+         * ReqNodeReportList ID.
+         * @member {Array.<number>} ID
          * @memberof protoManage.ReqNodeReportList
          * @instance
          */
-        ReqNodeReportList.prototype.filter = null;
+        ReqNodeReportList.prototype.ID = $util.emptyArray;
+
+        /**
+         * ReqNodeReportList Name.
+         * @member {Array.<string>} Name
+         * @memberof protoManage.ReqNodeReportList
+         * @instance
+         */
+        ReqNodeReportList.prototype.Name = $util.emptyArray;
+
+        /**
+         * ReqNodeReportList Level.
+         * @member {Array.<protoManage.Level>} Level
+         * @memberof protoManage.ReqNodeReportList
+         * @instance
+         */
+        ReqNodeReportList.prototype.Level = $util.emptyArray;
+
+        /**
+         * ReqNodeReportList LevelMax.
+         * @member {protoManage.Level} LevelMax
+         * @memberof protoManage.ReqNodeReportList
+         * @instance
+         */
+        ReqNodeReportList.prototype.LevelMax = 0;
+
+        /**
+         * ReqNodeReportList NodeID.
+         * @member {Array.<number>} NodeID
+         * @memberof protoManage.ReqNodeReportList
+         * @instance
+         */
+        ReqNodeReportList.prototype.NodeID = $util.emptyArray;
+
+        /**
+         * ReqNodeReportList NodeName.
+         * @member {Array.<string>} NodeName
+         * @memberof protoManage.ReqNodeReportList
+         * @instance
+         */
+        ReqNodeReportList.prototype.NodeName = $util.emptyArray;
+
+        /**
+         * ReqNodeReportList UpdateTime.
+         * @member {Array.<protoManage.ITime>} UpdateTime
+         * @memberof protoManage.ReqNodeReportList
+         * @instance
+         */
+        ReqNodeReportList.prototype.UpdateTime = $util.emptyArray;
+
+        /**
+         * ReqNodeReportList Page.
+         * @member {protoManage.IPage|null|undefined} Page
+         * @memberof protoManage.ReqNodeReportList
+         * @instance
+         */
+        ReqNodeReportList.prototype.Page = null;
 
         /**
          * Creates a new ReqNodeReportList instance using the specified properties.
@@ -11183,8 +7682,37 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeReportList.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.filter != null && Object.hasOwnProperty.call(message, "filter"))
-                $root.protoManage.Filter.encode(message.filter, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.ID != null && message.ID.length) {
+                writer.uint32(/* id 1, wireType 2 =*/10).fork();
+                for (let i = 0; i < message.ID.length; ++i)
+                    writer.int64(message.ID[i]);
+                writer.ldelim();
+            }
+            if (message.Name != null && message.Name.length)
+                for (let i = 0; i < message.Name.length; ++i)
+                    writer.uint32(/* id 2, wireType 2 =*/18).string(message.Name[i]);
+            if (message.Level != null && message.Level.length) {
+                writer.uint32(/* id 3, wireType 2 =*/26).fork();
+                for (let i = 0; i < message.Level.length; ++i)
+                    writer.int32(message.Level[i]);
+                writer.ldelim();
+            }
+            if (message.LevelMax != null && Object.hasOwnProperty.call(message, "LevelMax"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.LevelMax);
+            if (message.NodeID != null && message.NodeID.length) {
+                writer.uint32(/* id 5, wireType 2 =*/42).fork();
+                for (let i = 0; i < message.NodeID.length; ++i)
+                    writer.int64(message.NodeID[i]);
+                writer.ldelim();
+            }
+            if (message.NodeName != null && message.NodeName.length)
+                for (let i = 0; i < message.NodeName.length; ++i)
+                    writer.uint32(/* id 6, wireType 2 =*/50).string(message.NodeName[i]);
+            if (message.UpdateTime != null && message.UpdateTime.length)
+                for (let i = 0; i < message.UpdateTime.length; ++i)
+                    $root.protoManage.Time.encode(message.UpdateTime[i], writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            if (message.Page != null && Object.hasOwnProperty.call(message, "Page"))
+                $root.protoManage.Page.encode(message.Page, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
             return writer;
         };
 
@@ -11220,7 +7748,55 @@ export const protoManage = $root.protoManage = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.filter = $root.protoManage.Filter.decode(reader, reader.uint32());
+                    if (!(message.ID && message.ID.length))
+                        message.ID = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.ID.push(reader.int64());
+                    } else
+                        message.ID.push(reader.int64());
+                    break;
+                case 2:
+                    if (!(message.Name && message.Name.length))
+                        message.Name = [];
+                    message.Name.push(reader.string());
+                    break;
+                case 3:
+                    if (!(message.Level && message.Level.length))
+                        message.Level = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.Level.push(reader.int32());
+                    } else
+                        message.Level.push(reader.int32());
+                    break;
+                case 4:
+                    message.LevelMax = reader.int32();
+                    break;
+                case 5:
+                    if (!(message.NodeID && message.NodeID.length))
+                        message.NodeID = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.NodeID.push(reader.int64());
+                    } else
+                        message.NodeID.push(reader.int64());
+                    break;
+                case 6:
+                    if (!(message.NodeName && message.NodeName.length))
+                        message.NodeName = [];
+                    message.NodeName.push(reader.string());
+                    break;
+                case 7:
+                    if (!(message.UpdateTime && message.UpdateTime.length))
+                        message.UpdateTime = [];
+                    message.UpdateTime.push($root.protoManage.Time.decode(reader, reader.uint32()));
+                    break;
+                case 8:
+                    message.Page = $root.protoManage.Page.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -11257,10 +7833,73 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeReportList.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.filter != null && message.hasOwnProperty("filter")) {
-                let error = $root.protoManage.Filter.verify(message.filter);
+            if (message.ID != null && message.hasOwnProperty("ID")) {
+                if (!Array.isArray(message.ID))
+                    return "ID: array expected";
+                for (let i = 0; i < message.ID.length; ++i)
+                    if (!$util.isInteger(message.ID[i]) && !(message.ID[i] && $util.isInteger(message.ID[i].low) && $util.isInteger(message.ID[i].high)))
+                        return "ID: integer|Long[] expected";
+            }
+            if (message.Name != null && message.hasOwnProperty("Name")) {
+                if (!Array.isArray(message.Name))
+                    return "Name: array expected";
+                for (let i = 0; i < message.Name.length; ++i)
+                    if (!$util.isString(message.Name[i]))
+                        return "Name: string[] expected";
+            }
+            if (message.Level != null && message.hasOwnProperty("Level")) {
+                if (!Array.isArray(message.Level))
+                    return "Level: array expected";
+                for (let i = 0; i < message.Level.length; ++i)
+                    switch (message.Level[i]) {
+                    default:
+                        return "Level: enum value[] expected";
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        break;
+                    }
+            }
+            if (message.LevelMax != null && message.hasOwnProperty("LevelMax"))
+                switch (message.LevelMax) {
+                default:
+                    return "LevelMax: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
+            if (message.NodeID != null && message.hasOwnProperty("NodeID")) {
+                if (!Array.isArray(message.NodeID))
+                    return "NodeID: array expected";
+                for (let i = 0; i < message.NodeID.length; ++i)
+                    if (!$util.isInteger(message.NodeID[i]) && !(message.NodeID[i] && $util.isInteger(message.NodeID[i].low) && $util.isInteger(message.NodeID[i].high)))
+                        return "NodeID: integer|Long[] expected";
+            }
+            if (message.NodeName != null && message.hasOwnProperty("NodeName")) {
+                if (!Array.isArray(message.NodeName))
+                    return "NodeName: array expected";
+                for (let i = 0; i < message.NodeName.length; ++i)
+                    if (!$util.isString(message.NodeName[i]))
+                        return "NodeName: string[] expected";
+            }
+            if (message.UpdateTime != null && message.hasOwnProperty("UpdateTime")) {
+                if (!Array.isArray(message.UpdateTime))
+                    return "UpdateTime: array expected";
+                for (let i = 0; i < message.UpdateTime.length; ++i) {
+                    let error = $root.protoManage.Time.verify(message.UpdateTime[i]);
+                    if (error)
+                        return "UpdateTime." + error;
+                }
+            }
+            if (message.Page != null && message.hasOwnProperty("Page")) {
+                let error = $root.protoManage.Page.verify(message.Page);
                 if (error)
-                    return "filter." + error;
+                    return "Page." + error;
             }
             return null;
         };
@@ -11277,10 +7916,113 @@ export const protoManage = $root.protoManage = (() => {
             if (object instanceof $root.protoManage.ReqNodeReportList)
                 return object;
             let message = new $root.protoManage.ReqNodeReportList();
-            if (object.filter != null) {
-                if (typeof object.filter !== "object")
-                    throw TypeError(".protoManage.ReqNodeReportList.filter: object expected");
-                message.filter = $root.protoManage.Filter.fromObject(object.filter);
+            if (object.ID) {
+                if (!Array.isArray(object.ID))
+                    throw TypeError(".protoManage.ReqNodeReportList.ID: array expected");
+                message.ID = [];
+                for (let i = 0; i < object.ID.length; ++i)
+                    if ($util.Long)
+                        (message.ID[i] = $util.Long.fromValue(object.ID[i])).unsigned = false;
+                    else if (typeof object.ID[i] === "string")
+                        message.ID[i] = parseInt(object.ID[i], 10);
+                    else if (typeof object.ID[i] === "number")
+                        message.ID[i] = object.ID[i];
+                    else if (typeof object.ID[i] === "object")
+                        message.ID[i] = new $util.LongBits(object.ID[i].low >>> 0, object.ID[i].high >>> 0).toNumber();
+            }
+            if (object.Name) {
+                if (!Array.isArray(object.Name))
+                    throw TypeError(".protoManage.ReqNodeReportList.Name: array expected");
+                message.Name = [];
+                for (let i = 0; i < object.Name.length; ++i)
+                    message.Name[i] = String(object.Name[i]);
+            }
+            if (object.Level) {
+                if (!Array.isArray(object.Level))
+                    throw TypeError(".protoManage.ReqNodeReportList.Level: array expected");
+                message.Level = [];
+                for (let i = 0; i < object.Level.length; ++i)
+                    switch (object.Level[i]) {
+                    default:
+                    case "LevelNot":
+                    case 0:
+                        message.Level[i] = 0;
+                        break;
+                    case "LevelPrimary":
+                    case 1:
+                        message.Level[i] = 1;
+                        break;
+                    case "LevelIntermediate":
+                    case 2:
+                        message.Level[i] = 2;
+                        break;
+                    case "LevelSenior":
+                    case 3:
+                        message.Level[i] = 3;
+                        break;
+                    case "LevelSuper":
+                    case 4:
+                        message.Level[i] = 4;
+                        break;
+                    }
+            }
+            switch (object.LevelMax) {
+            case "LevelNot":
+            case 0:
+                message.LevelMax = 0;
+                break;
+            case "LevelPrimary":
+            case 1:
+                message.LevelMax = 1;
+                break;
+            case "LevelIntermediate":
+            case 2:
+                message.LevelMax = 2;
+                break;
+            case "LevelSenior":
+            case 3:
+                message.LevelMax = 3;
+                break;
+            case "LevelSuper":
+            case 4:
+                message.LevelMax = 4;
+                break;
+            }
+            if (object.NodeID) {
+                if (!Array.isArray(object.NodeID))
+                    throw TypeError(".protoManage.ReqNodeReportList.NodeID: array expected");
+                message.NodeID = [];
+                for (let i = 0; i < object.NodeID.length; ++i)
+                    if ($util.Long)
+                        (message.NodeID[i] = $util.Long.fromValue(object.NodeID[i])).unsigned = false;
+                    else if (typeof object.NodeID[i] === "string")
+                        message.NodeID[i] = parseInt(object.NodeID[i], 10);
+                    else if (typeof object.NodeID[i] === "number")
+                        message.NodeID[i] = object.NodeID[i];
+                    else if (typeof object.NodeID[i] === "object")
+                        message.NodeID[i] = new $util.LongBits(object.NodeID[i].low >>> 0, object.NodeID[i].high >>> 0).toNumber();
+            }
+            if (object.NodeName) {
+                if (!Array.isArray(object.NodeName))
+                    throw TypeError(".protoManage.ReqNodeReportList.NodeName: array expected");
+                message.NodeName = [];
+                for (let i = 0; i < object.NodeName.length; ++i)
+                    message.NodeName[i] = String(object.NodeName[i]);
+            }
+            if (object.UpdateTime) {
+                if (!Array.isArray(object.UpdateTime))
+                    throw TypeError(".protoManage.ReqNodeReportList.UpdateTime: array expected");
+                message.UpdateTime = [];
+                for (let i = 0; i < object.UpdateTime.length; ++i) {
+                    if (typeof object.UpdateTime[i] !== "object")
+                        throw TypeError(".protoManage.ReqNodeReportList.UpdateTime: object expected");
+                    message.UpdateTime[i] = $root.protoManage.Time.fromObject(object.UpdateTime[i]);
+                }
+            }
+            if (object.Page != null) {
+                if (typeof object.Page !== "object")
+                    throw TypeError(".protoManage.ReqNodeReportList.Page: object expected");
+                message.Page = $root.protoManage.Page.fromObject(object.Page);
             }
             return message;
         };
@@ -11298,10 +8040,58 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults)
-                object.filter = null;
-            if (message.filter != null && message.hasOwnProperty("filter"))
-                object.filter = $root.protoManage.Filter.toObject(message.filter, options);
+            if (options.arrays || options.defaults) {
+                object.ID = [];
+                object.Name = [];
+                object.Level = [];
+                object.NodeID = [];
+                object.NodeName = [];
+                object.UpdateTime = [];
+            }
+            if (options.defaults) {
+                object.LevelMax = options.enums === String ? "LevelNot" : 0;
+                object.Page = null;
+            }
+            if (message.ID && message.ID.length) {
+                object.ID = [];
+                for (let j = 0; j < message.ID.length; ++j)
+                    if (typeof message.ID[j] === "number")
+                        object.ID[j] = options.longs === String ? String(message.ID[j]) : message.ID[j];
+                    else
+                        object.ID[j] = options.longs === String ? $util.Long.prototype.toString.call(message.ID[j]) : options.longs === Number ? new $util.LongBits(message.ID[j].low >>> 0, message.ID[j].high >>> 0).toNumber() : message.ID[j];
+            }
+            if (message.Name && message.Name.length) {
+                object.Name = [];
+                for (let j = 0; j < message.Name.length; ++j)
+                    object.Name[j] = message.Name[j];
+            }
+            if (message.Level && message.Level.length) {
+                object.Level = [];
+                for (let j = 0; j < message.Level.length; ++j)
+                    object.Level[j] = options.enums === String ? $root.protoManage.Level[message.Level[j]] : message.Level[j];
+            }
+            if (message.LevelMax != null && message.hasOwnProperty("LevelMax"))
+                object.LevelMax = options.enums === String ? $root.protoManage.Level[message.LevelMax] : message.LevelMax;
+            if (message.NodeID && message.NodeID.length) {
+                object.NodeID = [];
+                for (let j = 0; j < message.NodeID.length; ++j)
+                    if (typeof message.NodeID[j] === "number")
+                        object.NodeID[j] = options.longs === String ? String(message.NodeID[j]) : message.NodeID[j];
+                    else
+                        object.NodeID[j] = options.longs === String ? $util.Long.prototype.toString.call(message.NodeID[j]) : options.longs === Number ? new $util.LongBits(message.NodeID[j].low >>> 0, message.NodeID[j].high >>> 0).toNumber() : message.NodeID[j];
+            }
+            if (message.NodeName && message.NodeName.length) {
+                object.NodeName = [];
+                for (let j = 0; j < message.NodeName.length; ++j)
+                    object.NodeName[j] = message.NodeName[j];
+            }
+            if (message.UpdateTime && message.UpdateTime.length) {
+                object.UpdateTime = [];
+                for (let j = 0; j < message.UpdateTime.length; ++j)
+                    object.UpdateTime[j] = $root.protoManage.Time.toObject(message.UpdateTime[j], options);
+            }
+            if (message.Page != null && message.hasOwnProperty("Page"))
+                object.Page = $root.protoManage.Page.toObject(message.Page, options);
             return object;
         };
 
@@ -11328,7 +8118,6 @@ export const protoManage = $root.protoManage = (() => {
          * @property {number|null} [Length] AnsNodeReportList Length
          * @property {Array.<protoManage.INodeReport>|null} [NodeReportList] AnsNodeReportList NodeReportList
          * @property {Array.<protoManage.INode>|null} [NodeList] AnsNodeReportList NodeList
-         * @property {Array.<protoManage.INodeReportVal>|null} [NodeReportValList] AnsNodeReportList NodeReportValList
          */
 
         /**
@@ -11342,7 +8131,6 @@ export const protoManage = $root.protoManage = (() => {
         function AnsNodeReportList(properties) {
             this.NodeReportList = [];
             this.NodeList = [];
-            this.NodeReportValList = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -11372,14 +8160,6 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         AnsNodeReportList.prototype.NodeList = $util.emptyArray;
-
-        /**
-         * AnsNodeReportList NodeReportValList.
-         * @member {Array.<protoManage.INodeReportVal>} NodeReportValList
-         * @memberof protoManage.AnsNodeReportList
-         * @instance
-         */
-        AnsNodeReportList.prototype.NodeReportValList = $util.emptyArray;
 
         /**
          * Creates a new AnsNodeReportList instance using the specified properties.
@@ -11413,9 +8193,6 @@ export const protoManage = $root.protoManage = (() => {
             if (message.NodeList != null && message.NodeList.length)
                 for (let i = 0; i < message.NodeList.length; ++i)
                     $root.protoManage.Node.encode(message.NodeList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
-            if (message.NodeReportValList != null && message.NodeReportValList.length)
-                for (let i = 0; i < message.NodeReportValList.length; ++i)
-                    $root.protoManage.NodeReportVal.encode(message.NodeReportValList[i], writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
             return writer;
         };
 
@@ -11462,11 +8239,6 @@ export const protoManage = $root.protoManage = (() => {
                     if (!(message.NodeList && message.NodeList.length))
                         message.NodeList = [];
                     message.NodeList.push($root.protoManage.Node.decode(reader, reader.uint32()));
-                    break;
-                case 4:
-                    if (!(message.NodeReportValList && message.NodeReportValList.length))
-                        message.NodeReportValList = [];
-                    message.NodeReportValList.push($root.protoManage.NodeReportVal.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -11524,15 +8296,6 @@ export const protoManage = $root.protoManage = (() => {
                         return "NodeList." + error;
                 }
             }
-            if (message.NodeReportValList != null && message.hasOwnProperty("NodeReportValList")) {
-                if (!Array.isArray(message.NodeReportValList))
-                    return "NodeReportValList: array expected";
-                for (let i = 0; i < message.NodeReportValList.length; ++i) {
-                    let error = $root.protoManage.NodeReportVal.verify(message.NodeReportValList[i]);
-                    if (error)
-                        return "NodeReportValList." + error;
-                }
-            }
             return null;
         };
 
@@ -11577,16 +8340,6 @@ export const protoManage = $root.protoManage = (() => {
                     message.NodeList[i] = $root.protoManage.Node.fromObject(object.NodeList[i]);
                 }
             }
-            if (object.NodeReportValList) {
-                if (!Array.isArray(object.NodeReportValList))
-                    throw TypeError(".protoManage.AnsNodeReportList.NodeReportValList: array expected");
-                message.NodeReportValList = [];
-                for (let i = 0; i < object.NodeReportValList.length; ++i) {
-                    if (typeof object.NodeReportValList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeReportList.NodeReportValList: object expected");
-                    message.NodeReportValList[i] = $root.protoManage.NodeReportVal.fromObject(object.NodeReportValList[i]);
-                }
-            }
             return message;
         };
 
@@ -11606,7 +8359,6 @@ export const protoManage = $root.protoManage = (() => {
             if (options.arrays || options.defaults) {
                 object.NodeReportList = [];
                 object.NodeList = [];
-                object.NodeReportValList = [];
             }
             if (options.defaults)
                 if ($util.Long) {
@@ -11628,11 +8380,6 @@ export const protoManage = $root.protoManage = (() => {
                 object.NodeList = [];
                 for (let j = 0; j < message.NodeList.length; ++j)
                     object.NodeList[j] = $root.protoManage.Node.toObject(message.NodeList[j], options);
-            }
-            if (message.NodeReportValList && message.NodeReportValList.length) {
-                object.NodeReportValList = [];
-                for (let j = 0; j < message.NodeReportValList.length; ++j)
-                    object.NodeReportValList[j] = $root.protoManage.NodeReportVal.toObject(message.NodeReportValList[j], options);
             }
             return object;
         };
@@ -12064,7 +8811,8 @@ export const protoManage = $root.protoManage = (() => {
          * Properties of a ReqNodeFuncCallList.
          * @memberof protoManage
          * @interface IReqNodeFuncCallList
-         * @property {protoManage.IFilter|null} [filter] ReqNodeFuncCallList filter
+         * @property {number|null} [FuncID] ReqNodeFuncCallList FuncID
+         * @property {protoManage.IPage|null} [Page] ReqNodeFuncCallList Page
          */
 
         /**
@@ -12083,12 +8831,20 @@ export const protoManage = $root.protoManage = (() => {
         }
 
         /**
-         * ReqNodeFuncCallList filter.
-         * @member {protoManage.IFilter|null|undefined} filter
+         * ReqNodeFuncCallList FuncID.
+         * @member {number} FuncID
          * @memberof protoManage.ReqNodeFuncCallList
          * @instance
          */
-        ReqNodeFuncCallList.prototype.filter = null;
+        ReqNodeFuncCallList.prototype.FuncID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * ReqNodeFuncCallList Page.
+         * @member {protoManage.IPage|null|undefined} Page
+         * @memberof protoManage.ReqNodeFuncCallList
+         * @instance
+         */
+        ReqNodeFuncCallList.prototype.Page = null;
 
         /**
          * Creates a new ReqNodeFuncCallList instance using the specified properties.
@@ -12114,8 +8870,10 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeFuncCallList.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.filter != null && Object.hasOwnProperty.call(message, "filter"))
-                $root.protoManage.Filter.encode(message.filter, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.FuncID != null && Object.hasOwnProperty.call(message, "FuncID"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.FuncID);
+            if (message.Page != null && Object.hasOwnProperty.call(message, "Page"))
+                $root.protoManage.Page.encode(message.Page, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
             return writer;
         };
 
@@ -12151,7 +8909,10 @@ export const protoManage = $root.protoManage = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.filter = $root.protoManage.Filter.decode(reader, reader.uint32());
+                    message.FuncID = reader.int64();
+                    break;
+                case 2:
+                    message.Page = $root.protoManage.Page.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -12188,10 +8949,13 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeFuncCallList.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.filter != null && message.hasOwnProperty("filter")) {
-                let error = $root.protoManage.Filter.verify(message.filter);
+            if (message.FuncID != null && message.hasOwnProperty("FuncID"))
+                if (!$util.isInteger(message.FuncID) && !(message.FuncID && $util.isInteger(message.FuncID.low) && $util.isInteger(message.FuncID.high)))
+                    return "FuncID: integer|Long expected";
+            if (message.Page != null && message.hasOwnProperty("Page")) {
+                let error = $root.protoManage.Page.verify(message.Page);
                 if (error)
-                    return "filter." + error;
+                    return "Page." + error;
             }
             return null;
         };
@@ -12208,10 +8972,19 @@ export const protoManage = $root.protoManage = (() => {
             if (object instanceof $root.protoManage.ReqNodeFuncCallList)
                 return object;
             let message = new $root.protoManage.ReqNodeFuncCallList();
-            if (object.filter != null) {
-                if (typeof object.filter !== "object")
-                    throw TypeError(".protoManage.ReqNodeFuncCallList.filter: object expected");
-                message.filter = $root.protoManage.Filter.fromObject(object.filter);
+            if (object.FuncID != null)
+                if ($util.Long)
+                    (message.FuncID = $util.Long.fromValue(object.FuncID)).unsigned = false;
+                else if (typeof object.FuncID === "string")
+                    message.FuncID = parseInt(object.FuncID, 10);
+                else if (typeof object.FuncID === "number")
+                    message.FuncID = object.FuncID;
+                else if (typeof object.FuncID === "object")
+                    message.FuncID = new $util.LongBits(object.FuncID.low >>> 0, object.FuncID.high >>> 0).toNumber();
+            if (object.Page != null) {
+                if (typeof object.Page !== "object")
+                    throw TypeError(".protoManage.ReqNodeFuncCallList.Page: object expected");
+                message.Page = $root.protoManage.Page.fromObject(object.Page);
             }
             return message;
         };
@@ -12229,10 +9002,21 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults)
-                object.filter = null;
-            if (message.filter != null && message.hasOwnProperty("filter"))
-                object.filter = $root.protoManage.Filter.toObject(message.filter, options);
+            if (options.defaults) {
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.FuncID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.FuncID = options.longs === String ? "0" : 0;
+                object.Page = null;
+            }
+            if (message.FuncID != null && message.hasOwnProperty("FuncID"))
+                if (typeof message.FuncID === "number")
+                    object.FuncID = options.longs === String ? String(message.FuncID) : message.FuncID;
+                else
+                    object.FuncID = options.longs === String ? $util.Long.prototype.toString.call(message.FuncID) : options.longs === Number ? new $util.LongBits(message.FuncID.low >>> 0, message.FuncID.high >>> 0).toNumber() : message.FuncID;
+            if (message.Page != null && message.hasOwnProperty("Page"))
+                object.Page = $root.protoManage.Page.toObject(message.Page, options);
             return object;
         };
 
@@ -12464,7 +9248,9 @@ export const protoManage = $root.protoManage = (() => {
          * Properties of a ReqNodeReportValList.
          * @memberof protoManage
          * @interface IReqNodeReportValList
-         * @property {protoManage.IFilter|null} [filter] ReqNodeReportValList filter
+         * @property {number|null} [ID] ReqNodeReportValList ID
+         * @property {number|null} [ReportID] ReqNodeReportValList ReportID
+         * @property {protoManage.IPage|null} [Page] ReqNodeReportValList Page
          */
 
         /**
@@ -12483,12 +9269,28 @@ export const protoManage = $root.protoManage = (() => {
         }
 
         /**
-         * ReqNodeReportValList filter.
-         * @member {protoManage.IFilter|null|undefined} filter
+         * ReqNodeReportValList ID.
+         * @member {number} ID
          * @memberof protoManage.ReqNodeReportValList
          * @instance
          */
-        ReqNodeReportValList.prototype.filter = null;
+        ReqNodeReportValList.prototype.ID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * ReqNodeReportValList ReportID.
+         * @member {number} ReportID
+         * @memberof protoManage.ReqNodeReportValList
+         * @instance
+         */
+        ReqNodeReportValList.prototype.ReportID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * ReqNodeReportValList Page.
+         * @member {protoManage.IPage|null|undefined} Page
+         * @memberof protoManage.ReqNodeReportValList
+         * @instance
+         */
+        ReqNodeReportValList.prototype.Page = null;
 
         /**
          * Creates a new ReqNodeReportValList instance using the specified properties.
@@ -12514,8 +9316,12 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeReportValList.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.filter != null && Object.hasOwnProperty.call(message, "filter"))
-                $root.protoManage.Filter.encode(message.filter, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            if (message.ID != null && Object.hasOwnProperty.call(message, "ID"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.ID);
+            if (message.ReportID != null && Object.hasOwnProperty.call(message, "ReportID"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.ReportID);
+            if (message.Page != null && Object.hasOwnProperty.call(message, "Page"))
+                $root.protoManage.Page.encode(message.Page, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -12551,7 +9357,13 @@ export const protoManage = $root.protoManage = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.filter = $root.protoManage.Filter.decode(reader, reader.uint32());
+                    message.ID = reader.int64();
+                    break;
+                case 2:
+                    message.ReportID = reader.int64();
+                    break;
+                case 3:
+                    message.Page = $root.protoManage.Page.decode(reader, reader.uint32());
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -12588,10 +9400,16 @@ export const protoManage = $root.protoManage = (() => {
         ReqNodeReportValList.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.filter != null && message.hasOwnProperty("filter")) {
-                let error = $root.protoManage.Filter.verify(message.filter);
+            if (message.ID != null && message.hasOwnProperty("ID"))
+                if (!$util.isInteger(message.ID) && !(message.ID && $util.isInteger(message.ID.low) && $util.isInteger(message.ID.high)))
+                    return "ID: integer|Long expected";
+            if (message.ReportID != null && message.hasOwnProperty("ReportID"))
+                if (!$util.isInteger(message.ReportID) && !(message.ReportID && $util.isInteger(message.ReportID.low) && $util.isInteger(message.ReportID.high)))
+                    return "ReportID: integer|Long expected";
+            if (message.Page != null && message.hasOwnProperty("Page")) {
+                let error = $root.protoManage.Page.verify(message.Page);
                 if (error)
-                    return "filter." + error;
+                    return "Page." + error;
             }
             return null;
         };
@@ -12608,10 +9426,28 @@ export const protoManage = $root.protoManage = (() => {
             if (object instanceof $root.protoManage.ReqNodeReportValList)
                 return object;
             let message = new $root.protoManage.ReqNodeReportValList();
-            if (object.filter != null) {
-                if (typeof object.filter !== "object")
-                    throw TypeError(".protoManage.ReqNodeReportValList.filter: object expected");
-                message.filter = $root.protoManage.Filter.fromObject(object.filter);
+            if (object.ID != null)
+                if ($util.Long)
+                    (message.ID = $util.Long.fromValue(object.ID)).unsigned = false;
+                else if (typeof object.ID === "string")
+                    message.ID = parseInt(object.ID, 10);
+                else if (typeof object.ID === "number")
+                    message.ID = object.ID;
+                else if (typeof object.ID === "object")
+                    message.ID = new $util.LongBits(object.ID.low >>> 0, object.ID.high >>> 0).toNumber();
+            if (object.ReportID != null)
+                if ($util.Long)
+                    (message.ReportID = $util.Long.fromValue(object.ReportID)).unsigned = false;
+                else if (typeof object.ReportID === "string")
+                    message.ReportID = parseInt(object.ReportID, 10);
+                else if (typeof object.ReportID === "number")
+                    message.ReportID = object.ReportID;
+                else if (typeof object.ReportID === "object")
+                    message.ReportID = new $util.LongBits(object.ReportID.low >>> 0, object.ReportID.high >>> 0).toNumber();
+            if (object.Page != null) {
+                if (typeof object.Page !== "object")
+                    throw TypeError(".protoManage.ReqNodeReportValList.Page: object expected");
+                message.Page = $root.protoManage.Page.fromObject(object.Page);
             }
             return message;
         };
@@ -12629,10 +9465,31 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.defaults)
-                object.filter = null;
-            if (message.filter != null && message.hasOwnProperty("filter"))
-                object.filter = $root.protoManage.Filter.toObject(message.filter, options);
+            if (options.defaults) {
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.ID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.ID = options.longs === String ? "0" : 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.ReportID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.ReportID = options.longs === String ? "0" : 0;
+                object.Page = null;
+            }
+            if (message.ID != null && message.hasOwnProperty("ID"))
+                if (typeof message.ID === "number")
+                    object.ID = options.longs === String ? String(message.ID) : message.ID;
+                else
+                    object.ID = options.longs === String ? $util.Long.prototype.toString.call(message.ID) : options.longs === Number ? new $util.LongBits(message.ID.low >>> 0, message.ID.high >>> 0).toNumber() : message.ID;
+            if (message.ReportID != null && message.hasOwnProperty("ReportID"))
+                if (typeof message.ReportID === "number")
+                    object.ReportID = options.longs === String ? String(message.ReportID) : message.ReportID;
+                else
+                    object.ReportID = options.longs === String ? $util.Long.prototype.toString.call(message.ReportID) : options.longs === Number ? new $util.LongBits(message.ReportID.low >>> 0, message.ReportID.high >>> 0).toNumber() : message.ReportID;
+            if (message.Page != null && message.hasOwnProperty("Page"))
+                object.Page = $root.protoManage.Page.toObject(message.Page, options);
             return object;
         };
 

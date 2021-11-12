@@ -5,6 +5,7 @@ import {inject} from "vue";
 
 export let ws:WebSocket|null = null
 export let reconnectCnt = 0
+export let isClosed = false
 export let websocketCloseByServer = 4000
 export let notifyOffset = 80
 
@@ -44,14 +45,16 @@ export module websocket {
         }
 
         function onClose(ev: CloseEvent) {
-            if (reconnectCnt == 0) {
+            if (reconnectCnt == 0 && !isClosed) {
                 ElMessage.error("网络连接已断开: "+ev.reason + '(' + ev.code + ')');
             }
             console.warn("websocket连接关闭: ", ev);
             if (ev.code != websocketCloseByServer){
                 wsReconnect()
             }else{
-                globals.reLogin()
+                if (!isClosed){
+                    globals.reLogin()
+                }
             }
         }
 
@@ -73,6 +76,7 @@ export module websocket {
     }
 
     export function wsClose() {
+        isClosed = true
         ws?.close()
     }
 

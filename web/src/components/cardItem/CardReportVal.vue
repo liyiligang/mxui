@@ -1,25 +1,60 @@
 <template>
     <el-row class="cardReportVal" type="flex" justify="space-between" align="middle">
-        <el-button class="cardReportValButton" type="text" @click="click">{{name}}</el-button>
+        <el-button class="cardReportValButton" type="text" @click="click">{{nodeReport.Name}}</el-button>
     </el-row>
+
+    <DialogViewFrame v-model="data.dialogVisible" :title="nodeReport.Name" :level="nodeReport.Level" width="860px"
+                     show-refresh show-full-screen show-setting show-auto-refresh fixHeight @refresh="nodeReportRefresh"
+                     @autoRefresh="nodeReportAutoRefresh" @setting="nodeReportSetting">
+        <NodeReportVal ref="nodeReportValRef" :nodeReport="nodeReport"></NodeReportVal>
+    </DialogViewFrame>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive} from "vue";
+import {defineComponent, reactive, ref} from "vue";
+import NodeReportVal from "../../views/dialog/NodeReportVal.vue";
+import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
+import {protoManage} from "../../proto/manage";
+import {defaultVal} from "../../base/defaultVal";
+
+interface CardReportValInfo {
+    dialogVisible:boolean
+}
+
 export default defineComponent ({
     name: "CardReportVal",
-    emits: ['textClick'],
+    components: {
+        NodeReportVal,
+        DialogViewFrame
+    },
     props:{
-        name:{
-            type: String,
-            default: ""
+        nodeReport:{
+            type: protoManage.NodeReport,
+            default: defaultVal.getDefaultProtoNodeReport()
         }
     },
-    setup(prop, context){
+    setup(props, context){
+
+        const data = reactive<CardReportValInfo>({dialogVisible:false})
+
         function click(){
-            context.emit('textClick')
+            data.dialogVisible = true
         }
-        return {click}
+
+        const nodeReportValRef = ref<typeof NodeReportVal>(NodeReportVal);
+        function nodeReportRefresh(){
+            nodeReportValRef.value.reqNodeReportValList()
+        }
+
+        function nodeReportAutoRefresh(state:boolean){
+            nodeReportValRef.value.autoRefreshStateChanged(state)
+        }
+
+        function nodeReportSetting(){
+            nodeReportValRef.value.showSettingView()
+        }
+
+        return {data, nodeReportRefresh, nodeReportAutoRefresh, nodeReportSetting, click, nodeReportValRef}
     }
 })
 </script>

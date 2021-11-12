@@ -7,16 +7,12 @@ package app
 
 import (
 	"context"
-	"encoding/json"
 	"github.com/gin-contrib/gzip"
 	"github.com/gin-gonic/gin"
-	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jconfig"
-	"github.com/liyiligang/base/component/Jdiscovery"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jorm"
 	"github.com/liyiligang/base/component/Jrpc"
-	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/liyiligang/klee/app/typedef/config"
@@ -32,13 +28,6 @@ func (app *App) InitConfig(){
 	//	configPath = os.Args[1]
 	//}
 	Jconfig.ReadConfigFromPath(&config.LocalConfig, configPath)
-
-	if config.LocalConfig.IP.PublicIP == ""{
-		config.LocalConfig.IP.PublicIP = Jtool.GetPublicIP()
-	}
-	if config.LocalConfig.IP.PrivateIP == ""{
-		config.LocalConfig.IP.PrivateIP = Jtool.GetPrivateIP()
-	}
 }
 
 func (app *App) InitLogServer(){
@@ -49,8 +38,6 @@ func (app *App) InitLogServer(){
 		MaxBackups: config.LocalConfig.Log.MaxNum,
 		MaxAge:     config.LocalConfig.Log.MaxAge,
 		InitialFields: map[string]interface{}{
-			"@nodeGroup":    config.LocalConfig.Node.NodeGroup,
-			"@nodeTypeName": app.AppTypeName,
 			"@nodeName":     config.LocalConfig.Node.NodeName,
 		}})
 
@@ -63,7 +50,7 @@ func (app *App) InitLogServer(){
 //启动orm服务
 func (app *App) InitDBServer() error {
 	db, err := Jorm.GormInit(Jorm.OrmInitConfig{
-		SqlDsn:      config.LocalConfig.DB.Account + config.LocalConfig.DB.Name + config.LocalConfig.DB.Set,
+		SqlDsn:      config.LocalConfig.DB.Connect,
 		MaxKeepConn: config.LocalConfig.DB.MaxKeepConn,
 		MaxConn:     config.LocalConfig.DB.MaxConn,
 		MaxLifetime: time.Duration(config.LocalConfig.DB.MaxLifeTime) * time.Second,
@@ -71,7 +58,7 @@ func (app *App) InitDBServer() error {
 		TableCheck:  orm.InitOrmTable,
 	})
 	if err != nil {
-		Jlog.Error("连接数据库" + config.LocalConfig.DB.Name + "失败", "errorBox:", err)
+		Jlog.Error("连接数据库失败", "errorBox:", err)
 		return err
 	}
 	app.DBServer.Gorm = db
@@ -196,76 +183,6 @@ func (app *App) StopRpcServer() error {
 	}
 	app.RpcServer.Stop()
 	return nil
-}
-
-//初始化服务发现
-func (app *App) InitDiscovery() error {
-	if config.LocalConfig.Etcd.EtcdAddr == "" {
-		return nil
-	}
-	discovery, err := Jdiscovery.DiscoveryInit(Jdiscovery.DiscoveryInitConfig{
-		EtcdAddr:       config.LocalConfig.Etcd.EtcdAddr,
-		ConnectTimeout: config.LocalConfig.Etcd.ConnectWaitTime,
-		RequestTimeout: config.LocalConfig.Etcd.RequestTimeout,
-	})
-	app.Discovery = discovery
-	Jlog.Info("发现服务初始化成功")
-	return err
-}
-
-func (app *App) StopDiscovery() error {
-	if app.Discovery == nil {
-		return nil
-	}
-	return 	app.Discovery.Client.Close()
-}
-
-//注册节点
-func (app *App) registerNode() error {
-	if app.Discovery == nil {
-		return nil
-	}
-	nodeData := commonConst.CommonNodeData{
-		NodeID:       commonConst.ManageNodeID,
-		NodeTypeID:   commonConst.ManageNodeTypeID,
-		NodeTypeName: app.AppTypeName,
-		NodeName:     config.LocalConfig.Node.NodeName,
-		NodeGroup:    config.LocalConfig.Node.NodeGroup,
-		NodeState:    int32(protoManage.State_StateNormal),
-		PublicAddr:   config.LocalConfig.IP.PublicIP,
-		PrivateAddr:  config.LocalConfig.IP.PrivateIP,
-		GrpcPort:     Jtool.GetPortFromAddr(config.LocalConfig.Grpc.ListenAddr),
-	}
-	byte, err := json.Marshal(nodeData)
-	if err != nil {
-		Jlog.Info("节点服务注册失败")
-		return err
-	}
-	err = app.Discovery.RegisterNode(&Jdiscovery.DiscoveryNode{
-		NodeKey: app.getNodeKey(),
-		NodeData: byte,
-		NodeKeepLive: 5,
-	})
-	if err != nil {
-		Jlog.Info("节点服务注册失败")
-		return err
-	}
-	Jlog.Info("节点服务注册成功")
-	return nil
-}
-
-//注销节点
-func (app *App) unRegisterNode() error {
-	if app.Discovery == nil {
-		return nil
-	}
-	return app.Discovery.UnRegisterNode(app.getNodeKey())
-}
-
-//获取节点key
-func (app *App) getNodeKey() string {
-	return "/"+ config.LocalConfig.Node.NodeGroup+"/服务"+"/"+
-		string(app.AppTypeName)+"/"+ config.LocalConfig.Node.NodeName+"/node"
 }
 
 //错误回调

@@ -92,10 +92,12 @@ export default defineComponent ({
 
         function pullNodeFuncCall(){
             data.loading = true
-            request.reqNodeFuncCallList(protoManage.Filter.create({
+            request.reqNodeFuncCallList(protoManage.ReqNodeFuncCallList.create({
+                Page:protoManage.Page.create({
+                    Count:globals.globalsConfig.funcCallConfig.tablePageSize,
+                    Num:data.tableIndex
+                }),
                 FuncID:Number(props.nodeFunc.Base?.ID),
-                PageSize:Number(globals.globalsConfig.funcCallConfig.tablePageSize),
-                PageNum:Number(data.tableIndex)
             })).then((response) => {
                 for (let i = 0; i < response.NodeFuncCallList.length; i++){
                     pushNodeFuncCall(response.NodeFuncCallList[i])

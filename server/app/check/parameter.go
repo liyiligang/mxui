@@ -9,7 +9,6 @@ import (
 )
 
 const ConstStringLimitMaxLength = 20
-const ConstStringColorLength = 7
 
 func BaseIDCheck(checkID int64, nodeID int64) error {
 	if checkID != nodeID {
@@ -59,48 +58,12 @@ func TopLinkCheck(protoTopLink *protoManage.TopLink) error {
 	return nil
 }
 
-func NodeGroupCheck(protoNodeGroup *protoManage.NodeGroup) error {
-	if protoNodeGroup.Name == "" {
-		return NameIsEmpty(constant.ConstNodeGroupStr)
-	}
-	if utf8.RuneCountInString(protoNodeGroup.Name) > ConstStringLimitMaxLength {
-		return NameIsTooLong(constant.ConstNodeGroupStr, ConstStringLimitMaxLength)
-	}
-	return nil
-}
-
-func NodeTypeCheck(protoNodeType *protoManage.NodeType) error {
-	if protoNodeType.Name == "" {
-		return NameIsEmpty(constant.ConstNodeTypeStr)
-	}
-	if utf8.RuneCountInString(protoNodeType.Name) > ConstStringLimitMaxLength {
-		return NameIsTooLong(constant.ConstNodeTypeStr, ConstStringLimitMaxLength)
-	}
-	return nil
-}
-
 func NodeCheck(protoNode *protoManage.Node) error {
-	if protoNode.GroupID == 0 {
-		return  IdIsZero(constant.ConstNodeGroupStr)
-	}
-	if protoNode.TypeID == 0 {
-		return  IdIsZero(constant.ConstNodeTypeStr)
-	}
 	if protoNode.Name == "" {
 		return NameIsEmpty(constant.ConstNodeStr)
 	}
 	if utf8.RuneCountInString(protoNode.Name) > ConstStringLimitMaxLength {
 		return NameIsTooLong(constant.ConstNodeStr, ConstStringLimitMaxLength)
-	}
-	return nil
-}
-
-func NodeLinkCheck(protoNodeLink *protoManage.NodeLink) error {
-	if protoNodeLink.SourceID == 0 {
-		return  IdIsZero("源"+ constant.ConstNodeStr)
-	}
-	if protoNodeLink.TargetID == 0 {
-		return  IdIsZero("目标"+ constant.ConstNodeStr)
 	}
 	return nil
 }

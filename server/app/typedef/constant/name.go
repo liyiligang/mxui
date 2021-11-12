@@ -1,10 +1,7 @@
 package constant
 
 const ConstManager = "管理员"
-const ConstNodeGroupStr= "节点组"
-const ConstNodeTypeStr = "节点类型"
 const ConstNodeStr = "节点"
-const ConstNodeLinkStr = "节点连接"
 const ConstNodeFuncStr = "节点方法"
 const ConstNodeReportStr = "节点报告"
 

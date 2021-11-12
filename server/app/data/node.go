@@ -14,7 +14,7 @@ func (data *Data) NodeAdd(protoNode *protoManage.Node) error {
 	if err := check.NodeCheck(protoNode); err != nil {
 		return err
 	}
-	ormNode := &orm.Node{Name: protoNode.Name, GroupID: protoNode.GroupID, TypeID: protoNode.TypeID}
+	ormNode := &orm.Node{Name: protoNode.Name}
 	if err := data.DB.AddNode(ormNode); err != nil {
 		return err
 	}
@@ -39,11 +39,7 @@ func (data *Data) NodeIsOnline(nodeID int64) error {
 //删除节点
 func (data *Data) NodeDel(protoNode *protoManage.Node) error {
 	//删除节点其他相关信息
-	err := data.NodeLinkDelAllByNodeID(&protoManage.NodeLink{SourceID: protoNode.Base.ID, TargetID: protoNode.Base.ID})
-	if err != nil {
-		return err
-	}
-	err = data.NodeFuncDelAllByNodeID(&protoManage.NodeFunc{NodeID: protoNode.Base.ID})
+	err := data.NodeFuncDelAllByNodeID(&protoManage.NodeFunc{NodeID: protoNode.Base.ID})
 	if err != nil {
 		return err
 	}
@@ -55,26 +51,6 @@ func (data *Data) NodeDel(protoNode *protoManage.Node) error {
 	if err != nil {
 		return err
 	}
-	count, err := data.DB.CountAllNodeByTypeID(orm.Node{TypeID: protoNode.TypeID})
-	if err != nil {
-		return err
-	}
-	if count == 0 {
-		err = data.NodeGroupDel(&protoManage.NodeGroup{Base: protoManage.Base{ID: protoNode.GroupID}})
-		if err != nil {
-			return err
-		}
-	}
-	count, err = data.DB.CountAllNodeByGroupID(orm.Node{GroupID: protoNode.GroupID})
-	if err != nil {
-		return err
-	}
-	if count == 0 {
-		err = data.NodeTypeDel(&protoManage.NodeType{Base: protoManage.Base{ID: protoNode.TypeID}})
-		if err != nil {
-			return err
-		}
-	}
 	return nil
 }
 
@@ -84,54 +60,18 @@ func (data *Data) NodeStateUpdate(protoNode *protoManage.Node) error {
 }
 
 //查找节点信息
-func (data *Data) NodeFind(req protoManage.ReqNodeList) (*protoManage.AnsNodeList, error) {
-	ormNodeList, err := data.DB.FindNode(req.Filter)
+func (data *Data) NodeFind(req *protoManage.ReqNodeList) (*protoManage.AnsNodeList, error) {
+	ormNodeList, err := data.DB.FindNode(req)
 	if err != nil {
 		return nil, err
 	}
 	protoNodeList := convert.OrmNodeListToProtoNodeList(ormNodeList)
-	ormNodeGroupList, err := data.DB.FindNodeGroupByNode(req.Filter)
+	count, err := data.DB.FindNodeCount(req)
 	if err != nil {
 		return nil, err
 	}
-	protoNodeGroupList := convert.OrmNodeGroupListToProtoNodeGroupList(ormNodeGroupList)
-	ormNodeTypeList, err := data.DB.FindNodeTypeByNode(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	protoNodeTypeList := convert.OrmNodeTypeListToProtoNodeTypeList(ormNodeTypeList)
-	count, err := data.DB.FindNodeCount(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	ormNodeLinkSourceStateCount ,err := data.DB.FindNodeLinkSourceStateCount(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	ormNodeLinkTargetStateCount ,err := data.DB.FindNodeLinkTargetStateCount(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	ormNodeFuncStateCountList ,err := data.DB.FindNodeFuncStateCount(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	ormNodeReportStateCountList ,err := data.DB.FindNodeReportStateCount(req.Filter)
-	if err != nil {
-		return nil, err
-	}
-	protoNodeLinkSourceStateCount := convert.OrmStateCountListToProtoStateCountList(ormNodeLinkSourceStateCount)
-	protoNodeLinkTargetStateCount := convert.OrmStateCountListToProtoStateCountList(ormNodeLinkTargetStateCount)
-	protoNodeFuncStateCountList := convert.OrmStateCountListToProtoStateCountList(ormNodeFuncStateCountList)
-	protoNodeReportStateCountList := convert.OrmStateCountListToProtoStateCountList(ormNodeReportStateCountList)
 	return &protoManage.AnsNodeList{
 		NodeList: protoNodeList,
-		NodeLinkSourceStateCountList: protoNodeLinkSourceStateCount,
-		NodeLinkTargetStateCountList: protoNodeLinkTargetStateCount,
-		NodeGroupList: protoNodeGroupList,
-		NodeTypeList: protoNodeTypeList,
-		NodeFuncStateCountList: protoNodeFuncStateCountList,
-		NodeReportStateCountList: protoNodeReportStateCountList,
 		Length: count}, nil
 }
 
@@ -147,8 +87,7 @@ func (data *Data) NodeFindByID(protoNode *protoManage.Node) error {
 
 //按节点名查询节点
 func (data *Data) NodeFindByName(protoNode *protoManage.Node) error {
-	ormNode, err :=data.DB.FindNodeByName(orm.Node{Name: protoNode.Name,
-		GroupID: protoNode.GroupID, TypeID: protoNode.TypeID})
+	ormNode, err :=data.DB.FindNodeByName(orm.Node{Name: protoNode.Name})
 	if err != nil {
 		return err
 	}

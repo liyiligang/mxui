@@ -1,9 +1,6 @@
 <template>
     <el-menu class="menu" @select="menuSelect" :default-active="data.activeName" :default-openeds="data.activeSubMenu">
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeGroup" >分组</el-menu-item>
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeType" >服务</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.node">节点</el-menu-item>
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeLink">连接</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeFunc">方法</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeReport">报告</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeNotify">通知</el-menu-item>
@@ -15,7 +12,7 @@
 import {defineComponent, onMounted, reactive} from "vue";
 import { routerPath, routerName } from "../router";
 import { globals } from "../base/globals";
-import {useRoute} from "vue-router";
+import {onBeforeRouteUpdate, useRoute} from "vue-router";
 
 interface SidebarInfo {
     activeName:String
@@ -28,28 +25,32 @@ export default defineComponent ({
 
     },
     setup(){
-        const data = reactive<SidebarInfo>({activeName:routerName.nodeGroup, activeSubMenu:["1", "2"]})
+        const data = reactive<SidebarInfo>({activeName:routerName.node, activeSubMenu:["1", "2"]})
         const route = useRoute()
+
+        onBeforeRouteUpdate(to => {
+            if (to.name != data.activeName) {
+                data.activeName = String(to.name)
+            }
+        })
+
         onMounted(()=>{
             if (route.name == null){
-                return``
+                return ''
             }
             data.activeName = route.name.toString()
         })
 
         function menuSelect(key:string, keyPath:string){
             switch (key) {
-                case routerName.nodeGroup:
-                case routerName.nodeType:
                 case routerName.node:
-                case routerName.nodeLink:
                 case routerName.nodeFunc:
                 case routerName.nodeReport:
                 case routerName.nodeNotify:
                     routerPath.toPath(key, {initPageNum:true, withPageSize:true}, route)
                     break
                 case routerName.nodeTest:
-                    routerPath.toNodeTestAll()
+                    routerPath.toPath(key)
                     break
                 default:
                     globals.viewError("错误的侧边栏菜单选项: " + key)

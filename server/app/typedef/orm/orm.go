@@ -15,12 +15,6 @@ type Base struct {
 	UpdatedAt 			time.Time
 }
 
-type StateCount struct {
-	ParentID int64
-	StateCount int64
-	State int64
-}
-
 type Manager struct {
 	Base
 	Name  				string	`gorm:"NOT NULL; UNIQUE;"`
@@ -39,29 +33,10 @@ type TopLink struct {
 	State				int32	`gorm:"NOT NULL;"`
 }
 
-type NodeGroup struct {
-	Base
-	Name 				string  `gorm:"NOT NULL; UNIQUE_INDEX:NodeGroupIndex;"`
-}
-
-type NodeType struct {
-	Base
-	Name  				string  `gorm:"NOT NULL; UNIQUE_INDEX:NodeTypeIndex;"`
-}
-
 type Node struct {
 	Base
-	GroupID   			int64   `gorm:"NOT NULL; UNIQUE_INDEX:NodeIndex;"`
-	TypeID    			int64   `gorm:"NOT NULL; UNIQUE_INDEX:NodeIndex;"`
 	Name      			string  `gorm:"NOT NULL; UNIQUE_INDEX:NodeIndex;"`
 	State				int32 	`gorm:"NOT NULL;"`
-}
-
-type NodeLink struct {
-	Base
-	SourceID  			int64	`gorm:"NOT NULL; UNIQUE_INDEX:NodeLinkIndex;"`
-	TargetID  			int64	`gorm:"NOT NULL; UNIQUE_INDEX:NodeLinkIndex;"`
-	State				int32	`gorm:"NOT NULL;"`
 }
 
 type NodeFunc struct {
@@ -114,10 +89,7 @@ type NodeNotify struct {
 func InitOrmTable(db *gorm.DB) {
 	db.AutoMigrate(&Manager{})
 	db.AutoMigrate(&TopLink{})
-	db.AutoMigrate(&NodeGroup{})
-	db.AutoMigrate(&NodeType{})
 	db.AutoMigrate(&Node{})
-	db.AutoMigrate(&NodeLink{})
 	db.AutoMigrate(&NodeFunc{})
 	db.AutoMigrate(&NodeFuncCall{})
 	db.AutoMigrate(&NodeReport{})

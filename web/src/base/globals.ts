@@ -1,14 +1,11 @@
 import {ElMessage} from "element-plus";
 import {protoManage} from "../proto/manage";
-import {routerPath} from "../router";
+import {routerPath, routerName} from "../router";
 import {reactive} from "vue";
 import {websocket} from "./websocket";
-import { routerName } from "../router";
-import {FilterTagInfo} from "../components/toolbar/filter/FilterViewTag.vue";
-import {LocationQueryRaw} from "vue-router";
 
-export module globals {
 	// export enum BlockType {
+export module globals {
 	// 	NoneBlock = -1,
 	// }
 
@@ -47,13 +44,7 @@ export module globals {
 		},
 		userSetTemp:{
 			autoRefresh: false,
-			dataFilterView: false,
-			dataFilterTags:{
-				nodeMap: new Map<string, Map<string, FilterTagInfo>>(),
-				nodeFuncMap: new Map<string, Map<string, FilterTagInfo>>(),
-				nodeReportMap: new Map<string, Map<string, FilterTagInfo>>(),
-				nodeNotifyMap: new Map<string, Map<string, FilterTagInfo>>()
-			}
+			dataFilterView: false
 		}
 	}
 
@@ -80,8 +71,8 @@ export module globals {
 	export function reLogin() {
 		globals.globalsData.manager.info = protoManage.Manager.create()
 		localStorage.removeItem(globals.globalsConfig.localStorageKey.token)
-		routerPath.toLogin()
 		websocket.wsClose()
+		routerPath.toPath(routerName.login)
 	}
 
 	export function elButtonBlur(e) {
@@ -190,42 +181,6 @@ export module globals {
 		} catch(e) {
 			return json
 		}
-	}
-
-	export function getRouteDataFilter (name:string):Map<string, Map<string, FilterTagInfo>> {
-		switch (name) {
-			case routerName.node:
-				return globalsData.tempSetting.setting.dataFilterTags.nodeMap
-			case routerName.nodeFunc:
-				return globalsData.tempSetting.setting.dataFilterTags.nodeFuncMap
-			case routerName.nodeReport:
-				return globalsData.tempSetting.setting.dataFilterTags.nodeReportMap
-			case routerName.nodeNotify:
-				return globalsData.tempSetting.setting.dataFilterTags.nodeNotifyMap
-			default:
-				return new Map<string, Map<string, FilterTagInfo>>()
-		}
-	}
-
-	export function getDataFilterQuery (name:string):LocationQueryRaw {
-		let query = {}
-		for (let item of globals.getRouteDataFilter(name).values()){
-			let sign = ""
-			let tags = new Array<any>()
-			for (let tag of item.keys()){
-				let tagInfo = item.get(tag)
-				if (tagInfo){
-					if (tagInfo.value != undefined){
-						tags.push(tagInfo.value)
-					}else{
-						tags.push(tag)
-					}
-					sign = tagInfo.sign
-				}
-			}
-			query[sign] = tags
-		}
-		return query
 	}
 
 	export function getHttpHost ():string{

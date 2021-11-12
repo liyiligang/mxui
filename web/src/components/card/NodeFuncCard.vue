@@ -5,7 +5,9 @@
             <CardInfo  describe="权限" :name="convert.getManagerLevelName(nodeFunc.Level)"
                        :name-color="convert.getColorByLevel(nodeFunc.Level)"></CardInfo>
             <CardInfo  describe="回调" :name="nodeFunc.Func"></CardInfo>
-            <CardInfo  describe="节点" :name="node.Name" :nameColor="convert.getColorByState(node.State)" :link=routerPath.toNode(protoManage.Filter.create({ID:node.Base.ID}))></CardInfo>
+            <CardInfo  describe="节点" :name="node.Name" :nameColor="convert.getColorByState(node.State)"
+                       :call="toNode">
+            </CardInfo>
             <CardBase :id="nodeFunc.Base.ID" :time="nodeFunc.Base.UpdateTime"></CardBase>
         </template>
         <template v-slot:body>
@@ -15,19 +17,20 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, PropType} from "vue"
+import {defineComponent, reactive} from "vue"
 import CardName from "../cardItem/CardName.vue"
 import CardBase from "../cardItem/CardBase.vue"
 import CardViewFrame from "./CardViewFrame.vue"
 import {protoManage} from "../../proto/manage"
 import {request} from "../../base/request"
 import {convert} from "../../base/convert"
-import {routerPath} from "../../router"
+import {routerName, routerPath} from "../../router"
 import CardInfo from "../cardItem/CardInfo.vue"
 import CardFuncCall from "../cardItem/CardFuncCall.vue"
 import NodeFuncHistory from "../../views/dialog/NodeFuncHistory.vue"
-import NodeFuncCall from "../../views/dialog/NodeFuncCall.vue"
 import {defaultVal} from "../../base/defaultVal";
+import {useRoute} from "vue-router";
+import {filter} from "../../base/filter";
 
 interface NodeFuncCardInfo {
 
@@ -44,11 +47,7 @@ export default defineComponent ({
         node:{
             type: protoManage.Node,
             default: defaultVal.getDefaultProtoNode()
-        },
-        nodeFuncCall:{
-            type: protoManage.NodeFuncCall,
-            default: defaultVal.getDefaultProtoNodeFuncCall()
-        },
+        }
     },
     components: {
         CardName,
@@ -56,17 +55,21 @@ export default defineComponent ({
         CardViewFrame,
         CardInfo,
         CardFuncCall,
-        NodeFuncCall,
         NodeFuncHistory
     },
     setup(props, context){
         const data = reactive<NodeFuncCardInfo>({})
+        const route = useRoute()
 
         function closeNodeFunc(){
             context.emit('deleteNodeFunc', props.nodeFunc)
         }
 
-        return {data, request, protoManage, routerPath, convert, closeNodeFunc}
+        function toNode() {
+            filter.toNodeWithID(Number(props.node.Base?.ID), route)
+        }
+
+        return {data, request, protoManage, routerPath, convert, closeNodeFunc, toNode}
     }
 })
 </script>

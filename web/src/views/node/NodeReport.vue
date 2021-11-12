@@ -1,13 +1,13 @@
 <template>
     <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
         <NodeReportCard  v-for="i in data.nodeReportList" :nodeReport="i" @deleteNodeReport="deleteNodeReport"
-                         :node=data.nodeMap.get(i.NodeID) :nodeReportVal=data.nodeReportValMap.get(i.Base.ID)>
+                         :node=data.nodeMap.get(i.NodeID)>
         </NodeReportCard>
     </NodeViewFrame>
 </template>
 
 <script lang="ts">
-import {defineComponent, reactive, onMounted, PropType, getCurrentInstance, onUnmounted} from "vue";
+import {defineComponent, reactive, onMounted, getCurrentInstance, onUnmounted} from "vue";
 import {protoManage} from "../../proto/manage";
 import {request} from "../../base/request";
 import NodeReportCard from "../../components/card/NodeReportCard.vue"
@@ -17,11 +17,11 @@ import Load from "../../components/Load.vue"
 import NodeViewFrame from "./NodeViewFrame.vue"
 import {refresh} from "../../base/refresh";
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
+import {convert} from "../../base/convert";
 
 interface NodeReportInfo {
     nodeReportList: protoManage.INodeReport[]
     nodeMap: Map<number, protoManage.INode>
-    nodeReportValMap: Map<number, protoManage.INodeReportVal>
     pageTotal:number
     isLoading:boolean
     refreshFlag:number
@@ -38,7 +38,7 @@ export default defineComponent ({
     },
     setup(){
         const data = reactive<NodeReportInfo>({nodeReportList:[], nodeMap:new Map<number, protoManage.INode>(),
-            nodeReportValMap:new Map<number, protoManage.INodeReportVal>(), pageTotal:0, isLoading:false, refreshFlag:0})
+            pageTotal:0, isLoading:false, refreshFlag:0})
         const route = useRoute()
         const instance = getCurrentInstance()
 
@@ -55,15 +55,17 @@ export default defineComponent ({
             data.refreshFlag++
             data.isLoading = true
             let getNodeReportList = (flag:number)=>{
-                request.reqNodeReportList(protoManage.Filter.create({
-                    ID:Number(route.query.id),
-                    NodeID:Number(route.query.nodeID),
-                    Name:String(route.query.name),
-                    Flag:String(route.query.flag),
-                    Value:String(route.query.value),
-                    State:Number(route.query.state),
-                    PageSize:Number(route.query.pageSize),
-                    PageNum:Number(route.query.pageNum)
+                request.reqNodeReportList(protoManage.ReqNodeReportList.create({
+                    Page:protoManage.Page.create({
+                        Count:Number(route.query.pageSize),
+                        Num:Number(route.query.pageNum) - 1,
+                    }),
+                    ID:convert.dataToArray(route.query.id),
+                    Name:convert.dataToArray(route.query.name),
+                    Level:convert.dataToArray(route.query.level),
+                    NodeID:convert.dataToArray(route.query.nodeID),
+                    NodeName:convert.dataToArray(route.query.nodeName),
+                    UpdateTime:convert.dataToTimeArray(route.query.updateTime),
                 })).then((response) => {
                     if (flag != data.refreshFlag){
                         return
@@ -75,12 +77,6 @@ export default defineComponent ({
                         let key = Number(response.NodeList[i].Base?.ID)
                         let val = response.NodeList[i]
                         data.nodeMap.set(key, val)
-                    }
-                    data.nodeReportValMap.clear()
-                    for (let i = 0; i < response.NodeReportValList.length; i++){
-                        let key = Number(response.NodeReportValList[i].ReportID)
-                        let val = response.NodeReportValList[i]
-                        data.nodeReportValMap.set(key, val)
                     }
                 }).catch(error => {}).finally(()=>{
                     if (flag != data.refreshFlag){
@@ -106,7 +102,6 @@ export default defineComponent ({
                     data.nodeReportList.splice(i, 1)
                 }
             }
-            data.nodeReportValMap.delete(nodeReportID)
             data.pageTotal = data.nodeReportList.length
         }
         return {data, deleteNodeReport}

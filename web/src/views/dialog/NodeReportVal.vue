@@ -78,10 +78,12 @@ export default defineComponent ({
 
         function reqNodeReportValList(){
             data.loading = true
-            request.reqNodeReportValList(protoManage.Filter.create({
+            request.reqNodeReportValList(protoManage.ReqNodeReportValList.create({
+                Page:protoManage.Page.create({
+                    Count:data.setData.requestCount,
+                    Num:1
+                }),
                 ReportID:props.nodeReport.Base?.ID,
-                PageSize:data.setData.requestCount,
-                PageNum:1
             })).then((response) => {
                 data.nodeReportValList.length = 0
                 for (let i = 0; i < response.NodeReportValList.length; i++){
@@ -99,12 +101,13 @@ export default defineComponent ({
             if (data.nodeReportValList.length > 0){
                 id = Number(data.nodeReportValList[0].Base?.ID)
             }
-            request.reqNodeReportValList(protoManage.Filter.create({
+            request.reqNodeReportValList(protoManage.ReqNodeReportValList.create({
+                Page:protoManage.Page.create({
+                    Count:data.setData.requestCount,
+                    Num:1
+                }),
                 ID: id,
-                IDSign:">",
                 ReportID:props.nodeReport.Base?.ID,
-                PageSize:data.setData.requestCount,
-                PageNum:1
             })).then((response) => {
                 for (let i = response.NodeReportValList.length - 1; i >= 0; i--){
                     if (data.nodeReportValList.length >= data.setData.requestCount){
