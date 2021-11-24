@@ -5,7 +5,10 @@
 
 package request
 
-import "github.com/liyiligang/klee/app/protoFiles/protoManage"
+import (
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/orm"
+)
 
 //节点方法调用查询
 func (request *Request) ReqNodeFuncCallFind(userID int64, message []byte)([]byte, error) {
@@ -109,6 +112,14 @@ func (request *Request) ReqNodeFuncCall(userID int64, message []byte)([]byte, er
 	req.NodeFuncCall.ManagerID = userID
 	err = request.Data.NodeFuncCallReq(&req)
 	if err != nil {
+		request.Data.DB.AddNodeFuncCall(&orm.NodeFuncCall{
+			ManagerID: req.NodeFuncCall.ManagerID,
+			FuncID: req.NodeFuncCall.FuncID,
+			Parameter: req.NodeFuncCall.Parameter,
+			ReturnType: int32(protoManage.NodeFuncReturnType_Error),
+			ReturnVal: err.Error(),
+			State: int32(protoManage.State_StateError),
+		})
 		return nil, err
 	}
 	pbByte, err := req.NodeFuncCall.Base.Marshal()

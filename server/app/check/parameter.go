@@ -3,6 +3,7 @@ package check
 import (
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/config"
 	"github.com/liyiligang/klee/app/typedef/constant"
 	"github.com/pkg/errors"
 	"unicode/utf8"
@@ -113,6 +114,13 @@ func NodeNotifyCheck(protoNodeNotify *protoManage.NodeNotify) error {
 	return nil
 }
 
+func NodeFileSizeCheck(size int64) error {
+	if (size/(1024*1024)) > int64(config.LocalConfig.File.MaxSize) {
+		return errors.New("文件太大")
+	}
+	return nil
+}
+
 func NameIsEmpty(name string) error {
 	return errors.New(name + "名不能为空值")
 }
@@ -124,3 +132,5 @@ func NameIsTooLong(name string, limitSize uint64) error {
 func IdIsZero(name string) error {
 	return errors.New(name + "ID不能为零值")
 }
+
+

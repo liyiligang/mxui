@@ -29,3 +29,5 @@ const ConstStop = "停止"
 const ConstCall = "调用"
 const ConstToken = "Token"
 const ConstPassword = "密码"
+
+const ConstHttpDownload = "/downloadFile/"

@@ -49,7 +49,9 @@ export namespace protoManage {
         NodeReportValFind = 707,
         NodeNotifyAdd = 801,
         NodeNotifyFind = 802,
-        NodeNotifyError = 803
+        NodeNotifyError = 803,
+        NodeResourceCheck = 901,
+        NodeResourceDel = 902
     }
 
     /** State enum. */
@@ -97,6 +99,12 @@ export namespace protoManage {
         NotifySenderTypeUnknow = 0,
         NotifySenderTypeUser = 1,
         NotifySenderTypeNode = 2
+    }
+
+    /** NodeResourceType enum. */
+    enum NodeResourceType {
+        NodeResourceTypeUnknow = 0,
+        NodeResourceTypeCache = 1
     }
 
     /** HttpError enum. */
@@ -1638,6 +1646,132 @@ export namespace protoManage {
 
         /**
          * Converts this NodeNotify to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a NodeResourceCache. */
+    interface INodeResourceCache {
+
+        /** NodeResourceCache Name */
+        Name?: (string|null);
+
+        /** NodeResourceCache FileName */
+        FileName?: (string|null);
+
+        /** NodeResourceCache FileMd5 */
+        FileMd5?: (string|null);
+
+        /** NodeResourceCache FileSize */
+        FileSize?: (number|null);
+
+        /** NodeResourceCache Type */
+        Type?: (protoManage.NodeResourceType|null);
+
+        /** NodeResourceCache Url */
+        Url?: (string|null);
+
+        /** NodeResourceCache ThumbUrl */
+        ThumbUrl?: (string|null);
+    }
+
+    /** Represents a NodeResourceCache. */
+    class NodeResourceCache implements INodeResourceCache {
+
+        /**
+         * Constructs a new NodeResourceCache.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.INodeResourceCache);
+
+        /** NodeResourceCache Name. */
+        public Name: string;
+
+        /** NodeResourceCache FileName. */
+        public FileName: string;
+
+        /** NodeResourceCache FileMd5. */
+        public FileMd5: string;
+
+        /** NodeResourceCache FileSize. */
+        public FileSize: number;
+
+        /** NodeResourceCache Type. */
+        public Type: protoManage.NodeResourceType;
+
+        /** NodeResourceCache Url. */
+        public Url: string;
+
+        /** NodeResourceCache ThumbUrl. */
+        public ThumbUrl: string;
+
+        /**
+         * Creates a new NodeResourceCache instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns NodeResourceCache instance
+         */
+        public static create(properties?: protoManage.INodeResourceCache): protoManage.NodeResourceCache;
+
+        /**
+         * Encodes the specified NodeResourceCache message. Does not implicitly {@link protoManage.NodeResourceCache.verify|verify} messages.
+         * @param message NodeResourceCache message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.INodeResourceCache, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified NodeResourceCache message, length delimited. Does not implicitly {@link protoManage.NodeResourceCache.verify|verify} messages.
+         * @param message NodeResourceCache message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.INodeResourceCache, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a NodeResourceCache message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns NodeResourceCache
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.NodeResourceCache;
+
+        /**
+         * Decodes a NodeResourceCache message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns NodeResourceCache
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.NodeResourceCache;
+
+        /**
+         * Verifies a NodeResourceCache message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a NodeResourceCache message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns NodeResourceCache
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.NodeResourceCache;
+
+        /**
+         * Creates a plain object from a NodeResourceCache message. Also converts values to other types if specified.
+         * @param message NodeResourceCache
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.NodeResourceCache, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this NodeResourceCache to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };

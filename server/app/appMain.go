@@ -31,6 +31,7 @@ func InitServer() (*App, error) {
 	app := App{AppTypeName: commonConst.ManageServerName}
 	app.InitConfig()
 	app.InitLogServer()
+	app.InitFileDir()
 	app.initAppData()
 	if err := app.InitBaseServer(); err != nil {
 		app.StopBaseServer()

@@ -130,7 +130,7 @@ export default defineComponent ({
     min-width: 240px;
     max-width: 240px;
     height: 100%;
-    margin-top: 25px;
+    padding-top: 25px;
     overflow-y:auto;
 }
 

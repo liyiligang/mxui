@@ -1,7 +1,14 @@
 Debug = true
 
+[User]
+OpenRegister = true
+
 [Node]
 NodeName = '管控中心'
+
+[File]
+SavePath = '../store/cache/'
+MaxSize = 200                    #单位：M
 
 [Log]
 Path = '../store/log/app.log'

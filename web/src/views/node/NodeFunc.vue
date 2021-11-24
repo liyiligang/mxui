@@ -18,6 +18,7 @@ import NodeViewFrame from "./NodeViewFrame.vue"
 import {onBeforeRouteUpdate, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import {refresh} from "../../base/refresh";
 import {convert} from "../../base/convert";
+import {globals} from "../../base/globals";
 
 interface NodeFuncInfo {
     nodeFuncList: protoManage.INodeFunc[]
@@ -58,7 +59,7 @@ export default defineComponent ({
                 request.reqNodeFuncList(protoManage.ReqNodeFuncList.create({
                     Page:protoManage.Page.create({
                         Count:Number(route.query.pageSize),
-                        Num:Number(route.query.pageNum) - 1,
+                        Num:globals.getPageNumOffset(route.query.pageNum)
                     }),
                     ID:convert.dataToArray(route.query.id),
                     Name:convert.dataToArray(route.query.name),

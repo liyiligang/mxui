@@ -66,6 +66,8 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} NodeNotifyAdd=801 NodeNotifyAdd value
      * @property {number} NodeNotifyFind=802 NodeNotifyFind value
      * @property {number} NodeNotifyError=803 NodeNotifyError value
+     * @property {number} NodeResourceCheck=901 NodeResourceCheck value
+     * @property {number} NodeResourceDel=902 NodeResourceDel value
      */
     protoManage.Order = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -115,6 +117,8 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[801] = "NodeNotifyAdd"] = 801;
         values[valuesById[802] = "NodeNotifyFind"] = 802;
         values[valuesById[803] = "NodeNotifyError"] = 803;
+        values[valuesById[901] = "NodeResourceCheck"] = 901;
+        values[valuesById[902] = "NodeResourceDel"] = 902;
         return values;
     })();
 
@@ -219,6 +223,20 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[0] = "NotifySenderTypeUnknow"] = 0;
         values[valuesById[1] = "NotifySenderTypeUser"] = 1;
         values[valuesById[2] = "NotifySenderTypeNode"] = 2;
+        return values;
+    })();
+
+    /**
+     * NodeResourceType enum.
+     * @name protoManage.NodeResourceType
+     * @enum {number}
+     * @property {number} NodeResourceTypeUnknow=0 NodeResourceTypeUnknow value
+     * @property {number} NodeResourceTypeCache=1 NodeResourceTypeCache value
+     */
+    protoManage.NodeResourceType = (function() {
+        const valuesById = {}, values = Object.create(valuesById);
+        values[valuesById[0] = "NodeResourceTypeUnknow"] = 0;
+        values[valuesById[1] = "NodeResourceTypeCache"] = 1;
         return values;
     })();
 
@@ -440,6 +458,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 801:
                 case 802:
                 case 803:
+                case 901:
+                case 902:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -644,6 +664,14 @@ export const protoManage = $root.protoManage = (() => {
             case "NodeNotifyError":
             case 803:
                 message.order = 803;
+                break;
+            case "NodeResourceCheck":
+            case 901:
+                message.order = 901;
+                break;
+            case "NodeResourceDel":
+            case 902:
+                message.order = 902;
                 break;
             }
             if (object.message != null)
@@ -906,6 +934,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 801:
                 case 802:
                 case 803:
+                case 901:
+                case 902:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -1113,6 +1143,14 @@ export const protoManage = $root.protoManage = (() => {
             case "NodeNotifyError":
             case 803:
                 message.order = 803;
+                break;
+            case "NodeResourceCheck":
+            case 901:
+                message.order = 901;
+                break;
+            case "NodeResourceDel":
+            case 902:
+                message.order = 902;
                 break;
             }
             if (object.message != null)
@@ -4942,6 +4980,353 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         return NodeNotify;
+    })();
+
+    protoManage.NodeResourceCache = (function() {
+
+        /**
+         * Properties of a NodeResourceCache.
+         * @memberof protoManage
+         * @interface INodeResourceCache
+         * @property {string|null} [Name] NodeResourceCache Name
+         * @property {string|null} [FileName] NodeResourceCache FileName
+         * @property {string|null} [FileMd5] NodeResourceCache FileMd5
+         * @property {number|null} [FileSize] NodeResourceCache FileSize
+         * @property {protoManage.NodeResourceType|null} [Type] NodeResourceCache Type
+         * @property {string|null} [Url] NodeResourceCache Url
+         * @property {string|null} [ThumbUrl] NodeResourceCache ThumbUrl
+         */
+
+        /**
+         * Constructs a new NodeResourceCache.
+         * @memberof protoManage
+         * @classdesc Represents a NodeResourceCache.
+         * @implements INodeResourceCache
+         * @constructor
+         * @param {protoManage.INodeResourceCache=} [properties] Properties to set
+         */
+        function NodeResourceCache(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * NodeResourceCache Name.
+         * @member {string} Name
+         * @memberof protoManage.NodeResourceCache
+         * @instance
+         */
+        NodeResourceCache.prototype.Name = "";
+
+        /**
+         * NodeResourceCache FileName.
+         * @member {string} FileName
+         * @memberof protoManage.NodeResourceCache
+         * @instance
+         */
+        NodeResourceCache.prototype.FileName = "";
+
+        /**
+         * NodeResourceCache FileMd5.
+         * @member {string} FileMd5
+         * @memberof protoManage.NodeResourceCache
+         * @instance
+         */
+        NodeResourceCache.prototype.FileMd5 = "";
+
+        /**
+         * NodeResourceCache FileSize.
+         * @member {number} FileSize
+         * @memberof protoManage.NodeResourceCache
+         * @instance
+         */
+        NodeResourceCache.prototype.FileSize = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * NodeResourceCache Type.
+         * @member {protoManage.NodeResourceType} Type
+         * @memberof protoManage.NodeResourceCache
+         * @instance
+         */
+        NodeResourceCache.prototype.Type = 0;
+
+        /**
+         * NodeResourceCache Url.
+         * @member {string} Url
+         * @memberof protoManage.NodeResourceCache
+         * @instance
+         */
+        NodeResourceCache.prototype.Url = "";
+
+        /**
+         * NodeResourceCache ThumbUrl.
+         * @member {string} ThumbUrl
+         * @memberof protoManage.NodeResourceCache
+         * @instance
+         */
+        NodeResourceCache.prototype.ThumbUrl = "";
+
+        /**
+         * Creates a new NodeResourceCache instance using the specified properties.
+         * @function create
+         * @memberof protoManage.NodeResourceCache
+         * @static
+         * @param {protoManage.INodeResourceCache=} [properties] Properties to set
+         * @returns {protoManage.NodeResourceCache} NodeResourceCache instance
+         */
+        NodeResourceCache.create = function create(properties) {
+            return new NodeResourceCache(properties);
+        };
+
+        /**
+         * Encodes the specified NodeResourceCache message. Does not implicitly {@link protoManage.NodeResourceCache.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.NodeResourceCache
+         * @static
+         * @param {protoManage.INodeResourceCache} message NodeResourceCache message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        NodeResourceCache.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.Name != null && Object.hasOwnProperty.call(message, "Name"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.Name);
+            if (message.FileName != null && Object.hasOwnProperty.call(message, "FileName"))
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.FileName);
+            if (message.FileMd5 != null && Object.hasOwnProperty.call(message, "FileMd5"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.FileMd5);
+            if (message.FileSize != null && Object.hasOwnProperty.call(message, "FileSize"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.FileSize);
+            if (message.Type != null && Object.hasOwnProperty.call(message, "Type"))
+                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.Type);
+            if (message.Url != null && Object.hasOwnProperty.call(message, "Url"))
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.Url);
+            if (message.ThumbUrl != null && Object.hasOwnProperty.call(message, "ThumbUrl"))
+                writer.uint32(/* id 7, wireType 2 =*/58).string(message.ThumbUrl);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified NodeResourceCache message, length delimited. Does not implicitly {@link protoManage.NodeResourceCache.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.NodeResourceCache
+         * @static
+         * @param {protoManage.INodeResourceCache} message NodeResourceCache message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        NodeResourceCache.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a NodeResourceCache message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.NodeResourceCache
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.NodeResourceCache} NodeResourceCache
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        NodeResourceCache.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.NodeResourceCache();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.Name = reader.string();
+                    break;
+                case 2:
+                    message.FileName = reader.string();
+                    break;
+                case 3:
+                    message.FileMd5 = reader.string();
+                    break;
+                case 4:
+                    message.FileSize = reader.int64();
+                    break;
+                case 5:
+                    message.Type = reader.int32();
+                    break;
+                case 6:
+                    message.Url = reader.string();
+                    break;
+                case 7:
+                    message.ThumbUrl = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a NodeResourceCache message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.NodeResourceCache
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.NodeResourceCache} NodeResourceCache
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        NodeResourceCache.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a NodeResourceCache message.
+         * @function verify
+         * @memberof protoManage.NodeResourceCache
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        NodeResourceCache.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.Name != null && message.hasOwnProperty("Name"))
+                if (!$util.isString(message.Name))
+                    return "Name: string expected";
+            if (message.FileName != null && message.hasOwnProperty("FileName"))
+                if (!$util.isString(message.FileName))
+                    return "FileName: string expected";
+            if (message.FileMd5 != null && message.hasOwnProperty("FileMd5"))
+                if (!$util.isString(message.FileMd5))
+                    return "FileMd5: string expected";
+            if (message.FileSize != null && message.hasOwnProperty("FileSize"))
+                if (!$util.isInteger(message.FileSize) && !(message.FileSize && $util.isInteger(message.FileSize.low) && $util.isInteger(message.FileSize.high)))
+                    return "FileSize: integer|Long expected";
+            if (message.Type != null && message.hasOwnProperty("Type"))
+                switch (message.Type) {
+                default:
+                    return "Type: enum value expected";
+                case 0:
+                case 1:
+                    break;
+                }
+            if (message.Url != null && message.hasOwnProperty("Url"))
+                if (!$util.isString(message.Url))
+                    return "Url: string expected";
+            if (message.ThumbUrl != null && message.hasOwnProperty("ThumbUrl"))
+                if (!$util.isString(message.ThumbUrl))
+                    return "ThumbUrl: string expected";
+            return null;
+        };
+
+        /**
+         * Creates a NodeResourceCache message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.NodeResourceCache
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.NodeResourceCache} NodeResourceCache
+         */
+        NodeResourceCache.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.NodeResourceCache)
+                return object;
+            let message = new $root.protoManage.NodeResourceCache();
+            if (object.Name != null)
+                message.Name = String(object.Name);
+            if (object.FileName != null)
+                message.FileName = String(object.FileName);
+            if (object.FileMd5 != null)
+                message.FileMd5 = String(object.FileMd5);
+            if (object.FileSize != null)
+                if ($util.Long)
+                    (message.FileSize = $util.Long.fromValue(object.FileSize)).unsigned = false;
+                else if (typeof object.FileSize === "string")
+                    message.FileSize = parseInt(object.FileSize, 10);
+                else if (typeof object.FileSize === "number")
+                    message.FileSize = object.FileSize;
+                else if (typeof object.FileSize === "object")
+                    message.FileSize = new $util.LongBits(object.FileSize.low >>> 0, object.FileSize.high >>> 0).toNumber();
+            switch (object.Type) {
+            case "NodeResourceTypeUnknow":
+            case 0:
+                message.Type = 0;
+                break;
+            case "NodeResourceTypeCache":
+            case 1:
+                message.Type = 1;
+                break;
+            }
+            if (object.Url != null)
+                message.Url = String(object.Url);
+            if (object.ThumbUrl != null)
+                message.ThumbUrl = String(object.ThumbUrl);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a NodeResourceCache message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.NodeResourceCache
+         * @static
+         * @param {protoManage.NodeResourceCache} message NodeResourceCache
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        NodeResourceCache.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.Name = "";
+                object.FileName = "";
+                object.FileMd5 = "";
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.FileSize = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.FileSize = options.longs === String ? "0" : 0;
+                object.Type = options.enums === String ? "NodeResourceTypeUnknow" : 0;
+                object.Url = "";
+                object.ThumbUrl = "";
+            }
+            if (message.Name != null && message.hasOwnProperty("Name"))
+                object.Name = message.Name;
+            if (message.FileName != null && message.hasOwnProperty("FileName"))
+                object.FileName = message.FileName;
+            if (message.FileMd5 != null && message.hasOwnProperty("FileMd5"))
+                object.FileMd5 = message.FileMd5;
+            if (message.FileSize != null && message.hasOwnProperty("FileSize"))
+                if (typeof message.FileSize === "number")
+                    object.FileSize = options.longs === String ? String(message.FileSize) : message.FileSize;
+                else
+                    object.FileSize = options.longs === String ? $util.Long.prototype.toString.call(message.FileSize) : options.longs === Number ? new $util.LongBits(message.FileSize.low >>> 0, message.FileSize.high >>> 0).toNumber() : message.FileSize;
+            if (message.Type != null && message.hasOwnProperty("Type"))
+                object.Type = options.enums === String ? $root.protoManage.NodeResourceType[message.Type] : message.Type;
+            if (message.Url != null && message.hasOwnProperty("Url"))
+                object.Url = message.Url;
+            if (message.ThumbUrl != null && message.hasOwnProperty("ThumbUrl"))
+                object.ThumbUrl = message.ThumbUrl;
+            return object;
+        };
+
+        /**
+         * Converts this NodeResourceCache to JSON.
+         * @function toJSON
+         * @memberof protoManage.NodeResourceCache
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        NodeResourceCache.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return NodeResourceCache;
     })();
 
     protoManage.ReqNodeLogin = (function() {

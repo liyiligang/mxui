@@ -60,7 +60,7 @@ export default defineComponent ({
                 request.reqNodeNotifyList(protoManage.ReqNodeNotifyList.create({
                     Page:protoManage.Page.create({
                         Count:Number(route.query.pageSize),
-                        Num:Number(route.query.pageNum) - 1,
+                        Num:globals.getPageNumOffset(route.query.pageNum)
                     }),
                     SenderName:convert.dataToArray(route.query.senderName),
                     SenderType:convert.dataToArray(route.query.senderType),

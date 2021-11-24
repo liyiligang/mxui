@@ -17,6 +17,7 @@ import NodeViewFrame from "./NodeViewFrame.vue"
 import {useRoute, onBeforeRouteUpdate, RouteLocationNormalizedLoaded} from "vue-router";
 import {convert} from "../../base/convert";
 import {routerPath} from "../../router";
+import {globals} from "../../base/globals";
 
 interface NodeInfo {
     nodeList: protoManage.INode[]
@@ -55,7 +56,7 @@ export default defineComponent ({
                 request.reqNodeList(protoManage.ReqNodeList.create({
                     Page:protoManage.Page.create({
                         Count:Number(route.query.pageSize),
-                        Num:Number(route.query.pageNum) - 1,
+                        Num:globals.getPageNumOffset(route.query.pageNum)
                     }),
                     ID:convert.dataToArray(route.query.id),
                     Name:convert.dataToArray(route.query.name),

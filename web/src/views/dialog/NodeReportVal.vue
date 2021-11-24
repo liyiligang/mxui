@@ -81,7 +81,7 @@ export default defineComponent ({
             request.reqNodeReportValList(protoManage.ReqNodeReportValList.create({
                 Page:protoManage.Page.create({
                     Count:data.setData.requestCount,
-                    Num:1
+                    Num:globals.getPageNumOffset(1)
                 }),
                 ReportID:props.nodeReport.Base?.ID,
             })).then((response) => {
@@ -104,7 +104,7 @@ export default defineComponent ({
             request.reqNodeReportValList(protoManage.ReqNodeReportValList.create({
                 Page:protoManage.Page.create({
                     Count:data.setData.requestCount,
-                    Num:1
+                    Num:globals.getPageNumOffset(1)
                 }),
                 ID: id,
                 ReportID:props.nodeReport.Base?.ID,

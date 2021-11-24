@@ -1,42 +1,121 @@
 <template>
-    <el-button style="height: 60px" @click="click">{{"测试"}}</el-button>
-    <DialogViewFrame v-model="data.show" title="测试">
-        <div>{{"aaaaaa"}}</div>
-    </DialogViewFrame>
+<!--    <el-upload-->
+<!--        action="http://localhost:80/uploadFile"-->
+<!--        :data="{token: globals.globalsData.manager.info.Token}"-->
+<!--        multiple-->
+<!--        :on-success="success"-->
+<!--        :http-request="request"-->
+<!--        :on-error="error"-->
+<!--        :on-preview="preview"-->
+<!--        :on-progress="progress"-->
+<!--        :file-list="data.fileList">-->
+<!--        <el-button size="small" type="primary">Click to 11111111111111upload</el-button>-->
+<!--    </el-upload>-->
+<!--    :http-request="request"-->
+    <vue-form class="form" v-model="data.formData" :form-footer="data.formFooter"
+              :ui-schema="data.uiSchema" :schema="data.schema"></vue-form>
 </template>
 
 <script lang="ts">
 import {defineComponent, onMounted, reactive} from "vue";
-import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 import {globals} from "../../base/globals";
 import axios from "axios";
+import * as SparkMD5 from "spark-md5";
 import {protoManage} from "../../proto/manage";
+import { request } from "../../base/request";
+
 
 interface NodeTestInfo {
-    show:boolean
+    fileList:[]
+    formData:{}
+    schema:{}
+    uiSchema:{}
+    formFooter:{}
 }
 
 export default defineComponent ({
     name: "NodeTest",
     components: {
-        DialogViewFrame
     },
     setup(){
-        const data = reactive<NodeTestInfo>({show:false})
+        const data = reactive<NodeTestInfo>({fileList:[], formData:{}, uiSchema:{},
+            schema:{
+                "title": "文件上传",
+                "type": "object",
+                "properties": {
+                    "imgUrl": {
+                        "title": "单个图片",
+                        "type": "string",
+                        "ui:action": "http://localhost:80/uploadFile",
+                        "ui:data":{token: globals.globalsData.manager.info.Token},
+                        "ui:http-request": request111,
+                        "ui:on-error": error,
+                        "ui:on-preview": preview,
+                        "ui:before-remove": remove,
+                        "ui:widget": "UploadWidget",
+                        "ui:btnText": "上传按钮文案配置"
+                    }
+                }
+            }, formFooter:{show: false}})
 
-        function click(){
-            axios({
-                // responseType: 'arraybuffer',
-                method:'get',
-                url: "https://mgmt.173172.cc:9090/cloudAppFile/icon/Blued_com.soft.blued_20210929164031.png",
-                // timeout: globals.globalsConfig.httpConfig.requestTimeout,
-            }).then(response => {
-                console.log(response)
+        function request111(para){
+            let progress = {percent:0}
+            para.onProgress(progress)
+            globals.calcFileMd5(para.file, (md5:string)=>{
+                let resourceInfo = protoManage.NodeResourceCache.create({
+                    Name:  md5 +"_" + para.file.name,
+                    FileName: para.file.name,
+                    FileMd5: md5,
+                    FileSize: para.file.size,
+                    Type:protoManage.NodeResourceType.NodeResourceTypeCache
+                })
+                request.reqNodeResourceCheck(resourceInfo).then((responseCheck) => {
+                    if (responseCheck.Url == ""){
+                        request.httpUploadResource(para.file, resourceInfo,  (progressEvent) => {
+                            if (progressEvent.lengthComputable) {
+                                progressEvent.percent = Math.round(
+                                    (progressEvent.loaded * 100) / progressEvent.total
+                                );
+                                para.onProgress(progressEvent)
+                            }
+                        }).then((responseUpload) => {
+                            para.onSuccess(responseUpload)
+                        })
+                    }else {
+                        para.onSuccess(responseCheck)
+                    }
+                })
             })
         }
 
+        function success(response, file, fileList) {
+            console.log(response, file, fileList, data.fileList, "成功")
+        }
 
-        return {data, click}
+        function error(err, file, fileList) {
+            console.log(err, file, fileList, "失败")
+        }
+
+        function preview(file) {
+            let url = globals.getHttpHost()+file?.response?.Url
+            window.open(url, '_blank')
+            return true
+        }
+
+        async function remove(file, fileList) {
+            let isOK = false
+            await request.reqNodeResourceDel(file?.response).then((response) => {
+                isOK = true
+            })
+            return isOK
+        }
+
+        function progress(event, file, fileList) {
+            console.log("进度", event)
+            return true
+        }
+
+        return {data, request111, success, error, preview, remove, globals, progress}
     }
 })
 </script>

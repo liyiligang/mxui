@@ -2,13 +2,16 @@ package app
 
 import (
 	"context"
+	"github.com/gin-gonic/gin"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/base/component/Jtoken"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
+	"github.com/liyiligang/klee/app/check"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/liyiligang/klee/app/typedef/config"
+	"github.com/liyiligang/klee/app/typedef/constant"
 	"github.com/pkg/errors"
 	"time"
 )
@@ -253,6 +256,12 @@ func (app *App) httpRequestWithToken(userID int64, req *protoManage.HttpMessage)
 	case protoManage.Order_NodeReportDel:
 		ansMsg, err = app.Request.ReqNodeReportDel(userID, req.Message)
 		break
+	case protoManage.Order_NodeResourceCheck:
+		ansMsg, err = app.Request.ReqNodeResourceCheck(userID, req.Message)
+		break
+	case protoManage.Order_NodeResourceDel:
+		ansMsg, err = app.Request.ReqNodeResourceDel(userID, req.Message)
+		break
 	case protoManage.Order_NodeTest:
 		ansMsg, err = app.Request.ReqNodeTest(userID, req.Message)
 		break
@@ -292,6 +301,45 @@ func (app *App) httpRequestLevel(userID int64, req *protoManage.HttpMessage) err
 		}
 	}
 	return nil
+}
+
+func (app *App) HttpUploadFile(c *gin.Context) ([]byte, error) {
+	file, err := c.FormFile("file")
+	if err != nil {
+		return nil, err
+	}
+	err = check.NodeFileSizeCheck(file.Size)
+	if err != nil {
+		return nil, err
+	}
+	token, _ := c.GetPostForm("token")
+	_, err = Jtoken.ParseToken(token, config.LocalConfig.Token.Key)
+	if err != nil {
+		return nil, errors.New("身份验证失败")
+	}
+	strData, _ := c.GetPostForm("data")
+	data := Jtool.RunesToBytes([]byte(strData))
+	resource := protoManage.NodeResourceCache{}
+	err = resource.Unmarshal(data)
+	if err != nil {
+		return nil, err
+	}
+	filePath := config.LocalConfig.File.SavePath + resource.Name
+	err = c.SaveUploadedFile(file, filePath)
+	if err != nil {
+		return nil, err
+	}
+	resource.Url = constant.ConstHttpDownload + resource.Name
+	pbByte, err := resource.Marshal()
+	if err != nil {
+		return nil, err
+	}
+	return pbByte, nil
+}
+
+func (app *App) HttpDownloadFile(c *gin.Context) (string, error) {
+	path := c.Param("path")
+	return config.LocalConfig.File.SavePath + path, nil
 }
 
 func (app *App) RegisterNodeFunc(ctx context.Context, nodeFunc *protoManage.NodeFunc) (*protoManage.NodeFunc, error) {

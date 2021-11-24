@@ -38,6 +38,7 @@ import JsonEdit from "../../components/json/JsonEdit.vue";
 import NodeFuncReturn from "./NodeFuncReturn.vue";
 import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 import Empty from "../../components/Empty.vue"
+import axios from "axios";
 
 interface NodeFuncCallInfo {
     formData:{}
@@ -78,6 +79,8 @@ export default defineComponent ({
             loading:false, returnLoading: false, tabActiveName:"form", funcCallID:0, returnValVisible:false,
             fullScreen:false, nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall()})
         if (typeof data.schema === "object") {
+            console.log(props.nodeFunc.Schema)
+            console.log(data.schema)
             traversalSchema(data.schema)
         }
 
@@ -98,6 +101,14 @@ export default defineComponent ({
                     str = "{" + str.replace(/\'/g, "\"") + "}"
                     str = str.replace(/\./g, ",")
                     obj[i] = globals.getJson(str)
+                    continue
+                }else if (i == "ui:widget"){
+                    if (obj[i] == "UploadWidget"){
+                        obj["ui:action"] = ""
+                        obj["ui:http-request"] = uploadFile
+                        obj["ui:on-success"] = uploadFileSuccess
+                        obj["ui:on-error"] = uploadFileFail
+                    }
                     continue
                 }
                 if (typeof obj[i] === "object") {
@@ -132,7 +143,7 @@ export default defineComponent ({
                 })
             })).then((response) => {
                data.funcCallID = response.ID
-            }).catch(error => {}).finally(() => {})
+            }).catch(error => {data.loading = false}).finally(() => {})
         }
 
         watch(() => globals.globalsData.wsMessage.message, (newVal) => {
@@ -188,7 +199,30 @@ export default defineComponent ({
             return isOK
         }
 
-        return {data, funcCall, reset, funcCallRefresh, jsonChanged, tabClick, jsonEdit, convert}
+        function uploadFile(para){
+            let formData = new FormData();
+            formData.append("file", para.file);
+            return axios({
+                method:'post',
+                url: "http://localhost:80/upload",
+                data: formData,
+                headers:{
+                    'Content-type':'multipart/form-data'
+                },
+                timeout: globals.globalsConfig.httpConfig.requestTimeout,
+            })
+        }
+
+        function uploadFileSuccess(response, file, fileList) {
+            console.log("成功", response, file, fileList)
+        }
+
+        function uploadFileFail(err, file, fileList) {
+            console.log(err, "失败")
+        }
+
+        return {data, funcCall, reset, funcCallRefresh, jsonChanged, tabClick, jsonEdit, convert,
+            uploadFile, uploadFileSuccess, uploadFileFail}
     }
 })
 </script>

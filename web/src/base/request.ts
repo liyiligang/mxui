@@ -3,6 +3,7 @@ import {ElMessage} from "element-plus";
 import {globals} from "./globals";
 import axios from "axios";
 import {routerPath} from "../router";
+import {convert} from "./convert";
 
 export module request {
 
@@ -451,6 +452,32 @@ export module request {
         })
     }
 
+    export function reqNodeResourceCheck(req:protoManage.NodeResourceCache):Promise<protoManage.NodeResourceCache> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeResourceCache.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeResourceCheck, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.NodeResourceCache.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeResourceDel(req:protoManage.NodeResourceCache):Promise<protoManage.NodeResourceCache> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeResourceCache.encode(req).finish()
+            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeResourceDel, message:msg}))
+                .then((response) => {
+                    let ans = protoManage.NodeResourceCache.decode(response.message)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqNodeTest(req:protoManage.ReqNodeTest):Promise<protoManage.AnsNodeTest> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.ReqNodeTest.encode(req).finish()
@@ -493,6 +520,45 @@ export module request {
             }).then(response => {
                 if (response.status == 200) {
                     let ans = protoManage.HttpMessage.decode(new Uint8Array(<Uint8Array>response.data))
+                    resolve(ans)
+                }else {
+                    httpError(response.status, <Uint8Array>response.data)
+                    reject(response)
+                }
+            }).catch(error => {
+                if (error.response != undefined){
+                    httpError(error.response.status, error.response.data)
+                }else{
+                    ElMessage.error("请求失败（" + error+"）");
+                }
+                reject(error)
+            })
+        })
+    }
+
+    export function httpUploadResource(file:Blob, req:protoManage.NodeResourceCache,
+         onUploadProgressCall:(e:any)=>void):Promise<protoManage.NodeResourceCache> {
+        return new Promise((resolve, reject)=>{
+            let formData = new FormData();
+            formData.append("file", file);
+            formData.append("token", globals.globalsData.manager.info.Token);
+            let buf = protoManage.NodeResourceCache.encode(req).finish()
+            let str = convert.uint8ArrayToString(buf)
+            formData.append("data", str);
+
+            axios({
+                responseType: 'arraybuffer',
+                method:'post',
+                url: "http://localhost:80/uploadFile",
+                data: formData,
+                headers:{
+                    'Content-type':'multipart/form-data'
+                },
+                timeout: globals.globalsConfig.httpConfig.requestTimeout,
+                onUploadProgress: onUploadProgressCall
+            }).then(response => {
+                if (response.status == 200) {
+                    let ans = protoManage.NodeResourceCache.decode(new Uint8Array(<Uint8Array>response.data))
                     resolve(ans)
                 }else {
                     httpError(response.status, <Uint8Array>response.data)

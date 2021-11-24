@@ -9,9 +9,16 @@ var LocalConfig Config
 
 type Config struct {
 	Debug bool `toml:"Debug"`
-	Node  struct {
+	User  struct {
+		OpenRegister bool `toml:"OpenRegister"`
+	} `toml:"User"`
+	Node struct {
 		NodeName string `toml:"NodeName"`
 	} `toml:"Node"`
+	File struct {
+		SavePath string `toml:"SavePath"`
+		MaxSize  int    `toml:"MaxSize"`
+	} `toml:"File"`
 	Log struct {
 		Path    string `toml:"Path"`
 		MaxSize int    `toml:"MaxSize"`

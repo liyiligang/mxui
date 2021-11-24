@@ -13,9 +13,11 @@ import (
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jorm"
 	"github.com/liyiligang/base/component/Jrpc"
+	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/liyiligang/klee/app/typedef/config"
+	"github.com/liyiligang/klee/app/typedef/constant"
 	"github.com/liyiligang/klee/app/typedef/orm"
 	"google.golang.org/grpc"
 	"log"
@@ -45,6 +47,16 @@ func (app *App) InitLogServer(){
 		log.Fatal("日志服务初始化失败: ", err)
 	}
 	Jlog.Info("日志服务初始化成功")
+}
+
+func (app *App) InitFileDir(){
+	if !Jtool.IsDirExist(config.LocalConfig.File.SavePath) {
+		err := Jtool.MakeDir(config.LocalConfig.File.SavePath)
+		if err != nil {
+			log.Fatal("文件目录初始化失败: ", err)
+		}
+	}
+	Jlog.Info("文件目录初始化成功")
 }
 
 //启动orm服务
@@ -101,7 +113,9 @@ func (app *App) InitWebServer() error {
 		r.Use(gzip.Gzip(gzip.DefaultCompression))
 		r.Handle("GET", "/ws", websocketConfig.WsHandle)
 		r.Handle("POST", "/http", httpConfig.HttpHandle)
-		//r.Static("/manage", config.NodeConfig.Web.ManagePath)
+		r.Handle("POST","/uploadFile", httpConfig.HttpUploadFile)
+		r.Handle("GET",constant.ConstHttpDownload + ":path", httpConfig.HttpDownloadFile)
+		//r.StaticFS("/file", http.Dir(config.LocalConfig.File.SavePath))
 		//r.NoRoute(func(c *gin.Context) {
 		//	c.Redirect(http.StatusMovedPermanently, "/manage")
 		//})

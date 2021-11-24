@@ -3,6 +3,7 @@ import {protoManage} from "../proto/manage";
 import {routerPath, routerName} from "../router";
 import {reactive} from "vue";
 import {websocket} from "./websocket";
+import * as SparkMD5 from "spark-md5";
 
 	// export enum BlockType {
 export module globals {
@@ -114,6 +115,11 @@ export module globals {
 		return yy+'-'+mm+'-'+dd+' '+hh+':'+mf+':'+ss;
 	}
 
+
+	export function getPageNumOffset(num:any):number {
+		return Number(num) - 1;
+	}
+
 	export function isEllipsis(dom:any):boolean {
 		let checkDom = dom.cloneNode(), parent, flag;
 		checkDom.style.width = dom.offsetWidth + 'px';
@@ -180,6 +186,17 @@ export module globals {
 			}
 		} catch(e) {
 			return json
+		}
+	}
+
+	export function calcFileMd5 (file:Blob, call:Function) {
+		const fileReader = new FileReader()
+		fileReader.readAsBinaryString(file);
+		fileReader.onload = e => {
+			call(SparkMD5.hashBinary(String(e.target?.result)))
+		}
+		fileReader.onerror = e => {
+			viewError(String(e))
 		}
 	}
 

@@ -95,7 +95,7 @@ export default defineComponent ({
             request.reqNodeFuncCallList(protoManage.ReqNodeFuncCallList.create({
                 Page:protoManage.Page.create({
                     Count:globals.globalsConfig.funcCallConfig.tablePageSize,
-                    Num:data.tableIndex
+                    Num:globals.getPageNumOffset(data.tableIndex)
                 }),
                 FuncID:Number(props.nodeFunc.Base?.ID),
             })).then((response) => {
