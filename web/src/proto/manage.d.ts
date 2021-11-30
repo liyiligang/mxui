@@ -50,8 +50,10 @@ export namespace protoManage {
         NodeNotifyAdd = 801,
         NodeNotifyFind = 802,
         NodeNotifyError = 803,
-        NodeResourceCheck = 901,
-        NodeResourceDel = 902
+        NodeResourceUpload = 901,
+        NodeResourceDownload = 902,
+        NodeResourceCheck = 903,
+        NodeResourceDel = 904
     }
 
     /** State enum. */
@@ -365,6 +367,48 @@ export namespace protoManage {
         public registerNodeReport(request: protoManage.INodeReport): Promise<protoManage.NodeReport>;
 
         /**
+         * Calls CheckNodeResource.
+         * @param request NodeResource message or plain object
+         * @param callback Node-style callback called with the error, if any, and NodeResource
+         */
+        public checkNodeResource(request: protoManage.INodeResource, callback: protoManage.RpcEngine.CheckNodeResourceCallback): void;
+
+        /**
+         * Calls CheckNodeResource.
+         * @param request NodeResource message or plain object
+         * @returns Promise
+         */
+        public checkNodeResource(request: protoManage.INodeResource): Promise<protoManage.NodeResource>;
+
+        /**
+         * Calls UploadNodeResource.
+         * @param request ReqNodeResourceUpload message or plain object
+         * @param callback Node-style callback called with the error, if any, and AnsNodeResourceUpload
+         */
+        public uploadNodeResource(request: protoManage.IReqNodeResourceUpload, callback: protoManage.RpcEngine.UploadNodeResourceCallback): void;
+
+        /**
+         * Calls UploadNodeResource.
+         * @param request ReqNodeResourceUpload message or plain object
+         * @returns Promise
+         */
+        public uploadNodeResource(request: protoManage.IReqNodeResourceUpload): Promise<protoManage.AnsNodeResourceUpload>;
+
+        /**
+         * Calls DownloadNodeResource.
+         * @param request ReqNodeResourceDownload message or plain object
+         * @param callback Node-style callback called with the error, if any, and AnsNodeResourceDownload
+         */
+        public downloadNodeResource(request: protoManage.IReqNodeResourceDownload, callback: protoManage.RpcEngine.DownloadNodeResourceCallback): void;
+
+        /**
+         * Calls DownloadNodeResource.
+         * @param request ReqNodeResourceDownload message or plain object
+         * @returns Promise
+         */
+        public downloadNodeResource(request: protoManage.IReqNodeResourceDownload): Promise<protoManage.AnsNodeResourceDownload>;
+
+        /**
          * Calls RpcChannel.
          * @param request Message message or plain object
          * @param callback Node-style callback called with the error, if any, and Message
@@ -394,6 +438,27 @@ export namespace protoManage {
          * @param [response] NodeReport
          */
         type RegisterNodeReportCallback = (error: (Error|null), response?: protoManage.NodeReport) => void;
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#checkNodeResource}.
+         * @param error Error, if any
+         * @param [response] NodeResource
+         */
+        type CheckNodeResourceCallback = (error: (Error|null), response?: protoManage.NodeResource) => void;
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#uploadNodeResource}.
+         * @param error Error, if any
+         * @param [response] AnsNodeResourceUpload
+         */
+        type UploadNodeResourceCallback = (error: (Error|null), response?: protoManage.AnsNodeResourceUpload) => void;
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#downloadNodeResource}.
+         * @param error Error, if any
+         * @param [response] AnsNodeResourceDownload
+         */
+        type DownloadNodeResourceCallback = (error: (Error|null), response?: protoManage.AnsNodeResourceDownload) => void;
 
         /**
          * Callback as used by {@link protoManage.RpcEngine#rpcChannel}.
@@ -1651,127 +1716,121 @@ export namespace protoManage {
         public toJSON(): { [k: string]: any };
     }
 
-    /** Properties of a NodeResourceCache. */
-    interface INodeResourceCache {
+    /** Properties of a NodeResource. */
+    interface INodeResource {
 
-        /** NodeResourceCache Name */
+        /** NodeResource UUID */
+        UUID?: (string|null);
+
+        /** NodeResource Name */
         Name?: (string|null);
 
-        /** NodeResourceCache FileName */
-        FileName?: (string|null);
+        /** NodeResource Md5 */
+        Md5?: (string|null);
 
-        /** NodeResourceCache FileMd5 */
-        FileMd5?: (string|null);
+        /** NodeResource Sizes */
+        Sizes?: (number|null);
 
-        /** NodeResourceCache FileSize */
-        FileSize?: (number|null);
-
-        /** NodeResourceCache Type */
+        /** NodeResource Type */
         Type?: (protoManage.NodeResourceType|null);
 
-        /** NodeResourceCache Url */
-        Url?: (string|null);
-
-        /** NodeResourceCache ThumbUrl */
-        ThumbUrl?: (string|null);
+        /** NodeResource IsExist */
+        IsExist?: (boolean|null);
     }
 
-    /** Represents a NodeResourceCache. */
-    class NodeResourceCache implements INodeResourceCache {
+    /** Represents a NodeResource. */
+    class NodeResource implements INodeResource {
 
         /**
-         * Constructs a new NodeResourceCache.
+         * Constructs a new NodeResource.
          * @param [properties] Properties to set
          */
-        constructor(properties?: protoManage.INodeResourceCache);
+        constructor(properties?: protoManage.INodeResource);
 
-        /** NodeResourceCache Name. */
+        /** NodeResource UUID. */
+        public UUID: string;
+
+        /** NodeResource Name. */
         public Name: string;
 
-        /** NodeResourceCache FileName. */
-        public FileName: string;
+        /** NodeResource Md5. */
+        public Md5: string;
 
-        /** NodeResourceCache FileMd5. */
-        public FileMd5: string;
+        /** NodeResource Sizes. */
+        public Sizes: number;
 
-        /** NodeResourceCache FileSize. */
-        public FileSize: number;
-
-        /** NodeResourceCache Type. */
+        /** NodeResource Type. */
         public Type: protoManage.NodeResourceType;
 
-        /** NodeResourceCache Url. */
-        public Url: string;
-
-        /** NodeResourceCache ThumbUrl. */
-        public ThumbUrl: string;
+        /** NodeResource IsExist. */
+        public IsExist: boolean;
 
         /**
-         * Creates a new NodeResourceCache instance using the specified properties.
+         * Creates a new NodeResource instance using the specified properties.
          * @param [properties] Properties to set
-         * @returns NodeResourceCache instance
+         * @returns NodeResource instance
          */
-        public static create(properties?: protoManage.INodeResourceCache): protoManage.NodeResourceCache;
+        public static create(properties?: protoManage.INodeResource): protoManage.NodeResource;
 
         /**
-         * Encodes the specified NodeResourceCache message. Does not implicitly {@link protoManage.NodeResourceCache.verify|verify} messages.
-         * @param message NodeResourceCache message or plain object to encode
+         * Encodes the specified NodeResource message. Does not implicitly {@link protoManage.NodeResource.verify|verify} messages.
+         * @param message NodeResource message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encode(message: protoManage.INodeResourceCache, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encode(message: protoManage.INodeResource, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Encodes the specified NodeResourceCache message, length delimited. Does not implicitly {@link protoManage.NodeResourceCache.verify|verify} messages.
-         * @param message NodeResourceCache message or plain object to encode
+         * Encodes the specified NodeResource message, length delimited. Does not implicitly {@link protoManage.NodeResource.verify|verify} messages.
+         * @param message NodeResource message or plain object to encode
          * @param [writer] Writer to encode to
          * @returns Writer
          */
-        public static encodeDelimited(message: protoManage.INodeResourceCache, writer?: $protobuf.Writer): $protobuf.Writer;
+        public static encodeDelimited(message: protoManage.INodeResource, writer?: $protobuf.Writer): $protobuf.Writer;
 
         /**
-         * Decodes a NodeResourceCache message from the specified reader or buffer.
+         * Decodes a NodeResource message from the specified reader or buffer.
          * @param reader Reader or buffer to decode from
          * @param [length] Message length if known beforehand
-         * @returns NodeResourceCache
+         * @returns NodeResource
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.NodeResourceCache;
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.NodeResource;
 
         /**
-         * Decodes a NodeResourceCache message from the specified reader or buffer, length delimited.
+         * Decodes a NodeResource message from the specified reader or buffer, length delimited.
          * @param reader Reader or buffer to decode from
-         * @returns NodeResourceCache
+         * @returns NodeResource
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.NodeResourceCache;
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.NodeResource;
 
         /**
-         * Verifies a NodeResourceCache message.
+         * Verifies a NodeResource message.
          * @param message Plain object to verify
          * @returns `null` if valid, otherwise the reason why it is not
          */
         public static verify(message: { [k: string]: any }): (string|null);
 
         /**
-         * Creates a NodeResourceCache message from a plain object. Also converts values to their respective internal types.
+         * Creates a NodeResource message from a plain object. Also converts values to their respective internal types.
          * @param object Plain object
-         * @returns NodeResourceCache
+         * @returns NodeResource
          */
-        public static fromObject(object: { [k: string]: any }): protoManage.NodeResourceCache;
+        public static fromObject(object: { [k: string]: any }): protoManage.NodeResource;
 
         /**
-         * Creates a plain object from a NodeResourceCache message. Also converts values to other types if specified.
-         * @param message NodeResourceCache
+         * Creates a plain object from a NodeResource message. Also converts values to other types if specified.
+         * @param message NodeResource
          * @param [options] Conversion options
          * @returns Plain object
          */
-        public static toObject(message: protoManage.NodeResourceCache, options?: $protobuf.IConversionOptions): { [k: string]: any };
+        public static toObject(message: protoManage.NodeResource, options?: $protobuf.IConversionOptions): { [k: string]: any };
 
         /**
-         * Converts this NodeResourceCache to JSON.
+         * Converts this NodeResource to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -3764,6 +3823,366 @@ export namespace protoManage {
 
         /**
          * Converts this AnsNodeNotifyList to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a ReqNodeResourceUpload. */
+    interface IReqNodeResourceUpload {
+
+        /** ReqNodeResourceUpload Data */
+        Data?: (Uint8Array|null);
+    }
+
+    /** Represents a ReqNodeResourceUpload. */
+    class ReqNodeResourceUpload implements IReqNodeResourceUpload {
+
+        /**
+         * Constructs a new ReqNodeResourceUpload.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IReqNodeResourceUpload);
+
+        /** ReqNodeResourceUpload Data. */
+        public Data: Uint8Array;
+
+        /**
+         * Creates a new ReqNodeResourceUpload instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ReqNodeResourceUpload instance
+         */
+        public static create(properties?: protoManage.IReqNodeResourceUpload): protoManage.ReqNodeResourceUpload;
+
+        /**
+         * Encodes the specified ReqNodeResourceUpload message. Does not implicitly {@link protoManage.ReqNodeResourceUpload.verify|verify} messages.
+         * @param message ReqNodeResourceUpload message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IReqNodeResourceUpload, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ReqNodeResourceUpload message, length delimited. Does not implicitly {@link protoManage.ReqNodeResourceUpload.verify|verify} messages.
+         * @param message ReqNodeResourceUpload message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IReqNodeResourceUpload, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ReqNodeResourceUpload message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ReqNodeResourceUpload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeResourceUpload;
+
+        /**
+         * Decodes a ReqNodeResourceUpload message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ReqNodeResourceUpload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeResourceUpload;
+
+        /**
+         * Verifies a ReqNodeResourceUpload message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ReqNodeResourceUpload message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ReqNodeResourceUpload
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeResourceUpload;
+
+        /**
+         * Creates a plain object from a ReqNodeResourceUpload message. Also converts values to other types if specified.
+         * @param message ReqNodeResourceUpload
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.ReqNodeResourceUpload, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ReqNodeResourceUpload to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of an AnsNodeResourceUpload. */
+    interface IAnsNodeResourceUpload {
+
+        /** AnsNodeResourceUpload NodeResource */
+        NodeResource?: (protoManage.INodeResource|null);
+    }
+
+    /** Represents an AnsNodeResourceUpload. */
+    class AnsNodeResourceUpload implements IAnsNodeResourceUpload {
+
+        /**
+         * Constructs a new AnsNodeResourceUpload.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IAnsNodeResourceUpload);
+
+        /** AnsNodeResourceUpload NodeResource. */
+        public NodeResource?: (protoManage.INodeResource|null);
+
+        /**
+         * Creates a new AnsNodeResourceUpload instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AnsNodeResourceUpload instance
+         */
+        public static create(properties?: protoManage.IAnsNodeResourceUpload): protoManage.AnsNodeResourceUpload;
+
+        /**
+         * Encodes the specified AnsNodeResourceUpload message. Does not implicitly {@link protoManage.AnsNodeResourceUpload.verify|verify} messages.
+         * @param message AnsNodeResourceUpload message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IAnsNodeResourceUpload, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AnsNodeResourceUpload message, length delimited. Does not implicitly {@link protoManage.AnsNodeResourceUpload.verify|verify} messages.
+         * @param message AnsNodeResourceUpload message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IAnsNodeResourceUpload, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AnsNodeResourceUpload message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AnsNodeResourceUpload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.AnsNodeResourceUpload;
+
+        /**
+         * Decodes an AnsNodeResourceUpload message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AnsNodeResourceUpload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.AnsNodeResourceUpload;
+
+        /**
+         * Verifies an AnsNodeResourceUpload message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AnsNodeResourceUpload message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AnsNodeResourceUpload
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.AnsNodeResourceUpload;
+
+        /**
+         * Creates a plain object from an AnsNodeResourceUpload message. Also converts values to other types if specified.
+         * @param message AnsNodeResourceUpload
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.AnsNodeResourceUpload, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AnsNodeResourceUpload to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a ReqNodeResourceDownload. */
+    interface IReqNodeResourceDownload {
+
+        /** ReqNodeResourceDownload NodeResource */
+        NodeResource?: (protoManage.INodeResource|null);
+    }
+
+    /** Represents a ReqNodeResourceDownload. */
+    class ReqNodeResourceDownload implements IReqNodeResourceDownload {
+
+        /**
+         * Constructs a new ReqNodeResourceDownload.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IReqNodeResourceDownload);
+
+        /** ReqNodeResourceDownload NodeResource. */
+        public NodeResource?: (protoManage.INodeResource|null);
+
+        /**
+         * Creates a new ReqNodeResourceDownload instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ReqNodeResourceDownload instance
+         */
+        public static create(properties?: protoManage.IReqNodeResourceDownload): protoManage.ReqNodeResourceDownload;
+
+        /**
+         * Encodes the specified ReqNodeResourceDownload message. Does not implicitly {@link protoManage.ReqNodeResourceDownload.verify|verify} messages.
+         * @param message ReqNodeResourceDownload message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IReqNodeResourceDownload, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ReqNodeResourceDownload message, length delimited. Does not implicitly {@link protoManage.ReqNodeResourceDownload.verify|verify} messages.
+         * @param message ReqNodeResourceDownload message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IReqNodeResourceDownload, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ReqNodeResourceDownload message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ReqNodeResourceDownload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeResourceDownload;
+
+        /**
+         * Decodes a ReqNodeResourceDownload message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ReqNodeResourceDownload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeResourceDownload;
+
+        /**
+         * Verifies a ReqNodeResourceDownload message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ReqNodeResourceDownload message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ReqNodeResourceDownload
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeResourceDownload;
+
+        /**
+         * Creates a plain object from a ReqNodeResourceDownload message. Also converts values to other types if specified.
+         * @param message ReqNodeResourceDownload
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.ReqNodeResourceDownload, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ReqNodeResourceDownload to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of an AnsNodeResourceDownload. */
+    interface IAnsNodeResourceDownload {
+
+        /** AnsNodeResourceDownload Data */
+        Data?: (Uint8Array|null);
+    }
+
+    /** Represents an AnsNodeResourceDownload. */
+    class AnsNodeResourceDownload implements IAnsNodeResourceDownload {
+
+        /**
+         * Constructs a new AnsNodeResourceDownload.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IAnsNodeResourceDownload);
+
+        /** AnsNodeResourceDownload Data. */
+        public Data: Uint8Array;
+
+        /**
+         * Creates a new AnsNodeResourceDownload instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AnsNodeResourceDownload instance
+         */
+        public static create(properties?: protoManage.IAnsNodeResourceDownload): protoManage.AnsNodeResourceDownload;
+
+        /**
+         * Encodes the specified AnsNodeResourceDownload message. Does not implicitly {@link protoManage.AnsNodeResourceDownload.verify|verify} messages.
+         * @param message AnsNodeResourceDownload message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IAnsNodeResourceDownload, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AnsNodeResourceDownload message, length delimited. Does not implicitly {@link protoManage.AnsNodeResourceDownload.verify|verify} messages.
+         * @param message AnsNodeResourceDownload message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IAnsNodeResourceDownload, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AnsNodeResourceDownload message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AnsNodeResourceDownload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.AnsNodeResourceDownload;
+
+        /**
+         * Decodes an AnsNodeResourceDownload message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AnsNodeResourceDownload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.AnsNodeResourceDownload;
+
+        /**
+         * Verifies an AnsNodeResourceDownload message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AnsNodeResourceDownload message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AnsNodeResourceDownload
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.AnsNodeResourceDownload;
+
+        /**
+         * Creates a plain object from an AnsNodeResourceDownload message. Also converts values to other types if specified.
+         * @param message AnsNodeResourceDownload
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.AnsNodeResourceDownload, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AnsNodeResourceDownload to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };

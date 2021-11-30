@@ -6,14 +6,8 @@
 package request
 
 import (
-	"context"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 )
-
-//节点方法注册
-func (request *Request) ReqNodeFuncRegister(ctx context.Context, nodeFunc *protoManage.NodeFunc) error {
-	return request.Data.NodeFuncUpdateOrAdd(nodeFunc)
-}
 
 //节点方法查询
 func (request *Request) ReqNodeFuncFind(userID int64, message []byte)([]byte, error) {

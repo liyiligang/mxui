@@ -52,8 +52,25 @@ export default defineComponent ({
                         "ui:on-error": error,
                         "ui:on-preview": preview,
                         "ui:before-remove": remove,
+                        "ui:responseFileUrl":responseUrl,
                         "ui:widget": "UploadWidget",
-                        "ui:btnText": "上传按钮文案配置"
+                        "ui:btnText": "上传按钮文案配置",
+                        // "ui:file-list":[{name:"aa.mp4", url:"asdasda_aa.mp4"}, {name:"bb", url:"asas"}]
+                    },
+                    "select": {
+                        "title": "选择器",
+                        "type": "string",
+                        "ui:widget": "RadioWidget",
+                        "enum": [
+                            "1",
+                            "2",
+                            "3"
+                        ],
+                        "enumNames": [
+                            "一",
+                            "二",
+                            "三"
+                        ]
                     }
                 }
             }, formFooter:{show: false}})
@@ -62,15 +79,15 @@ export default defineComponent ({
             let progress = {percent:0}
             para.onProgress(progress)
             globals.calcFileMd5(para.file, (md5:string)=>{
-                let resourceInfo = protoManage.NodeResourceCache.create({
-                    Name:  md5 +"_" + para.file.name,
-                    FileName: para.file.name,
-                    FileMd5: md5,
-                    FileSize: para.file.size,
+                let resourceInfo = protoManage.NodeResource.create({
+                    UUID:  md5 +"_" + para.file.name,
+                    Name: para.file.name,
+                    Md5: md5,
+                    Sizes: para.file.size,
                     Type:protoManage.NodeResourceType.NodeResourceTypeCache
                 })
                 request.reqNodeResourceCheck(resourceInfo).then((responseCheck) => {
-                    if (responseCheck.Url == ""){
+                    if (!responseCheck.IsExist){
                         request.httpUploadResource(para.file, resourceInfo,  (progressEvent) => {
                             if (progressEvent.lengthComputable) {
                                 progressEvent.percent = Math.round(
@@ -79,10 +96,10 @@ export default defineComponent ({
                                 para.onProgress(progressEvent)
                             }
                         }).then((responseUpload) => {
-                            para.onSuccess(responseUpload)
+                            para.onSuccess({name:responseUpload.Name, url:responseUpload.UUID})
                         })
                     }else {
-                        para.onSuccess(responseCheck)
+                        para.onSuccess( {name:responseCheck.Name, url:responseCheck.UUID})
                     }
                 })
             })
@@ -97,14 +114,27 @@ export default defineComponent ({
         }
 
         function preview(file) {
-            let url = globals.getHttpHost()+file?.response?.Url
+            let url =  globals.getHttpHost()+"/downloadFile/"
+            if (file?.url) {
+                url += file?.url
+            }else if (file?.response?.url) {
+                url += file?.response?.url
+            }
             window.open(url, '_blank')
             return true
         }
 
         async function remove(file, fileList) {
             let isOK = false
-            await request.reqNodeResourceDel(file?.response).then((response) => {
+            let url = ""
+            if (file?.url) {
+                url = file?.url
+            }else if (file?.response?.url) {
+                url = file?.response?.url
+            }
+            await request.reqNodeResourceDel(protoManage.NodeResource.create({
+                UUID:url
+            })).then((response) => {
                 isOK = true
             })
             return isOK
@@ -115,7 +145,11 @@ export default defineComponent ({
             return true
         }
 
-        return {data, request111, success, error, preview, remove, globals, progress}
+        function responseUrl(res) {
+            return res.url
+        }
+
+        return {data, request111, success, error, preview, remove, globals, progress, responseUrl}
     }
 })
 </script>

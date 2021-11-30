@@ -33,7 +33,7 @@ func (gateway *Gateway) RpcSendOrBroadCastData(nodeID int64, order protoManage.O
 func (gateway *Gateway) RpcCloseClient(nodeID interface{}) {
 	conn, ok := gateway.RpcManage.Load(nodeID)
 	if ok {
-		conn.(*Jrpc.RpcStream).Close()
+		conn.(*Jrpc.RpcStream).Close(false)
 	} else {
 		Jlog.Warn("rpcCloseClient 未发现id", "nodeID", nodeID)
 	}

@@ -66,8 +66,10 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} NodeNotifyAdd=801 NodeNotifyAdd value
      * @property {number} NodeNotifyFind=802 NodeNotifyFind value
      * @property {number} NodeNotifyError=803 NodeNotifyError value
-     * @property {number} NodeResourceCheck=901 NodeResourceCheck value
-     * @property {number} NodeResourceDel=902 NodeResourceDel value
+     * @property {number} NodeResourceUpload=901 NodeResourceUpload value
+     * @property {number} NodeResourceDownload=902 NodeResourceDownload value
+     * @property {number} NodeResourceCheck=903 NodeResourceCheck value
+     * @property {number} NodeResourceDel=904 NodeResourceDel value
      */
     protoManage.Order = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -117,8 +119,10 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[801] = "NodeNotifyAdd"] = 801;
         values[valuesById[802] = "NodeNotifyFind"] = 802;
         values[valuesById[803] = "NodeNotifyError"] = 803;
-        values[valuesById[901] = "NodeResourceCheck"] = 901;
-        values[valuesById[902] = "NodeResourceDel"] = 902;
+        values[valuesById[901] = "NodeResourceUpload"] = 901;
+        values[valuesById[902] = "NodeResourceDownload"] = 902;
+        values[valuesById[903] = "NodeResourceCheck"] = 903;
+        values[valuesById[904] = "NodeResourceDel"] = 904;
         return values;
     })();
 
@@ -460,6 +464,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 803:
                 case 901:
                 case 902:
+                case 903:
+                case 904:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -665,13 +671,21 @@ export const protoManage = $root.protoManage = (() => {
             case 803:
                 message.order = 803;
                 break;
-            case "NodeResourceCheck":
+            case "NodeResourceUpload":
             case 901:
                 message.order = 901;
                 break;
-            case "NodeResourceDel":
+            case "NodeResourceDownload":
             case 902:
                 message.order = 902;
+                break;
+            case "NodeResourceCheck":
+            case 903:
+                message.order = 903;
+                break;
+            case "NodeResourceDel":
+            case 904:
+                message.order = 904;
                 break;
             }
             if (object.message != null)
@@ -936,6 +950,8 @@ export const protoManage = $root.protoManage = (() => {
                 case 803:
                 case 901:
                 case 902:
+                case 903:
+                case 904:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -1144,13 +1160,21 @@ export const protoManage = $root.protoManage = (() => {
             case 803:
                 message.order = 803;
                 break;
-            case "NodeResourceCheck":
+            case "NodeResourceUpload":
             case 901:
                 message.order = 901;
                 break;
-            case "NodeResourceDel":
+            case "NodeResourceDownload":
             case 902:
                 message.order = 902;
+                break;
+            case "NodeResourceCheck":
+            case 903:
+                message.order = 903;
+                break;
+            case "NodeResourceDel":
+            case 904:
+                message.order = 904;
                 break;
             }
             if (object.message != null)
@@ -1305,6 +1329,105 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          * @param {protoManage.INodeReport} request NodeReport message or plain object
          * @returns {Promise<protoManage.NodeReport>} Promise
+         * @variation 2
+         */
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#checkNodeResource}.
+         * @memberof protoManage.RpcEngine
+         * @typedef CheckNodeResourceCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {protoManage.NodeResource} [response] NodeResource
+         */
+
+        /**
+         * Calls CheckNodeResource.
+         * @function checkNodeResource
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.INodeResource} request NodeResource message or plain object
+         * @param {protoManage.RpcEngine.CheckNodeResourceCallback} callback Node-style callback called with the error, if any, and NodeResource
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(RpcEngine.prototype.checkNodeResource = function checkNodeResource(request, callback) {
+            return this.rpcCall(checkNodeResource, $root.protoManage.NodeResource, $root.protoManage.NodeResource, request, callback);
+        }, "name", { value: "CheckNodeResource" });
+
+        /**
+         * Calls CheckNodeResource.
+         * @function checkNodeResource
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.INodeResource} request NodeResource message or plain object
+         * @returns {Promise<protoManage.NodeResource>} Promise
+         * @variation 2
+         */
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#uploadNodeResource}.
+         * @memberof protoManage.RpcEngine
+         * @typedef UploadNodeResourceCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {protoManage.AnsNodeResourceUpload} [response] AnsNodeResourceUpload
+         */
+
+        /**
+         * Calls UploadNodeResource.
+         * @function uploadNodeResource
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.IReqNodeResourceUpload} request ReqNodeResourceUpload message or plain object
+         * @param {protoManage.RpcEngine.UploadNodeResourceCallback} callback Node-style callback called with the error, if any, and AnsNodeResourceUpload
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(RpcEngine.prototype.uploadNodeResource = function uploadNodeResource(request, callback) {
+            return this.rpcCall(uploadNodeResource, $root.protoManage.ReqNodeResourceUpload, $root.protoManage.AnsNodeResourceUpload, request, callback);
+        }, "name", { value: "UploadNodeResource" });
+
+        /**
+         * Calls UploadNodeResource.
+         * @function uploadNodeResource
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.IReqNodeResourceUpload} request ReqNodeResourceUpload message or plain object
+         * @returns {Promise<protoManage.AnsNodeResourceUpload>} Promise
+         * @variation 2
+         */
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#downloadNodeResource}.
+         * @memberof protoManage.RpcEngine
+         * @typedef DownloadNodeResourceCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {protoManage.AnsNodeResourceDownload} [response] AnsNodeResourceDownload
+         */
+
+        /**
+         * Calls DownloadNodeResource.
+         * @function downloadNodeResource
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.IReqNodeResourceDownload} request ReqNodeResourceDownload message or plain object
+         * @param {protoManage.RpcEngine.DownloadNodeResourceCallback} callback Node-style callback called with the error, if any, and AnsNodeResourceDownload
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(RpcEngine.prototype.downloadNodeResource = function downloadNodeResource(request, callback) {
+            return this.rpcCall(downloadNodeResource, $root.protoManage.ReqNodeResourceDownload, $root.protoManage.AnsNodeResourceDownload, request, callback);
+        }, "name", { value: "DownloadNodeResource" });
+
+        /**
+         * Calls DownloadNodeResource.
+         * @function downloadNodeResource
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.IReqNodeResourceDownload} request ReqNodeResourceDownload message or plain object
+         * @returns {Promise<protoManage.AnsNodeResourceDownload>} Promise
          * @variation 2
          */
 
@@ -4982,30 +5105,29 @@ export const protoManage = $root.protoManage = (() => {
         return NodeNotify;
     })();
 
-    protoManage.NodeResourceCache = (function() {
+    protoManage.NodeResource = (function() {
 
         /**
-         * Properties of a NodeResourceCache.
+         * Properties of a NodeResource.
          * @memberof protoManage
-         * @interface INodeResourceCache
-         * @property {string|null} [Name] NodeResourceCache Name
-         * @property {string|null} [FileName] NodeResourceCache FileName
-         * @property {string|null} [FileMd5] NodeResourceCache FileMd5
-         * @property {number|null} [FileSize] NodeResourceCache FileSize
-         * @property {protoManage.NodeResourceType|null} [Type] NodeResourceCache Type
-         * @property {string|null} [Url] NodeResourceCache Url
-         * @property {string|null} [ThumbUrl] NodeResourceCache ThumbUrl
+         * @interface INodeResource
+         * @property {string|null} [UUID] NodeResource UUID
+         * @property {string|null} [Name] NodeResource Name
+         * @property {string|null} [Md5] NodeResource Md5
+         * @property {number|null} [Sizes] NodeResource Sizes
+         * @property {protoManage.NodeResourceType|null} [Type] NodeResource Type
+         * @property {boolean|null} [IsExist] NodeResource IsExist
          */
 
         /**
-         * Constructs a new NodeResourceCache.
+         * Constructs a new NodeResource.
          * @memberof protoManage
-         * @classdesc Represents a NodeResourceCache.
-         * @implements INodeResourceCache
+         * @classdesc Represents a NodeResource.
+         * @implements INodeResource
          * @constructor
-         * @param {protoManage.INodeResourceCache=} [properties] Properties to set
+         * @param {protoManage.INodeResource=} [properties] Properties to set
          */
-        function NodeResourceCache(properties) {
+        function NodeResource(properties) {
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -5013,153 +5135,140 @@ export const protoManage = $root.protoManage = (() => {
         }
 
         /**
-         * NodeResourceCache Name.
+         * NodeResource UUID.
+         * @member {string} UUID
+         * @memberof protoManage.NodeResource
+         * @instance
+         */
+        NodeResource.prototype.UUID = "";
+
+        /**
+         * NodeResource Name.
          * @member {string} Name
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @instance
          */
-        NodeResourceCache.prototype.Name = "";
+        NodeResource.prototype.Name = "";
 
         /**
-         * NodeResourceCache FileName.
-         * @member {string} FileName
-         * @memberof protoManage.NodeResourceCache
+         * NodeResource Md5.
+         * @member {string} Md5
+         * @memberof protoManage.NodeResource
          * @instance
          */
-        NodeResourceCache.prototype.FileName = "";
+        NodeResource.prototype.Md5 = "";
 
         /**
-         * NodeResourceCache FileMd5.
-         * @member {string} FileMd5
-         * @memberof protoManage.NodeResourceCache
+         * NodeResource Sizes.
+         * @member {number} Sizes
+         * @memberof protoManage.NodeResource
          * @instance
          */
-        NodeResourceCache.prototype.FileMd5 = "";
+        NodeResource.prototype.Sizes = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
 
         /**
-         * NodeResourceCache FileSize.
-         * @member {number} FileSize
-         * @memberof protoManage.NodeResourceCache
-         * @instance
-         */
-        NodeResourceCache.prototype.FileSize = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
-
-        /**
-         * NodeResourceCache Type.
+         * NodeResource Type.
          * @member {protoManage.NodeResourceType} Type
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @instance
          */
-        NodeResourceCache.prototype.Type = 0;
+        NodeResource.prototype.Type = 0;
 
         /**
-         * NodeResourceCache Url.
-         * @member {string} Url
-         * @memberof protoManage.NodeResourceCache
+         * NodeResource IsExist.
+         * @member {boolean} IsExist
+         * @memberof protoManage.NodeResource
          * @instance
          */
-        NodeResourceCache.prototype.Url = "";
+        NodeResource.prototype.IsExist = false;
 
         /**
-         * NodeResourceCache ThumbUrl.
-         * @member {string} ThumbUrl
-         * @memberof protoManage.NodeResourceCache
-         * @instance
-         */
-        NodeResourceCache.prototype.ThumbUrl = "";
-
-        /**
-         * Creates a new NodeResourceCache instance using the specified properties.
+         * Creates a new NodeResource instance using the specified properties.
          * @function create
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @static
-         * @param {protoManage.INodeResourceCache=} [properties] Properties to set
-         * @returns {protoManage.NodeResourceCache} NodeResourceCache instance
+         * @param {protoManage.INodeResource=} [properties] Properties to set
+         * @returns {protoManage.NodeResource} NodeResource instance
          */
-        NodeResourceCache.create = function create(properties) {
-            return new NodeResourceCache(properties);
+        NodeResource.create = function create(properties) {
+            return new NodeResource(properties);
         };
 
         /**
-         * Encodes the specified NodeResourceCache message. Does not implicitly {@link protoManage.NodeResourceCache.verify|verify} messages.
+         * Encodes the specified NodeResource message. Does not implicitly {@link protoManage.NodeResource.verify|verify} messages.
          * @function encode
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @static
-         * @param {protoManage.INodeResourceCache} message NodeResourceCache message or plain object to encode
+         * @param {protoManage.INodeResource} message NodeResource message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        NodeResourceCache.encode = function encode(message, writer) {
+        NodeResource.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
+            if (message.UUID != null && Object.hasOwnProperty.call(message, "UUID"))
+                writer.uint32(/* id 1, wireType 2 =*/10).string(message.UUID);
             if (message.Name != null && Object.hasOwnProperty.call(message, "Name"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.Name);
-            if (message.FileName != null && Object.hasOwnProperty.call(message, "FileName"))
-                writer.uint32(/* id 2, wireType 2 =*/18).string(message.FileName);
-            if (message.FileMd5 != null && Object.hasOwnProperty.call(message, "FileMd5"))
-                writer.uint32(/* id 3, wireType 2 =*/26).string(message.FileMd5);
-            if (message.FileSize != null && Object.hasOwnProperty.call(message, "FileSize"))
-                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.FileSize);
+                writer.uint32(/* id 2, wireType 2 =*/18).string(message.Name);
+            if (message.Md5 != null && Object.hasOwnProperty.call(message, "Md5"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.Md5);
+            if (message.Sizes != null && Object.hasOwnProperty.call(message, "Sizes"))
+                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.Sizes);
             if (message.Type != null && Object.hasOwnProperty.call(message, "Type"))
                 writer.uint32(/* id 5, wireType 0 =*/40).int32(message.Type);
-            if (message.Url != null && Object.hasOwnProperty.call(message, "Url"))
-                writer.uint32(/* id 6, wireType 2 =*/50).string(message.Url);
-            if (message.ThumbUrl != null && Object.hasOwnProperty.call(message, "ThumbUrl"))
-                writer.uint32(/* id 7, wireType 2 =*/58).string(message.ThumbUrl);
+            if (message.IsExist != null && Object.hasOwnProperty.call(message, "IsExist"))
+                writer.uint32(/* id 6, wireType 0 =*/48).bool(message.IsExist);
             return writer;
         };
 
         /**
-         * Encodes the specified NodeResourceCache message, length delimited. Does not implicitly {@link protoManage.NodeResourceCache.verify|verify} messages.
+         * Encodes the specified NodeResource message, length delimited. Does not implicitly {@link protoManage.NodeResource.verify|verify} messages.
          * @function encodeDelimited
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @static
-         * @param {protoManage.INodeResourceCache} message NodeResourceCache message or plain object to encode
+         * @param {protoManage.INodeResource} message NodeResource message or plain object to encode
          * @param {$protobuf.Writer} [writer] Writer to encode to
          * @returns {$protobuf.Writer} Writer
          */
-        NodeResourceCache.encodeDelimited = function encodeDelimited(message, writer) {
+        NodeResource.encodeDelimited = function encodeDelimited(message, writer) {
             return this.encode(message, writer).ldelim();
         };
 
         /**
-         * Decodes a NodeResourceCache message from the specified reader or buffer.
+         * Decodes a NodeResource message from the specified reader or buffer.
          * @function decode
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
          * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.NodeResourceCache} NodeResourceCache
+         * @returns {protoManage.NodeResource} NodeResource
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        NodeResourceCache.decode = function decode(reader, length) {
+        NodeResource.decode = function decode(reader, length) {
             if (!(reader instanceof $Reader))
                 reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.NodeResourceCache();
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.NodeResource();
             while (reader.pos < end) {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.Name = reader.string();
+                    message.UUID = reader.string();
                     break;
                 case 2:
-                    message.FileName = reader.string();
+                    message.Name = reader.string();
                     break;
                 case 3:
-                    message.FileMd5 = reader.string();
+                    message.Md5 = reader.string();
                     break;
                 case 4:
-                    message.FileSize = reader.int64();
+                    message.Sizes = reader.int64();
                     break;
                 case 5:
                     message.Type = reader.int32();
                     break;
                 case 6:
-                    message.Url = reader.string();
-                    break;
-                case 7:
-                    message.ThumbUrl = reader.string();
+                    message.IsExist = reader.bool();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -5170,44 +5279,44 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         /**
-         * Decodes a NodeResourceCache message from the specified reader or buffer, length delimited.
+         * Decodes a NodeResource message from the specified reader or buffer, length delimited.
          * @function decodeDelimited
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @static
          * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.NodeResourceCache} NodeResourceCache
+         * @returns {protoManage.NodeResource} NodeResource
          * @throws {Error} If the payload is not a reader or valid buffer
          * @throws {$protobuf.util.ProtocolError} If required fields are missing
          */
-        NodeResourceCache.decodeDelimited = function decodeDelimited(reader) {
+        NodeResource.decodeDelimited = function decodeDelimited(reader) {
             if (!(reader instanceof $Reader))
                 reader = new $Reader(reader);
             return this.decode(reader, reader.uint32());
         };
 
         /**
-         * Verifies a NodeResourceCache message.
+         * Verifies a NodeResource message.
          * @function verify
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @static
          * @param {Object.<string,*>} message Plain object to verify
          * @returns {string|null} `null` if valid, otherwise the reason why it is not
          */
-        NodeResourceCache.verify = function verify(message) {
+        NodeResource.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
+            if (message.UUID != null && message.hasOwnProperty("UUID"))
+                if (!$util.isString(message.UUID))
+                    return "UUID: string expected";
             if (message.Name != null && message.hasOwnProperty("Name"))
                 if (!$util.isString(message.Name))
                     return "Name: string expected";
-            if (message.FileName != null && message.hasOwnProperty("FileName"))
-                if (!$util.isString(message.FileName))
-                    return "FileName: string expected";
-            if (message.FileMd5 != null && message.hasOwnProperty("FileMd5"))
-                if (!$util.isString(message.FileMd5))
-                    return "FileMd5: string expected";
-            if (message.FileSize != null && message.hasOwnProperty("FileSize"))
-                if (!$util.isInteger(message.FileSize) && !(message.FileSize && $util.isInteger(message.FileSize.low) && $util.isInteger(message.FileSize.high)))
-                    return "FileSize: integer|Long expected";
+            if (message.Md5 != null && message.hasOwnProperty("Md5"))
+                if (!$util.isString(message.Md5))
+                    return "Md5: string expected";
+            if (message.Sizes != null && message.hasOwnProperty("Sizes"))
+                if (!$util.isInteger(message.Sizes) && !(message.Sizes && $util.isInteger(message.Sizes.low) && $util.isInteger(message.Sizes.high)))
+                    return "Sizes: integer|Long expected";
             if (message.Type != null && message.hasOwnProperty("Type"))
                 switch (message.Type) {
                 default:
@@ -5216,42 +5325,39 @@ export const protoManage = $root.protoManage = (() => {
                 case 1:
                     break;
                 }
-            if (message.Url != null && message.hasOwnProperty("Url"))
-                if (!$util.isString(message.Url))
-                    return "Url: string expected";
-            if (message.ThumbUrl != null && message.hasOwnProperty("ThumbUrl"))
-                if (!$util.isString(message.ThumbUrl))
-                    return "ThumbUrl: string expected";
+            if (message.IsExist != null && message.hasOwnProperty("IsExist"))
+                if (typeof message.IsExist !== "boolean")
+                    return "IsExist: boolean expected";
             return null;
         };
 
         /**
-         * Creates a NodeResourceCache message from a plain object. Also converts values to their respective internal types.
+         * Creates a NodeResource message from a plain object. Also converts values to their respective internal types.
          * @function fromObject
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @static
          * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.NodeResourceCache} NodeResourceCache
+         * @returns {protoManage.NodeResource} NodeResource
          */
-        NodeResourceCache.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.NodeResourceCache)
+        NodeResource.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.NodeResource)
                 return object;
-            let message = new $root.protoManage.NodeResourceCache();
+            let message = new $root.protoManage.NodeResource();
+            if (object.UUID != null)
+                message.UUID = String(object.UUID);
             if (object.Name != null)
                 message.Name = String(object.Name);
-            if (object.FileName != null)
-                message.FileName = String(object.FileName);
-            if (object.FileMd5 != null)
-                message.FileMd5 = String(object.FileMd5);
-            if (object.FileSize != null)
+            if (object.Md5 != null)
+                message.Md5 = String(object.Md5);
+            if (object.Sizes != null)
                 if ($util.Long)
-                    (message.FileSize = $util.Long.fromValue(object.FileSize)).unsigned = false;
-                else if (typeof object.FileSize === "string")
-                    message.FileSize = parseInt(object.FileSize, 10);
-                else if (typeof object.FileSize === "number")
-                    message.FileSize = object.FileSize;
-                else if (typeof object.FileSize === "object")
-                    message.FileSize = new $util.LongBits(object.FileSize.low >>> 0, object.FileSize.high >>> 0).toNumber();
+                    (message.Sizes = $util.Long.fromValue(object.Sizes)).unsigned = false;
+                else if (typeof object.Sizes === "string")
+                    message.Sizes = parseInt(object.Sizes, 10);
+                else if (typeof object.Sizes === "number")
+                    message.Sizes = object.Sizes;
+                else if (typeof object.Sizes === "object")
+                    message.Sizes = new $util.LongBits(object.Sizes.low >>> 0, object.Sizes.high >>> 0).toNumber();
             switch (object.Type) {
             case "NodeResourceTypeUnknow":
             case 0:
@@ -5262,71 +5368,66 @@ export const protoManage = $root.protoManage = (() => {
                 message.Type = 1;
                 break;
             }
-            if (object.Url != null)
-                message.Url = String(object.Url);
-            if (object.ThumbUrl != null)
-                message.ThumbUrl = String(object.ThumbUrl);
+            if (object.IsExist != null)
+                message.IsExist = Boolean(object.IsExist);
             return message;
         };
 
         /**
-         * Creates a plain object from a NodeResourceCache message. Also converts values to other types if specified.
+         * Creates a plain object from a NodeResource message. Also converts values to other types if specified.
          * @function toObject
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @static
-         * @param {protoManage.NodeResourceCache} message NodeResourceCache
+         * @param {protoManage.NodeResource} message NodeResource
          * @param {$protobuf.IConversionOptions} [options] Conversion options
          * @returns {Object.<string,*>} Plain object
          */
-        NodeResourceCache.toObject = function toObject(message, options) {
+        NodeResource.toObject = function toObject(message, options) {
             if (!options)
                 options = {};
             let object = {};
             if (options.defaults) {
+                object.UUID = "";
                 object.Name = "";
-                object.FileName = "";
-                object.FileMd5 = "";
+                object.Md5 = "";
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, false);
-                    object.FileSize = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    object.Sizes = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
-                    object.FileSize = options.longs === String ? "0" : 0;
+                    object.Sizes = options.longs === String ? "0" : 0;
                 object.Type = options.enums === String ? "NodeResourceTypeUnknow" : 0;
-                object.Url = "";
-                object.ThumbUrl = "";
+                object.IsExist = false;
             }
+            if (message.UUID != null && message.hasOwnProperty("UUID"))
+                object.UUID = message.UUID;
             if (message.Name != null && message.hasOwnProperty("Name"))
                 object.Name = message.Name;
-            if (message.FileName != null && message.hasOwnProperty("FileName"))
-                object.FileName = message.FileName;
-            if (message.FileMd5 != null && message.hasOwnProperty("FileMd5"))
-                object.FileMd5 = message.FileMd5;
-            if (message.FileSize != null && message.hasOwnProperty("FileSize"))
-                if (typeof message.FileSize === "number")
-                    object.FileSize = options.longs === String ? String(message.FileSize) : message.FileSize;
+            if (message.Md5 != null && message.hasOwnProperty("Md5"))
+                object.Md5 = message.Md5;
+            if (message.Sizes != null && message.hasOwnProperty("Sizes"))
+                if (typeof message.Sizes === "number")
+                    object.Sizes = options.longs === String ? String(message.Sizes) : message.Sizes;
                 else
-                    object.FileSize = options.longs === String ? $util.Long.prototype.toString.call(message.FileSize) : options.longs === Number ? new $util.LongBits(message.FileSize.low >>> 0, message.FileSize.high >>> 0).toNumber() : message.FileSize;
+                    object.Sizes = options.longs === String ? $util.Long.prototype.toString.call(message.Sizes) : options.longs === Number ? new $util.LongBits(message.Sizes.low >>> 0, message.Sizes.high >>> 0).toNumber() : message.Sizes;
             if (message.Type != null && message.hasOwnProperty("Type"))
                 object.Type = options.enums === String ? $root.protoManage.NodeResourceType[message.Type] : message.Type;
-            if (message.Url != null && message.hasOwnProperty("Url"))
-                object.Url = message.Url;
-            if (message.ThumbUrl != null && message.hasOwnProperty("ThumbUrl"))
-                object.ThumbUrl = message.ThumbUrl;
+            if (message.IsExist != null && message.hasOwnProperty("IsExist"))
+                object.IsExist = message.IsExist;
             return object;
         };
 
         /**
-         * Converts this NodeResourceCache to JSON.
+         * Converts this NodeResource to JSON.
          * @function toJSON
-         * @memberof protoManage.NodeResourceCache
+         * @memberof protoManage.NodeResource
          * @instance
          * @returns {Object.<string,*>} JSON object
          */
-        NodeResourceCache.prototype.toJSON = function toJSON() {
+        NodeResource.prototype.toJSON = function toJSON() {
             return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
         };
 
-        return NodeResourceCache;
+        return NodeResource;
     })();
 
     protoManage.ReqNodeLogin = (function() {
@@ -10842,6 +10943,782 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         return AnsNodeNotifyList;
+    })();
+
+    protoManage.ReqNodeResourceUpload = (function() {
+
+        /**
+         * Properties of a ReqNodeResourceUpload.
+         * @memberof protoManage
+         * @interface IReqNodeResourceUpload
+         * @property {Uint8Array|null} [Data] ReqNodeResourceUpload Data
+         */
+
+        /**
+         * Constructs a new ReqNodeResourceUpload.
+         * @memberof protoManage
+         * @classdesc Represents a ReqNodeResourceUpload.
+         * @implements IReqNodeResourceUpload
+         * @constructor
+         * @param {protoManage.IReqNodeResourceUpload=} [properties] Properties to set
+         */
+        function ReqNodeResourceUpload(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ReqNodeResourceUpload Data.
+         * @member {Uint8Array} Data
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @instance
+         */
+        ReqNodeResourceUpload.prototype.Data = $util.newBuffer([]);
+
+        /**
+         * Creates a new ReqNodeResourceUpload instance using the specified properties.
+         * @function create
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @static
+         * @param {protoManage.IReqNodeResourceUpload=} [properties] Properties to set
+         * @returns {protoManage.ReqNodeResourceUpload} ReqNodeResourceUpload instance
+         */
+        ReqNodeResourceUpload.create = function create(properties) {
+            return new ReqNodeResourceUpload(properties);
+        };
+
+        /**
+         * Encodes the specified ReqNodeResourceUpload message. Does not implicitly {@link protoManage.ReqNodeResourceUpload.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @static
+         * @param {protoManage.IReqNodeResourceUpload} message ReqNodeResourceUpload message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeResourceUpload.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.Data != null && Object.hasOwnProperty.call(message, "Data"))
+                writer.uint32(/* id 1, wireType 2 =*/10).bytes(message.Data);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ReqNodeResourceUpload message, length delimited. Does not implicitly {@link protoManage.ReqNodeResourceUpload.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @static
+         * @param {protoManage.IReqNodeResourceUpload} message ReqNodeResourceUpload message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeResourceUpload.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ReqNodeResourceUpload message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.ReqNodeResourceUpload} ReqNodeResourceUpload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeResourceUpload.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeResourceUpload();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.Data = reader.bytes();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ReqNodeResourceUpload message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.ReqNodeResourceUpload} ReqNodeResourceUpload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeResourceUpload.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ReqNodeResourceUpload message.
+         * @function verify
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ReqNodeResourceUpload.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.Data != null && message.hasOwnProperty("Data"))
+                if (!(message.Data && typeof message.Data.length === "number" || $util.isString(message.Data)))
+                    return "Data: buffer expected";
+            return null;
+        };
+
+        /**
+         * Creates a ReqNodeResourceUpload message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.ReqNodeResourceUpload} ReqNodeResourceUpload
+         */
+        ReqNodeResourceUpload.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.ReqNodeResourceUpload)
+                return object;
+            let message = new $root.protoManage.ReqNodeResourceUpload();
+            if (object.Data != null)
+                if (typeof object.Data === "string")
+                    $util.base64.decode(object.Data, message.Data = $util.newBuffer($util.base64.length(object.Data)), 0);
+                else if (object.Data.length)
+                    message.Data = object.Data;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ReqNodeResourceUpload message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @static
+         * @param {protoManage.ReqNodeResourceUpload} message ReqNodeResourceUpload
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ReqNodeResourceUpload.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                if (options.bytes === String)
+                    object.Data = "";
+                else {
+                    object.Data = [];
+                    if (options.bytes !== Array)
+                        object.Data = $util.newBuffer(object.Data);
+                }
+            if (message.Data != null && message.hasOwnProperty("Data"))
+                object.Data = options.bytes === String ? $util.base64.encode(message.Data, 0, message.Data.length) : options.bytes === Array ? Array.prototype.slice.call(message.Data) : message.Data;
+            return object;
+        };
+
+        /**
+         * Converts this ReqNodeResourceUpload to JSON.
+         * @function toJSON
+         * @memberof protoManage.ReqNodeResourceUpload
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ReqNodeResourceUpload.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ReqNodeResourceUpload;
+    })();
+
+    protoManage.AnsNodeResourceUpload = (function() {
+
+        /**
+         * Properties of an AnsNodeResourceUpload.
+         * @memberof protoManage
+         * @interface IAnsNodeResourceUpload
+         * @property {protoManage.INodeResource|null} [NodeResource] AnsNodeResourceUpload NodeResource
+         */
+
+        /**
+         * Constructs a new AnsNodeResourceUpload.
+         * @memberof protoManage
+         * @classdesc Represents an AnsNodeResourceUpload.
+         * @implements IAnsNodeResourceUpload
+         * @constructor
+         * @param {protoManage.IAnsNodeResourceUpload=} [properties] Properties to set
+         */
+        function AnsNodeResourceUpload(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * AnsNodeResourceUpload NodeResource.
+         * @member {protoManage.INodeResource|null|undefined} NodeResource
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @instance
+         */
+        AnsNodeResourceUpload.prototype.NodeResource = null;
+
+        /**
+         * Creates a new AnsNodeResourceUpload instance using the specified properties.
+         * @function create
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @static
+         * @param {protoManage.IAnsNodeResourceUpload=} [properties] Properties to set
+         * @returns {protoManage.AnsNodeResourceUpload} AnsNodeResourceUpload instance
+         */
+        AnsNodeResourceUpload.create = function create(properties) {
+            return new AnsNodeResourceUpload(properties);
+        };
+
+        /**
+         * Encodes the specified AnsNodeResourceUpload message. Does not implicitly {@link protoManage.AnsNodeResourceUpload.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @static
+         * @param {protoManage.IAnsNodeResourceUpload} message AnsNodeResourceUpload message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeResourceUpload.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.NodeResource != null && Object.hasOwnProperty.call(message, "NodeResource"))
+                $root.protoManage.NodeResource.encode(message.NodeResource, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified AnsNodeResourceUpload message, length delimited. Does not implicitly {@link protoManage.AnsNodeResourceUpload.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @static
+         * @param {protoManage.IAnsNodeResourceUpload} message AnsNodeResourceUpload message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeResourceUpload.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an AnsNodeResourceUpload message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.AnsNodeResourceUpload} AnsNodeResourceUpload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeResourceUpload.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.AnsNodeResourceUpload();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.NodeResource = $root.protoManage.NodeResource.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an AnsNodeResourceUpload message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.AnsNodeResourceUpload} AnsNodeResourceUpload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeResourceUpload.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an AnsNodeResourceUpload message.
+         * @function verify
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        AnsNodeResourceUpload.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.NodeResource != null && message.hasOwnProperty("NodeResource")) {
+                let error = $root.protoManage.NodeResource.verify(message.NodeResource);
+                if (error)
+                    return "NodeResource." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates an AnsNodeResourceUpload message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.AnsNodeResourceUpload} AnsNodeResourceUpload
+         */
+        AnsNodeResourceUpload.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.AnsNodeResourceUpload)
+                return object;
+            let message = new $root.protoManage.AnsNodeResourceUpload();
+            if (object.NodeResource != null) {
+                if (typeof object.NodeResource !== "object")
+                    throw TypeError(".protoManage.AnsNodeResourceUpload.NodeResource: object expected");
+                message.NodeResource = $root.protoManage.NodeResource.fromObject(object.NodeResource);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an AnsNodeResourceUpload message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @static
+         * @param {protoManage.AnsNodeResourceUpload} message AnsNodeResourceUpload
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        AnsNodeResourceUpload.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.NodeResource = null;
+            if (message.NodeResource != null && message.hasOwnProperty("NodeResource"))
+                object.NodeResource = $root.protoManage.NodeResource.toObject(message.NodeResource, options);
+            return object;
+        };
+
+        /**
+         * Converts this AnsNodeResourceUpload to JSON.
+         * @function toJSON
+         * @memberof protoManage.AnsNodeResourceUpload
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        AnsNodeResourceUpload.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return AnsNodeResourceUpload;
+    })();
+
+    protoManage.ReqNodeResourceDownload = (function() {
+
+        /**
+         * Properties of a ReqNodeResourceDownload.
+         * @memberof protoManage
+         * @interface IReqNodeResourceDownload
+         * @property {protoManage.INodeResource|null} [NodeResource] ReqNodeResourceDownload NodeResource
+         */
+
+        /**
+         * Constructs a new ReqNodeResourceDownload.
+         * @memberof protoManage
+         * @classdesc Represents a ReqNodeResourceDownload.
+         * @implements IReqNodeResourceDownload
+         * @constructor
+         * @param {protoManage.IReqNodeResourceDownload=} [properties] Properties to set
+         */
+        function ReqNodeResourceDownload(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ReqNodeResourceDownload NodeResource.
+         * @member {protoManage.INodeResource|null|undefined} NodeResource
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @instance
+         */
+        ReqNodeResourceDownload.prototype.NodeResource = null;
+
+        /**
+         * Creates a new ReqNodeResourceDownload instance using the specified properties.
+         * @function create
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @static
+         * @param {protoManage.IReqNodeResourceDownload=} [properties] Properties to set
+         * @returns {protoManage.ReqNodeResourceDownload} ReqNodeResourceDownload instance
+         */
+        ReqNodeResourceDownload.create = function create(properties) {
+            return new ReqNodeResourceDownload(properties);
+        };
+
+        /**
+         * Encodes the specified ReqNodeResourceDownload message. Does not implicitly {@link protoManage.ReqNodeResourceDownload.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @static
+         * @param {protoManage.IReqNodeResourceDownload} message ReqNodeResourceDownload message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeResourceDownload.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.NodeResource != null && Object.hasOwnProperty.call(message, "NodeResource"))
+                $root.protoManage.NodeResource.encode(message.NodeResource, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ReqNodeResourceDownload message, length delimited. Does not implicitly {@link protoManage.ReqNodeResourceDownload.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @static
+         * @param {protoManage.IReqNodeResourceDownload} message ReqNodeResourceDownload message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeResourceDownload.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ReqNodeResourceDownload message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.ReqNodeResourceDownload} ReqNodeResourceDownload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeResourceDownload.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeResourceDownload();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.NodeResource = $root.protoManage.NodeResource.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ReqNodeResourceDownload message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.ReqNodeResourceDownload} ReqNodeResourceDownload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeResourceDownload.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ReqNodeResourceDownload message.
+         * @function verify
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ReqNodeResourceDownload.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.NodeResource != null && message.hasOwnProperty("NodeResource")) {
+                let error = $root.protoManage.NodeResource.verify(message.NodeResource);
+                if (error)
+                    return "NodeResource." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ReqNodeResourceDownload message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.ReqNodeResourceDownload} ReqNodeResourceDownload
+         */
+        ReqNodeResourceDownload.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.ReqNodeResourceDownload)
+                return object;
+            let message = new $root.protoManage.ReqNodeResourceDownload();
+            if (object.NodeResource != null) {
+                if (typeof object.NodeResource !== "object")
+                    throw TypeError(".protoManage.ReqNodeResourceDownload.NodeResource: object expected");
+                message.NodeResource = $root.protoManage.NodeResource.fromObject(object.NodeResource);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ReqNodeResourceDownload message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @static
+         * @param {protoManage.ReqNodeResourceDownload} message ReqNodeResourceDownload
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ReqNodeResourceDownload.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                object.NodeResource = null;
+            if (message.NodeResource != null && message.hasOwnProperty("NodeResource"))
+                object.NodeResource = $root.protoManage.NodeResource.toObject(message.NodeResource, options);
+            return object;
+        };
+
+        /**
+         * Converts this ReqNodeResourceDownload to JSON.
+         * @function toJSON
+         * @memberof protoManage.ReqNodeResourceDownload
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ReqNodeResourceDownload.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ReqNodeResourceDownload;
+    })();
+
+    protoManage.AnsNodeResourceDownload = (function() {
+
+        /**
+         * Properties of an AnsNodeResourceDownload.
+         * @memberof protoManage
+         * @interface IAnsNodeResourceDownload
+         * @property {Uint8Array|null} [Data] AnsNodeResourceDownload Data
+         */
+
+        /**
+         * Constructs a new AnsNodeResourceDownload.
+         * @memberof protoManage
+         * @classdesc Represents an AnsNodeResourceDownload.
+         * @implements IAnsNodeResourceDownload
+         * @constructor
+         * @param {protoManage.IAnsNodeResourceDownload=} [properties] Properties to set
+         */
+        function AnsNodeResourceDownload(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * AnsNodeResourceDownload Data.
+         * @member {Uint8Array} Data
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @instance
+         */
+        AnsNodeResourceDownload.prototype.Data = $util.newBuffer([]);
+
+        /**
+         * Creates a new AnsNodeResourceDownload instance using the specified properties.
+         * @function create
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @static
+         * @param {protoManage.IAnsNodeResourceDownload=} [properties] Properties to set
+         * @returns {protoManage.AnsNodeResourceDownload} AnsNodeResourceDownload instance
+         */
+        AnsNodeResourceDownload.create = function create(properties) {
+            return new AnsNodeResourceDownload(properties);
+        };
+
+        /**
+         * Encodes the specified AnsNodeResourceDownload message. Does not implicitly {@link protoManage.AnsNodeResourceDownload.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @static
+         * @param {protoManage.IAnsNodeResourceDownload} message AnsNodeResourceDownload message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeResourceDownload.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.Data != null && Object.hasOwnProperty.call(message, "Data"))
+                writer.uint32(/* id 1, wireType 2 =*/10).bytes(message.Data);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified AnsNodeResourceDownload message, length delimited. Does not implicitly {@link protoManage.AnsNodeResourceDownload.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @static
+         * @param {protoManage.IAnsNodeResourceDownload} message AnsNodeResourceDownload message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeResourceDownload.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an AnsNodeResourceDownload message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.AnsNodeResourceDownload} AnsNodeResourceDownload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeResourceDownload.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.AnsNodeResourceDownload();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.Data = reader.bytes();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an AnsNodeResourceDownload message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.AnsNodeResourceDownload} AnsNodeResourceDownload
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeResourceDownload.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an AnsNodeResourceDownload message.
+         * @function verify
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        AnsNodeResourceDownload.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.Data != null && message.hasOwnProperty("Data"))
+                if (!(message.Data && typeof message.Data.length === "number" || $util.isString(message.Data)))
+                    return "Data: buffer expected";
+            return null;
+        };
+
+        /**
+         * Creates an AnsNodeResourceDownload message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.AnsNodeResourceDownload} AnsNodeResourceDownload
+         */
+        AnsNodeResourceDownload.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.AnsNodeResourceDownload)
+                return object;
+            let message = new $root.protoManage.AnsNodeResourceDownload();
+            if (object.Data != null)
+                if (typeof object.Data === "string")
+                    $util.base64.decode(object.Data, message.Data = $util.newBuffer($util.base64.length(object.Data)), 0);
+                else if (object.Data.length)
+                    message.Data = object.Data;
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an AnsNodeResourceDownload message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @static
+         * @param {protoManage.AnsNodeResourceDownload} message AnsNodeResourceDownload
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        AnsNodeResourceDownload.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults)
+                if (options.bytes === String)
+                    object.Data = "";
+                else {
+                    object.Data = [];
+                    if (options.bytes !== Array)
+                        object.Data = $util.newBuffer(object.Data);
+                }
+            if (message.Data != null && message.hasOwnProperty("Data"))
+                object.Data = options.bytes === String ? $util.base64.encode(message.Data, 0, message.Data.length) : options.bytes === Array ? Array.prototype.slice.call(message.Data) : message.Data;
+            return object;
+        };
+
+        /**
+         * Converts this AnsNodeResourceDownload to JSON.
+         * @function toJSON
+         * @memberof protoManage.AnsNodeResourceDownload
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        AnsNodeResourceDownload.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return AnsNodeResourceDownload;
     })();
 
     protoManage.ReqNodeTest = (function() {

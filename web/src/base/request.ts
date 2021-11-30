@@ -452,12 +452,12 @@ export module request {
         })
     }
 
-    export function reqNodeResourceCheck(req:protoManage.NodeResourceCache):Promise<protoManage.NodeResourceCache> {
+    export function reqNodeResourceCheck(req:protoManage.NodeResource):Promise<protoManage.NodeResource> {
         return new Promise((resolve, reject)=>{
-            let msg = protoManage.NodeResourceCache.encode(req).finish()
+            let msg = protoManage.NodeResource.encode(req).finish()
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeResourceCheck, message:msg}))
                 .then((response) => {
-                    let ans = protoManage.NodeResourceCache.decode(response.message)
+                    let ans = protoManage.NodeResource.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -465,12 +465,12 @@ export module request {
         })
     }
 
-    export function reqNodeResourceDel(req:protoManage.NodeResourceCache):Promise<protoManage.NodeResourceCache> {
+    export function reqNodeResourceDel(req:protoManage.NodeResource):Promise<protoManage.NodeResource> {
         return new Promise((resolve, reject)=>{
-            let msg = protoManage.NodeResourceCache.encode(req).finish()
+            let msg = protoManage.NodeResource.encode(req).finish()
             request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeResourceDel, message:msg}))
                 .then((response) => {
-                    let ans = protoManage.NodeResourceCache.decode(response.message)
+                    let ans = protoManage.NodeResource.decode(response.message)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -536,13 +536,13 @@ export module request {
         })
     }
 
-    export function httpUploadResource(file:Blob, req:protoManage.NodeResourceCache,
-         onUploadProgressCall:(e:any)=>void):Promise<protoManage.NodeResourceCache> {
+    export function httpUploadResource(file:Blob, req:protoManage.NodeResource,
+         onUploadProgressCall:(e:any)=>void):Promise<protoManage.NodeResource> {
         return new Promise((resolve, reject)=>{
             let formData = new FormData();
             formData.append("file", file);
             formData.append("token", globals.globalsData.manager.info.Token);
-            let buf = protoManage.NodeResourceCache.encode(req).finish()
+            let buf = protoManage.NodeResource.encode(req).finish()
             let str = convert.uint8ArrayToString(buf)
             formData.append("data", str);
 
@@ -558,7 +558,7 @@ export module request {
                 onUploadProgress: onUploadProgressCall
             }).then(response => {
                 if (response.status == 200) {
-                    let ans = protoManage.NodeResourceCache.decode(new Uint8Array(<Uint8Array>response.data))
+                    let ans = protoManage.NodeResource.decode(new Uint8Array(<Uint8Array>response.data))
                     resolve(ans)
                 }else {
                     httpError(response.status, <Uint8Array>response.data)

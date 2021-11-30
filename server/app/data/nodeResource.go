@@ -10,24 +10,31 @@ import (
 	"github.com/liyiligang/klee/app/check"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/liyiligang/klee/app/typedef/config"
-	"github.com/liyiligang/klee/app/typedef/constant"
 	"os"
 )
 
-func (data *Data) ReqNodeResourceCheck(protoNodeReport *protoManage.NodeResourceCache) error {
-	err := check.NodeFileSizeCheck(protoNodeReport.FileSize)
+func (data *Data) ReqNodeResourceCheck(protoNodeResource *protoManage.NodeResource) error {
+	err := check.NodeFileSizeCheck(protoNodeResource.Sizes)
 	if err != nil {
 		return err
 	}
-	filePath := config.LocalConfig.File.SavePath + protoNodeReport.Name
+	filePath := config.LocalConfig.File.SavePath + protoNodeResource.UUID
 	if !Jtool.IsFileExist(filePath) {
 		return nil
 	}
-	protoNodeReport.Url = constant.ConstHttpDownload + protoNodeReport.Name
+	protoNodeResource.IsExist = true
 	return nil
 }
 
-func (data *Data) ReqNodeResourceDel(protoNodeReport *protoManage.NodeResourceCache) error {
-	filePath := config.LocalConfig.File.SavePath + protoNodeReport.Name
+func (data *Data) ReqNodeResourceUpload(req *protoManage.ReqNodeResourceUpload) error {
+	//return ioutil.WriteFile(config.LocalConfig.File.SavePath + req.NodeResource.UUID, req.Data, fs.ModePerm)
+	return nil
+}
+
+func (data *Data) ReqNodeResourceDel(protoNodeResource *protoManage.NodeResource) error {
+	filePath := config.LocalConfig.File.SavePath + protoNodeResource.UUID
+	if !Jtool.IsFileExist(filePath) {
+		return nil
+	}
 	return os.Remove(filePath)
 }

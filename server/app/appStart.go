@@ -17,7 +17,6 @@ import (
 	"github.com/liyiligang/base/component/Jweb"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/liyiligang/klee/app/typedef/config"
-	"github.com/liyiligang/klee/app/typedef/constant"
 	"github.com/liyiligang/klee/app/typedef/orm"
 	"google.golang.org/grpc"
 	"log"
@@ -114,7 +113,7 @@ func (app *App) InitWebServer() error {
 		r.Handle("GET", "/ws", websocketConfig.WsHandle)
 		r.Handle("POST", "/http", httpConfig.HttpHandle)
 		r.Handle("POST","/uploadFile", httpConfig.HttpUploadFile)
-		r.Handle("GET",constant.ConstHttpDownload + ":path", httpConfig.HttpDownloadFile)
+		r.Handle("GET","/downloadFile" + ":UUID", httpConfig.HttpDownloadFile)
 		//r.StaticFS("/file", http.Dir(config.LocalConfig.File.SavePath))
 		//r.NoRoute(func(c *gin.Context) {
 		//	c.Redirect(http.StatusMovedPermanently, "/manage")

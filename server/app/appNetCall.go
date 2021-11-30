@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"github.com/gin-gonic/gin"
+	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/base/component/Jtoken"
@@ -11,8 +12,9 @@ import (
 	"github.com/liyiligang/klee/app/check"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/liyiligang/klee/app/typedef/config"
-	"github.com/liyiligang/klee/app/typedef/constant"
 	"github.com/pkg/errors"
+	"io"
+	"os"
 	"time"
 )
 
@@ -319,17 +321,16 @@ func (app *App) HttpUploadFile(c *gin.Context) ([]byte, error) {
 	}
 	strData, _ := c.GetPostForm("data")
 	data := Jtool.RunesToBytes([]byte(strData))
-	resource := protoManage.NodeResourceCache{}
+	resource := protoManage.NodeResource{}
 	err = resource.Unmarshal(data)
 	if err != nil {
 		return nil, err
 	}
-	filePath := config.LocalConfig.File.SavePath + resource.Name
+	filePath := config.LocalConfig.File.SavePath + resource.UUID
 	err = c.SaveUploadedFile(file, filePath)
 	if err != nil {
 		return nil, err
 	}
-	resource.Url = constant.ConstHttpDownload + resource.Name
 	pbByte, err := resource.Marshal()
 	if err != nil {
 		return nil, err
@@ -338,28 +339,42 @@ func (app *App) HttpUploadFile(c *gin.Context) ([]byte, error) {
 }
 
 func (app *App) HttpDownloadFile(c *gin.Context) (string, error) {
-	path := c.Param("path")
+	path := c.Param("UUID")
 	return config.LocalConfig.File.SavePath + path, nil
 }
 
 func (app *App) RegisterNodeFunc(ctx context.Context, nodeFunc *protoManage.NodeFunc) (*protoManage.NodeFunc, error) {
-	err := app.Request.ReqNodeFuncRegister(ctx, nodeFunc)
-	if err != nil {
+	err := app.Request.Data.NodeFuncUpdateOrAdd(nodeFunc)
+	if err != nil  {
 		return nil, err
 	}
 	return nodeFunc, nil
 }
 
 func (app *App) RegisterNodeReport(ctx context.Context, nodeReport *protoManage.NodeReport) (*protoManage.NodeReport, error) {
-	err := app.Request.ReqNodeReportRegister(ctx, nodeReport)
+	err := app.Request.Data.NodeReportUpdateOrAdd(nodeReport)
 	if err != nil {
 		return nil, err
 	}
 	return nodeReport, nil
 }
 
+func (app *App) CheckNodeResource(ctx context.Context, nodeResource *protoManage.NodeResource) (*protoManage.NodeResource, error) {
+	err := app.Request.Data.ReqNodeResourceCheck(nodeResource)
+	if err != nil {
+		return nil, err
+	}
+	return nodeResource, nil
+}
+
 func (app *App) RpcChannel(request protoManage.RpcEngine_RpcChannelServer) (err error) {
-	conn, pErr := Jrpc.GrpcStreamServerInit(request, new(protoManage.Message), app)
+	conn, pErr := Jrpc.GrpcStreamServerInit(request, new(protoManage.Message), Jrpc.RpcStreamConfig{
+		RpcStreamConnect:app.RpcStreamConnect,
+		RpcStreamConnected:app.RpcStreamConnected,
+		RpcStreamClosed:app.RpcStreamClosed,
+		RpcStreamReceiver:app.RpcStreamReceiver,
+		RpcStreamError:app.RpcStreamError,
+	})
 	if pErr != nil {
 		return pErr
 	}
@@ -367,8 +382,8 @@ func (app *App) RpcChannel(request protoManage.RpcEngine_RpcChannelServer) (err 
 }
 
 func (app *App) RpcStreamConnect(conn *Jrpc.RpcStream) (interface{}, error) {
-	id, header, err := app.Request.ReqNodeLogin(conn.GetParm().RpcClientMsg, conn.GetParm().RpcClientAddr)
-	conn.SetRpcStreamServerHeader(header)
+	id, header, err := app.Request.ReqNodeLogin(conn.GetRpcContext().RpcHeader, conn.GetRpcContext().RpcClientAddr)
+	conn.WriteRpcStreamServerHeader(header)
 	if err != nil {
 		return 0, err
 	}
@@ -394,7 +409,7 @@ func (app *App) RpcStreamConnected(conn *Jrpc.RpcStream) error {
 	if app.Gateway.RpcManage.IsExistDelayCheck(nodeID, 500*time.Millisecond, 6) {
 		return errors.New("id:"+Jtool.Int64ToString(nodeID)+"已存在")
 	}
-	err = app.Request.ReqNodeOnline(nodeID, conn.GetParm().RpcStreamClientMsg)
+	err = app.Request.ReqNodeOnline(nodeID, conn.GetRpcContext().RpcStreamClientHeader)
 	if err != nil {
 		return err
 	}
@@ -402,7 +417,7 @@ func (app *App) RpcStreamConnected(conn *Jrpc.RpcStream) error {
 	return nil
 }
 
-func (app *App) RpcStreamClose(conn *Jrpc.RpcStream) {
+func (app *App) RpcStreamClosed(conn *Jrpc.RpcStream) {
 	var nodeID int64
 	var err error
 	defer func(){
@@ -453,6 +468,9 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 	case protoManage.Order_NodeNotifyAdd:
 		err = app.Request.ReqNodeNotifyAdd(nodeID, res.Message)
 		break
+	case protoManage.Order_NodeResourceUpload:
+		err = app.Request.ReqNodeResourceUpload(nodeID, res.Message)
+		break
 	default:
 		err = errors.New("rpc stream指令错误：" +  Jtool.Int64ToString(int64(res.Order)))
 	}
@@ -461,6 +479,48 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 	}
 }
 
-func (app *App) RpcStreamError(text string, err error){
-	Jlog.Warn(text, "err", err)
+func (app *App) RpcStreamError(text string, err error) {
+	Jlog.Warn("", text, err)
+}
+
+func (app *App) UploadNodeResource(request protoManage.RpcEngine_UploadNodeResourceServer) (uErr error) {
+	rpcContext, err := Jrpc.ParseRpcContext(request.Context())
+	if err != nil {
+		return err
+	}
+	nodeResource := protoManage.NodeResource{}
+	err = nodeResource.Unmarshal(rpcContext.RpcStreamClientHeader)
+	if err != nil {
+		return err
+	}
+	path := config.LocalConfig.File.SavePath + nodeResource.UUID
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer func(){
+		_ = f.Close()
+		if uErr != nil {
+			_ = os.Remove(path)
+		}
+	}()
+	for {
+		req, err := request.Recv()
+		if err != nil {
+			if errors.Is(err, io.EOF){
+				break
+			}
+			return err
+		}
+		f.Write(req.Data)
+	}
+	return request.SendAndClose(&protoManage.AnsNodeResourceUpload{NodeResource: nodeResource})
+}
+
+func (app *App) DownloadNodeResource(nodeResource *protoManage.ReqNodeResourceDownload,
+	request protoManage.RpcEngine_DownloadNodeResourceServer) error  {
+	path := config.LocalConfig.File.SavePath + nodeResource.NodeResource.UUID
+	return Jtool.ReadFileWithSize(path, commonConst.GrpcMaxMsgSize/2, func(buf []byte) error{
+		return request.Send(&protoManage.AnsNodeResourceDownload{Data: buf})
+	})
 }

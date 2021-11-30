@@ -5,11 +5,13 @@
 
 package request
 
-import "github.com/liyiligang/klee/app/protoFiles/protoManage"
+import (
+	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+)
 
 //节点资源校验
 func (request *Request) ReqNodeResourceCheck(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeResourceCache{}
+	req := protoManage.NodeResource{}
 	err := req.Unmarshal(message)
 	if err != nil {
 		return nil, err
@@ -25,9 +27,23 @@ func (request *Request) ReqNodeResourceCheck(userID int64, message []byte)([]byt
 	return pbByte, err
 }
 
+//节点资源上传
+func (request *Request) ReqNodeResourceUpload(userID int64, message []byte) error {
+	req := protoManage.ReqNodeResourceUpload{}
+	err := req.Unmarshal(message)
+	if err != nil {
+		return err
+	}
+	err = request.Data.ReqNodeResourceUpload(&req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 //节点资源删除
 func (request *Request) ReqNodeResourceDel(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeResourceCache{}
+	req := protoManage.NodeResource{}
 	err := req.Unmarshal(message)
 	if err != nil {
 		return nil, err

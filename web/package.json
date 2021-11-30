@@ -23,6 +23,7 @@
     "flv.js": "^1.6.2",
     "hls.js": "^1.0.11",
     "jsoneditor": "^9.5.6",
+    "lodash": "^4.17.21",
     "protobufjs": "^6.11.2",
     "spark-md5": "^3.0.2",
     "vue": "^3.2.11",
@@ -37,6 +38,7 @@
   "devDependencies": {
     "@types/dplayer": "^1.25.2",
     "@types/jsoneditor": "^9.5.1",
+    "@types/lodash": "^4.14.170",
     "@vue/cli-plugin-router": "^5.0.0-beta.4",
     "@vue/cli-plugin-typescript": "^5.0.0-beta.4",
     "@vue/compiler-sfc": "^3.2.20",

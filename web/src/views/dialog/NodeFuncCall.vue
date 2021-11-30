@@ -38,7 +38,7 @@ import JsonEdit from "../../components/json/JsonEdit.vue";
 import NodeFuncReturn from "./NodeFuncReturn.vue";
 import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 import Empty from "../../components/Empty.vue"
-import axios from "axios";
+import * as lodash from 'lodash';
 
 interface NodeFuncCallInfo {
     formData:{}
@@ -78,41 +78,45 @@ export default defineComponent ({
             schema:globals.getJson(props.nodeFunc.Schema), formFooter:{show: false},
             loading:false, returnLoading: false, tabActiveName:"form", funcCallID:0, returnValVisible:false,
             fullScreen:false, nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall()})
+        if (props.nodeFuncCall.Parameter != ""){
+            data.formData = globals.getJson(props.nodeFuncCall.Parameter)
+        }
         if (typeof data.schema === "object") {
-            console.log(props.nodeFunc.Schema)
             console.log(data.schema)
-            traversalSchema(data.schema)
+            mergeSchema(data.schema)
         }
 
         const jsonEdit = ref<typeof JsonEdit>(JsonEdit);
         onMounted(()=>{
-            if (props.nodeFuncCall.Parameter != ""){
-                data.formData = globals.getJson(props.nodeFuncCall.Parameter)
-            }
             data.resetData = JSON.stringify(data.formData)
             setJsonEditSchemaValue(data.schema)
             setJsonEditValue(data.formData)
         })
 
-        function traversalSchema(obj:object){
+        function mergeSchema(obj:object){
             for (let i in obj){
-                if (i == "ui:options"){
-                    let str:string = obj[i]
-                    str = "{" + str.replace(/\'/g, "\"") + "}"
-                    str = str.replace(/\./g, ",")
-                    obj[i] = globals.getJson(str)
-                    continue
-                }else if (i == "ui:widget"){
-                    if (obj[i] == "UploadWidget"){
-                        obj["ui:action"] = ""
-                        obj["ui:http-request"] = uploadFile
-                        obj["ui:on-success"] = uploadFileSuccess
-                        obj["ui:on-error"] = uploadFileFail
-                    }
-                    continue
+                if (i == "ui"){
+                    let uiObj = globals.getJson(obj[i])
+                    mergeUI(Object(uiObj))
+                    lodash.defaultsDeep(obj, uiObj)
+                    return
                 }
                 if (typeof obj[i] === "object") {
-                    traversalSchema(obj[i])
+                    mergeSchema(obj[i])
+                }
+            }
+        }
+
+        function mergeUI(obj:object){
+            for (let i in obj){
+                if (obj[i] == "UploadWidget" && i == "ui:widget"){
+                    obj["ui:action"] = ""
+                    obj["ui:http-request"] = uploadFile
+                    obj["ui:on-error"] = uploadFileError
+                    obj["ui:on-preview"] = uploadFilePreview
+                    obj["ui:before-remove"] = uploadFileRemove
+                    obj["ui:responseFileUrl"] = uploadFileSetData
+                    return
                 }
             }
         }
@@ -200,29 +204,71 @@ export default defineComponent ({
         }
 
         function uploadFile(para){
-            let formData = new FormData();
-            formData.append("file", para.file);
-            return axios({
-                method:'post',
-                url: "http://localhost:80/upload",
-                data: formData,
-                headers:{
-                    'Content-type':'multipart/form-data'
-                },
-                timeout: globals.globalsConfig.httpConfig.requestTimeout,
+            let progress = {percent:0}
+            para.onProgress(progress)
+            globals.calcFileMd5(para.file, (md5:string)=>{
+                let resourceInfo = protoManage.NodeResource.create({
+                    UUID:  md5 +"_" + para.file.name,
+                    Name: para.file.name,
+                    Md5: md5,
+                    Sizes: para.file.size,
+                    Type:protoManage.NodeResourceType.NodeResourceTypeCache
+                })
+                request.reqNodeResourceCheck(resourceInfo).then((responseCheck) => {
+                    if (!responseCheck.IsExist){
+                        request.httpUploadResource(para.file, resourceInfo,  (progressEvent) => {
+                            if (progressEvent.lengthComputable) {
+                                progressEvent.percent = Math.round(
+                                    (progressEvent.loaded * 100) / progressEvent.total
+                                );
+                                para.onProgress(progressEvent)
+                            }
+                        }).then((responseUpload) => {
+                            para.onSuccess({name:responseUpload.Name, url:responseUpload.UUID})
+                        })
+                    }else {
+                        para.onSuccess( {name:responseCheck.Name, url:responseCheck.UUID})
+                    }
+                })
             })
         }
 
-        function uploadFileSuccess(response, file, fileList) {
-            console.log("成功", response, file, fileList)
+        function uploadFileError(err, file) {
+            globals.viewError("上传文件失败:" + err)
         }
 
-        function uploadFileFail(err, file, fileList) {
-            console.log(err, "失败")
+        function uploadFilePreview(file) {
+            let url =  globals.getHttpHost()+"/downloadFile/"
+            if (file?.url) {
+                url += file?.url
+            }else if (file?.response?.url) {
+                url += file?.response?.url
+            }
+            window.open(url, '_blank')
+        }
+
+        async function uploadFileRemove(file) {
+            let isOK = false
+            let url = ""
+            if (file?.url) {
+                url = file?.url
+            }else if (file?.response?.url) {
+                url = file?.response?.url
+            }
+            await request.reqNodeResourceDel(protoManage.NodeResource.create({
+                UUID:url
+            })).then((response) => {
+                isOK = true
+            })
+            return isOK
+        }
+
+        function uploadFileSetData(res) {
+            return res.url
         }
 
         return {data, funcCall, reset, funcCallRefresh, jsonChanged, tabClick, jsonEdit, convert,
-            uploadFile, uploadFileSuccess, uploadFileFail}
+            uploadFile, uploadFileError, uploadFilePreview, uploadFileRemove, uploadFileSetData}
     }
 })
 </script>
