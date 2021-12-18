@@ -3,11 +3,11 @@ package gateway
 import (
 	"fmt"
 	"github.com/gogo/protobuf/proto"
-	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/constant"
 	"github.com/pkg/errors"
 )
 
@@ -21,7 +21,7 @@ func (gateway *Gateway) WsSendOrBroadCastPB(userID int64, order protoManage.Orde
 
 func (gateway *Gateway) WsSendOrBroadCastData(userID int64, order protoManage.Order, data *[]byte) error {
 	var err error
-	if userID == commonConst.ConstBroadcast {
+	if userID == constant.ConstSendBroadcast {
 		err = gateway.wsBroadCast(order, data)
 	} else {
 		err = gateway.wsSend(userID, order, data)
@@ -30,12 +30,9 @@ func (gateway *Gateway) WsSendOrBroadCastData(userID int64, order protoManage.Or
 }
 
 func (gateway *Gateway) WsCloseClient(userID interface{}, msg string) {
-	conn, ok := gateway.WebsocketManage.Load(userID)
+	_, ok := gateway.WebsocketManage.Load(userID)
 	if ok {
-		err := conn.(*Jweb.WebsocketConn).Close(msg)
-		if err != nil {
-			Jlog.Warn("wsCloseClient 关闭客户端失败", "userID", userID, "errorBox", err)
-		}
+		//conn.(*Jweb.WebsocketConn).Close(msg)
 	} else {
 		Jlog.Warn("wsCloseClient 未发现id", "userID", userID)
 	}

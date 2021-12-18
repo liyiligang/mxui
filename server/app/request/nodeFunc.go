@@ -10,48 +10,40 @@ import (
 )
 
 //节点方法查询
-func (request *Request) ReqNodeFuncFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeFuncList{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeFuncFind(r *HTTPRequest) error {
+	req := &protoManage.ReqNodeFuncList{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	level, err := request.Data.ManagerFindLevelByID(userID)
+	req.LevelMax = r.userLevel
+	ans, err := request.Data.NodeFuncFind(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	req.LevelMax = level
-	ans, err := request.Data.NodeFuncFind(&req)
+	err = request.marshalWithHttp(r, ans)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
+	return nil
 }
 
 //刪除节点方法
-func (request *Request) ReqNodeFuncDel(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeFunc{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeFuncDel(r *HTTPRequest) error {
+	req := &protoManage.NodeFunc{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = request.Data.NodeFuncLevelCheck(userID, req.Base.ID)
+	err = request.Data.NodeFuncDel(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = request.Data.NodeFuncDel(&req)
+	err = request.marshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
+	return nil
 }
 
 

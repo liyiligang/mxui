@@ -2,16 +2,14 @@ package app
 
 import (
 	"context"
-	"github.com/gin-gonic/gin"
-	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/base/component/Jtoken"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
-	"github.com/liyiligang/klee/app/check"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/liyiligang/klee/app/typedef/config"
+	"github.com/liyiligang/klee/app/typedef/constant"
 	"github.com/pkg/errors"
 	"io"
 	"os"
@@ -50,7 +48,7 @@ func (app *App) WebsocketConnected(conn *Jweb.WebsocketConn) error {
 	return nil
 }
 
-func (app *App) WebsocketClose(conn *Jweb.WebsocketConn, code int, text string) {
+func (app *App) WebsocketClosed(conn *Jweb.WebsocketConn, code int, text string) {
 	var userID int64
 	var err error
 	defer func(){
@@ -69,31 +67,6 @@ func (app *App) WebsocketClose(conn *Jweb.WebsocketConn, code int, text string) 
 	app.Request.Data.ManagerStateUpdate(&protoManage.Manager{Base: protoManage.Base{ID: userID},
 		State: protoManage.State_StateUnknow})
 	app.Gateway.WebsocketManage.Delete(userID)
-}
-
-func (app *App) WebsocketReceiver(conn *Jweb.WebsocketConn, message *[]byte) {
-	//id, err := app.Gateway.WsGetID(conn.GetBindVal())
-	//if err != nil {
-	//	Jlog.Warn("websocket数据接收错误", "err", err)
-	//	return
-	//}
-	//res := protoManage.Message{}
-	//err = res.Unmarshal(*message)
-	//if err != nil {
-	//	Jlog.Warn("websocket数据解析错误", "err", err)
-	//	return
-	//}
-	//switch res.Order {
-	//case protoManage.Order_NodeUpdateState:
-	//	app.Request.ReqNodeStateUpdate(id, res.Message)
-	//break
-	//default:
-	//	Jlog.Warn("websocket指令错误", "消息", res)
-	//}
-}
-
-func (app *App) WebsocketPong(conn *Jweb.WebsocketConn, pingData string) string {
-	return pingData
 }
 
 func (app *App) WebsocketError(text string, err error){
@@ -122,7 +95,8 @@ func (app *App) HttpReceiver(raw []byte) ([]byte, error, int) {
 	if req.Token == "" {
 		ansMsg, err, errCode = app.httpRequestNoToken(userID, &req)
 	} else {
-		userID, err = Jtoken.ParseToken(req.Token, config.LocalConfig.Token.Key)
+		claims, err := Jtoken.ParseToken(req.Token, config.LocalConfig.Token.Key)
+		userID := int64(claims["jti"].(float64))
 		if err != nil {
 			return nil, errors.New("身份验证失败"), int(protoManage.HttpError_HttpErrorRequest)
 		}
@@ -149,18 +123,18 @@ func (app *App) httpRequestNoToken(userID int64, req *protoManage.HttpMessage) (
 	errCode := protoManage.HttpError_HttpErrorNull
 
 	switch req.Order {
-	case protoManage.Order_ManagerLogin:
-		ansMsg, err , errCode = app.Request.ReqManagerLogin(userID, req.Message)
-		break
-	case protoManage.Order_ManagerRegister:
-		ansMsg, err = app.Request.ReqManagerRegister(userID, req.Message)
-		if err != nil {
-			errCode = protoManage.HttpError_HttpErrorRegister
-		}
-		break
-	case protoManage.Order_ManagerFindByLevel:
-		ansMsg, err = app.Request.ReqManagerFindByLevel(userID, req.Message)
-		break
+	//case protoManage.Order_ManagerLogin:
+	//	ansMsg, err , errCode = app.Request.ReqManagerLogin(userID, req.Message)
+	//	break
+	//case protoManage.Order_ManagerRegister:
+	//	ansMsg, err = app.Request.ReqManagerRegister(userID, req.Message)
+	//	if err != nil {
+	//		errCode = protoManage.HttpError_HttpErrorRegister
+	//	}
+	//	break
+	//case protoManage.Order_ManagerFindByLevel:
+	//	ansMsg, err = app.Request.ReqManagerFindByLevel(userID, req.Message)
+	//	break
 	default:
 		err = errors.New("http指令错误：" +  Jtool.Int64ToString(int64(req.Order)))
 	}
@@ -177,96 +151,96 @@ func (app *App) httpRequestWithToken(userID int64, req *protoManage.HttpMessage)
 	errCode := protoManage.HttpError_HttpErrorNull
 
 	switch req.Order {
-	case protoManage.Order_ManagerAdd:
-		ansMsg, err = app.Request.ReqManagerAdd(userID, req.Message)
-		break
-	case protoManage.Order_ManagerFindNickName:
-		ansMsg, err = app.Request.ReqManagerFindNickName(userID, req.Message)
-		break
-	case protoManage.Order_ManagerFindLowLevel:
-		ansMsg, err = app.Request.ReqManagerFindLowLevel(userID, req.Message)
-		break
-	case protoManage.Order_ManagerFindByID:
-		ansMsg, err = app.Request.ReqManagerFindByID(userID, req.Message)
-		break
-	case protoManage.Order_ManagerUpdate:
-		ansMsg, err = app.Request.ReqManagerUpdate(userID, req.Message)
-		break
-	case protoManage.Order_ManagerUpdatePasswd:
-		ansMsg, err = app.Request.ReqManagerUpdatePasswd(userID, req.Message)
-		break
-	case protoManage.Order_ManagerUpdateSetting:
-		ansMsg, err = app.Request.ReqManagerUpdateSetting(userID, req.Message)
-		break
-	case protoManage.Order_ManagerDel:
-		ansMsg, err = app.Request.ReqManagerDel(userID, req.Message)
-		break
-	case protoManage.Order_TopLinkFind:
-		ansMsg, err = app.Request.ReqTopLinkFind(userID, req.Message)
-		break
-	case protoManage.Order_TopLinkFindByID:
-		ansMsg, err = app.Request.ReqTopLinkFindByID(userID, req.Message)
-		break
-	case protoManage.Order_TopLinkAdd:
-		ansMsg, err = app.Request.ReqTopLinkAdd(userID, req.Message)
-		break
-	case protoManage.Order_TopLinkDel:
-		ansMsg, err = app.Request.ReqTopLinkDel(userID, req.Message)
-		break
-	case protoManage.Order_TopLinkUpdate:
-		ansMsg, err = app.Request.ReqTopLinkUpdate(userID, req.Message)
-		break
-	case protoManage.Order_NodeFind:
-		ansMsg, err = app.Request.ReqNodeFind(userID, req.Message)
-		break
-	case protoManage.Order_NodeFuncFind:
-		ansMsg, err = app.Request.ReqNodeFuncFind(userID, req.Message)
-		break
-	case protoManage.Order_NodeReportFind:
-		ansMsg, err = app.Request.ReqNodeReportFind(userID, req.Message)
-		break
-	case protoManage.Order_NodeFindByID:
-		ansMsg, err = app.Request.ReqNodeFindByID(userID, req.Message)
-		break
-	case protoManage.Order_NodeFuncCallReq:
-		ansMsg, err = app.Request.ReqNodeFuncCall(userID, req.Message)
-		break
-	case protoManage.Order_NodeFuncCallFind:
-		ansMsg, err = app.Request.ReqNodeFuncCallFind(userID, req.Message)
-		break
-	case protoManage.Order_NodeFuncCallFindByID:
-		ansMsg, err = app.Request.ReqNodeFuncCallFindByID(userID, req.Message)
-		break
-	case protoManage.Order_NodeFuncCallFindParameterByID:
-		ansMsg, err = app.Request.ReqNodeFuncCallParameterFindByID(userID, req.Message)
-		break
-	case protoManage.Order_NodeFuncCallFindReturnValByID:
-		ansMsg, err = app.Request.ReqNodeFuncCallReturnValFindByID(userID, req.Message)
-		break
-	case protoManage.Order_NodeReportValFind:
-		ansMsg, err = app.Request.ReqNodeReportValFind(userID, req.Message)
-		break
-	case protoManage.Order_NodeNotifyFind:
-		ansMsg, err = app.Request.ReqNodeNotifyFind(userID, req.Message)
-		break
-	case protoManage.Order_NodeDel:
-		ansMsg, err = app.Request.ReqNodeDel(userID, req.Message)
-		break
-	case protoManage.Order_NodeFuncDel:
-		ansMsg, err = app.Request.ReqNodeFuncDel(userID, req.Message)
-		break
-	case protoManage.Order_NodeReportDel:
-		ansMsg, err = app.Request.ReqNodeReportDel(userID, req.Message)
-		break
-	case protoManage.Order_NodeResourceCheck:
-		ansMsg, err = app.Request.ReqNodeResourceCheck(userID, req.Message)
-		break
-	case protoManage.Order_NodeResourceDel:
-		ansMsg, err = app.Request.ReqNodeResourceDel(userID, req.Message)
-		break
-	case protoManage.Order_NodeTest:
-		ansMsg, err = app.Request.ReqNodeTest(userID, req.Message)
-		break
+	//case protoManage.Order_ManagerAdd:
+	//	ansMsg, err = app.Request.ReqManagerAdd(userID, req.Message)
+	//	break
+	//case protoManage.Order_ManagerFindNickName:
+	//	ansMsg, err = app.Request.ReqManagerFindNickName(userID, req.Message)
+	//	break
+	//case protoManage.Order_ManagerFindLowLevel:
+	//	ansMsg, err = app.Request.ReqManagerFindLowLevel(userID, req.Message)
+	//	break
+	//case protoManage.Order_ManagerFindByID:
+	//	ansMsg, err = app.Request.ReqManagerFindByID(userID, req.Message)
+	//	break
+	//case protoManage.Order_ManagerUpdate:
+	//	ansMsg, err = app.Request.ReqManagerUpdate(userID, req.Message)
+	//	break
+	//case protoManage.Order_ManagerUpdatePasswd:
+	//	ansMsg, err = app.Request.ReqManagerUpdatePasswd(userID, req.Message)
+	//	break
+	//case protoManage.Order_ManagerUpdateSetting:
+	//	ansMsg, err = app.Request.ReqManagerUpdateSetting(userID, req.Message)
+	//	break
+	//case protoManage.Order_ManagerDel:
+	//	ansMsg, err = app.Request.ReqManagerDel(userID, req.Message)
+	//	break
+	//case protoManage.Order_TopLinkFind:
+	//	ansMsg, err = app.Request.ReqTopLinkFind(userID, req.Message)
+	//	break
+	//case protoManage.Order_TopLinkFindByID:
+	//	ansMsg, err = app.Request.ReqTopLinkFindByID(userID, req.Message)
+	//	break
+	//case protoManage.Order_TopLinkAdd:
+	//	ansMsg, err = app.Request.ReqTopLinkAdd(userID, req.Message)
+	//	break
+	//case protoManage.Order_TopLinkDel:
+	//	ansMsg, err = app.Request.ReqTopLinkDel(userID, req.Message)
+	//	break
+	//case protoManage.Order_TopLinkUpdate:
+	//	ansMsg, err = app.Request.ReqTopLinkUpdate(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeFind:
+	//	ansMsg, err = app.Request.ReqNodeFind(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeFuncFind:
+	//	ansMsg, err = app.Request.ReqNodeFuncFind(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeReportFind:
+	//	ansMsg, err = app.Request.ReqNodeReportFind(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeFindByID:
+	//	ansMsg, err = app.Request.ReqNodeFindByID(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeFuncCallReq:
+	//	ansMsg, err = app.Request.ReqNodeFuncCall(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeFuncCallFind:
+	//	ansMsg, err = app.Request.ReqNodeFuncCallFind(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeFuncCallFindByID:
+	//	ansMsg, err = app.Request.ReqNodeFuncCallFindByID(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeFuncCallFindParameterByID:
+	//	ansMsg, err = app.Request.ReqNodeFuncCallParameterFindByID(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeFuncCallFindReturnValByID:
+	//	ansMsg, err = app.Request.ReqNodeFuncCallReturnValFindByID(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeReportValFind:
+	//	ansMsg, err = app.Request.ReqNodeReportValFind(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeNotifyFind:
+	//	ansMsg, err = app.Request.ReqNodeNotifyFind(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeDel:
+	//	ansMsg, err = app.Request.ReqNodeDel(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeFuncDel:
+	//	ansMsg, err = app.Request.ReqNodeFuncDel(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeReportDel:
+	//	ansMsg, err = app.Request.ReqNodeReportDel(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeResourceCheck:
+	//	ansMsg, err = app.Request.ReqNodeResourceCheck(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeResourceDel:
+	//	ansMsg, err = app.Request.ReqNodeResourceDel(userID, req.Message)
+	//	break
+	//case protoManage.Order_NodeTest:
+	//	ansMsg, err = app.Request.ReqNodeTest(userID, req.Message)
+	//	break
 	default:
 		err = errors.New("http指令错误：" +  Jtool.Int64ToString(int64(req.Order)))
 	}
@@ -305,44 +279,6 @@ func (app *App) httpRequestLevel(userID int64, req *protoManage.HttpMessage) err
 	return nil
 }
 
-func (app *App) HttpUploadFile(c *gin.Context) ([]byte, error) {
-	file, err := c.FormFile("file")
-	if err != nil {
-		return nil, err
-	}
-	err = check.NodeFileSizeCheck(file.Size)
-	if err != nil {
-		return nil, err
-	}
-	token, _ := c.GetPostForm("token")
-	_, err = Jtoken.ParseToken(token, config.LocalConfig.Token.Key)
-	if err != nil {
-		return nil, errors.New("身份验证失败")
-	}
-	strData, _ := c.GetPostForm("data")
-	data := Jtool.RunesToBytes([]byte(strData))
-	resource := protoManage.NodeResource{}
-	err = resource.Unmarshal(data)
-	if err != nil {
-		return nil, err
-	}
-	filePath := config.LocalConfig.File.SavePath + resource.UUID
-	err = c.SaveUploadedFile(file, filePath)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := resource.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, nil
-}
-
-func (app *App) HttpDownloadFile(c *gin.Context) (string, error) {
-	path := c.Param("UUID")
-	return config.LocalConfig.File.SavePath + path, nil
-}
-
 func (app *App) RegisterNodeFunc(ctx context.Context, nodeFunc *protoManage.NodeFunc) (*protoManage.NodeFunc, error) {
 	err := app.Request.Data.NodeFuncUpdateOrAdd(nodeFunc)
 	if err != nil  {
@@ -368,7 +304,7 @@ func (app *App) CheckNodeResource(ctx context.Context, nodeResource *protoManage
 }
 
 func (app *App) RpcChannel(request protoManage.RpcEngine_RpcChannelServer) (err error) {
-	conn, pErr := Jrpc.GrpcStreamServerInit(request, new(protoManage.Message), Jrpc.RpcStreamConfig{
+	conn, pErr := Jrpc.GrpcStreamServerInit(request, new(protoManage.Message), Jrpc.RpcStreamCall{
 		RpcStreamConnect:app.RpcStreamConnect,
 		RpcStreamConnected:app.RpcStreamConnected,
 		RpcStreamClosed:app.RpcStreamClosed,
@@ -468,9 +404,6 @@ func (app *App) RpcStreamReceiver(conn *Jrpc.RpcStream, recv interface{}) {
 	case protoManage.Order_NodeNotifyAdd:
 		err = app.Request.ReqNodeNotifyAdd(nodeID, res.Message)
 		break
-	case protoManage.Order_NodeResourceUpload:
-		err = app.Request.ReqNodeResourceUpload(nodeID, res.Message)
-		break
 	default:
 		err = errors.New("rpc stream指令错误：" +  Jtool.Int64ToString(int64(res.Order)))
 	}
@@ -520,7 +453,8 @@ func (app *App) UploadNodeResource(request protoManage.RpcEngine_UploadNodeResou
 func (app *App) DownloadNodeResource(nodeResource *protoManage.ReqNodeResourceDownload,
 	request protoManage.RpcEngine_DownloadNodeResourceServer) error  {
 	path := config.LocalConfig.File.SavePath + nodeResource.NodeResource.UUID
-	return Jtool.ReadFileWithSize(path, commonConst.GrpcMaxMsgSize/2, func(buf []byte) error{
+	return Jtool.ReadFileWithSize(path, constant.ConstRpcServerMaxMsgSize/2, func(buf []byte) error{
 		return request.Send(&protoManage.AnsNodeResourceDownload{Data: buf})
 	})
 }
+

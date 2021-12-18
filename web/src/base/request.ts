@@ -2,82 +2,42 @@ import {protoManage} from "../proto/manage"
 import {ElMessage} from "element-plus";
 import {globals} from "./globals";
 import axios from "axios";
-import {routerPath} from "../router";
 import {convert} from "./convert";
 
 export module request {
 
-    // export function checkFilterPara(filter:protoManage.Filter):protoManage.Filter {
-    //     if (globals.isNull(filter.ID)){
-    //         filter.ID = 0
-    //     }
-    //     if (globals.isNull(filter.IDSign) || filter.IDSign == ""){
-    //         filter.IDSign = "="
-    //     }
-    //     if (globals.isNull(filter.GroupID)){
-    //         filter.GroupID = 0
-    //     }
-    //     if (globals.isNull(filter.TypeID)){
-    //         filter.TypeID = 0
-    //     }
-    //     if (globals.isNull(filter.NodeID)){
-    //         filter.NodeID = 0
-    //     }
-    //     if (globals.isNull(filter.SourceID)){
-    //         filter.SourceID = 0
-    //     }
-    //     if (globals.isNull(filter.TargetID)){
-    //         filter.TargetID = 0
-    //     }
-    //     if (globals.isNull(filter.FuncID)){
-    //         filter.FuncID = 0
-    //     }
-    //     if (globals.isNull(filter.ReportID)){
-    //         filter.ReportID = 0
-    //     }
-    //     if (globals.isNull(filter.Name)){
-    //         filter.Name = ""
-    //     }
-    //     if (globals.isNull(filter.Flag)){
-    //         filter.Flag = ""
-    //     }
-    //     if (globals.isNull(filter.Value)){
-    //         filter.Value = ""
-    //     }
-    //     if (globals.isNull(filter.State)){
-    //         filter.State = protoManage.State.StateNot
-    //     }
-    //     if (globals.isNull(filter.SenderName)){
-    //         filter.SenderName = ""
-    //     }
-    //     if (globals.isNull(filter.SenderType)){
-    //         filter.SenderType = protoManage.NotifySenderType.NotifySenderTypeUnknow
-    //     }
-    //     if (globals.isNull(filter.SenderBeginTime)){
-    //         filter.SenderBeginTime = 0
-    //     }
-    //     if (globals.isNull(filter.SenderEndTime)){
-    //         filter.SenderEndTime = 0
-    //     }
-    //     if (globals.isNull(filter.Message)){
-    //         filter.Message = ""
-    //     }
-    //     if (globals.isNull(filter.PageSize)){
-    //         filter.PageSize = globals.globalsConfig.pageConfig.initSize
-    //     }
-    //     if (globals.isNull(filter.PageNum)){
-    //         filter.PageNum = globals.globalsConfig.pageConfig.initNum
-    //     }
-    //     filter.PageNum-=1
-    //     return filter
-    // }
+    export function reqManagerLogin(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest("/manager/login", msg)
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
 
     export function reqManagerRegister(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerRegister, message:msg}))
+            request.httpRequest("/manager/register", msg)
                 .then((response) => {
-                    let ans = protoManage.Manager.decode(response.message)
+                    let ans = protoManage.Manager.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqManagerFindByLevel(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest("/manager/findByLevel", msg)
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -88,166 +48,9 @@ export module request {
     export function reqManagerAdd(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerAdd, message:msg}))
+            request.httpRequest("/manager/add", msg)
                 .then((response) => {
-                    let ans = protoManage.Manager.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqManagerLogin(req:protoManage.Manager):Promise<protoManage.Manager> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerLogin, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.Manager.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqManagerFindByLevel(req:protoManage.Manager):Promise<protoManage.Manager> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerFindByLevel, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.Manager.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqManagerByID(req:protoManage.Manager):Promise<protoManage.Manager> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerFindByID, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.Manager.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqManagerUpdate(req:protoManage.Manager):Promise<protoManage.Manager> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdate, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.Manager.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqManagerUpdatePasswd(req:protoManage.Manager):Promise<protoManage.Manager> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdatePasswd, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.Manager.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqManagerUpdateSetting(req:protoManage.Manager):Promise<protoManage.Manager> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerUpdateSetting, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.Manager.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqManagerDel(req:protoManage.Manager):Promise<protoManage.Manager> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerDel, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.Manager.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqTopLinkList():Promise<protoManage.AnsTopLinkList> {
-        return new Promise((resolve, reject)=>{
-            let req = protoManage.ReqTopLinkList.create({})
-            let msg = protoManage.ReqTopLinkList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.TopLinkFind, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.AnsTopLinkList.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqTopLinkByID(req:protoManage.TopLink):Promise<protoManage.TopLink> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.TopLink.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.TopLinkFindByID, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.TopLink.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqTopLinkAdd(req:protoManage.TopLink):Promise<protoManage.TopLink> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.TopLink.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.TopLinkAdd, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.TopLink.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqTopLinkDel(req:protoManage.TopLink):Promise<protoManage.TopLink> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.TopLink.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.TopLinkDel, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.TopLink.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqTopLinkUpdate(req:protoManage.TopLink):Promise<protoManage.TopLink> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.TopLink.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.TopLinkUpdate, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.TopLink.decode(response.message)
+                    let ans = protoManage.Manager.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -259,12 +62,12 @@ export module request {
         return new Promise((resolve, reject)=>{
             let req = protoManage.ReqManagerList.create({})
             let msg = protoManage.ReqManagerList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerFindNickName, message:msg}))
+            request.httpRequest("/manager/findNickName", msg)
                 .then((response) => {
-                    let ans = protoManage.AnsManagerList.decode(response.message)
+                    let ans = protoManage.AnsManagerList.decode(response)
                     resolve(ans)
                 }).catch(error => {
-                    reject(error)
+                reject(error)
             })
         })
     }
@@ -273,9 +76,140 @@ export module request {
         return new Promise((resolve, reject)=>{
             let req = protoManage.ReqManagerList.create({})
             let msg = protoManage.ReqManagerList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.ManagerFindLowLevel, message:msg}))
+            request.httpRequest("/manager/findLowLevel", msg)
                 .then((response) => {
-                    let ans = protoManage.AnsManagerList.decode(response.message)
+                    let ans = protoManage.AnsManagerList.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqManagerByID(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest("/manager/findByID", msg)
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqManagerUpdate(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest("/manager/update", msg)
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqManagerUpdatePasswd(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest("/manager/updatePasswd", msg)
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqManagerUpdateSetting(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest("/manager/updateSetting", msg)
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqManagerDel(req:protoManage.Manager):Promise<protoManage.Manager> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.Manager.encode(req).finish()
+            request.httpRequest("/manager/del", msg)
+                .then((response) => {
+                    let ans = protoManage.Manager.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqTopLinkList():Promise<protoManage.AnsTopLinkList> {
+        return new Promise((resolve, reject)=>{
+            let req = protoManage.ReqTopLinkList.create({})
+            let msg = protoManage.ReqTopLinkList.encode(req).finish()
+            request.httpRequest("/topLink/find", msg)
+                .then((response) => {
+                    let ans = protoManage.AnsTopLinkList.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                    reject(error)
+            })
+        })
+    }
+
+    export function reqTopLinkByID(req:protoManage.TopLink):Promise<protoManage.TopLink> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.TopLink.encode(req).finish()
+            request.httpRequest("/topLink/findByID", msg)
+                .then((response) => {
+                    let ans = protoManage.TopLink.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqTopLinkAdd(req:protoManage.TopLink):Promise<protoManage.TopLink> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.TopLink.encode(req).finish()
+            request.httpRequest("/topLink/add", msg)
+                .then((response) => {
+                    let ans = protoManage.TopLink.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqTopLinkDel(req:protoManage.TopLink):Promise<protoManage.TopLink> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.TopLink.encode(req).finish()
+            request.httpRequest("/topLink/del", msg)
+                .then((response) => {
+                    let ans = protoManage.TopLink.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqTopLinkUpdate(req:protoManage.TopLink):Promise<protoManage.TopLink> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.TopLink.encode(req).finish()
+            request.httpRequest("/topLink/update", msg)
+                .then((response) => {
+                    let ans = protoManage.TopLink.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -286,9 +220,9 @@ export module request {
     export function reqNodeList(req:protoManage.ReqNodeList):Promise<protoManage.AnsNodeList> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.ReqNodeList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFind, message:msg}))
+            request.httpRequest("/node/find", msg)
                 .then((response) => {
-                    let ans = protoManage.AnsNodeList.decode(response.message)
+                    let ans = protoManage.AnsNodeList.decode(response)
                     resolve(ans)
                 }).catch(error => {
                     reject(error)
@@ -296,116 +230,13 @@ export module request {
         })
     }
 
-    export function reqNodeFuncList(req:protoManage.ReqNodeFuncList):Promise<protoManage.AnsNodeFuncList> {
+    export function reqNodeByID(id: number):Promise<protoManage.Node> {
         return new Promise((resolve, reject)=>{
-            let msg = protoManage.ReqNodeFuncList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncFind, message:msg}))
+            let req = protoManage.Node.create({Base:protoManage.Base.create({ID:id})})
+            let msg = protoManage.Node.encode(req).finish()
+            request.httpRequest("/node/findByID", msg)
                 .then((response) => {
-                    let ans = protoManage.AnsNodeFuncList.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqNodeReportList(req:protoManage.ReqNodeReportList):Promise<protoManage.AnsNodeReportList> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.ReqNodeReportList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeReportFind, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.AnsNodeReportList.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqNodeFuncCallList(req:protoManage.ReqNodeFuncCallList):Promise<protoManage.AnsNodeFuncCallList> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.ReqNodeFuncCallList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncCallFind, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.AnsNodeFuncCallList.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqNodeReportValList(req:protoManage.ReqNodeReportValList):Promise<protoManage.AnsNodeReportValList> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.ReqNodeReportValList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeReportValFind, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.AnsNodeReportValList.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqCallNodeFunc(req:protoManage.ReqNodeFuncCall):Promise<protoManage.Base> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.ReqNodeFuncCall.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncCallReq, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.Base.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqNodeFuncCallByID(req:protoManage.NodeFuncCall):Promise<protoManage.NodeFuncCall> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.NodeFuncCall.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncCallFindByID, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.NodeFuncCall.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function reqNodeFuncCallParameterByID(req:protoManage.NodeFuncCall):Promise<protoManage.NodeFuncCall> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.NodeFuncCall.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncCallFindParameterByID, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.NodeFuncCall.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqNodeFuncCallReturnValByID(req:protoManage.NodeFuncCall):Promise<protoManage.NodeFuncCall> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.NodeFuncCall.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncCallFindReturnValByID, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.NodeFuncCall.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqNodeNotifyList(req:protoManage.ReqNodeNotifyList):Promise<protoManage.AnsNodeNotifyList> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.ReqNodeNotifyList.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeNotifyFind, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.AnsNodeNotifyList.decode(response.message)
+                    let ans = protoManage.Node.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -416,12 +247,25 @@ export module request {
     export function reqNodeDel(req:protoManage.Node):Promise<protoManage.Node> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Node.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeDel, message:msg}))
+            request.httpRequest("/node/del", msg)
                 .then((response) => {
-                    let ans = protoManage.Node.decode(response.message)
+                    let ans = protoManage.Node.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
+            })
+        })
+    }
+
+    export function reqNodeFuncList(req:protoManage.ReqNodeFuncList):Promise<protoManage.AnsNodeFuncList> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.ReqNodeFuncList.encode(req).finish()
+            request.httpRequest("/nodeFunc/find", msg)
+                .then((response) => {
+                    let ans = protoManage.AnsNodeFuncList.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                    reject(error)
             })
         })
     }
@@ -429,9 +273,9 @@ export module request {
     export function reqNodeFuncDel(req:protoManage.NodeFunc):Promise<protoManage.NodeFunc> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.NodeFunc.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFuncDel, message:msg}))
+            request.httpRequest("/nodeFunc/del", msg)
                 .then((response) => {
-                    let ans = protoManage.NodeFunc.decode(response.message)
+                    let ans = protoManage.NodeFunc.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -439,12 +283,116 @@ export module request {
         })
     }
 
+    export function reqCallNodeFunc(req:protoManage.ReqNodeFuncCall):Promise<protoManage.Base> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.ReqNodeFuncCall.encode(req).finish()
+            request.httpRequest("/nodeFuncCall/call", msg)
+                .then((response) => {
+                    let ans = protoManage.Base.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeFuncCallList(req:protoManage.ReqNodeFuncCallList):Promise<protoManage.AnsNodeFuncCallList> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.ReqNodeFuncCallList.encode(req).finish()
+            request.httpRequest("/nodeFuncCall/find", msg)
+                .then((response) => {
+                    let ans = protoManage.AnsNodeFuncCallList.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeFuncCallByID(req:protoManage.NodeFuncCall):Promise<protoManage.NodeFuncCall> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeFuncCall.encode(req).finish()
+            request.httpRequest("/nodeFuncCall/findByID", msg)
+                .then((response) => {
+                    let ans = protoManage.NodeFuncCall.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeFuncCallParameterByID(req:protoManage.NodeFuncCall):Promise<protoManage.NodeFuncCall> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeFuncCall.encode(req).finish()
+            request.httpRequest("/nodeFuncCall/findParameterByID", msg)
+                .then((response) => {
+                    let ans = protoManage.NodeFuncCall.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeFuncCallReturnValByID(req:protoManage.NodeFuncCall):Promise<protoManage.NodeFuncCall> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.NodeFuncCall.encode(req).finish()
+            request.httpRequest("/nodeFuncCall/findReturnValByID", msg)
+                .then((response) => {
+                    let ans = protoManage.NodeFuncCall.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeReportList(req:protoManage.ReqNodeReportList):Promise<protoManage.AnsNodeReportList> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.ReqNodeReportList.encode(req).finish()
+            request.httpRequest("/nodeReport/find", msg)
+                .then((response) => {
+                    let ans = protoManage.AnsNodeReportList.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                    reject(error)
+            })
+        })
+    }
+
     export function reqNodeReportDel(req:protoManage.NodeReport):Promise<protoManage.NodeReport> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.NodeReport.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeReportDel, message:msg}))
+            request.httpRequest("/nodeReport/del", msg)
                 .then((response) => {
-                    let ans = protoManage.NodeReport.decode(response.message)
+                    let ans = protoManage.NodeReport.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeReportValList(req:protoManage.ReqNodeReportValList):Promise<protoManage.AnsNodeReportValList> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.ReqNodeReportValList.encode(req).finish()
+            request.httpRequest("/nodeReportVal/find", msg)
+                .then((response) => {
+                    let ans = protoManage.AnsNodeReportValList.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                    reject(error)
+            })
+        })
+    }
+
+    export function reqNodeNotifyList(req:protoManage.ReqNodeNotifyList):Promise<protoManage.AnsNodeNotifyList> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.ReqNodeNotifyList.encode(req).finish()
+            request.httpRequest("/nodeNotify/find", msg)
+                .then((response) => {
+                    let ans = protoManage.AnsNodeNotifyList.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -455,9 +403,9 @@ export module request {
     export function reqNodeResourceCheck(req:protoManage.NodeResource):Promise<protoManage.NodeResource> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.NodeResource.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeResourceCheck, message:msg}))
+            request.httpRequest("/nodeResource/check", msg)
                 .then((response) => {
-                    let ans = protoManage.NodeResource.decode(response.message)
+                    let ans = protoManage.NodeResource.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -465,12 +413,43 @@ export module request {
         })
     }
 
+    export function reqNodeResourceUpload(req:protoManage.NodeResource, file:Blob,
+                   onUploadProgressCall:(e:any)=>void):Promise<protoManage.NodeResource> {
+        return new Promise((resolve, reject)=>{
+            reqNodeResourceCheck(req).then((ans:protoManage.NodeResource) => {
+                if (ans.IsExist){
+                    resolve(ans)
+                }else {
+                    let msg = protoManage.NodeResource.encode(req).finish()
+                    httpRequestUpLoad("/nodeResource/upload", file, msg, onUploadProgressCall)
+                        .then((response:protoManage.NodeResource) => {
+                            resolve(response)
+                        }).catch(error => {
+                        reject(error)
+                    })
+                }
+            }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
+    export function reqNodeResourceDownLoad(req:protoManage.NodeResource) {
+        reqNodeResourceCheck(req).then((ans:protoManage.NodeResource) => {
+            if (ans.IsExist){
+                httpRequestDownLoad("/nodeResource/download/" + req.UUID, req.Name)
+            }else {
+                globals.viewWarn("文件 " + req.Name + " 已经被管理员删除")
+            }
+        })
+    }
+
     export function reqNodeResourceDel(req:protoManage.NodeResource):Promise<protoManage.NodeResource> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.NodeResource.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeResourceDel, message:msg}))
+            request.httpRequest("/nodeResource/del", msg)
                 .then((response) => {
-                    let ans = protoManage.NodeResource.decode(response.message)
+                    let ans = protoManage.NodeResource.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
@@ -481,46 +460,31 @@ export module request {
     export function reqNodeTest(req:protoManage.ReqNodeTest):Promise<protoManage.AnsNodeTest> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.ReqNodeTest.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeTest, message:msg}))
+            request.httpRequest("/nodeTest/test", msg)
                 .then((response) => {
-                    let ans = protoManage.AnsNodeTest.decode(response.message)
+                    let ans = protoManage.AnsNodeTest.decode(response)
                     resolve(ans)
                 }).catch(error => {
                 reject(error)
             })
         })
     }
-
-    export function reqNodeByID(id: number):Promise<protoManage.Node> {
+    
+    export function httpRequest(path:string, data:Uint8Array):Promise<Uint8Array> {
         return new Promise((resolve, reject)=>{
-            let req = protoManage.Node.create({Base:protoManage.Base.create({ID:id})})
-            let msg = protoManage.Node.encode(req).finish()
-            request.httpRequest(protoManage.HttpMessage.create({order:protoManage.Order.NodeFindByID, message:msg}))
-                .then((response) => {
-                    let ans = protoManage.Node.decode(response.message)
-                    resolve(ans)
-                }).catch(error => {
-                    reject(error)
-            })
-        })
-    }
-
-    export function httpRequest(req:protoManage.HttpMessage):Promise<protoManage.HttpMessage> {
-        return new Promise((resolve, reject)=>{
-            req.token = globals.globalsData.manager.info.Token
-            let buf = protoManage.HttpMessage.encode(req).finish()
-            let blob = new Blob([buf], {type: 'buffer'});
-
+            let blob = new Blob([data], {type: 'buffer'});
             axios({
                 responseType: 'arraybuffer',
                 method:'post',
-                url: "http://localhost:80/http",
+                url: globals.getHttpHost() + path,
                 data: blob,
+                headers:{
+                    'token':globals.globalsData.manager.info.Token
+                },
                 timeout: globals.globalsConfig.httpConfig.requestTimeout,
             }).then(response => {
                 if (response.status == 200) {
-                    let ans = protoManage.HttpMessage.decode(new Uint8Array(<Uint8Array>response.data))
-                    resolve(ans)
+                    resolve(new Uint8Array(<Uint8Array>response.data))
                 }else {
                     httpError(response.status, <Uint8Array>response.data)
                     reject(response)
@@ -536,23 +500,21 @@ export module request {
         })
     }
 
-    export function httpUploadResource(file:Blob, req:protoManage.NodeResource,
-         onUploadProgressCall:(e:any)=>void):Promise<protoManage.NodeResource> {
+    export function httpRequestUpLoad(path:string, file:Blob, data:Uint8Array,
+          onUploadProgressCall:(e:any)=>void):Promise<protoManage.NodeResource> {
+        let formData = new FormData();
+        let str = convert.uint8ArrayToString(data)
+        formData.append("file", file);
+        formData.append("data", str);
         return new Promise((resolve, reject)=>{
-            let formData = new FormData();
-            formData.append("file", file);
-            formData.append("token", globals.globalsData.manager.info.Token);
-            let buf = protoManage.NodeResource.encode(req).finish()
-            let str = convert.uint8ArrayToString(buf)
-            formData.append("data", str);
-
             axios({
                 responseType: 'arraybuffer',
                 method:'post',
-                url: "http://localhost:80/uploadFile",
+                url: globals.getHttpHost() + path,
                 data: formData,
                 headers:{
-                    'Content-type':'multipart/form-data'
+                    'Content-type':'multipart/form-data',
+                    'token':globals.globalsData.manager.info.Token
                 },
                 timeout: globals.globalsConfig.httpConfig.requestTimeout,
                 onUploadProgress: onUploadProgressCall
@@ -573,6 +535,16 @@ export module request {
                 reject(error)
             })
         })
+    }
+
+    export function httpRequestDownLoad(path:string, name:string) {
+        let url = globals.getHttpHost() + path + "?token="+globals.globalsData.manager.info.Token
+        let downloadLink = document.createElement("a");
+        downloadLink.href = url;
+        downloadLink.download = name;
+        document.body.appendChild(downloadLink);
+        downloadLink.click();
+        document.body.removeChild(downloadLink);
     }
 
     export function httpError(code:number, data:Uint8Array) {

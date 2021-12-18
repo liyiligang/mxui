@@ -1,10 +1,10 @@
  package data
 
  import (
-	 "github.com/liyiligang/base/commonConst"
 	 "github.com/liyiligang/klee/app/check"
 	 "github.com/liyiligang/klee/app/convert"
 	 "github.com/liyiligang/klee/app/protoFiles/protoManage"
+	 "github.com/liyiligang/klee/app/typedef/constant"
 	 "github.com/liyiligang/klee/app/typedef/orm"
  )
 
@@ -22,7 +22,7 @@
 		 return err
 	 }
 	 if isSend {
-		 return data.Gateway.WsSendOrBroadCastPB(commonConst.ConstBroadcast, protoManage.Order_NodeNotifyAdd, protoNodeNotify)
+		 return data.Gateway.WsSendOrBroadCastPB(constant.ConstSendBroadcast, protoManage.Order_NodeNotifyAdd, protoNodeNotify)
 	 }
 	 return nil
  }

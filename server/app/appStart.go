@@ -17,6 +17,7 @@ import (
 	"github.com/liyiligang/base/component/Jweb"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
 	"github.com/liyiligang/klee/app/typedef/config"
+	"github.com/liyiligang/klee/app/typedef/constant"
 	"github.com/liyiligang/klee/app/typedef/orm"
 	"google.golang.org/grpc"
 	"log"
@@ -32,7 +33,7 @@ func (app *App) InitConfig(){
 }
 
 func (app *App) InitLogServer(){
-	err := Jlog.LogInit(Jlog.LogInitConfig{
+	Jlog.InitGlobalLog(Jlog.LogInitConfig{
 		Debug:      config.LocalConfig.Debug,
 		LocalPath:  config.LocalConfig.Log.Path,
 		MaxSize:    config.LocalConfig.Log.MaxSize,
@@ -41,10 +42,6 @@ func (app *App) InitLogServer(){
 		InitialFields: map[string]interface{}{
 			"@nodeName":     config.LocalConfig.Node.NodeName,
 		}})
-
-	if err != nil {
-		log.Fatal("日志服务初始化失败: ", err)
-	}
 	Jlog.Info("日志服务初始化成功")
 }
 
@@ -65,7 +62,7 @@ func (app *App) InitDBServer() error {
 		MaxKeepConn: config.LocalConfig.DB.MaxKeepConn,
 		MaxConn:     config.LocalConfig.DB.MaxConn,
 		MaxLifetime: time.Duration(config.LocalConfig.DB.MaxLifeTime) * time.Second,
-		LogWrite:    &Jlog.LogIoWrite{Msg: "DB", Flag: "gorm"},
+		LogWrite:    Jlog.IOWrite( "DB-Log", nil),
 		TableCheck:  orm.InitOrmTable,
 	})
 	if err != nil {
@@ -101,23 +98,102 @@ func (app *App) InitWebServer() error {
 		ReadWaitTime:  time.Duration(config.LocalConfig.HTTP.WebSocket.ReadWaitTime) * time.Second,
 		PingWaitTime:  time.Duration(config.LocalConfig.HTTP.WebSocket.PingWaitTime) * time.Second,
 		PongWaitTime:  time.Duration(config.LocalConfig.HTTP.WebSocket.PongWaitTime) * time.Second,
-		Call:          app,
-	}
-
-	httpConfig := Jweb.HttpConfig{
-		Call: app,
+		Call:          Jweb.WebsocketCall{
+			WebsocketConnect: app.WebsocketConnect,
+			WebsocketConnected: app.WebsocketConnected,
+			WebsocketClosed: app.WebsocketClosed,
+			WebsocketError: app.WebsocketError,
+		},
 	}
 
 	routeFunc := func(r *gin.Engine) {
 		r.Use(gzip.Gzip(gzip.DefaultCompression))
-		r.Handle("GET", "/ws", websocketConfig.WsHandle)
-		r.Handle("POST", "/http", httpConfig.HttpHandle)
-		r.Handle("POST","/uploadFile", httpConfig.HttpUploadFile)
-		r.Handle("GET","/downloadFile" + ":UUID", httpConfig.HttpDownloadFile)
+		r.NoRoute(app.Request.NotFoundWithHttp)
+		r.NoMethod(app.Request.NotFoundWithHttp)
+
+		r.GET( "/ws", websocketConfig.WsHandle)
+		r.GET("/nodeResource/download/"+ ":UUID", app.Request.ConvertWithHttpFileDownload(app.Request.HttpDownloadFile))
+
+		managerNoToken := r.Group("/manager")
+		{
+			managerNoToken.POST( "/login", app.Request.ConvertWithHttp(app.Request.ReqManagerLogin))
+			managerNoToken.POST( "/register", app.Request.ConvertWithHttp(app.Request.ReqManagerRegister))
+			managerNoToken.POST( "/findByLevel", app.Request.ConvertWithHttp(app.Request.ReqManagerFindByLevel))
+		}
+
+		r.Use(app.Request.ParseTokenWithHttp)
+		manager := r.Group("/manager")
+		{
+			manager.POST( "/add", app.Request.ConvertWithHttp(app.Request.ReqManagerAdd))
+			manager.POST( "/findNickName", app.Request.ConvertWithHttp(app.Request.ReqManagerFindNickName))
+			manager.POST( "/findLowLevel", app.Request.ConvertWithHttp(app.Request.ReqManagerFindLowLevel))
+			manager.POST( "/findByID", app.Request.ConvertWithHttp(app.Request.ReqManagerFindByID))
+			manager.POST( "/update", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdate))
+			manager.POST( "/updatePasswd", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdatePasswd))
+			manager.POST( "/updateSetting", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdateSetting))
+			manager.POST( "/del", app.Request.ConvertWithHttp(app.Request.ReqManagerDel))
+		}
+
+		topLink := r.Group("/topLink")
+		{
+			topLink.POST( "/find", app.Request.ConvertWithHttp(app.Request.ReqTopLinkFind))
+			topLink.POST( "/findByID", app.Request.ConvertWithHttp(app.Request.ReqTopLinkFindByID))
+			topLink.POST( "/add", app.Request.ConvertWithHttp(app.Request.ReqTopLinkAdd))
+			topLink.POST( "/del", app.Request.ConvertWithHttp(app.Request.ReqTopLinkDel))
+			topLink.POST( "/update", app.Request.ConvertWithHttp(app.Request.ReqTopLinkUpdate))
+		}
+
+		node := r.Group("/node")
+		{
+			node.POST( "/find", app.Request.ConvertWithHttp(app.Request.ReqNodeFind))
+			node.POST( "/findByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFindByID))
+			node.POST( "/del", app.Request.ConvertWithHttp(app.Request.ReqNodeDel))
+		}
+
+		nodeFunc := r.Group("/nodeFunc")
+		{
+			nodeFunc.POST( "/find", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncFind))
+			nodeFunc.POST( "/del", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncDel))
+		}
+
+		nodeFuncCall := r.Group("/nodeFuncCall")
+		{
+			nodeFuncCall.POST( "/call", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCall))
+			nodeFuncCall.POST( "/find", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallFind))
+			nodeFuncCall.POST( "/findByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallFindByID))
+			nodeFuncCall.POST( "/findParameterByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallParameterFindByID))
+			nodeFuncCall.POST( "/findReturnValByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallReturnValFindByID))
+		}
+
+		nodeReport := r.Group("/nodeReport")
+		{
+			nodeReport.POST( "/find", app.Request.ConvertWithHttp(app.Request.ReqNodeReportFind))
+			nodeReport.POST( "/del", app.Request.ConvertWithHttp(app.Request.ReqNodeReportDel))
+		}
+
+		nodeReportVal := r.Group("/nodeReportVal")
+		{
+			nodeReportVal.POST( "/find", app.Request.ConvertWithHttp(app.Request.ReqNodeReportValFind))
+		}
+
+		nodeNotify := r.Group("/nodeNotify")
+		{
+			nodeNotify.POST( "/find", app.Request.ConvertWithHttp(app.Request.ReqNodeNotifyFind))
+		}
+
+		nodeResource := r.Group("/nodeResource")
+		{
+			nodeResource.POST( "/check", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceCheck))
+			nodeResource.POST("/upload", app.Request.ConvertWithHttpFileUpload(app.Request.HttpUploadFile))
+			nodeResource.POST( "/del", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceDel))
+		}
+
+		nodeTest := r.Group("/nodeTest")
+		{
+			nodeTest.POST( "/test", app.Request.ConvertWithHttp(app.Request.ReqNodeTest))
+		}
+
 		//r.StaticFS("/file", http.Dir(config.LocalConfig.File.SavePath))
-		//r.NoRoute(func(c *gin.Context) {
-		//	c.Redirect(http.StatusMovedPermanently, "/manage")
-		//})
 	}
 
 	httpServer := Jweb.WebInit(Jweb.WebInitConfig{
@@ -125,11 +201,9 @@ func (app *App) InitWebServer() error {
 		Addr:           config.LocalConfig.HTTP.ListenAddr,
 		IsHttps:        config.LocalConfig.HTTP.UseHTTPS,
 		RedirectAddr:   config.LocalConfig.HTTP.HTTPS.RedirectAddr,
-		LogWrite:       &Jlog.LogIoWrite{Msg: "web", Flag: "gin"},
 		PublicKeyPath:  config.LocalConfig.HTTP.HTTPS.PublicKeyPath,
 		PrivateKeyPath: config.LocalConfig.HTTP.HTTPS.PrivateKeyPath,
 		RouteCall:      routeFunc,
-		ErrorCall:      errorOther,
 	})
 	app.HttpServer = httpServer
 	Jlog.Info("Web服务初始化成功")
@@ -171,8 +245,9 @@ func (app *App) InitRpcServer() error {
 		RegisterCall: func(s *grpc.Server) {
 			protoManage.RegisterRpcEngineServer(s, app)
 		},
-		LogWrite: &Jlog.LogIoWrite{Msg: "rpc", Flag: "grpc"},
-		ErrorCall: errorOther,
+		ServerOption: 	[]grpc.ServerOption{
+			grpc.MaxSendMsgSize(constant.ConstRpcServerMaxMsgSize), grpc.MaxRecvMsgSize(constant.ConstRpcServerMaxMsgSize),
+			grpc.UnaryInterceptor(app.Request.RpcUnaryInterceptor), grpc.StreamInterceptor(app.Request.RpcStreamInterceptor)},
 	})
 
 	app.RpcServer = s

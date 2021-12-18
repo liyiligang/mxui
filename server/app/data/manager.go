@@ -16,7 +16,7 @@ import (
 func (data *Data) ManagerRegister(protoManager *protoManage.Manager) error {
 	protoManager.Level = protoManage.Level_LevelPrimary
 	superManager := &protoManage.Manager{Level: protoManage.Level_LevelSuper}
-	if err := data.ManagerFindByLevel(0, superManager); err != nil{
+	if err := data.ManagerFindByLevel(superManager); err != nil{
 		return err
 	}
 	if superManager.Base.ID == 0 {
@@ -41,7 +41,7 @@ func (data *Data) ManagerAdd(protoManager *protoManage.Manager) error {
 }
 
 //删除管理员
-func (data *Data) ManagerDel(userID int64, protoManager *protoManage.Manager) error {
+func (data *Data) ManagerDel(protoManager *protoManage.Manager) error {
 	err := data.DB.DelManager(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID}})
 	if err != nil {
 		return err
@@ -51,7 +51,7 @@ func (data *Data) ManagerDel(userID int64, protoManager *protoManage.Manager) er
 
 //更新管理员token
 func (data *Data) ManagerTokenUpdate(protoManager *protoManage.Manager) error {
-	protoManager.Token = data.ManagerGetTokenByID(protoManager.Base.ID)
+	protoManager.Token = data.ManagerGetTokenByID(protoManager)
 	_, err := data.DB.UpdateManagerToken(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID}, Token: protoManager.Token})
 	if err != nil {
 		return err
@@ -70,7 +70,7 @@ func (data *Data) ManagerStateUpdate(protoManager *protoManage.Manager) error {
 }
 
 //更新管理员信息
-func (data *Data) ManagerUpdate(userID int64, protoManager *protoManage.Manager) error {
+func (data *Data) ManagerUpdate(protoManager *protoManage.Manager) error {
 	ormBase, err := data.DB.UpdateManager(orm.Manager{Base: orm.Base{ID: protoManager.Base.ID},
 		Password: protoManager.Password, NickName: protoManager.NickName,
 		Setting:protoManager.Setting, Level: int32(protoManager.Level)})
@@ -118,7 +118,8 @@ func (data *Data) ManagerLogin(manager *protoManage.Manager) (error, protoManage
 	var ormManager *orm.Manager
 	var err error
 	if manager.Token != "" {
-		userID, err := Jtoken.ParseToken(manager.Token, config.LocalConfig.Token.Key)
+		claims, err := Jtoken.ParseToken(manager.Token, config.LocalConfig.Token.Key)
+		userID := int64(claims["jti"].(float64))
 		if err != nil {
 			return errors.New("token已失效, 请使用账户密码登录"), protoManage.HttpError_HttpErrorLoginWithToken
 		}
@@ -188,17 +189,20 @@ func (data *Data) ManagerFindLevelByID(userID int64) (protoManage.Level, error) 
 }
 
 //获取管理token
-func (data *Data) ManagerGetTokenByID(userID int64) string {
+func (data *Data) ManagerGetTokenByID(protoManager *protoManage.Manager) string {
 	tokenConfig := Jtoken.TokenConfig{
 		Key:           config.LocalConfig.Token.Key,
-		UserID:        userID,
+		ID:        	   protoManager.Base.ID,
 		StartDuration: time.Duration(config.LocalConfig.Token.StartDuration) * time.Hour,
-		StopDuration:  time.Duration(config.LocalConfig.Token.StopDuration) * time.Hour}
-	 return Jtoken.GetToken(tokenConfig)
+		StopDuration:  time.Duration(config.LocalConfig.Token.StopDuration) * time.Hour,
+		Custom: make(map[string]interface{}),
+	}
+	tokenConfig.Custom["level"] = protoManager.Level
+	return Jtoken.GetToken(tokenConfig)
 }
 
 //按权限查询管理员
-func (data *Data) ManagerFindByLevel(userID int64, protoManager *protoManage.Manager) error {
+func (data *Data) ManagerFindByLevel(protoManager *protoManage.Manager) error {
 	ormBase, err := data.DB.FindManagerByLevel(orm.Manager{Level: int32(protoManager.Level)})
 	if err != nil {
 		return err

@@ -68,19 +68,19 @@ func (request *Request) SendNodeNotifyWithNodeError(senderID int64, message stri
 }
 
 //节点通知查询
-func (request *Request) ReqNodeNotifyFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeNotifyList{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeNotifyFind(r *HTTPRequest) error {
+	req := &protoManage.ReqNodeNotifyList{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	ans, err := request.Data.NodeNotifyFind(&req)
+	ans, err := request.Data.NodeNotifyFind(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := ans.Marshal()
+	err = request.marshalWithHttp(r, ans)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return pbByte, err
+	return nil
 }

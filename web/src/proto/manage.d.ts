@@ -112,12 +112,16 @@ export namespace protoManage {
     /** HttpError enum. */
     enum HttpError {
         HttpErrorNull = 0,
-        HttpErrorMarshal = 601,
-        HttpErrorUnmarshal = 602,
-        HttpErrorRegister = 603,
-        HttpErrorLoginWithAccount = 604,
-        HttpErrorLoginWithToken = 605,
-        HttpErrorRequest = 606
+        HttpErrorGetHeader = 601,
+        HttpErrorGetBody = 602,
+        HttpErrorGetFile = 603,
+        HttpErrorCheckFile = 604,
+        HttpErrorMarshal = 605,
+        HttpErrorUnmarshal = 606,
+        HttpErrorRegister = 607,
+        HttpErrorLoginWithAccount = 608,
+        HttpErrorLoginWithToken = 609,
+        HttpErrorRequest = 610
     }
 
     /** Properties of a Message. */

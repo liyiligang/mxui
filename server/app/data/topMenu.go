@@ -8,7 +8,7 @@ import (
 )
 
 //查找顶部链接信息
-func (data *Data) TopLinkFind(req protoManage.ReqTopLinkList) (*protoManage.AnsTopLinkList, error) {
+func (data *Data) TopLinkFind(req *protoManage.ReqTopLinkList) (*protoManage.AnsTopLinkList, error) {
 	ormTopLink, err := data.DB.FindTopLink()
 	if err != nil {
 		return nil, err

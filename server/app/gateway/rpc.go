@@ -3,11 +3,11 @@ package gateway
 import (
 	"fmt"
 	"github.com/gogo/protobuf/proto"
-	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/klee/app/protoFiles/protoManage"
+	"github.com/liyiligang/klee/app/typedef/constant"
 	"github.com/pkg/errors"
 )
 
@@ -21,7 +21,7 @@ func (gateway *Gateway) RpcSendOrBroadCastPB(nodeID int64, order protoManage.Ord
 
 func (gateway *Gateway) RpcSendOrBroadCastData(nodeID int64, order protoManage.Order, data *[]byte) error {
 	var err error
-	if nodeID == commonConst.ConstBroadcast {
+	if nodeID == constant.ConstSendBroadcast {
 		err = gateway.rpcBroadCast(order, data)
 	} else {
 		err = gateway.rpcSend(nodeID, order, data)

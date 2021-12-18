@@ -6,7 +6,6 @@
 package app
 
 import (
-	"github.com/liyiligang/base/commonConst"
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/klee/app/data"
 	"github.com/liyiligang/klee/app/db"
@@ -17,7 +16,6 @@ import (
 )
 
 type App struct {
-	AppTypeName     commonConst.NodeTypeName
 	HttpServer      *http.Server
 	RpcServer       *grpc.Server
 	DBServer		db.Server
@@ -28,7 +26,7 @@ type App struct {
 
 //服务初始化
 func InitServer() (*App, error) {
-	app := App{AppTypeName: commonConst.ManageServerName}
+	app := App{}
 	app.InitConfig()
 	app.InitLogServer()
 	app.InitFileDir()

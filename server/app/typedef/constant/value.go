@@ -14,18 +14,10 @@
  * limitations under the License.
  */
 
+package constant
 
-package main
+//common
+const ConstSendBroadcast = -1
 
-import (
-	"github.com/liyiligang/klee/app"
-	"log"
-)
-
-func main() {
-	_, err := app.InitServer()
-	if err != nil {
-		log.Fatal(err)
-	}
-	select {}
-}
+//rpc
+const ConstRpcServerMaxMsgSize = 10*1024*1024

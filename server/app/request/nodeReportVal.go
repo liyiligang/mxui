@@ -8,25 +8,25 @@ package request
 import "github.com/liyiligang/klee/app/protoFiles/protoManage"
 
 //节点报告值查询
-func (request *Request) ReqNodeReportValFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeReportValList{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeReportValFind(r *HTTPRequest) error {
+	req := &protoManage.ReqNodeReportValList{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = request.Data.NodeReportLevelCheck(userID, req.ReportID)
+	err = request.Data.NodeReportLevelCheck(r.userLevel, req.ReportID)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	ans, err := request.Data.NodeReportValFind(&req)
+	ans, err := request.Data.NodeReportValFind(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := ans.Marshal()
+	err = request.marshalWithHttp(r, ans)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return pbByte, err
+	return nil
 }
 
 //节点报告值更新

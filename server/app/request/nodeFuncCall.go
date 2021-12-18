@@ -10,107 +10,19 @@ import (
 	"github.com/liyiligang/klee/app/typedef/orm"
 )
 
-//节点方法调用查询
-func (request *Request) ReqNodeFuncCallFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeFuncCallList{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeFuncLevelCheck(userID, req.FuncID)
-	if err != nil {
-		return nil, err
-	}
-	ans, err := request.Data.NodeFuncCallFind(&req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//获取节点方法调用按ID
-func (request *Request) ReqNodeFuncCallFindByID(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeFuncCall{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeFuncLevelCheck(userID, req.FuncID)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeFuncCallFindByID(&req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//获取节点方法调用参数按ID
-func (request *Request) ReqNodeFuncCallParameterFindByID(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeFuncCall{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeFuncLevelCheck(userID, req.FuncID)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeFuncCallParameterFindByID(&req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
-//获取节点方法调用返回值按ID
-func (request *Request) ReqNodeFuncCallReturnValFindByID(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeFuncCall{}
-	err := req.Unmarshal(message)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeFuncLevelCheck(userID, req.FuncID)
-	if err != nil {
-		return nil, err
-	}
-	err = request.Data.NodeFuncCallReturnValFindByID(&req)
-	if err != nil {
-		return nil, err
-	}
-	pbByte, err := req.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
-}
-
 //请求节点方法调用
-func (request *Request) ReqNodeFuncCall(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeFuncCall{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeFuncCall(r *HTTPRequest) error {
+	req := &protoManage.ReqNodeFuncCall{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = request.Data.NodeFuncLevelCheck(userID, req.NodeFuncCall.FuncID)
+	err = request.Data.NodeFuncLevelCheck(r.userLevel, req.NodeFuncCall.FuncID)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	req.NodeFuncCall.ManagerID = userID
-	err = request.Data.NodeFuncCallReq(&req)
+	req.NodeFuncCall.ManagerID = r.userID
+	err = request.Data.NodeFuncCallReq(req)
 	if err != nil {
 		request.Data.DB.AddNodeFuncCall(&orm.NodeFuncCall{
 			ManagerID: req.NodeFuncCall.ManagerID,
@@ -120,13 +32,13 @@ func (request *Request) ReqNodeFuncCall(userID int64, message []byte)([]byte, er
 			ReturnVal: err.Error(),
 			State: int32(protoManage.State_StateError),
 		})
-		return nil, err
+		return err
 	}
-	pbByte, err := req.NodeFuncCall.Base.Marshal()
+	err = request.marshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return pbByte, err
+	return nil
 }
 
 //回复节点方法调用
@@ -142,5 +54,94 @@ func (request *Request) AnsNodeFuncCall(nodeID int64, message []byte) error {
 	}
 	return nil
 }
+
+//节点方法调用查询
+func (request *Request) ReqNodeFuncCallFind(r *HTTPRequest) error {
+	req := &protoManage.ReqNodeFuncCallList{}
+	err := request.unmarshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	err = request.Data.NodeFuncLevelCheck(r.userLevel, req.FuncID)
+	if err != nil {
+		return err
+	}
+	ans, err := request.Data.NodeFuncCallFind(req)
+	if err != nil {
+		return err
+	}
+	err = request.marshalWithHttp(r, ans)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//获取节点方法调用按ID
+func (request *Request) ReqNodeFuncCallFindByID(r *HTTPRequest) error {
+	req := &protoManage.NodeFuncCall{}
+	err := request.unmarshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	err = request.Data.NodeFuncLevelCheck(r.userLevel, req.FuncID)
+	if err != nil {
+		return err
+	}
+	err = request.Data.NodeFuncCallFindByID(req)
+	if err != nil {
+		return err
+	}
+	err = request.marshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//获取节点方法调用参数按ID
+func (request *Request) ReqNodeFuncCallParameterFindByID(r *HTTPRequest) error {
+	req := &protoManage.NodeFuncCall{}
+	err := request.unmarshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	err = request.Data.NodeFuncLevelCheck(r.userLevel, req.FuncID)
+	if err != nil {
+		return err
+	}
+	err = request.Data.NodeFuncCallParameterFindByID(req)
+	if err != nil {
+		return err
+	}
+	err = request.marshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+//获取节点方法调用返回值按ID
+func (request *Request) ReqNodeFuncCallReturnValFindByID(r *HTTPRequest) error {
+	req := &protoManage.NodeFuncCall{}
+	err := request.unmarshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	err = request.Data.NodeFuncLevelCheck(r.userLevel, req.FuncID)
+	if err != nil {
+		return err
+	}
+	err = request.Data.NodeFuncCallReturnValFindByID(req)
+	if err != nil {
+		return err
+	}
+	err = request.marshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 
 

@@ -249,22 +249,30 @@ export const protoManage = $root.protoManage = (() => {
      * @name protoManage.HttpError
      * @enum {number}
      * @property {number} HttpErrorNull=0 HttpErrorNull value
-     * @property {number} HttpErrorMarshal=601 HttpErrorMarshal value
-     * @property {number} HttpErrorUnmarshal=602 HttpErrorUnmarshal value
-     * @property {number} HttpErrorRegister=603 HttpErrorRegister value
-     * @property {number} HttpErrorLoginWithAccount=604 HttpErrorLoginWithAccount value
-     * @property {number} HttpErrorLoginWithToken=605 HttpErrorLoginWithToken value
-     * @property {number} HttpErrorRequest=606 HttpErrorRequest value
+     * @property {number} HttpErrorGetHeader=601 HttpErrorGetHeader value
+     * @property {number} HttpErrorGetBody=602 HttpErrorGetBody value
+     * @property {number} HttpErrorGetFile=603 HttpErrorGetFile value
+     * @property {number} HttpErrorCheckFile=604 HttpErrorCheckFile value
+     * @property {number} HttpErrorMarshal=605 HttpErrorMarshal value
+     * @property {number} HttpErrorUnmarshal=606 HttpErrorUnmarshal value
+     * @property {number} HttpErrorRegister=607 HttpErrorRegister value
+     * @property {number} HttpErrorLoginWithAccount=608 HttpErrorLoginWithAccount value
+     * @property {number} HttpErrorLoginWithToken=609 HttpErrorLoginWithToken value
+     * @property {number} HttpErrorRequest=610 HttpErrorRequest value
      */
     protoManage.HttpError = (function() {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "HttpErrorNull"] = 0;
-        values[valuesById[601] = "HttpErrorMarshal"] = 601;
-        values[valuesById[602] = "HttpErrorUnmarshal"] = 602;
-        values[valuesById[603] = "HttpErrorRegister"] = 603;
-        values[valuesById[604] = "HttpErrorLoginWithAccount"] = 604;
-        values[valuesById[605] = "HttpErrorLoginWithToken"] = 605;
-        values[valuesById[606] = "HttpErrorRequest"] = 606;
+        values[valuesById[601] = "HttpErrorGetHeader"] = 601;
+        values[valuesById[602] = "HttpErrorGetBody"] = 602;
+        values[valuesById[603] = "HttpErrorGetFile"] = 603;
+        values[valuesById[604] = "HttpErrorCheckFile"] = 604;
+        values[valuesById[605] = "HttpErrorMarshal"] = 605;
+        values[valuesById[606] = "HttpErrorUnmarshal"] = 606;
+        values[valuesById[607] = "HttpErrorRegister"] = 607;
+        values[valuesById[608] = "HttpErrorLoginWithAccount"] = 608;
+        values[valuesById[609] = "HttpErrorLoginWithToken"] = 609;
+        values[valuesById[610] = "HttpErrorRequest"] = 610;
         return values;
     })();
 

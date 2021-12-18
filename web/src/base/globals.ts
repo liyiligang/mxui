@@ -201,16 +201,22 @@ export module globals {
 	}
 
 	export function getHttpHost ():string{
-		if (location.protocol === "https:"){
-			return 'https://'+window.location.host
+		let base = ""
+		if (process.env.NODE_ENV === "development"){
+			base += "/api"
 		}
-		return 'http://'+window.location.host
+		return location.protocol + "//" + window.location.host + base
 	}
 
 	export function getWsHost ():string{
-		if (location.protocol === "https:"){
-			return 'wss://'+window.location.host
+		let base = ""
+		if (process.env.NODE_ENV === "development"){
+			base += "/api"
 		}
-		return 'ws://'+window.location.host
+		let protocol = "ws://"
+		if (location.protocol === "https:"){
+			protocol = "wss://"
+		}
+		return protocol + "//" + window.location.host + base
 	}
 }

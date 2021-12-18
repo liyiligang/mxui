@@ -97,17 +97,13 @@ func (data *Data) NodeReportFind(req *protoManage.ReqNodeReportList) (*protoMana
 }
 
 //节点报告接口权限验证
-func (data *Data) NodeReportLevelCheck(userID int64, funcID int64) error {
-	level, err := data.ManagerFindLevelByID(userID)
-	if err != nil {
-		return err
-	}
+func (data *Data) NodeReportLevelCheck(userLevel protoManage.Level, funcID int64) error {
 	protoNodeReport := &protoManage.NodeReport{Base: protoManage.Base{ID: funcID}}
-	err = data.NodeReportFindByID(protoNodeReport)
+	err := data.NodeReportFindByID(protoNodeReport)
 	if err != nil {
 		return err
 	}
-	if protoNodeReport.Level >  level {
+	if protoNodeReport.Level >  userLevel {
 		return errors.New("权限不足")
 	}
 	return nil

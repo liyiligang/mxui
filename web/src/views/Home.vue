@@ -64,7 +64,7 @@ export default defineComponent ({
             })
             let byte = protoManage.Manager.encode(msg).finish()
             let str = convert.uint8ArrayToString(byte)
-            websocket.wsConnect("ws://localhost/ws?parameter="+str)
+            websocket.wsConnect(globals.getWsHost()+"/ws?parameter="+str)
         }
 
         function initUserInfo(){

@@ -10,47 +10,43 @@ import (
 )
 
 //节点报告查询
-func (request *Request) ReqNodeReportFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeReportList{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeReportFind(r *HTTPRequest) error {
+	req := &protoManage.ReqNodeReportList{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	level, err := request.Data.ManagerFindLevelByID(userID)
+	req.LevelMax = r.userLevel
+	ans, err := request.Data.NodeReportFind(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	req.LevelMax = level
-	ans, err := request.Data.NodeReportFind(&req)
+	err = request.marshalWithHttp(r, ans)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := ans.Marshal()
-	if err != nil {
-		return nil, err
-	}
-	return pbByte, err
+	return nil
 }
 
 //刪除节点报告
-func (request *Request) ReqNodeReportDel(userID int64, message []byte)([]byte, error) {
-	req := protoManage.NodeReport{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeReportDel(r *HTTPRequest) error {
+	req := &protoManage.NodeReport{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = request.Data.NodeReportLevelCheck(userID, req.Base.ID)
+	err = request.Data.NodeReportLevelCheck(r.userLevel, req.Base.ID)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = request.Data.NodeReportDel(&req)
+	err = request.Data.NodeReportDel(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := req.Marshal()
+	err = request.marshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return pbByte, err
+	return nil
 }
 

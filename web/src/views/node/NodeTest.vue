@@ -86,21 +86,15 @@ export default defineComponent ({
                     Sizes: para.file.size,
                     Type:protoManage.NodeResourceType.NodeResourceTypeCache
                 })
-                request.reqNodeResourceCheck(resourceInfo).then((responseCheck) => {
-                    if (!responseCheck.IsExist){
-                        request.httpUploadResource(para.file, resourceInfo,  (progressEvent) => {
-                            if (progressEvent.lengthComputable) {
-                                progressEvent.percent = Math.round(
-                                    (progressEvent.loaded * 100) / progressEvent.total
-                                );
-                                para.onProgress(progressEvent)
-                            }
-                        }).then((responseUpload) => {
-                            para.onSuccess({name:responseUpload.Name, url:responseUpload.UUID})
-                        })
-                    }else {
-                        para.onSuccess( {name:responseCheck.Name, url:responseCheck.UUID})
+                request.reqNodeResourceUpload(resourceInfo, para.file,  (progressEvent) => {
+                    if (progressEvent.lengthComputable) {
+                        progressEvent.percent = Math.round(
+                            (progressEvent.loaded * 100) / progressEvent.total
+                        );
+                        para.onProgress(progressEvent)
                     }
+                }).then((response) => {
+                    para.onSuccess({name:response.Name, url:response.UUID})
                 })
             })
         }
@@ -114,13 +108,19 @@ export default defineComponent ({
         }
 
         function preview(file) {
-            let url =  globals.getHttpHost()+"/downloadFile/"
-            if (file?.url) {
-                url += file?.url
-            }else if (file?.response?.url) {
-                url += file?.response?.url
-            }
-            window.open(url, '_blank')
+            // let url =  globals.getHttpHost()+"/nodeResource/download/"
+            // if (file?.url) {
+            //     url += file?.url
+            // }else if (file?.response?.url) {
+            //     url += file?.response?.url
+            // }
+            // window.open(url, '_blank')
+
+            request.reqNodeResourceDownLoad(protoManage.NodeResource.create({
+                UUID: file?.response.url,
+                Name: file?.response.name
+            }))
+
             return true
         }
 

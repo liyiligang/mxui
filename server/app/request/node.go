@@ -75,73 +75,73 @@ func (request *Request) ReqNodeStateUpdate(nodeID int64, message []byte) error {
 }
 
 //节点信息查询
-func (request *Request) ReqNodeFind(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeList{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeFind(r *HTTPRequest) error {
+	req := &protoManage.ReqNodeList{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	ans, err := request.Data.NodeFind(&req)
+	ans, err := request.Data.NodeFind(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := ans.Marshal()
+	err = request.marshalWithHttp(r, ans)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return pbByte, err
+	return nil
 }
 
 //获取节点按ID
-func (request *Request) ReqNodeFindByID(userID int64, message []byte)([]byte, error) {
-	req := protoManage.Node{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeFindByID(r *HTTPRequest) error {
+	req := &protoManage.Node{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = request.Data.NodeFindByID(&req)
+	err = request.Data.NodeFindByID(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := req.Marshal()
+	err = request.marshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return pbByte, err
+	return nil
 }
 
 //刪除节点
-func (request *Request) ReqNodeDel(userID int64, message []byte)([]byte, error) {
-	req := protoManage.Node{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeDel(r *HTTPRequest) error {
+	req := &protoManage.Node{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = request.Data.NodeDel(&req)
+	err = request.Data.NodeDel(req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := req.Marshal()
+	err = request.marshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return pbByte, err
+	return nil
 }
 
 //请求节点测试
-func (request *Request) ReqNodeTest(userID int64, message []byte)([]byte, error) {
-	req := protoManage.ReqNodeTest{}
-	err := req.Unmarshal(message)
+func (request *Request) ReqNodeTest(r *HTTPRequest) error {
+	req := &protoManage.ReqNodeTest{}
+	err := request.unmarshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	err = request.Data.NodeTest(userID, &req)
+	err = request.Data.NodeTest(r.userID, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	pbByte, err := req.Marshal()
+	err = request.marshalWithHttp(r, req)
 	if err != nil {
-		return nil, err
+		return err
 	}
-	return pbByte, err
+	return nil
 }
