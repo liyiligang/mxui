@@ -82,7 +82,6 @@ export default defineComponent ({
             data.formData = globals.getJson(props.nodeFuncCall.Parameter)
         }
         if (typeof data.schema === "object") {
-            console.log(data.schema)
             mergeSchema(data.schema)
         }
 
@@ -109,7 +108,7 @@ export default defineComponent ({
 
         function mergeUI(obj:object){
             for (let i in obj){
-                if (obj[i] == "UploadWidget" && i == "ui:widget"){
+                if (obj[i] == "UploadFile" && i == "ui:widget"){
                     obj["ui:action"] = ""
                     obj["ui:http-request"] = uploadFile
                     obj["ui:on-error"] = uploadFileError
@@ -232,13 +231,17 @@ export default defineComponent ({
         }
 
         function uploadFilePreview(file) {
-            let url =  globals.getHttpHost()+"/downloadFile/"
+            let fileInfo =  {url:"", name: ""}
             if (file?.url) {
-                url += file?.url
+                fileInfo = file
             }else if (file?.response?.url) {
-                url += file?.response?.url
+                fileInfo = file?.response
             }
-            window.open(url, '_blank')
+            request.reqNodeResourceDownLoad(protoManage.NodeResource.create({
+                UUID: fileInfo.url,
+                Name: fileInfo.name
+            }))
+            return true
         }
 
         async function uploadFileRemove(file) {

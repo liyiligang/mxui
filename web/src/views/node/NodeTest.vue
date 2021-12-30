@@ -108,19 +108,16 @@ export default defineComponent ({
         }
 
         function preview(file) {
-            // let url =  globals.getHttpHost()+"/nodeResource/download/"
-            // if (file?.url) {
-            //     url += file?.url
-            // }else if (file?.response?.url) {
-            //     url += file?.response?.url
-            // }
-            // window.open(url, '_blank')
-
+            let fileInfo =  {url:"", name: ""}
+            if (file?.url) {
+                fileInfo = file
+            }else if (file?.response?.url) {
+                fileInfo = file?.response
+            }
             request.reqNodeResourceDownLoad(protoManage.NodeResource.create({
-                UUID: file?.response.url,
-                Name: file?.response.name
+                UUID: fileInfo.url,
+                Name: fileInfo.name
             }))
-
             return true
         }
 

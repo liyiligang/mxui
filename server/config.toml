@@ -4,11 +4,12 @@ Debug = true
 OpenRegister = true
 
 [Node]
-NodeName = '管控中心'
+NodeName = ''
 
 [File]
 SavePath = '../store/cache/'
 MaxSize = 200                    #单位：M
+KeepTime = 30                    #文件保留时间(负数: 永久)
 
 [Log]
 Path = '../store/log/app.log'

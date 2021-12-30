@@ -21,108 +21,20 @@ export const protoManage = $root.protoManage = (() => {
      * @name protoManage.Order
      * @enum {number}
      * @property {number} Unknow=0 Unknow value
-     * @property {number} TopLinkFind=1 TopLinkFind value
-     * @property {number} TopLinkFindByID=2 TopLinkFindByID value
-     * @property {number} TopLinkAdd=3 TopLinkAdd value
-     * @property {number} TopLinkDel=4 TopLinkDel value
-     * @property {number} TopLinkUpdate=5 TopLinkUpdate value
-     * @property {number} NodeTest=6 NodeTest value
-     * @property {number} ManagerLogin=101 ManagerLogin value
-     * @property {number} ManagerRegister=102 ManagerRegister value
-     * @property {number} ManagerAdd=103 ManagerAdd value
-     * @property {number} ManagerDel=104 ManagerDel value
-     * @property {number} ManagerUpdate=105 ManagerUpdate value
-     * @property {number} ManagerUpdatePasswd=106 ManagerUpdatePasswd value
-     * @property {number} ManagerUpdateSetting=107 ManagerUpdateSetting value
-     * @property {number} ManagerFindNickName=108 ManagerFindNickName value
-     * @property {number} ManagerFindLowLevel=109 ManagerFindLowLevel value
-     * @property {number} ManagerFindByID=110 ManagerFindByID value
-     * @property {number} ManagerFindByLevel=111 ManagerFindByLevel value
-     * @property {number} NodeAdd=401 NodeAdd value
-     * @property {number} NodeDel=402 NodeDel value
-     * @property {number} NodeUpdateState=403 NodeUpdateState value
-     * @property {number} NodeFind=404 NodeFind value
-     * @property {number} NodeFindByID=405 NodeFindByID value
-     * @property {number} NodeFuncAdd=601 NodeFuncAdd value
-     * @property {number} NodeFuncDel=602 NodeFuncDel value
-     * @property {number} NodeFuncDelAllWithNodeID=603 NodeFuncDelAllWithNodeID value
-     * @property {number} NodeFuncUpdateDesc=604 NodeFuncUpdateDesc value
-     * @property {number} NodeFuncUpdatePara=605 NodeFuncUpdatePara value
-     * @property {number} NodeFuncFind=606 NodeFuncFind value
-     * @property {number} NodeFuncFindByID=607 NodeFuncFindByID value
      * @property {number} NodeFuncCallReq=608 NodeFuncCallReq value
      * @property {number} NodeFuncCallAns=609 NodeFuncCallAns value
-     * @property {number} NodeFuncCallFind=610 NodeFuncCallFind value
-     * @property {number} NodeFuncCallFindByID=611 NodeFuncCallFindByID value
-     * @property {number} NodeFuncCallFindParameterByID=612 NodeFuncCallFindParameterByID value
-     * @property {number} NodeFuncCallFindReturnValByID=613 NodeFuncCallFindReturnValByID value
-     * @property {number} NodeReportAdd=701 NodeReportAdd value
-     * @property {number} NodeReportDel=702 NodeReportDel value
-     * @property {number} NodeReportDelAllWithNodeID=703 NodeReportDelAllWithNodeID value
      * @property {number} NodeReportUpdateVal=704 NodeReportUpdateVal value
-     * @property {number} NodeReportFind=705 NodeReportFind value
-     * @property {number} NodeReportFindByID=706 NodeReportFindByID value
-     * @property {number} NodeReportValFind=707 NodeReportValFind value
      * @property {number} NodeNotifyAdd=801 NodeNotifyAdd value
-     * @property {number} NodeNotifyFind=802 NodeNotifyFind value
      * @property {number} NodeNotifyError=803 NodeNotifyError value
-     * @property {number} NodeResourceUpload=901 NodeResourceUpload value
-     * @property {number} NodeResourceDownload=902 NodeResourceDownload value
-     * @property {number} NodeResourceCheck=903 NodeResourceCheck value
-     * @property {number} NodeResourceDel=904 NodeResourceDel value
      */
     protoManage.Order = (function() {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Unknow"] = 0;
-        values[valuesById[1] = "TopLinkFind"] = 1;
-        values[valuesById[2] = "TopLinkFindByID"] = 2;
-        values[valuesById[3] = "TopLinkAdd"] = 3;
-        values[valuesById[4] = "TopLinkDel"] = 4;
-        values[valuesById[5] = "TopLinkUpdate"] = 5;
-        values[valuesById[6] = "NodeTest"] = 6;
-        values[valuesById[101] = "ManagerLogin"] = 101;
-        values[valuesById[102] = "ManagerRegister"] = 102;
-        values[valuesById[103] = "ManagerAdd"] = 103;
-        values[valuesById[104] = "ManagerDel"] = 104;
-        values[valuesById[105] = "ManagerUpdate"] = 105;
-        values[valuesById[106] = "ManagerUpdatePasswd"] = 106;
-        values[valuesById[107] = "ManagerUpdateSetting"] = 107;
-        values[valuesById[108] = "ManagerFindNickName"] = 108;
-        values[valuesById[109] = "ManagerFindLowLevel"] = 109;
-        values[valuesById[110] = "ManagerFindByID"] = 110;
-        values[valuesById[111] = "ManagerFindByLevel"] = 111;
-        values[valuesById[401] = "NodeAdd"] = 401;
-        values[valuesById[402] = "NodeDel"] = 402;
-        values[valuesById[403] = "NodeUpdateState"] = 403;
-        values[valuesById[404] = "NodeFind"] = 404;
-        values[valuesById[405] = "NodeFindByID"] = 405;
-        values[valuesById[601] = "NodeFuncAdd"] = 601;
-        values[valuesById[602] = "NodeFuncDel"] = 602;
-        values[valuesById[603] = "NodeFuncDelAllWithNodeID"] = 603;
-        values[valuesById[604] = "NodeFuncUpdateDesc"] = 604;
-        values[valuesById[605] = "NodeFuncUpdatePara"] = 605;
-        values[valuesById[606] = "NodeFuncFind"] = 606;
-        values[valuesById[607] = "NodeFuncFindByID"] = 607;
         values[valuesById[608] = "NodeFuncCallReq"] = 608;
         values[valuesById[609] = "NodeFuncCallAns"] = 609;
-        values[valuesById[610] = "NodeFuncCallFind"] = 610;
-        values[valuesById[611] = "NodeFuncCallFindByID"] = 611;
-        values[valuesById[612] = "NodeFuncCallFindParameterByID"] = 612;
-        values[valuesById[613] = "NodeFuncCallFindReturnValByID"] = 613;
-        values[valuesById[701] = "NodeReportAdd"] = 701;
-        values[valuesById[702] = "NodeReportDel"] = 702;
-        values[valuesById[703] = "NodeReportDelAllWithNodeID"] = 703;
         values[valuesById[704] = "NodeReportUpdateVal"] = 704;
-        values[valuesById[705] = "NodeReportFind"] = 705;
-        values[valuesById[706] = "NodeReportFindByID"] = 706;
-        values[valuesById[707] = "NodeReportValFind"] = 707;
         values[valuesById[801] = "NodeNotifyAdd"] = 801;
-        values[valuesById[802] = "NodeNotifyFind"] = 802;
         values[valuesById[803] = "NodeNotifyError"] = 803;
-        values[valuesById[901] = "NodeResourceUpload"] = 901;
-        values[valuesById[902] = "NodeResourceDownload"] = 902;
-        values[valuesById[903] = "NodeResourceCheck"] = 903;
-        values[valuesById[904] = "NodeResourceDel"] = 904;
         return values;
     })();
 
@@ -257,8 +169,10 @@ export const protoManage = $root.protoManage = (() => {
      * @property {number} HttpErrorUnmarshal=606 HttpErrorUnmarshal value
      * @property {number} HttpErrorRegister=607 HttpErrorRegister value
      * @property {number} HttpErrorLoginWithAccount=608 HttpErrorLoginWithAccount value
-     * @property {number} HttpErrorLoginWithToken=609 HttpErrorLoginWithToken value
-     * @property {number} HttpErrorRequest=610 HttpErrorRequest value
+     * @property {number} HttpErrorPasswordWithAccount=609 HttpErrorPasswordWithAccount value
+     * @property {number} HttpErrorLoginWithToken=610 HttpErrorLoginWithToken value
+     * @property {number} HttpErrorLevelLow=611 HttpErrorLevelLow value
+     * @property {number} HttpErrorRequest=612 HttpErrorRequest value
      */
     protoManage.HttpError = (function() {
         const valuesById = {}, values = Object.create(valuesById);
@@ -271,8 +185,10 @@ export const protoManage = $root.protoManage = (() => {
         values[valuesById[606] = "HttpErrorUnmarshal"] = 606;
         values[valuesById[607] = "HttpErrorRegister"] = 607;
         values[valuesById[608] = "HttpErrorLoginWithAccount"] = 608;
-        values[valuesById[609] = "HttpErrorLoginWithToken"] = 609;
-        values[valuesById[610] = "HttpErrorRequest"] = 610;
+        values[valuesById[609] = "HttpErrorPasswordWithAccount"] = 609;
+        values[valuesById[610] = "HttpErrorLoginWithToken"] = 610;
+        values[valuesById[611] = "HttpErrorLevelLow"] = 611;
+        values[valuesById[612] = "HttpErrorRequest"] = 612;
         return values;
     })();
 
@@ -425,55 +341,11 @@ export const protoManage = $root.protoManage = (() => {
                 default:
                     return "order: enum value expected";
                 case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 101:
-                case 102:
-                case 103:
-                case 104:
-                case 105:
-                case 106:
-                case 107:
-                case 108:
-                case 109:
-                case 110:
-                case 111:
-                case 401:
-                case 402:
-                case 403:
-                case 404:
-                case 405:
-                case 601:
-                case 602:
-                case 603:
-                case 604:
-                case 605:
-                case 606:
-                case 607:
                 case 608:
                 case 609:
-                case 610:
-                case 611:
-                case 612:
-                case 613:
-                case 701:
-                case 702:
-                case 703:
                 case 704:
-                case 705:
-                case 706:
-                case 707:
                 case 801:
-                case 802:
                 case 803:
-                case 901:
-                case 902:
-                case 903:
-                case 904:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -499,122 +371,6 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.order = 0;
                 break;
-            case "TopLinkFind":
-            case 1:
-                message.order = 1;
-                break;
-            case "TopLinkFindByID":
-            case 2:
-                message.order = 2;
-                break;
-            case "TopLinkAdd":
-            case 3:
-                message.order = 3;
-                break;
-            case "TopLinkDel":
-            case 4:
-                message.order = 4;
-                break;
-            case "TopLinkUpdate":
-            case 5:
-                message.order = 5;
-                break;
-            case "NodeTest":
-            case 6:
-                message.order = 6;
-                break;
-            case "ManagerLogin":
-            case 101:
-                message.order = 101;
-                break;
-            case "ManagerRegister":
-            case 102:
-                message.order = 102;
-                break;
-            case "ManagerAdd":
-            case 103:
-                message.order = 103;
-                break;
-            case "ManagerDel":
-            case 104:
-                message.order = 104;
-                break;
-            case "ManagerUpdate":
-            case 105:
-                message.order = 105;
-                break;
-            case "ManagerUpdatePasswd":
-            case 106:
-                message.order = 106;
-                break;
-            case "ManagerUpdateSetting":
-            case 107:
-                message.order = 107;
-                break;
-            case "ManagerFindNickName":
-            case 108:
-                message.order = 108;
-                break;
-            case "ManagerFindLowLevel":
-            case 109:
-                message.order = 109;
-                break;
-            case "ManagerFindByID":
-            case 110:
-                message.order = 110;
-                break;
-            case "ManagerFindByLevel":
-            case 111:
-                message.order = 111;
-                break;
-            case "NodeAdd":
-            case 401:
-                message.order = 401;
-                break;
-            case "NodeDel":
-            case 402:
-                message.order = 402;
-                break;
-            case "NodeUpdateState":
-            case 403:
-                message.order = 403;
-                break;
-            case "NodeFind":
-            case 404:
-                message.order = 404;
-                break;
-            case "NodeFindByID":
-            case 405:
-                message.order = 405;
-                break;
-            case "NodeFuncAdd":
-            case 601:
-                message.order = 601;
-                break;
-            case "NodeFuncDel":
-            case 602:
-                message.order = 602;
-                break;
-            case "NodeFuncDelAllWithNodeID":
-            case 603:
-                message.order = 603;
-                break;
-            case "NodeFuncUpdateDesc":
-            case 604:
-                message.order = 604;
-                break;
-            case "NodeFuncUpdatePara":
-            case 605:
-                message.order = 605;
-                break;
-            case "NodeFuncFind":
-            case 606:
-                message.order = 606;
-                break;
-            case "NodeFuncFindByID":
-            case 607:
-                message.order = 607;
-                break;
             case "NodeFuncCallReq":
             case 608:
                 message.order = 608;
@@ -623,77 +379,17 @@ export const protoManage = $root.protoManage = (() => {
             case 609:
                 message.order = 609;
                 break;
-            case "NodeFuncCallFind":
-            case 610:
-                message.order = 610;
-                break;
-            case "NodeFuncCallFindByID":
-            case 611:
-                message.order = 611;
-                break;
-            case "NodeFuncCallFindParameterByID":
-            case 612:
-                message.order = 612;
-                break;
-            case "NodeFuncCallFindReturnValByID":
-            case 613:
-                message.order = 613;
-                break;
-            case "NodeReportAdd":
-            case 701:
-                message.order = 701;
-                break;
-            case "NodeReportDel":
-            case 702:
-                message.order = 702;
-                break;
-            case "NodeReportDelAllWithNodeID":
-            case 703:
-                message.order = 703;
-                break;
             case "NodeReportUpdateVal":
             case 704:
                 message.order = 704;
-                break;
-            case "NodeReportFind":
-            case 705:
-                message.order = 705;
-                break;
-            case "NodeReportFindByID":
-            case 706:
-                message.order = 706;
-                break;
-            case "NodeReportValFind":
-            case 707:
-                message.order = 707;
                 break;
             case "NodeNotifyAdd":
             case 801:
                 message.order = 801;
                 break;
-            case "NodeNotifyFind":
-            case 802:
-                message.order = 802;
-                break;
             case "NodeNotifyError":
             case 803:
                 message.order = 803;
-                break;
-            case "NodeResourceUpload":
-            case 901:
-                message.order = 901;
-                break;
-            case "NodeResourceDownload":
-            case 902:
-                message.order = 902;
-                break;
-            case "NodeResourceCheck":
-            case 903:
-                message.order = 903;
-                break;
-            case "NodeResourceDel":
-            case 904:
-                message.order = 904;
                 break;
             }
             if (object.message != null)
@@ -911,55 +607,11 @@ export const protoManage = $root.protoManage = (() => {
                 default:
                     return "order: enum value expected";
                 case 0:
-                case 1:
-                case 2:
-                case 3:
-                case 4:
-                case 5:
-                case 6:
-                case 101:
-                case 102:
-                case 103:
-                case 104:
-                case 105:
-                case 106:
-                case 107:
-                case 108:
-                case 109:
-                case 110:
-                case 111:
-                case 401:
-                case 402:
-                case 403:
-                case 404:
-                case 405:
-                case 601:
-                case 602:
-                case 603:
-                case 604:
-                case 605:
-                case 606:
-                case 607:
                 case 608:
                 case 609:
-                case 610:
-                case 611:
-                case 612:
-                case 613:
-                case 701:
-                case 702:
-                case 703:
                 case 704:
-                case 705:
-                case 706:
-                case 707:
                 case 801:
-                case 802:
                 case 803:
-                case 901:
-                case 902:
-                case 903:
-                case 904:
                     break;
                 }
             if (message.message != null && message.hasOwnProperty("message"))
@@ -988,122 +640,6 @@ export const protoManage = $root.protoManage = (() => {
             case 0:
                 message.order = 0;
                 break;
-            case "TopLinkFind":
-            case 1:
-                message.order = 1;
-                break;
-            case "TopLinkFindByID":
-            case 2:
-                message.order = 2;
-                break;
-            case "TopLinkAdd":
-            case 3:
-                message.order = 3;
-                break;
-            case "TopLinkDel":
-            case 4:
-                message.order = 4;
-                break;
-            case "TopLinkUpdate":
-            case 5:
-                message.order = 5;
-                break;
-            case "NodeTest":
-            case 6:
-                message.order = 6;
-                break;
-            case "ManagerLogin":
-            case 101:
-                message.order = 101;
-                break;
-            case "ManagerRegister":
-            case 102:
-                message.order = 102;
-                break;
-            case "ManagerAdd":
-            case 103:
-                message.order = 103;
-                break;
-            case "ManagerDel":
-            case 104:
-                message.order = 104;
-                break;
-            case "ManagerUpdate":
-            case 105:
-                message.order = 105;
-                break;
-            case "ManagerUpdatePasswd":
-            case 106:
-                message.order = 106;
-                break;
-            case "ManagerUpdateSetting":
-            case 107:
-                message.order = 107;
-                break;
-            case "ManagerFindNickName":
-            case 108:
-                message.order = 108;
-                break;
-            case "ManagerFindLowLevel":
-            case 109:
-                message.order = 109;
-                break;
-            case "ManagerFindByID":
-            case 110:
-                message.order = 110;
-                break;
-            case "ManagerFindByLevel":
-            case 111:
-                message.order = 111;
-                break;
-            case "NodeAdd":
-            case 401:
-                message.order = 401;
-                break;
-            case "NodeDel":
-            case 402:
-                message.order = 402;
-                break;
-            case "NodeUpdateState":
-            case 403:
-                message.order = 403;
-                break;
-            case "NodeFind":
-            case 404:
-                message.order = 404;
-                break;
-            case "NodeFindByID":
-            case 405:
-                message.order = 405;
-                break;
-            case "NodeFuncAdd":
-            case 601:
-                message.order = 601;
-                break;
-            case "NodeFuncDel":
-            case 602:
-                message.order = 602;
-                break;
-            case "NodeFuncDelAllWithNodeID":
-            case 603:
-                message.order = 603;
-                break;
-            case "NodeFuncUpdateDesc":
-            case 604:
-                message.order = 604;
-                break;
-            case "NodeFuncUpdatePara":
-            case 605:
-                message.order = 605;
-                break;
-            case "NodeFuncFind":
-            case 606:
-                message.order = 606;
-                break;
-            case "NodeFuncFindByID":
-            case 607:
-                message.order = 607;
-                break;
             case "NodeFuncCallReq":
             case 608:
                 message.order = 608;
@@ -1112,77 +648,17 @@ export const protoManage = $root.protoManage = (() => {
             case 609:
                 message.order = 609;
                 break;
-            case "NodeFuncCallFind":
-            case 610:
-                message.order = 610;
-                break;
-            case "NodeFuncCallFindByID":
-            case 611:
-                message.order = 611;
-                break;
-            case "NodeFuncCallFindParameterByID":
-            case 612:
-                message.order = 612;
-                break;
-            case "NodeFuncCallFindReturnValByID":
-            case 613:
-                message.order = 613;
-                break;
-            case "NodeReportAdd":
-            case 701:
-                message.order = 701;
-                break;
-            case "NodeReportDel":
-            case 702:
-                message.order = 702;
-                break;
-            case "NodeReportDelAllWithNodeID":
-            case 703:
-                message.order = 703;
-                break;
             case "NodeReportUpdateVal":
             case 704:
                 message.order = 704;
-                break;
-            case "NodeReportFind":
-            case 705:
-                message.order = 705;
-                break;
-            case "NodeReportFindByID":
-            case 706:
-                message.order = 706;
-                break;
-            case "NodeReportValFind":
-            case 707:
-                message.order = 707;
                 break;
             case "NodeNotifyAdd":
             case 801:
                 message.order = 801;
                 break;
-            case "NodeNotifyFind":
-            case 802:
-                message.order = 802;
-                break;
             case "NodeNotifyError":
             case 803:
                 message.order = 803;
-                break;
-            case "NodeResourceUpload":
-            case 901:
-                message.order = 901;
-                break;
-            case "NodeResourceDownload":
-            case 902:
-                message.order = 902;
-                break;
-            case "NodeResourceCheck":
-            case 903:
-                message.order = 903;
-                break;
-            case "NodeResourceDel":
-            case 904:
-                message.order = 904;
                 break;
             }
             if (object.message != null)
@@ -1273,6 +749,39 @@ export const protoManage = $root.protoManage = (() => {
         RpcEngine.create = function create(rpcImpl, requestDelimited, responseDelimited) {
             return new this(rpcImpl, requestDelimited, responseDelimited);
         };
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#registerNode}.
+         * @memberof protoManage.RpcEngine
+         * @typedef RegisterNodeCallback
+         * @type {function}
+         * @param {Error|null} error Error, if any
+         * @param {protoManage.Node} [response] Node
+         */
+
+        /**
+         * Calls RegisterNode.
+         * @function registerNode
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.INode} request Node message or plain object
+         * @param {protoManage.RpcEngine.RegisterNodeCallback} callback Node-style callback called with the error, if any, and Node
+         * @returns {undefined}
+         * @variation 1
+         */
+        Object.defineProperty(RpcEngine.prototype.registerNode = function registerNode(request, callback) {
+            return this.rpcCall(registerNode, $root.protoManage.Node, $root.protoManage.Node, request, callback);
+        }, "name", { value: "RegisterNode" });
+
+        /**
+         * Calls RegisterNode.
+         * @function registerNode
+         * @memberof protoManage.RpcEngine
+         * @instance
+         * @param {protoManage.INode} request Node message or plain object
+         * @returns {Promise<protoManage.Node>} Promise
+         * @variation 2
+         */
 
         /**
          * Callback as used by {@link protoManage.RpcEngine#registerNodeFunc}.
@@ -5436,390 +4945,6 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         return NodeResource;
-    })();
-
-    protoManage.ReqNodeLogin = (function() {
-
-        /**
-         * Properties of a ReqNodeLogin.
-         * @memberof protoManage
-         * @interface IReqNodeLogin
-         * @property {protoManage.INode|null} [Node] ReqNodeLogin Node
-         */
-
-        /**
-         * Constructs a new ReqNodeLogin.
-         * @memberof protoManage
-         * @classdesc Represents a ReqNodeLogin.
-         * @implements IReqNodeLogin
-         * @constructor
-         * @param {protoManage.IReqNodeLogin=} [properties] Properties to set
-         */
-        function ReqNodeLogin(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ReqNodeLogin Node.
-         * @member {protoManage.INode|null|undefined} Node
-         * @memberof protoManage.ReqNodeLogin
-         * @instance
-         */
-        ReqNodeLogin.prototype.Node = null;
-
-        /**
-         * Creates a new ReqNodeLogin instance using the specified properties.
-         * @function create
-         * @memberof protoManage.ReqNodeLogin
-         * @static
-         * @param {protoManage.IReqNodeLogin=} [properties] Properties to set
-         * @returns {protoManage.ReqNodeLogin} ReqNodeLogin instance
-         */
-        ReqNodeLogin.create = function create(properties) {
-            return new ReqNodeLogin(properties);
-        };
-
-        /**
-         * Encodes the specified ReqNodeLogin message. Does not implicitly {@link protoManage.ReqNodeLogin.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.ReqNodeLogin
-         * @static
-         * @param {protoManage.IReqNodeLogin} message ReqNodeLogin message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeLogin.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.Node != null && Object.hasOwnProperty.call(message, "Node"))
-                $root.protoManage.Node.encode(message.Node, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ReqNodeLogin message, length delimited. Does not implicitly {@link protoManage.ReqNodeLogin.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.ReqNodeLogin
-         * @static
-         * @param {protoManage.IReqNodeLogin} message ReqNodeLogin message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeLogin.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a ReqNodeLogin message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.ReqNodeLogin
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.ReqNodeLogin} ReqNodeLogin
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeLogin.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeLogin();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.Node = $root.protoManage.Node.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a ReqNodeLogin message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.ReqNodeLogin
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.ReqNodeLogin} ReqNodeLogin
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeLogin.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a ReqNodeLogin message.
-         * @function verify
-         * @memberof protoManage.ReqNodeLogin
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ReqNodeLogin.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.Node != null && message.hasOwnProperty("Node")) {
-                let error = $root.protoManage.Node.verify(message.Node);
-                if (error)
-                    return "Node." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a ReqNodeLogin message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.ReqNodeLogin
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.ReqNodeLogin} ReqNodeLogin
-         */
-        ReqNodeLogin.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.ReqNodeLogin)
-                return object;
-            let message = new $root.protoManage.ReqNodeLogin();
-            if (object.Node != null) {
-                if (typeof object.Node !== "object")
-                    throw TypeError(".protoManage.ReqNodeLogin.Node: object expected");
-                message.Node = $root.protoManage.Node.fromObject(object.Node);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ReqNodeLogin message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.ReqNodeLogin
-         * @static
-         * @param {protoManage.ReqNodeLogin} message ReqNodeLogin
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ReqNodeLogin.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.Node = null;
-            if (message.Node != null && message.hasOwnProperty("Node"))
-                object.Node = $root.protoManage.Node.toObject(message.Node, options);
-            return object;
-        };
-
-        /**
-         * Converts this ReqNodeLogin to JSON.
-         * @function toJSON
-         * @memberof protoManage.ReqNodeLogin
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ReqNodeLogin.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return ReqNodeLogin;
-    })();
-
-    protoManage.ReqNodeOnline = (function() {
-
-        /**
-         * Properties of a ReqNodeOnline.
-         * @memberof protoManage
-         * @interface IReqNodeOnline
-         * @property {protoManage.INode|null} [Node] ReqNodeOnline Node
-         */
-
-        /**
-         * Constructs a new ReqNodeOnline.
-         * @memberof protoManage
-         * @classdesc Represents a ReqNodeOnline.
-         * @implements IReqNodeOnline
-         * @constructor
-         * @param {protoManage.IReqNodeOnline=} [properties] Properties to set
-         */
-        function ReqNodeOnline(properties) {
-            if (properties)
-                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
-                    if (properties[keys[i]] != null)
-                        this[keys[i]] = properties[keys[i]];
-        }
-
-        /**
-         * ReqNodeOnline Node.
-         * @member {protoManage.INode|null|undefined} Node
-         * @memberof protoManage.ReqNodeOnline
-         * @instance
-         */
-        ReqNodeOnline.prototype.Node = null;
-
-        /**
-         * Creates a new ReqNodeOnline instance using the specified properties.
-         * @function create
-         * @memberof protoManage.ReqNodeOnline
-         * @static
-         * @param {protoManage.IReqNodeOnline=} [properties] Properties to set
-         * @returns {protoManage.ReqNodeOnline} ReqNodeOnline instance
-         */
-        ReqNodeOnline.create = function create(properties) {
-            return new ReqNodeOnline(properties);
-        };
-
-        /**
-         * Encodes the specified ReqNodeOnline message. Does not implicitly {@link protoManage.ReqNodeOnline.verify|verify} messages.
-         * @function encode
-         * @memberof protoManage.ReqNodeOnline
-         * @static
-         * @param {protoManage.IReqNodeOnline} message ReqNodeOnline message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeOnline.encode = function encode(message, writer) {
-            if (!writer)
-                writer = $Writer.create();
-            if (message.Node != null && Object.hasOwnProperty.call(message, "Node"))
-                $root.protoManage.Node.encode(message.Node, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            return writer;
-        };
-
-        /**
-         * Encodes the specified ReqNodeOnline message, length delimited. Does not implicitly {@link protoManage.ReqNodeOnline.verify|verify} messages.
-         * @function encodeDelimited
-         * @memberof protoManage.ReqNodeOnline
-         * @static
-         * @param {protoManage.IReqNodeOnline} message ReqNodeOnline message or plain object to encode
-         * @param {$protobuf.Writer} [writer] Writer to encode to
-         * @returns {$protobuf.Writer} Writer
-         */
-        ReqNodeOnline.encodeDelimited = function encodeDelimited(message, writer) {
-            return this.encode(message, writer).ldelim();
-        };
-
-        /**
-         * Decodes a ReqNodeOnline message from the specified reader or buffer.
-         * @function decode
-         * @memberof protoManage.ReqNodeOnline
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @param {number} [length] Message length if known beforehand
-         * @returns {protoManage.ReqNodeOnline} ReqNodeOnline
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeOnline.decode = function decode(reader, length) {
-            if (!(reader instanceof $Reader))
-                reader = $Reader.create(reader);
-            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeOnline();
-            while (reader.pos < end) {
-                let tag = reader.uint32();
-                switch (tag >>> 3) {
-                case 1:
-                    message.Node = $root.protoManage.Node.decode(reader, reader.uint32());
-                    break;
-                default:
-                    reader.skipType(tag & 7);
-                    break;
-                }
-            }
-            return message;
-        };
-
-        /**
-         * Decodes a ReqNodeOnline message from the specified reader or buffer, length delimited.
-         * @function decodeDelimited
-         * @memberof protoManage.ReqNodeOnline
-         * @static
-         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
-         * @returns {protoManage.ReqNodeOnline} ReqNodeOnline
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        ReqNodeOnline.decodeDelimited = function decodeDelimited(reader) {
-            if (!(reader instanceof $Reader))
-                reader = new $Reader(reader);
-            return this.decode(reader, reader.uint32());
-        };
-
-        /**
-         * Verifies a ReqNodeOnline message.
-         * @function verify
-         * @memberof protoManage.ReqNodeOnline
-         * @static
-         * @param {Object.<string,*>} message Plain object to verify
-         * @returns {string|null} `null` if valid, otherwise the reason why it is not
-         */
-        ReqNodeOnline.verify = function verify(message) {
-            if (typeof message !== "object" || message === null)
-                return "object expected";
-            if (message.Node != null && message.hasOwnProperty("Node")) {
-                let error = $root.protoManage.Node.verify(message.Node);
-                if (error)
-                    return "Node." + error;
-            }
-            return null;
-        };
-
-        /**
-         * Creates a ReqNodeOnline message from a plain object. Also converts values to their respective internal types.
-         * @function fromObject
-         * @memberof protoManage.ReqNodeOnline
-         * @static
-         * @param {Object.<string,*>} object Plain object
-         * @returns {protoManage.ReqNodeOnline} ReqNodeOnline
-         */
-        ReqNodeOnline.fromObject = function fromObject(object) {
-            if (object instanceof $root.protoManage.ReqNodeOnline)
-                return object;
-            let message = new $root.protoManage.ReqNodeOnline();
-            if (object.Node != null) {
-                if (typeof object.Node !== "object")
-                    throw TypeError(".protoManage.ReqNodeOnline.Node: object expected");
-                message.Node = $root.protoManage.Node.fromObject(object.Node);
-            }
-            return message;
-        };
-
-        /**
-         * Creates a plain object from a ReqNodeOnline message. Also converts values to other types if specified.
-         * @function toObject
-         * @memberof protoManage.ReqNodeOnline
-         * @static
-         * @param {protoManage.ReqNodeOnline} message ReqNodeOnline
-         * @param {$protobuf.IConversionOptions} [options] Conversion options
-         * @returns {Object.<string,*>} Plain object
-         */
-        ReqNodeOnline.toObject = function toObject(message, options) {
-            if (!options)
-                options = {};
-            let object = {};
-            if (options.defaults)
-                object.Node = null;
-            if (message.Node != null && message.hasOwnProperty("Node"))
-                object.Node = $root.protoManage.Node.toObject(message.Node, options);
-            return object;
-        };
-
-        /**
-         * Converts this ReqNodeOnline to JSON.
-         * @function toJSON
-         * @memberof protoManage.ReqNodeOnline
-         * @instance
-         * @returns {Object.<string,*>} JSON object
-         */
-        ReqNodeOnline.prototype.toJSON = function toJSON() {
-            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
-        };
-
-        return ReqNodeOnline;
     })();
 
     protoManage.ReqTopLinkList = (function() {

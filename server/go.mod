@@ -1,4 +1,4 @@
-module github.com/liyiligang/klee
+module github.com/liyiligang/mxrpc
 
 go 1.15
 

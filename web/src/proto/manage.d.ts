@@ -5,55 +5,11 @@ export namespace protoManage {
     /** Order enum. */
     enum Order {
         Unknow = 0,
-        TopLinkFind = 1,
-        TopLinkFindByID = 2,
-        TopLinkAdd = 3,
-        TopLinkDel = 4,
-        TopLinkUpdate = 5,
-        NodeTest = 6,
-        ManagerLogin = 101,
-        ManagerRegister = 102,
-        ManagerAdd = 103,
-        ManagerDel = 104,
-        ManagerUpdate = 105,
-        ManagerUpdatePasswd = 106,
-        ManagerUpdateSetting = 107,
-        ManagerFindNickName = 108,
-        ManagerFindLowLevel = 109,
-        ManagerFindByID = 110,
-        ManagerFindByLevel = 111,
-        NodeAdd = 401,
-        NodeDel = 402,
-        NodeUpdateState = 403,
-        NodeFind = 404,
-        NodeFindByID = 405,
-        NodeFuncAdd = 601,
-        NodeFuncDel = 602,
-        NodeFuncDelAllWithNodeID = 603,
-        NodeFuncUpdateDesc = 604,
-        NodeFuncUpdatePara = 605,
-        NodeFuncFind = 606,
-        NodeFuncFindByID = 607,
         NodeFuncCallReq = 608,
         NodeFuncCallAns = 609,
-        NodeFuncCallFind = 610,
-        NodeFuncCallFindByID = 611,
-        NodeFuncCallFindParameterByID = 612,
-        NodeFuncCallFindReturnValByID = 613,
-        NodeReportAdd = 701,
-        NodeReportDel = 702,
-        NodeReportDelAllWithNodeID = 703,
         NodeReportUpdateVal = 704,
-        NodeReportFind = 705,
-        NodeReportFindByID = 706,
-        NodeReportValFind = 707,
         NodeNotifyAdd = 801,
-        NodeNotifyFind = 802,
-        NodeNotifyError = 803,
-        NodeResourceUpload = 901,
-        NodeResourceDownload = 902,
-        NodeResourceCheck = 903,
-        NodeResourceDel = 904
+        NodeNotifyError = 803
     }
 
     /** State enum. */
@@ -120,8 +76,10 @@ export namespace protoManage {
         HttpErrorUnmarshal = 606,
         HttpErrorRegister = 607,
         HttpErrorLoginWithAccount = 608,
-        HttpErrorLoginWithToken = 609,
-        HttpErrorRequest = 610
+        HttpErrorPasswordWithAccount = 609,
+        HttpErrorLoginWithToken = 610,
+        HttpErrorLevelLow = 611,
+        HttpErrorRequest = 612
     }
 
     /** Properties of a Message. */
@@ -343,6 +301,20 @@ export namespace protoManage {
         public static create(rpcImpl: $protobuf.RPCImpl, requestDelimited?: boolean, responseDelimited?: boolean): RpcEngine;
 
         /**
+         * Calls RegisterNode.
+         * @param request Node message or plain object
+         * @param callback Node-style callback called with the error, if any, and Node
+         */
+        public registerNode(request: protoManage.INode, callback: protoManage.RpcEngine.RegisterNodeCallback): void;
+
+        /**
+         * Calls RegisterNode.
+         * @param request Node message or plain object
+         * @returns Promise
+         */
+        public registerNode(request: protoManage.INode): Promise<protoManage.Node>;
+
+        /**
          * Calls RegisterNodeFunc.
          * @param request NodeFunc message or plain object
          * @param callback Node-style callback called with the error, if any, and NodeFunc
@@ -428,6 +400,13 @@ export namespace protoManage {
     }
 
     namespace RpcEngine {
+
+        /**
+         * Callback as used by {@link protoManage.RpcEngine#registerNode}.
+         * @param error Error, if any
+         * @param [response] Node
+         */
+        type RegisterNodeCallback = (error: (Error|null), response?: protoManage.Node) => void;
 
         /**
          * Callback as used by {@link protoManage.RpcEngine#registerNodeFunc}.
@@ -1835,186 +1814,6 @@ export namespace protoManage {
 
         /**
          * Converts this NodeResource to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a ReqNodeLogin. */
-    interface IReqNodeLogin {
-
-        /** ReqNodeLogin Node */
-        Node?: (protoManage.INode|null);
-    }
-
-    /** Represents a ReqNodeLogin. */
-    class ReqNodeLogin implements IReqNodeLogin {
-
-        /**
-         * Constructs a new ReqNodeLogin.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IReqNodeLogin);
-
-        /** ReqNodeLogin Node. */
-        public Node?: (protoManage.INode|null);
-
-        /**
-         * Creates a new ReqNodeLogin instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns ReqNodeLogin instance
-         */
-        public static create(properties?: protoManage.IReqNodeLogin): protoManage.ReqNodeLogin;
-
-        /**
-         * Encodes the specified ReqNodeLogin message. Does not implicitly {@link protoManage.ReqNodeLogin.verify|verify} messages.
-         * @param message ReqNodeLogin message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IReqNodeLogin, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified ReqNodeLogin message, length delimited. Does not implicitly {@link protoManage.ReqNodeLogin.verify|verify} messages.
-         * @param message ReqNodeLogin message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IReqNodeLogin, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a ReqNodeLogin message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns ReqNodeLogin
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeLogin;
-
-        /**
-         * Decodes a ReqNodeLogin message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns ReqNodeLogin
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeLogin;
-
-        /**
-         * Verifies a ReqNodeLogin message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a ReqNodeLogin message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns ReqNodeLogin
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeLogin;
-
-        /**
-         * Creates a plain object from a ReqNodeLogin message. Also converts values to other types if specified.
-         * @param message ReqNodeLogin
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.ReqNodeLogin, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this ReqNodeLogin to JSON.
-         * @returns JSON object
-         */
-        public toJSON(): { [k: string]: any };
-    }
-
-    /** Properties of a ReqNodeOnline. */
-    interface IReqNodeOnline {
-
-        /** ReqNodeOnline Node */
-        Node?: (protoManage.INode|null);
-    }
-
-    /** Represents a ReqNodeOnline. */
-    class ReqNodeOnline implements IReqNodeOnline {
-
-        /**
-         * Constructs a new ReqNodeOnline.
-         * @param [properties] Properties to set
-         */
-        constructor(properties?: protoManage.IReqNodeOnline);
-
-        /** ReqNodeOnline Node. */
-        public Node?: (protoManage.INode|null);
-
-        /**
-         * Creates a new ReqNodeOnline instance using the specified properties.
-         * @param [properties] Properties to set
-         * @returns ReqNodeOnline instance
-         */
-        public static create(properties?: protoManage.IReqNodeOnline): protoManage.ReqNodeOnline;
-
-        /**
-         * Encodes the specified ReqNodeOnline message. Does not implicitly {@link protoManage.ReqNodeOnline.verify|verify} messages.
-         * @param message ReqNodeOnline message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encode(message: protoManage.IReqNodeOnline, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Encodes the specified ReqNodeOnline message, length delimited. Does not implicitly {@link protoManage.ReqNodeOnline.verify|verify} messages.
-         * @param message ReqNodeOnline message or plain object to encode
-         * @param [writer] Writer to encode to
-         * @returns Writer
-         */
-        public static encodeDelimited(message: protoManage.IReqNodeOnline, writer?: $protobuf.Writer): $protobuf.Writer;
-
-        /**
-         * Decodes a ReqNodeOnline message from the specified reader or buffer.
-         * @param reader Reader or buffer to decode from
-         * @param [length] Message length if known beforehand
-         * @returns ReqNodeOnline
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeOnline;
-
-        /**
-         * Decodes a ReqNodeOnline message from the specified reader or buffer, length delimited.
-         * @param reader Reader or buffer to decode from
-         * @returns ReqNodeOnline
-         * @throws {Error} If the payload is not a reader or valid buffer
-         * @throws {$protobuf.util.ProtocolError} If required fields are missing
-         */
-        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeOnline;
-
-        /**
-         * Verifies a ReqNodeOnline message.
-         * @param message Plain object to verify
-         * @returns `null` if valid, otherwise the reason why it is not
-         */
-        public static verify(message: { [k: string]: any }): (string|null);
-
-        /**
-         * Creates a ReqNodeOnline message from a plain object. Also converts values to their respective internal types.
-         * @param object Plain object
-         * @returns ReqNodeOnline
-         */
-        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeOnline;
-
-        /**
-         * Creates a plain object from a ReqNodeOnline message. Also converts values to other types if specified.
-         * @param message ReqNodeOnline
-         * @param [options] Conversion options
-         * @returns Plain object
-         */
-        public static toObject(message: protoManage.ReqNodeOnline, options?: $protobuf.IConversionOptions): { [k: string]: any };
-
-        /**
-         * Converts this ReqNodeOnline to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
