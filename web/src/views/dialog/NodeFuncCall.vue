@@ -115,6 +115,7 @@ export default defineComponent ({
                     obj["ui:on-preview"] = uploadFilePreview
                     obj["ui:before-remove"] = uploadFileRemove
                     obj["ui:responseFileUrl"] = uploadFileSetData
+                    obj["ui:on-exceed"] = uploadFileExceed
                     return
                 }
             }
@@ -202,16 +203,23 @@ export default defineComponent ({
             return isOK
         }
 
+        function getFileUrl(id:number, name:string):string {
+            return id + "_" + name
+        }
+
+        function getFileID(url:string):number {
+            return Number(url.split("_")[0])
+        }
+
         function uploadFile(para){
             let progress = {percent:0}
             para.onProgress(progress)
             globals.calcFileMd5(para.file, (md5:string)=>{
                 let resourceInfo = protoManage.NodeResource.create({
-                    UUID:  md5 +"_" + para.file.name,
                     Name: para.file.name,
                     Md5: md5,
                     Sizes: para.file.size,
-                    Type:protoManage.NodeResourceType.NodeResourceTypeCache
+                    Type:protoManage.NodeResourceType.NodeResourceTypeCache,
                 })
                 request.reqNodeResourceUpload(resourceInfo, para.file,  (progressEvent) => {
                     if (progressEvent.lengthComputable) {
@@ -221,7 +229,7 @@ export default defineComponent ({
                         para.onProgress(progressEvent)
                     }
                 }).then((response) => {
-                    para.onSuccess({name:response.Name, url:response.UUID})
+                    para.onSuccess({name:response.Name, url:getFileUrl(Number(response.Base?.ID), response.Name)})
                 })
             })
         }
@@ -238,30 +246,29 @@ export default defineComponent ({
                 fileInfo = file?.response
             }
             request.reqNodeResourceDownLoad(protoManage.NodeResource.create({
-                UUID: fileInfo.url,
+                Base: protoManage.Base.create({ID: getFileID(fileInfo.url)}),
                 Name: fileInfo.name
             }))
             return true
         }
 
-        async function uploadFileRemove(file) {
-            let isOK = false
-            let url = ""
+        function uploadFileRemove(file) {
             if (file?.url) {
-                url = file?.url
+                globals.viewWarn("禁止删除历史文件")
+                return false
             }else if (file?.response?.url) {
-                url = file?.response?.url
+                return request.reqNodeResourceDel(protoManage.NodeResource.create({
+                    Base: protoManage.Base.create({ID: getFileID(file?.response?.url)})
+                })).then((response) => {})
             }
-            await request.reqNodeResourceDel(protoManage.NodeResource.create({
-                UUID:url
-            })).then((response) => {
-                isOK = true
-            })
-            return isOK
         }
 
         function uploadFileSetData(res) {
             return res.url
+        }
+
+        function uploadFileExceed(files) {
+            globals.viewError("文件超出最大限制")
         }
 
         return {data, funcCall, reset, funcCallRefresh, jsonChanged, tabClick, jsonEdit, convert,

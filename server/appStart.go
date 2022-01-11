@@ -31,6 +31,7 @@ import (
 	"github.com/liyiligang/mxrpc/typedef/config"
 	"github.com/liyiligang/mxrpc/typedef/constant"
 	"github.com/liyiligang/mxrpc/typedef/orm"
+	"github.com/robfig/cron/v3"
 	"google.golang.org/grpc"
 	"log"
 	"os"
@@ -73,6 +74,20 @@ func (app *App) InitSystemDir(){
 		}
 	}
 	Jlog.Info("system dir create success")
+}
+
+//启动定时服务
+func (app *App) InitTimer() {
+	app.Timer = cron.New(cron.WithSeconds())
+	_, err := app.Timer.AddFunc("* * 0 * * *", func() {
+		err := app.Data.NodeResourceDelWithTimer()
+		if err != nil {
+			Jlog.Warn("find invalid resource fail", "error", err)
+		}
+	})
+	if err != nil {
+		Jlog.Fatal("init timer fail", "error", err)
+	}
 }
 
 //启动orm服务
@@ -129,10 +144,10 @@ func (app *App) InitWebServer() error {
 		r.NoMethod(app.Request.NotFoundWithHttp)
 
 		r.GET( "/ws", websocketConfig.WsHandle)
-		r.GET("/nodeResource/download/"+ ":UUID", app.Request.ConvertWithHttpFileDownload(app.Request.ReqNodeResourceDownload))
+		r.GET("/nodeResource/download/"+ ":name", app.Request.ConvertWithHttpFileDownload(app.Request.ReqNodeResourceDownload))
+		r.POST( "/system/getInitInfo", app.Request.ConvertWithHttp(app.Request.ReqFindSystemInfo))
 		r.POST( "/manager/login", app.Request.ConvertWithHttp(app.Request.ReqManagerLogin))
 		r.POST( "/manager/register", app.Request.ConvertWithHttp(app.Request.ReqManagerRegister))
-		r.POST( "/manager/findByLevel", app.Request.ConvertWithHttp(app.Request.ReqManagerFindByLevel))
 
 		r.Use(app.Request.ParseTokenWithHttp)
 		//manager
@@ -172,6 +187,7 @@ func (app *App) InitWebServer() error {
 
 		//nodeResource
 		r.POST( "/nodeResource/check", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceCheck))
+		r.POST( "/nodeResource/find", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceFind))
 		r.POST("/nodeResource/upload", app.Request.ConvertWithHttpFileUpload(app.Request.ReqNodeResourceUpload))
 		r.POST( "/nodeResource/del", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceDel))
 

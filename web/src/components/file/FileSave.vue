@@ -10,6 +10,8 @@
 import {defineComponent, onMounted} from "vue";
 import {convert} from "../../base/convert";
 import {saveAs} from "file-saver";
+import {request} from "../../base/request";
+import {protoManage} from "../../proto/manage";
 
 export default defineComponent ({
     name: "fileSave", props:{
@@ -17,28 +19,18 @@ export default defineComponent ({
             type: String,
             default: ""
         },
-        data:{
-            type: String,
-            default: ""
-        },
-        autoSave:{
-            type: Boolean,
-            default: false
+        id:{
+            type: Number,
+            default: 0
         }
     },
     setup(props){
 
-        onMounted(()=>{
-            if (props.autoSave) {
-                downloadFile()
-            }
-        })
-
         function downloadFile(){
-            let dec = window.atob(props.data);
-            let data = convert.stringToUint8Array(dec)
-            let blob = new Blob([data], {type:"text/plain; charset=utf-8"})
-            saveAs(blob, props.name)
+            request.reqNodeResourceDownLoad(protoManage.NodeResource.create({
+                Base: protoManage.Base.create({ID: props.id}),
+                Name: props.name
+            }))
         }
 
         return {downloadFile}

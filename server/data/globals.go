@@ -23,6 +23,7 @@ import (
 	"github.com/liyiligang/mxrpc/gateway"
 	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
 	"github.com/liyiligang/mxrpc/typedef/config"
+	"github.com/liyiligang/mxrpc/typedef/orm"
 )
 
 type Data struct {
@@ -33,6 +34,17 @@ type Data struct {
 type TokenData struct {
 	UserID 				int64
 	UserLevel 			protoManage.Level
+}
+
+func (data *Data) FindSystemInfo(info *protoManage.ReqSystemInitInfo) (*protoManage.AnsSystemInitInfo, error) {
+	ans := &protoManage.AnsSystemInitInfo{}
+	ormBase, err := data.DB.FindManagerByLevel(orm.Manager{Level: int32(protoManage.Level_LevelSuper)})
+	if err != nil {
+		return nil, err
+	}
+	ans.SystemInit = ormBase.ID != 0
+	ans.OpenRegister = config.LocalConfig.User.OpenRegister
+	return ans, nil
 }
 
 func (data *Data) ParseToken (token string) (*TokenData, error) {

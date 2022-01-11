@@ -24,10 +24,6 @@ export default defineComponent ({
             type: String,
             default: ""
         },
-        autoOpen:{
-            type: Boolean,
-            default: false
-        },
         blank:{
             type: Boolean,
             default: false
@@ -36,12 +32,6 @@ export default defineComponent ({
     setup(props){
 
         const data = reactive<LinkJumpInfo>({showFrame:false})
-
-        onMounted(()=>{
-            if (props.autoOpen){
-                openLink()
-            }
-        })
 
         function openLink(){
             if (props.blank){

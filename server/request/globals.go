@@ -18,9 +18,26 @@ package request
 
 import (
 	"github.com/liyiligang/mxrpc/data"
+	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
 )
 
 type Request struct {
 	Data              *data.Data
 }
 
+func (request *Request) ReqFindSystemInfo(r *HTTPRequest) error {
+	req := &protoManage.ReqSystemInitInfo{}
+	err := request.unmarshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	ans, err := request.Data.FindSystemInfo(req)
+	if err != nil {
+		return err
+	}
+	err = request.marshalWithHttp(r, ans)
+	if err != nil {
+		return err
+	}
+	return nil
+}

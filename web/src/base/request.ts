@@ -6,6 +6,19 @@ import {convert} from "./convert";
 
 export module request {
 
+    export function reqFindSystemInitInfo(req:protoManage.ReqSystemInitInfo):Promise<protoManage.AnsSystemInitInfo> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.ReqSystemInitInfo.encode(req).finish()
+            request.httpRequest("/system/getInitInfo", msg)
+                .then((response) => {
+                    let ans = protoManage.AnsSystemInitInfo.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqManagerLogin(req:protoManage.Manager):Promise<protoManage.Manager> {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
@@ -23,19 +36,6 @@ export module request {
         return new Promise((resolve, reject)=>{
             let msg = protoManage.Manager.encode(req).finish()
             request.httpRequest("/manager/register", msg)
-                .then((response) => {
-                    let ans = protoManage.Manager.decode(response)
-                    resolve(ans)
-                }).catch(error => {
-                reject(error)
-            })
-        })
-    }
-
-    export function reqManagerFindByLevel(req:protoManage.Manager):Promise<protoManage.Manager> {
-        return new Promise((resolve, reject)=>{
-            let msg = protoManage.Manager.encode(req).finish()
-            request.httpRequest("/manager/findByLevel", msg)
                 .then((response) => {
                     let ans = protoManage.Manager.decode(response)
                     resolve(ans)
@@ -413,11 +413,24 @@ export module request {
         })
     }
 
+    export function reqNodeResourceList(req:protoManage.ReqNodeResourceList):Promise<protoManage.AnsNodeResourceList> {
+        return new Promise((resolve, reject)=>{
+            let msg = protoManage.ReqNodeResourceList.encode(req).finish()
+            request.httpRequest("/nodeResource/find", msg)
+                .then((response) => {
+                    let ans = protoManage.AnsNodeResourceList.decode(response)
+                    resolve(ans)
+                }).catch(error => {
+                reject(error)
+            })
+        })
+    }
+
     export function reqNodeResourceUpload(req:protoManage.NodeResource, file:Blob,
                    onUploadProgressCall:(e:any)=>void):Promise<protoManage.NodeResource> {
         return new Promise((resolve, reject)=>{
             reqNodeResourceCheck(req).then((ans:protoManage.NodeResource) => {
-                if (ans.IsExist){
+                if (ans.Base?.ID != 0){
                     resolve(ans)
                 }else {
                     let msg = protoManage.NodeResource.encode(req).finish()
@@ -435,13 +448,7 @@ export module request {
     }
 
     export function reqNodeResourceDownLoad(req:protoManage.NodeResource) {
-        reqNodeResourceCheck(req).then((ans:protoManage.NodeResource) => {
-            if (ans.IsExist){
-                httpRequestDownLoad("/nodeResource/download/" + req.UUID, req.Name)
-            }else {
-                globals.viewWarn("文件 " + req.Name + " 已经被管理员删除")
-            }
-        })
+        httpRequestDownLoad("/nodeResource/download/" +  req.Name, Number(req.Base?.ID))
     }
 
     export function reqNodeResourceDel(req:protoManage.NodeResource):Promise<protoManage.NodeResource> {
@@ -537,19 +544,33 @@ export module request {
         })
     }
 
-    export function httpRequestDownLoad(path:string, name:string) {
+    export function httpRequestDownLoad(path:string, id:number) {
         let url = globals.getHttpHost() + path + "?token="+globals.globalsData.manager.info.Token
-        let downloadLink = document.createElement("a");
-        downloadLink.href = url;
-        downloadLink.download = name;
-        document.body.appendChild(downloadLink);
-        downloadLink.click();
-        document.body.removeChild(downloadLink);
+        + "&id="+id
+        window.open(url)
+        // let downloadLink = document.createElement("a");
+        // downloadLink.href = url;
+        // downloadLink.download = name;
+        // document.body.appendChild(downloadLink);
+        // downloadLink.click();
+        // document.body.removeChild(downloadLink);
     }
 
     export function httpError(code:number, data:Uint8Array) {
         let str = new TextDecoder().decode(data)
         switch (code) {
+            case protoManage.HttpError.HttpErrorGetHeader:
+                ElMessage.error("获取头信息错误（" + str+"）");
+                break
+            case protoManage.HttpError.HttpErrorGetBody:
+                ElMessage.error("获取信息错误（" + str+"）");
+                break
+            case protoManage.HttpError.HttpErrorGetFile:
+                ElMessage.error("获取文件信息错误（" + str+"）");
+                break
+            case protoManage.HttpError.HttpErrorCheckFile:
+                ElMessage.error("校验文件信息错误（" + str+"）");
+                break
             case protoManage.HttpError.HttpErrorMarshal:
                 ElMessage.error("数据编码失败（" + str+"）");
                 break
@@ -562,9 +583,15 @@ export module request {
             case protoManage.HttpError.HttpErrorLoginWithAccount:
                 ElMessage.error("登录失败（" + str+"）");
                 break
+            case protoManage.HttpError.HttpErrorPasswordWithAccount:
+                ElMessage.error("登录失败（" + str+"）");
+                break
             case protoManage.HttpError.HttpErrorLoginWithToken:
                 ElMessage.error("校验失败（" + str+"）");
                 globals.reLogin()
+                break
+            case protoManage.HttpError.HttpErrorLevelLow:
+                ElMessage.error("权限不足（" + str+"）");
                 break
             case protoManage.HttpError.HttpErrorRequest:
                 ElMessage.error("请求错误（" + str+"）");

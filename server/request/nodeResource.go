@@ -36,6 +36,8 @@ func (request *Request) ReqNodeResourceCheck(r *HTTPRequest) error {
 	if err != nil {
 		return err
 	}
+	req.UploaderID = r.UserID
+	req.UploaderType = protoManage.NotifySenderType_NotifySenderTypeUser
 	err = request.Data.ReqNodeResourceCheck(req)
 	if err != nil {
 		return err
@@ -44,30 +46,6 @@ func (request *Request) ReqNodeResourceCheck(r *HTTPRequest) error {
 	if err != nil {
 		return err
 	}
-	return nil
-}
-
-func (request *Request) ReqNodeResourceUpload(r *HTTPRequest) error  {
-	req := &protoManage.NodeResource{}
-	err := request.unmarshalWithHttp(r, req)
-	if err != nil {
-		return err
-	}
-	filePath := config.LocalConfig.File.SavePath + req.UUID
-	err = r.ginContext.SaveUploadedFile(r.userFileHeader, filePath)
-	if err != nil {
-		return err
-	}
-	err = request.marshalWithHttp(r, req)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (request *Request) ReqNodeResourceDownload(r *HTTPRequest) error {
-	path := r.ginContext.Param("UUID")
-	r.userData = []byte(config.LocalConfig.File.SavePath + path)
 	return nil
 }
 
@@ -89,6 +67,61 @@ func (request *Request) ReqNodeResourceDel(r *HTTPRequest) error {
 	return nil
 }
 
+//节点资源查找
+func (request *Request) ReqNodeResourceFind(r *HTTPRequest) error {
+	req := &protoManage.ReqNodeResourceList{}
+	err := request.unmarshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	ans, err := request.Data.NodeResourceFind(req)
+	if err != nil {
+		return err
+	}
+	err = request.marshalWithHttp(r, ans)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (request *Request) ReqNodeResourceUpload(r *HTTPRequest) error  {
+	req := &protoManage.NodeResource{}
+	err := request.unmarshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	req.UploaderID = r.UserID
+	req.UploaderType = protoManage.NotifySenderType_NotifySenderTypeUser
+	err = request.Data.ReqNodeResourceAdd(req)
+	if err != nil {
+		return err
+	}
+	filePath := config.LocalConfig.File.SavePath + req.Md5
+	err = r.ginContext.SaveUploadedFile(r.userFileHeader, filePath)
+	if err != nil {
+		return err
+	}
+	err = request.marshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (request *Request) ReqNodeResourceDownload(r *HTTPRequest) error {
+	id := r.ginContext.Query("id")
+	protoNodeResource := &protoManage.NodeResource{
+		Base: protoManage.Base{ID: Jtool.StringToInt64(id)},
+	}
+	err := request.Data.ReqNodeResourceDownload(protoNodeResource)
+	if err != nil {
+		return err
+	}
+	r.userData = []byte(config.LocalConfig.File.SavePath + protoNodeResource.Md5)
+	return nil
+}
+
 func (request *Request) CheckNodeResource(ctx context.Context, nodeResource *protoManage.NodeResource) (*protoManage.NodeResource, error) {
 	err := request.Data.ReqNodeResourceCheck(nodeResource)
 	if err != nil {
@@ -107,7 +140,11 @@ func (request *Request) UploadNodeResource(engine protoManage.RpcEngine_UploadNo
 	if err != nil {
 		return err
 	}
-	path := config.LocalConfig.File.SavePath + nodeResource.UUID
+	err = request.Data.ReqNodeResourceAdd(&nodeResource)
+	if err != nil {
+		return err
+	}
+	path := config.LocalConfig.File.SavePath + nodeResource.Md5
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -126,18 +163,26 @@ func (request *Request) UploadNodeResource(engine protoManage.RpcEngine_UploadNo
 			}
 			return err
 		}
-		f.Write(req.Data)
+		_, err = f.Write(req.Data)
+		if err != nil {
+			return err
+		}
 	}
 	return engine.SendAndClose(&protoManage.AnsNodeResourceUpload{NodeResource: nodeResource})
 }
 
 func (request *Request) DownloadNodeResource(nodeResource *protoManage.ReqNodeResourceDownload,
 	engine protoManage.RpcEngine_DownloadNodeResourceServer) error  {
-	path := config.LocalConfig.File.SavePath + nodeResource.NodeResource.UUID
+	err := request.Data.ReqNodeResourceDownload(&nodeResource.NodeResource)
+	if err != nil {
+		return err
+	}
+	path := config.LocalConfig.File.SavePath + nodeResource.NodeResource.Md5
 	return Jtool.ReadFileWithSize(path, constant.ConstRpcServerMaxMsgSize/2, func(buf []byte) error{
 		return engine.Send(&protoManage.AnsNodeResourceDownload{Data: buf})
 	})
 }
+
 
 
 

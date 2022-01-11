@@ -22,6 +22,7 @@ import (
 	"github.com/liyiligang/mxrpc/db"
 	"github.com/liyiligang/mxrpc/gateway"
 	"github.com/liyiligang/mxrpc/request"
+	"github.com/robfig/cron/v3"
 	"google.golang.org/grpc"
 	"net/http"
 )
@@ -30,6 +31,7 @@ type App struct {
 	HttpServer      *http.Server
 	RpcServer       *grpc.Server
 	DBServer		db.Server
+	Timer			*cron.Cron
 	Data            data.Data
 	Request			request.Request
 	Gateway			gateway.Gateway
@@ -42,6 +44,7 @@ func InitServer() (*App, error) {
 	app.InitLogServer()
 	app.InitSystemDir()
 	app.initAppDependency()
+	app.InitTimer()
 	if err := app.InitBaseServer(); err != nil {
 		return nil, err
 	}
@@ -59,11 +62,13 @@ func (app *App) InitBaseServer() error {
 	if err := app.InitRpcServer(); err != nil {
 		return err
 	}
+	app.Timer.Start()
 	Jlog.Info("all component is start")
 	return nil
 }
 
 func (app *App) StopBaseServer() error {
+	app.Timer.Stop()
 	if err := app.StopDBServer(); err != nil {
 		return err
 	}

@@ -80,7 +80,6 @@ export default defineComponent ({
             para.onProgress(progress)
             globals.calcFileMd5(para.file, (md5:string)=>{
                 let resourceInfo = protoManage.NodeResource.create({
-                    UUID:  md5 +"_" + para.file.name,
                     Name: para.file.name,
                     Md5: md5,
                     Sizes: para.file.size,
@@ -94,7 +93,7 @@ export default defineComponent ({
                         para.onProgress(progressEvent)
                     }
                 }).then((response) => {
-                    para.onSuccess({name:response.Name, url:response.UUID})
+                    para.onSuccess({name:response.Name, url:response.Md5})
                 })
             })
         }

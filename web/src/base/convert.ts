@@ -17,6 +17,14 @@ export module convert {
         return "color-state-main"
     }
 
+    export function getColorByResourceState(state: protoManage.State|undefined|null):string {
+        switch (state) {
+            case protoManage.State.StateNormal:
+                return "color-state-success"
+        }
+        return "color-state-danger"
+    }
+
     export function getTableRowColorByState(state: protoManage.State|undefined|null):string {
         switch (state) {
             case protoManage.State.StateUnknow:

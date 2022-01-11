@@ -53,35 +53,7 @@ export default defineComponent ({
     setup(props){
 
         function getSenderName(index){
-            let senderType = props.tableData[index].SenderType
-            switch (senderType) {
-                case protoManage.NotifySenderType.NotifySenderTypeUser:
-                    return getUserSenderName(index)
-                case protoManage.NotifySenderType.NotifySenderTypeNode:
-                    return getNodeSenderName(index)
-                default:
-                    return "未知"
-            }
-        }
-
-        function getUserSenderName(index){
-            let manager = globals.getManagerByID(props.tableData[index].SenderID)
-            if (manager == undefined){
-                return "未知"
-            }
-            return manager.NickName
-        }
-
-        function getNodeSenderName(index){
-            let nodeID = props.tableData[index].SenderID
-            if (nodeID == null){
-                return "未知"
-            }
-            let node = props.nodeMap.get(nodeID)
-            if (node == undefined){
-                return "未知"
-            }
-            return node.Name
+            return props.tableData[index].SenderName
         }
 
         function getSenderType(index){

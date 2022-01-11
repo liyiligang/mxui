@@ -20,7 +20,7 @@
         </el-row>
         <el-row v-else-if="nodeFuncCall.ReturnType===protoManage.NodeFuncReturnType.Link"
                 class="contextRow" type="flex" justify="center" align="middle">
-            <linkJump class="contextLink" :name="returnObj.Name" :link="returnObj.Link" :autoOpen="returnObj.AutoOpen"
+            <linkJump class="contextLink" :name="returnObj.Name" :link="returnObj.Link"
                       :blank="returnObj.Blank"></linkJump>
         </el-row>
         <el-row v-else-if="nodeFuncCall.ReturnType===protoManage.NodeFuncReturnType.Image"
@@ -33,8 +33,7 @@
         </el-row>
         <el-row v-else-if="nodeFuncCall.ReturnType===protoManage.NodeFuncReturnType.File"
                 class="contextRow" type="flex" justify="center" align="middle">
-            <FileSave class="contextFile" :name="returnObj.Name" :data="returnObj.Data"
-                      :autoSave="returnObj.AutoSave"></FileSave>
+            <FileSave class="contextFile" :name="returnObj.Name" :id="returnObj.ID"></FileSave>
         </el-row>
         <el-row v-else-if="nodeFuncCall.ReturnType===protoManage.NodeFuncReturnType.Table"
                 class="contextRow" type="flex" justify="start" align="top">
@@ -89,7 +88,6 @@ export default defineComponent ({
         const returnObj = computed(()=> {
             return globals.getJson(props.nodeFuncCall.ReturnVal)
         })
-
 
         return {convert, globals, protoManage, returnObj}
     }

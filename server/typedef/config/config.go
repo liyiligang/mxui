@@ -29,6 +29,7 @@ type Config struct {
 	File struct {
 		SavePath string `toml:"SavePath"`
 		MaxSize  int    `toml:"MaxSize"`
+		MaxAge   int    `toml:"MaxAge"`
 	} `toml:"File"`
 	Log struct {
 		Path    string `toml:"Path"`

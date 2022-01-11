@@ -96,14 +96,16 @@ type NodeResource struct {
 	Sizes				int64		`gorm:"NOT NULL;"`
 	Type				int64		`gorm:"NOT NULL;"`
 	UploaderID  		int64		`gorm:"NOT NULL;"`
+	UploaderName  		string		`gorm:"NOT NULL;"`
 	UploaderType  		int64		`gorm:"NOT NULL;"`
-	DownLoadCnt			int32		`gorm:"NOT NULL;"`
-	InvalidTime     	time.Time	`gorm:"NOT NULL;"`
+	DownLoadCnt			int64		`gorm:"NOT NULL;"`
+	State				int32		`gorm:"NOT NULL;"`
 }
 
 type NodeNotify struct {
 	Base
 	SenderID  			int64	`gorm:"NOT NULL;"`
+	SenderName  		string	`gorm:"NOT NULL;"`
 	SenderType  		int64	`gorm:"NOT NULL;"`
 	Message     		string	`gorm:"NOT NULL;"`
 	State				int32	`gorm:"NOT NULL;"`

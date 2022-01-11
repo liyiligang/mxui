@@ -62,5 +62,5 @@ func (request *Request) WebsocketClosed(conn *Jweb.WebsocketConn, code int, text
 }
 
 func (request *Request) WebsocketError(text string, err error){
-	Jlog.Error(text, "error", err)
+	Jlog.Warn(text, "error", err)
 }

@@ -5,6 +5,7 @@ import Node from "./views/node/Node.vue";
 import NodeFunc from "./views/node/NodeFunc.vue";
 import NodeReport from "./views/node/NodeReport.vue";
 import NodeNotify from "./views/node/NodeNotify.vue";
+import NodeResource from "./views/node/NodeResource.vue";
 import NodeTest from "./views/node/NodeTest.vue";
 import NotFound from "./views/NotFound.vue";
 import {globals} from "./base/globals";
@@ -17,6 +18,7 @@ export const routerName = {
     nodeFunc:"nodeFunc",
     nodeReport:"nodeReport",
     nodeNotify:"nodeNotify",
+    nodeResource:"nodeResource",
     nodeTest:"nodeTest"
 }
 
@@ -43,6 +45,7 @@ const router = createRouter({
                 {path: routerName.nodeFunc, name: routerName.nodeFunc, component: NodeFunc},
                 {path: routerName.nodeReport, name: routerName.nodeReport, component: NodeReport},
                 {path: routerName.nodeNotify, name: routerName.nodeNotify, component: NodeNotify},
+                {path: routerName.nodeResource, name: routerName.nodeResource, component: NodeResource},
                 {path: routerName.nodeTest, name: routerName.nodeTest, component: NodeTest},
             ]
         },

@@ -3,6 +3,7 @@
         <el-menu-item class="submenuSpanOne" :index="routerName.node">节点</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeFunc">方法</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeReport">报告</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeResource">资源</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeNotify">通知</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeTest">测试</el-menu-item>
     </el-menu>
@@ -46,6 +47,7 @@ export default defineComponent ({
                 case routerName.node:
                 case routerName.nodeFunc:
                 case routerName.nodeReport:
+                case routerName.nodeResource:
                 case routerName.nodeNotify:
                     routerPath.toPath(key, {initPageNum:true, withPageSize:true}, route)
                     break

@@ -9,7 +9,7 @@
                     <el-button class="loginButton" size="medium" type="primary" round @click="loginByName">登录</el-button>
                     <el-row class="loginToolRow" type="flex" justify="space-between" align="middle">
                         <el-checkbox v-model="data.isAutoLogin" @change="autoLoginChanged">自动登录</el-checkbox>
-                        <el-button type="text" @click="register">注册帐号</el-button>
+                        <el-button v-if="data.isShowRegister" type="text" @click="register">注册帐号</el-button>
                     </el-row>
                 </el-row>
                 <el-row v-else type="flex" justify="center" align="middle">
@@ -34,6 +34,7 @@ interface LoginInfo {
     isLoad:boolean,
     isAutoLogin:boolean,
     isShowLogin:boolean,
+    isShowRegister:boolean,
     hasSystemInit:boolean,
     registerVisible:boolean
     username: string,
@@ -47,7 +48,7 @@ export default defineComponent ({
     },
     setup(){
         const data = reactive<LoginInfo>({isLoad:false, isAutoLogin:false, username:"",
-            password:"", registerVisible:false, isShowLogin:false, hasSystemInit:false})
+            password:"", registerVisible:false, isShowLogin:false, hasSystemInit:false, isShowRegister:false})
 
         onMounted(()=>{
             data.isAutoLogin = true
@@ -110,12 +111,11 @@ export default defineComponent ({
 
         function findSystemInitState(){
             data.isShowLogin = false
-            request.reqManagerFindByLevel(protoManage.Manager.create({
+            request.reqFindSystemInitInfo(protoManage.Manager.create({
                 Level: protoManage.Level.LevelSuper
             })).then((response) => {
-                if (response.Base?.ID != 0){
-                    data.hasSystemInit = true
-                }
+                data.isShowRegister = response.openRegister
+                data.hasSystemInit = response.systemInit
                 data.isShowLogin = true
             }).catch(error => {}).finally(()=>{})
         }

@@ -55,11 +55,7 @@ export default defineComponent ({
                     },
                 },
             });
-            if(props.options.AutoPlay){
-                dp.play()
-            }
         }
-
     }
 })
 </script>

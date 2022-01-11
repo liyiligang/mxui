@@ -195,6 +195,7 @@ func OrmNodeReportValListToProtoNodeReportValList(ormNodeReportValList []orm.Nod
 func OrmNodeNotifyToProtoNodeNotify(ormNodeNotify *orm.NodeNotify, protoNodeNotify *protoManage.NodeNotify) {
 	OrmBaseToProtoBase(&ormNodeNotify.Base, &protoNodeNotify.Base)
 	protoNodeNotify.SenderID = ormNodeNotify.SenderID
+	protoNodeNotify.SenderName = ormNodeNotify.SenderName
 	protoNodeNotify.SenderType = protoManage.NotifySenderType(ormNodeNotify.SenderType)
 	protoNodeNotify.Message = ormNodeNotify.Message
 	protoNodeNotify.State = protoManage.State(ormNodeNotify.State)
@@ -211,4 +212,27 @@ func OrmNodeNotifyListToProtoNodeNotifyList(ormNodeNotifyList []orm.NodeNotify) 
 	return protoNodeNotifyList
 }
 
+//DBNodeResource To PBNodeResource
+func OrmNodeResourceToProtoNodeResource(ormNodeResource *orm.NodeResource, protoNodeResource *protoManage.NodeResource) {
+	OrmBaseToProtoBase(&ormNodeResource.Base, &protoNodeResource.Base)
+	protoNodeResource.Name = ormNodeResource.Name
+	protoNodeResource.Md5 = ormNodeResource.Md5
+	protoNodeResource.Sizes = ormNodeResource.Sizes
+	protoNodeResource.Type = protoManage.NodeResourceType(ormNodeResource.Type)
+	protoNodeResource.UploaderID = ormNodeResource.UploaderID
+	protoNodeResource.UploaderName = ormNodeResource.UploaderName
+	protoNodeResource.UploaderType = protoManage.NotifySenderType(ormNodeResource.UploaderType)
+	protoNodeResource.DownLoadCnt = ormNodeResource.DownLoadCnt
+	protoNodeResource.State = protoManage.State(ormNodeResource.State)
+}
 
+//DBNodeResourceList To PBNodeResourceList
+func OrmNodeResourceListToProtoNodeResourceList(ormNodeResourceList []orm.NodeResource) []protoManage.NodeResource {
+	var protoNodeResourceList []protoManage.NodeResource
+	for _ ,v := range ormNodeResourceList {
+		val := protoManage.NodeResource{}
+		OrmNodeResourceToProtoNodeResource(&v, &val)
+		protoNodeResourceList = append(protoNodeResourceList, val)
+	}
+	return protoNodeResourceList
+}

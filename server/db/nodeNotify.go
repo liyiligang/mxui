@@ -85,14 +85,10 @@ func (db *Server) SetNodeNotifyFilter(tx *gorm.DB, req *protoManage.ReqNodeNotif
 	}
 	tx.Where(sql, state...)
 
-	sql = db.spliceSql("(senderID = any(select id from node where name like ? and senderType = ?)) or " +
-		"(senderID = any(select id from manager where nickName like ? and senderType = ?))", len(req.SenderName), "or")
+	sql = db.spliceSql("senderName = ?", len(req.SenderName), "or")
 	var senderName []interface{}
 	for _, item := range req.SenderName {
-		senderName = append(senderName, "%"+item+"%")
-		senderName = append(senderName, protoManage.NotifySenderType_NotifySenderTypeNode)
-		senderName = append(senderName, "%"+item+"%")
-		senderName = append(senderName, protoManage.NotifySenderType_NotifySenderTypeUser)
+		senderName = append(senderName, item)
 	}
 	tx.Where(sql, senderName...)
 

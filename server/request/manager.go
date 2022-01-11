@@ -74,24 +74,6 @@ func (request *Request) ReqManagerLogin(r *HTTPRequest) error {
 	return nil
 }
 
-//管理员权限查询
-func (request *Request) ReqManagerFindByLevel(r *HTTPRequest) error {
-	req := &protoManage.Manager{}
-	err := request.unmarshalWithHttp(r, req)
-	if err != nil {
-		return err
-	}
-	err = request.Data.ManagerFindByLevel(req)
-	if err != nil {
-		return err
-	}
-	err = request.marshalWithHttp(r, req)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
 //管理员新增
 func (request *Request) ReqManagerAdd(r *HTTPRequest) error {
 	req := &protoManage.Manager{}

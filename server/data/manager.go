@@ -37,6 +37,10 @@ func (data *Data) ManagerRegister(protoManager *protoManage.Manager) error {
 	}
 	if superManager.Base.ID == 0 {
 		protoManager.Level = superManager.Level
+	}else{
+		if config.LocalConfig.User.OpenRegister == false {
+			return errors.New("user register is closed, please contact the administrator to add users")
+		}
 	}
 	return data.ManagerAdd(protoManager)
 }

@@ -1588,6 +1588,9 @@ export namespace protoManage {
         /** NodeNotify SenderID */
         SenderID?: (number|null);
 
+        /** NodeNotify SenderName */
+        SenderName?: (string|null);
+
         /** NodeNotify SenderType */
         SenderType?: (protoManage.NotifySenderType|null);
 
@@ -1615,6 +1618,9 @@ export namespace protoManage {
 
         /** NodeNotify SenderID. */
         public SenderID: number;
+
+        /** NodeNotify SenderName. */
+        public SenderName: string;
 
         /** NodeNotify SenderType. */
         public SenderType: protoManage.NotifySenderType;
@@ -1702,8 +1708,8 @@ export namespace protoManage {
     /** Properties of a NodeResource. */
     interface INodeResource {
 
-        /** NodeResource UUID */
-        UUID?: (string|null);
+        /** NodeResource Base */
+        Base?: (protoManage.IBase|null);
 
         /** NodeResource Name */
         Name?: (string|null);
@@ -1717,8 +1723,20 @@ export namespace protoManage {
         /** NodeResource Type */
         Type?: (protoManage.NodeResourceType|null);
 
-        /** NodeResource IsExist */
-        IsExist?: (boolean|null);
+        /** NodeResource UploaderID */
+        UploaderID?: (number|null);
+
+        /** NodeResource UploaderName */
+        UploaderName?: (string|null);
+
+        /** NodeResource UploaderType */
+        UploaderType?: (protoManage.NotifySenderType|null);
+
+        /** NodeResource DownLoadCnt */
+        DownLoadCnt?: (number|null);
+
+        /** NodeResource State */
+        State?: (protoManage.State|null);
     }
 
     /** Represents a NodeResource. */
@@ -1730,8 +1748,8 @@ export namespace protoManage {
          */
         constructor(properties?: protoManage.INodeResource);
 
-        /** NodeResource UUID. */
-        public UUID: string;
+        /** NodeResource Base. */
+        public Base?: (protoManage.IBase|null);
 
         /** NodeResource Name. */
         public Name: string;
@@ -1745,8 +1763,20 @@ export namespace protoManage {
         /** NodeResource Type. */
         public Type: protoManage.NodeResourceType;
 
-        /** NodeResource IsExist. */
-        public IsExist: boolean;
+        /** NodeResource UploaderID. */
+        public UploaderID: number;
+
+        /** NodeResource UploaderName. */
+        public UploaderName: string;
+
+        /** NodeResource UploaderType. */
+        public UploaderType: protoManage.NotifySenderType;
+
+        /** NodeResource DownLoadCnt. */
+        public DownLoadCnt: number;
+
+        /** NodeResource State. */
+        public State: protoManage.State;
 
         /**
          * Creates a new NodeResource instance using the specified properties.
@@ -1814,6 +1844,186 @@ export namespace protoManage {
 
         /**
          * Converts this NodeResource to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a ReqSystemInitInfo. */
+    interface IReqSystemInitInfo {
+    }
+
+    /** Represents a ReqSystemInitInfo. */
+    class ReqSystemInitInfo implements IReqSystemInitInfo {
+
+        /**
+         * Constructs a new ReqSystemInitInfo.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IReqSystemInitInfo);
+
+        /**
+         * Creates a new ReqSystemInitInfo instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ReqSystemInitInfo instance
+         */
+        public static create(properties?: protoManage.IReqSystemInitInfo): protoManage.ReqSystemInitInfo;
+
+        /**
+         * Encodes the specified ReqSystemInitInfo message. Does not implicitly {@link protoManage.ReqSystemInitInfo.verify|verify} messages.
+         * @param message ReqSystemInitInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IReqSystemInitInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ReqSystemInitInfo message, length delimited. Does not implicitly {@link protoManage.ReqSystemInitInfo.verify|verify} messages.
+         * @param message ReqSystemInitInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IReqSystemInitInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ReqSystemInitInfo message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ReqSystemInitInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqSystemInitInfo;
+
+        /**
+         * Decodes a ReqSystemInitInfo message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ReqSystemInitInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqSystemInitInfo;
+
+        /**
+         * Verifies a ReqSystemInitInfo message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ReqSystemInitInfo message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ReqSystemInitInfo
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.ReqSystemInitInfo;
+
+        /**
+         * Creates a plain object from a ReqSystemInitInfo message. Also converts values to other types if specified.
+         * @param message ReqSystemInitInfo
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.ReqSystemInitInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ReqSystemInitInfo to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of an AnsSystemInitInfo. */
+    interface IAnsSystemInitInfo {
+
+        /** AnsSystemInitInfo systemInit */
+        systemInit?: (boolean|null);
+
+        /** AnsSystemInitInfo openRegister */
+        openRegister?: (boolean|null);
+    }
+
+    /** Represents an AnsSystemInitInfo. */
+    class AnsSystemInitInfo implements IAnsSystemInitInfo {
+
+        /**
+         * Constructs a new AnsSystemInitInfo.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IAnsSystemInitInfo);
+
+        /** AnsSystemInitInfo systemInit. */
+        public systemInit: boolean;
+
+        /** AnsSystemInitInfo openRegister. */
+        public openRegister: boolean;
+
+        /**
+         * Creates a new AnsSystemInitInfo instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AnsSystemInitInfo instance
+         */
+        public static create(properties?: protoManage.IAnsSystemInitInfo): protoManage.AnsSystemInitInfo;
+
+        /**
+         * Encodes the specified AnsSystemInitInfo message. Does not implicitly {@link protoManage.AnsSystemInitInfo.verify|verify} messages.
+         * @param message AnsSystemInitInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IAnsSystemInitInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AnsSystemInitInfo message, length delimited. Does not implicitly {@link protoManage.AnsSystemInitInfo.verify|verify} messages.
+         * @param message AnsSystemInitInfo message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IAnsSystemInitInfo, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AnsSystemInitInfo message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AnsSystemInitInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.AnsSystemInitInfo;
+
+        /**
+         * Decodes an AnsSystemInitInfo message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AnsSystemInitInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.AnsSystemInitInfo;
+
+        /**
+         * Verifies an AnsSystemInitInfo message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AnsSystemInitInfo message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AnsSystemInitInfo
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.AnsSystemInitInfo;
+
+        /**
+         * Creates a plain object from an AnsSystemInitInfo message. Also converts values to other types if specified.
+         * @param message AnsSystemInitInfo
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.AnsSystemInitInfo, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AnsSystemInitInfo to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };
@@ -3537,9 +3747,6 @@ export namespace protoManage {
 
         /** AnsNodeNotifyList NodeNotifyList */
         NodeNotifyList?: (protoManage.INodeNotify[]|null);
-
-        /** AnsNodeNotifyList NodeList */
-        NodeList?: (protoManage.INode[]|null);
     }
 
     /** Represents an AnsNodeNotifyList. */
@@ -3556,9 +3763,6 @@ export namespace protoManage {
 
         /** AnsNodeNotifyList NodeNotifyList. */
         public NodeNotifyList: protoManage.INodeNotify[];
-
-        /** AnsNodeNotifyList NodeList. */
-        public NodeList: protoManage.INode[];
 
         /**
          * Creates a new AnsNodeNotifyList instance using the specified properties.
@@ -3626,6 +3830,228 @@ export namespace protoManage {
 
         /**
          * Converts this AnsNodeNotifyList to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of a ReqNodeResourceList. */
+    interface IReqNodeResourceList {
+
+        /** ReqNodeResourceList Name */
+        Name?: (string[]|null);
+
+        /** ReqNodeResourceList State */
+        State?: (protoManage.State[]|null);
+
+        /** ReqNodeResourceList UploaderName */
+        UploaderName?: (string[]|null);
+
+        /** ReqNodeResourceList UploaderType */
+        UploaderType?: (protoManage.NotifySenderType[]|null);
+
+        /** ReqNodeResourceList InvalidTime */
+        InvalidTime?: (protoManage.ITime[]|null);
+
+        /** ReqNodeResourceList UploadTime */
+        UploadTime?: (protoManage.ITime[]|null);
+
+        /** ReqNodeResourceList Page */
+        Page?: (protoManage.IPage|null);
+    }
+
+    /** Represents a ReqNodeResourceList. */
+    class ReqNodeResourceList implements IReqNodeResourceList {
+
+        /**
+         * Constructs a new ReqNodeResourceList.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IReqNodeResourceList);
+
+        /** ReqNodeResourceList Name. */
+        public Name: string[];
+
+        /** ReqNodeResourceList State. */
+        public State: protoManage.State[];
+
+        /** ReqNodeResourceList UploaderName. */
+        public UploaderName: string[];
+
+        /** ReqNodeResourceList UploaderType. */
+        public UploaderType: protoManage.NotifySenderType[];
+
+        /** ReqNodeResourceList InvalidTime. */
+        public InvalidTime: protoManage.ITime[];
+
+        /** ReqNodeResourceList UploadTime. */
+        public UploadTime: protoManage.ITime[];
+
+        /** ReqNodeResourceList Page. */
+        public Page?: (protoManage.IPage|null);
+
+        /**
+         * Creates a new ReqNodeResourceList instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns ReqNodeResourceList instance
+         */
+        public static create(properties?: protoManage.IReqNodeResourceList): protoManage.ReqNodeResourceList;
+
+        /**
+         * Encodes the specified ReqNodeResourceList message. Does not implicitly {@link protoManage.ReqNodeResourceList.verify|verify} messages.
+         * @param message ReqNodeResourceList message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IReqNodeResourceList, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified ReqNodeResourceList message, length delimited. Does not implicitly {@link protoManage.ReqNodeResourceList.verify|verify} messages.
+         * @param message ReqNodeResourceList message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IReqNodeResourceList, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes a ReqNodeResourceList message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns ReqNodeResourceList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.ReqNodeResourceList;
+
+        /**
+         * Decodes a ReqNodeResourceList message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns ReqNodeResourceList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.ReqNodeResourceList;
+
+        /**
+         * Verifies a ReqNodeResourceList message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates a ReqNodeResourceList message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns ReqNodeResourceList
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.ReqNodeResourceList;
+
+        /**
+         * Creates a plain object from a ReqNodeResourceList message. Also converts values to other types if specified.
+         * @param message ReqNodeResourceList
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.ReqNodeResourceList, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this ReqNodeResourceList to JSON.
+         * @returns JSON object
+         */
+        public toJSON(): { [k: string]: any };
+    }
+
+    /** Properties of an AnsNodeResourceList. */
+    interface IAnsNodeResourceList {
+
+        /** AnsNodeResourceList Length */
+        Length?: (number|null);
+
+        /** AnsNodeResourceList NodeResourceList */
+        NodeResourceList?: (protoManage.INodeResource[]|null);
+    }
+
+    /** Represents an AnsNodeResourceList. */
+    class AnsNodeResourceList implements IAnsNodeResourceList {
+
+        /**
+         * Constructs a new AnsNodeResourceList.
+         * @param [properties] Properties to set
+         */
+        constructor(properties?: protoManage.IAnsNodeResourceList);
+
+        /** AnsNodeResourceList Length. */
+        public Length: number;
+
+        /** AnsNodeResourceList NodeResourceList. */
+        public NodeResourceList: protoManage.INodeResource[];
+
+        /**
+         * Creates a new AnsNodeResourceList instance using the specified properties.
+         * @param [properties] Properties to set
+         * @returns AnsNodeResourceList instance
+         */
+        public static create(properties?: protoManage.IAnsNodeResourceList): protoManage.AnsNodeResourceList;
+
+        /**
+         * Encodes the specified AnsNodeResourceList message. Does not implicitly {@link protoManage.AnsNodeResourceList.verify|verify} messages.
+         * @param message AnsNodeResourceList message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encode(message: protoManage.IAnsNodeResourceList, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Encodes the specified AnsNodeResourceList message, length delimited. Does not implicitly {@link protoManage.AnsNodeResourceList.verify|verify} messages.
+         * @param message AnsNodeResourceList message or plain object to encode
+         * @param [writer] Writer to encode to
+         * @returns Writer
+         */
+        public static encodeDelimited(message: protoManage.IAnsNodeResourceList, writer?: $protobuf.Writer): $protobuf.Writer;
+
+        /**
+         * Decodes an AnsNodeResourceList message from the specified reader or buffer.
+         * @param reader Reader or buffer to decode from
+         * @param [length] Message length if known beforehand
+         * @returns AnsNodeResourceList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decode(reader: ($protobuf.Reader|Uint8Array), length?: number): protoManage.AnsNodeResourceList;
+
+        /**
+         * Decodes an AnsNodeResourceList message from the specified reader or buffer, length delimited.
+         * @param reader Reader or buffer to decode from
+         * @returns AnsNodeResourceList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        public static decodeDelimited(reader: ($protobuf.Reader|Uint8Array)): protoManage.AnsNodeResourceList;
+
+        /**
+         * Verifies an AnsNodeResourceList message.
+         * @param message Plain object to verify
+         * @returns `null` if valid, otherwise the reason why it is not
+         */
+        public static verify(message: { [k: string]: any }): (string|null);
+
+        /**
+         * Creates an AnsNodeResourceList message from a plain object. Also converts values to their respective internal types.
+         * @param object Plain object
+         * @returns AnsNodeResourceList
+         */
+        public static fromObject(object: { [k: string]: any }): protoManage.AnsNodeResourceList;
+
+        /**
+         * Creates a plain object from an AnsNodeResourceList message. Also converts values to other types if specified.
+         * @param message AnsNodeResourceList
+         * @param [options] Conversion options
+         * @returns Plain object
+         */
+        public static toObject(message: protoManage.AnsNodeResourceList, options?: $protobuf.IConversionOptions): { [k: string]: any };
+
+        /**
+         * Converts this AnsNodeResourceList to JSON.
          * @returns JSON object
          */
         public toJSON(): { [k: string]: any };

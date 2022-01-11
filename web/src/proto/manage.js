@@ -4267,6 +4267,7 @@ export const protoManage = $root.protoManage = (() => {
          * @interface INodeNotify
          * @property {protoManage.IBase|null} [Base] NodeNotify Base
          * @property {number|null} [SenderID] NodeNotify SenderID
+         * @property {string|null} [SenderName] NodeNotify SenderName
          * @property {protoManage.NotifySenderType|null} [SenderType] NodeNotify SenderType
          * @property {string|null} [Message] NodeNotify Message
          * @property {protoManage.State|null} [State] NodeNotify State
@@ -4303,6 +4304,14 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         NodeNotify.prototype.SenderID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * NodeNotify SenderName.
+         * @member {string} SenderName
+         * @memberof protoManage.NodeNotify
+         * @instance
+         */
+        NodeNotify.prototype.SenderName = "";
 
         /**
          * NodeNotify SenderType.
@@ -4364,14 +4373,16 @@ export const protoManage = $root.protoManage = (() => {
                 $root.protoManage.Base.encode(message.Base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             if (message.SenderID != null && Object.hasOwnProperty.call(message, "SenderID"))
                 writer.uint32(/* id 2, wireType 0 =*/16).int64(message.SenderID);
+            if (message.SenderName != null && Object.hasOwnProperty.call(message, "SenderName"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.SenderName);
             if (message.SenderType != null && Object.hasOwnProperty.call(message, "SenderType"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int32(message.SenderType);
+                writer.uint32(/* id 4, wireType 0 =*/32).int32(message.SenderType);
             if (message.Message != null && Object.hasOwnProperty.call(message, "Message"))
-                writer.uint32(/* id 4, wireType 2 =*/34).string(message.Message);
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.Message);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 5, wireType 0 =*/40).int32(message.State);
+                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.State);
             if (message.showPop != null && Object.hasOwnProperty.call(message, "showPop"))
-                writer.uint32(/* id 6, wireType 0 =*/48).bool(message.showPop);
+                writer.uint32(/* id 7, wireType 0 =*/56).bool(message.showPop);
             return writer;
         };
 
@@ -4413,15 +4424,18 @@ export const protoManage = $root.protoManage = (() => {
                     message.SenderID = reader.int64();
                     break;
                 case 3:
-                    message.SenderType = reader.int32();
+                    message.SenderName = reader.string();
                     break;
                 case 4:
-                    message.Message = reader.string();
+                    message.SenderType = reader.int32();
                     break;
                 case 5:
-                    message.State = reader.int32();
+                    message.Message = reader.string();
                     break;
                 case 6:
+                    message.State = reader.int32();
+                    break;
+                case 7:
                     message.showPop = reader.bool();
                     break;
                 default:
@@ -4467,6 +4481,9 @@ export const protoManage = $root.protoManage = (() => {
             if (message.SenderID != null && message.hasOwnProperty("SenderID"))
                 if (!$util.isInteger(message.SenderID) && !(message.SenderID && $util.isInteger(message.SenderID.low) && $util.isInteger(message.SenderID.high)))
                     return "SenderID: integer|Long expected";
+            if (message.SenderName != null && message.hasOwnProperty("SenderName"))
+                if (!$util.isString(message.SenderName))
+                    return "SenderName: string expected";
             if (message.SenderType != null && message.hasOwnProperty("SenderType"))
                 switch (message.SenderType) {
                 default:
@@ -4522,6 +4539,8 @@ export const protoManage = $root.protoManage = (() => {
                     message.SenderID = object.SenderID;
                 else if (typeof object.SenderID === "object")
                     message.SenderID = new $util.LongBits(object.SenderID.low >>> 0, object.SenderID.high >>> 0).toNumber();
+            if (object.SenderName != null)
+                message.SenderName = String(object.SenderName);
             switch (object.SenderType) {
             case "NotifySenderTypeUnknow":
             case 0:
@@ -4585,6 +4604,7 @@ export const protoManage = $root.protoManage = (() => {
                     object.SenderID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.SenderID = options.longs === String ? "0" : 0;
+                object.SenderName = "";
                 object.SenderType = options.enums === String ? "NotifySenderTypeUnknow" : 0;
                 object.Message = "";
                 object.State = options.enums === String ? "StateNot" : 0;
@@ -4597,6 +4617,8 @@ export const protoManage = $root.protoManage = (() => {
                     object.SenderID = options.longs === String ? String(message.SenderID) : message.SenderID;
                 else
                     object.SenderID = options.longs === String ? $util.Long.prototype.toString.call(message.SenderID) : options.longs === Number ? new $util.LongBits(message.SenderID.low >>> 0, message.SenderID.high >>> 0).toNumber() : message.SenderID;
+            if (message.SenderName != null && message.hasOwnProperty("SenderName"))
+                object.SenderName = message.SenderName;
             if (message.SenderType != null && message.hasOwnProperty("SenderType"))
                 object.SenderType = options.enums === String ? $root.protoManage.NotifySenderType[message.SenderType] : message.SenderType;
             if (message.Message != null && message.hasOwnProperty("Message"))
@@ -4628,12 +4650,16 @@ export const protoManage = $root.protoManage = (() => {
          * Properties of a NodeResource.
          * @memberof protoManage
          * @interface INodeResource
-         * @property {string|null} [UUID] NodeResource UUID
+         * @property {protoManage.IBase|null} [Base] NodeResource Base
          * @property {string|null} [Name] NodeResource Name
          * @property {string|null} [Md5] NodeResource Md5
          * @property {number|null} [Sizes] NodeResource Sizes
          * @property {protoManage.NodeResourceType|null} [Type] NodeResource Type
-         * @property {boolean|null} [IsExist] NodeResource IsExist
+         * @property {number|null} [UploaderID] NodeResource UploaderID
+         * @property {string|null} [UploaderName] NodeResource UploaderName
+         * @property {protoManage.NotifySenderType|null} [UploaderType] NodeResource UploaderType
+         * @property {number|null} [DownLoadCnt] NodeResource DownLoadCnt
+         * @property {protoManage.State|null} [State] NodeResource State
          */
 
         /**
@@ -4652,12 +4678,12 @@ export const protoManage = $root.protoManage = (() => {
         }
 
         /**
-         * NodeResource UUID.
-         * @member {string} UUID
+         * NodeResource Base.
+         * @member {protoManage.IBase|null|undefined} Base
          * @memberof protoManage.NodeResource
          * @instance
          */
-        NodeResource.prototype.UUID = "";
+        NodeResource.prototype.Base = null;
 
         /**
          * NodeResource Name.
@@ -4692,12 +4718,44 @@ export const protoManage = $root.protoManage = (() => {
         NodeResource.prototype.Type = 0;
 
         /**
-         * NodeResource IsExist.
-         * @member {boolean} IsExist
+         * NodeResource UploaderID.
+         * @member {number} UploaderID
          * @memberof protoManage.NodeResource
          * @instance
          */
-        NodeResource.prototype.IsExist = false;
+        NodeResource.prototype.UploaderID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * NodeResource UploaderName.
+         * @member {string} UploaderName
+         * @memberof protoManage.NodeResource
+         * @instance
+         */
+        NodeResource.prototype.UploaderName = "";
+
+        /**
+         * NodeResource UploaderType.
+         * @member {protoManage.NotifySenderType} UploaderType
+         * @memberof protoManage.NodeResource
+         * @instance
+         */
+        NodeResource.prototype.UploaderType = 0;
+
+        /**
+         * NodeResource DownLoadCnt.
+         * @member {number} DownLoadCnt
+         * @memberof protoManage.NodeResource
+         * @instance
+         */
+        NodeResource.prototype.DownLoadCnt = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * NodeResource State.
+         * @member {protoManage.State} State
+         * @memberof protoManage.NodeResource
+         * @instance
+         */
+        NodeResource.prototype.State = 0;
 
         /**
          * Creates a new NodeResource instance using the specified properties.
@@ -4723,8 +4781,8 @@ export const protoManage = $root.protoManage = (() => {
         NodeResource.encode = function encode(message, writer) {
             if (!writer)
                 writer = $Writer.create();
-            if (message.UUID != null && Object.hasOwnProperty.call(message, "UUID"))
-                writer.uint32(/* id 1, wireType 2 =*/10).string(message.UUID);
+            if (message.Base != null && Object.hasOwnProperty.call(message, "Base"))
+                $root.protoManage.Base.encode(message.Base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
             if (message.Name != null && Object.hasOwnProperty.call(message, "Name"))
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message.Name);
             if (message.Md5 != null && Object.hasOwnProperty.call(message, "Md5"))
@@ -4733,8 +4791,16 @@ export const protoManage = $root.protoManage = (() => {
                 writer.uint32(/* id 4, wireType 0 =*/32).int64(message.Sizes);
             if (message.Type != null && Object.hasOwnProperty.call(message, "Type"))
                 writer.uint32(/* id 5, wireType 0 =*/40).int32(message.Type);
-            if (message.IsExist != null && Object.hasOwnProperty.call(message, "IsExist"))
-                writer.uint32(/* id 6, wireType 0 =*/48).bool(message.IsExist);
+            if (message.UploaderID != null && Object.hasOwnProperty.call(message, "UploaderID"))
+                writer.uint32(/* id 6, wireType 0 =*/48).int64(message.UploaderID);
+            if (message.UploaderName != null && Object.hasOwnProperty.call(message, "UploaderName"))
+                writer.uint32(/* id 7, wireType 2 =*/58).string(message.UploaderName);
+            if (message.UploaderType != null && Object.hasOwnProperty.call(message, "UploaderType"))
+                writer.uint32(/* id 8, wireType 0 =*/64).int32(message.UploaderType);
+            if (message.DownLoadCnt != null && Object.hasOwnProperty.call(message, "DownLoadCnt"))
+                writer.uint32(/* id 9, wireType 0 =*/72).int64(message.DownLoadCnt);
+            if (message.State != null && Object.hasOwnProperty.call(message, "State"))
+                writer.uint32(/* id 10, wireType 0 =*/80).int32(message.State);
             return writer;
         };
 
@@ -4770,7 +4836,7 @@ export const protoManage = $root.protoManage = (() => {
                 let tag = reader.uint32();
                 switch (tag >>> 3) {
                 case 1:
-                    message.UUID = reader.string();
+                    message.Base = $root.protoManage.Base.decode(reader, reader.uint32());
                     break;
                 case 2:
                     message.Name = reader.string();
@@ -4785,7 +4851,19 @@ export const protoManage = $root.protoManage = (() => {
                     message.Type = reader.int32();
                     break;
                 case 6:
-                    message.IsExist = reader.bool();
+                    message.UploaderID = reader.int64();
+                    break;
+                case 7:
+                    message.UploaderName = reader.string();
+                    break;
+                case 8:
+                    message.UploaderType = reader.int32();
+                    break;
+                case 9:
+                    message.DownLoadCnt = reader.int64();
+                    break;
+                case 10:
+                    message.State = reader.int32();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -4822,9 +4900,11 @@ export const protoManage = $root.protoManage = (() => {
         NodeResource.verify = function verify(message) {
             if (typeof message !== "object" || message === null)
                 return "object expected";
-            if (message.UUID != null && message.hasOwnProperty("UUID"))
-                if (!$util.isString(message.UUID))
-                    return "UUID: string expected";
+            if (message.Base != null && message.hasOwnProperty("Base")) {
+                let error = $root.protoManage.Base.verify(message.Base);
+                if (error)
+                    return "Base." + error;
+            }
             if (message.Name != null && message.hasOwnProperty("Name"))
                 if (!$util.isString(message.Name))
                     return "Name: string expected";
@@ -4842,9 +4922,35 @@ export const protoManage = $root.protoManage = (() => {
                 case 1:
                     break;
                 }
-            if (message.IsExist != null && message.hasOwnProperty("IsExist"))
-                if (typeof message.IsExist !== "boolean")
-                    return "IsExist: boolean expected";
+            if (message.UploaderID != null && message.hasOwnProperty("UploaderID"))
+                if (!$util.isInteger(message.UploaderID) && !(message.UploaderID && $util.isInteger(message.UploaderID.low) && $util.isInteger(message.UploaderID.high)))
+                    return "UploaderID: integer|Long expected";
+            if (message.UploaderName != null && message.hasOwnProperty("UploaderName"))
+                if (!$util.isString(message.UploaderName))
+                    return "UploaderName: string expected";
+            if (message.UploaderType != null && message.hasOwnProperty("UploaderType"))
+                switch (message.UploaderType) {
+                default:
+                    return "UploaderType: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                    break;
+                }
+            if (message.DownLoadCnt != null && message.hasOwnProperty("DownLoadCnt"))
+                if (!$util.isInteger(message.DownLoadCnt) && !(message.DownLoadCnt && $util.isInteger(message.DownLoadCnt.low) && $util.isInteger(message.DownLoadCnt.high)))
+                    return "DownLoadCnt: integer|Long expected";
+            if (message.State != null && message.hasOwnProperty("State"))
+                switch (message.State) {
+                default:
+                    return "State: enum value expected";
+                case 0:
+                case 1:
+                case 2:
+                case 3:
+                case 4:
+                    break;
+                }
             return null;
         };
 
@@ -4860,8 +4966,11 @@ export const protoManage = $root.protoManage = (() => {
             if (object instanceof $root.protoManage.NodeResource)
                 return object;
             let message = new $root.protoManage.NodeResource();
-            if (object.UUID != null)
-                message.UUID = String(object.UUID);
+            if (object.Base != null) {
+                if (typeof object.Base !== "object")
+                    throw TypeError(".protoManage.NodeResource.Base: object expected");
+                message.Base = $root.protoManage.Base.fromObject(object.Base);
+            }
             if (object.Name != null)
                 message.Name = String(object.Name);
             if (object.Md5 != null)
@@ -4885,8 +4994,62 @@ export const protoManage = $root.protoManage = (() => {
                 message.Type = 1;
                 break;
             }
-            if (object.IsExist != null)
-                message.IsExist = Boolean(object.IsExist);
+            if (object.UploaderID != null)
+                if ($util.Long)
+                    (message.UploaderID = $util.Long.fromValue(object.UploaderID)).unsigned = false;
+                else if (typeof object.UploaderID === "string")
+                    message.UploaderID = parseInt(object.UploaderID, 10);
+                else if (typeof object.UploaderID === "number")
+                    message.UploaderID = object.UploaderID;
+                else if (typeof object.UploaderID === "object")
+                    message.UploaderID = new $util.LongBits(object.UploaderID.low >>> 0, object.UploaderID.high >>> 0).toNumber();
+            if (object.UploaderName != null)
+                message.UploaderName = String(object.UploaderName);
+            switch (object.UploaderType) {
+            case "NotifySenderTypeUnknow":
+            case 0:
+                message.UploaderType = 0;
+                break;
+            case "NotifySenderTypeUser":
+            case 1:
+                message.UploaderType = 1;
+                break;
+            case "NotifySenderTypeNode":
+            case 2:
+                message.UploaderType = 2;
+                break;
+            }
+            if (object.DownLoadCnt != null)
+                if ($util.Long)
+                    (message.DownLoadCnt = $util.Long.fromValue(object.DownLoadCnt)).unsigned = false;
+                else if (typeof object.DownLoadCnt === "string")
+                    message.DownLoadCnt = parseInt(object.DownLoadCnt, 10);
+                else if (typeof object.DownLoadCnt === "number")
+                    message.DownLoadCnt = object.DownLoadCnt;
+                else if (typeof object.DownLoadCnt === "object")
+                    message.DownLoadCnt = new $util.LongBits(object.DownLoadCnt.low >>> 0, object.DownLoadCnt.high >>> 0).toNumber();
+            switch (object.State) {
+            case "StateNot":
+            case 0:
+                message.State = 0;
+                break;
+            case "StateUnknow":
+            case 1:
+                message.State = 1;
+                break;
+            case "StateNormal":
+            case 2:
+                message.State = 2;
+                break;
+            case "StateWarn":
+            case 3:
+                message.State = 3;
+                break;
+            case "StateError":
+            case 4:
+                message.State = 4;
+                break;
+            }
             return message;
         };
 
@@ -4904,7 +5067,7 @@ export const protoManage = $root.protoManage = (() => {
                 options = {};
             let object = {};
             if (options.defaults) {
-                object.UUID = "";
+                object.Base = null;
                 object.Name = "";
                 object.Md5 = "";
                 if ($util.Long) {
@@ -4913,10 +5076,22 @@ export const protoManage = $root.protoManage = (() => {
                 } else
                     object.Sizes = options.longs === String ? "0" : 0;
                 object.Type = options.enums === String ? "NodeResourceTypeUnknow" : 0;
-                object.IsExist = false;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.UploaderID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.UploaderID = options.longs === String ? "0" : 0;
+                object.UploaderName = "";
+                object.UploaderType = options.enums === String ? "NotifySenderTypeUnknow" : 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.DownLoadCnt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.DownLoadCnt = options.longs === String ? "0" : 0;
+                object.State = options.enums === String ? "StateNot" : 0;
             }
-            if (message.UUID != null && message.hasOwnProperty("UUID"))
-                object.UUID = message.UUID;
+            if (message.Base != null && message.hasOwnProperty("Base"))
+                object.Base = $root.protoManage.Base.toObject(message.Base, options);
             if (message.Name != null && message.hasOwnProperty("Name"))
                 object.Name = message.Name;
             if (message.Md5 != null && message.hasOwnProperty("Md5"))
@@ -4928,8 +5103,22 @@ export const protoManage = $root.protoManage = (() => {
                     object.Sizes = options.longs === String ? $util.Long.prototype.toString.call(message.Sizes) : options.longs === Number ? new $util.LongBits(message.Sizes.low >>> 0, message.Sizes.high >>> 0).toNumber() : message.Sizes;
             if (message.Type != null && message.hasOwnProperty("Type"))
                 object.Type = options.enums === String ? $root.protoManage.NodeResourceType[message.Type] : message.Type;
-            if (message.IsExist != null && message.hasOwnProperty("IsExist"))
-                object.IsExist = message.IsExist;
+            if (message.UploaderID != null && message.hasOwnProperty("UploaderID"))
+                if (typeof message.UploaderID === "number")
+                    object.UploaderID = options.longs === String ? String(message.UploaderID) : message.UploaderID;
+                else
+                    object.UploaderID = options.longs === String ? $util.Long.prototype.toString.call(message.UploaderID) : options.longs === Number ? new $util.LongBits(message.UploaderID.low >>> 0, message.UploaderID.high >>> 0).toNumber() : message.UploaderID;
+            if (message.UploaderName != null && message.hasOwnProperty("UploaderName"))
+                object.UploaderName = message.UploaderName;
+            if (message.UploaderType != null && message.hasOwnProperty("UploaderType"))
+                object.UploaderType = options.enums === String ? $root.protoManage.NotifySenderType[message.UploaderType] : message.UploaderType;
+            if (message.DownLoadCnt != null && message.hasOwnProperty("DownLoadCnt"))
+                if (typeof message.DownLoadCnt === "number")
+                    object.DownLoadCnt = options.longs === String ? String(message.DownLoadCnt) : message.DownLoadCnt;
+                else
+                    object.DownLoadCnt = options.longs === String ? $util.Long.prototype.toString.call(message.DownLoadCnt) : options.longs === Number ? new $util.LongBits(message.DownLoadCnt.low >>> 0, message.DownLoadCnt.high >>> 0).toNumber() : message.DownLoadCnt;
+            if (message.State != null && message.hasOwnProperty("State"))
+                object.State = options.enums === String ? $root.protoManage.State[message.State] : message.State;
             return object;
         };
 
@@ -4945,6 +5134,376 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         return NodeResource;
+    })();
+
+    protoManage.ReqSystemInitInfo = (function() {
+
+        /**
+         * Properties of a ReqSystemInitInfo.
+         * @memberof protoManage
+         * @interface IReqSystemInitInfo
+         */
+
+        /**
+         * Constructs a new ReqSystemInitInfo.
+         * @memberof protoManage
+         * @classdesc Represents a ReqSystemInitInfo.
+         * @implements IReqSystemInitInfo
+         * @constructor
+         * @param {protoManage.IReqSystemInitInfo=} [properties] Properties to set
+         */
+        function ReqSystemInitInfo(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * Creates a new ReqSystemInitInfo instance using the specified properties.
+         * @function create
+         * @memberof protoManage.ReqSystemInitInfo
+         * @static
+         * @param {protoManage.IReqSystemInitInfo=} [properties] Properties to set
+         * @returns {protoManage.ReqSystemInitInfo} ReqSystemInitInfo instance
+         */
+        ReqSystemInitInfo.create = function create(properties) {
+            return new ReqSystemInitInfo(properties);
+        };
+
+        /**
+         * Encodes the specified ReqSystemInitInfo message. Does not implicitly {@link protoManage.ReqSystemInitInfo.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.ReqSystemInitInfo
+         * @static
+         * @param {protoManage.IReqSystemInitInfo} message ReqSystemInitInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqSystemInitInfo.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ReqSystemInitInfo message, length delimited. Does not implicitly {@link protoManage.ReqSystemInitInfo.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.ReqSystemInitInfo
+         * @static
+         * @param {protoManage.IReqSystemInitInfo} message ReqSystemInitInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqSystemInitInfo.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ReqSystemInitInfo message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.ReqSystemInitInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.ReqSystemInitInfo} ReqSystemInitInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqSystemInitInfo.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqSystemInitInfo();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ReqSystemInitInfo message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.ReqSystemInitInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.ReqSystemInitInfo} ReqSystemInitInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqSystemInitInfo.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ReqSystemInitInfo message.
+         * @function verify
+         * @memberof protoManage.ReqSystemInitInfo
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ReqSystemInitInfo.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            return null;
+        };
+
+        /**
+         * Creates a ReqSystemInitInfo message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.ReqSystemInitInfo
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.ReqSystemInitInfo} ReqSystemInitInfo
+         */
+        ReqSystemInitInfo.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.ReqSystemInitInfo)
+                return object;
+            return new $root.protoManage.ReqSystemInitInfo();
+        };
+
+        /**
+         * Creates a plain object from a ReqSystemInitInfo message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.ReqSystemInitInfo
+         * @static
+         * @param {protoManage.ReqSystemInitInfo} message ReqSystemInitInfo
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ReqSystemInitInfo.toObject = function toObject() {
+            return {};
+        };
+
+        /**
+         * Converts this ReqSystemInitInfo to JSON.
+         * @function toJSON
+         * @memberof protoManage.ReqSystemInitInfo
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ReqSystemInitInfo.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ReqSystemInitInfo;
+    })();
+
+    protoManage.AnsSystemInitInfo = (function() {
+
+        /**
+         * Properties of an AnsSystemInitInfo.
+         * @memberof protoManage
+         * @interface IAnsSystemInitInfo
+         * @property {boolean|null} [systemInit] AnsSystemInitInfo systemInit
+         * @property {boolean|null} [openRegister] AnsSystemInitInfo openRegister
+         */
+
+        /**
+         * Constructs a new AnsSystemInitInfo.
+         * @memberof protoManage
+         * @classdesc Represents an AnsSystemInitInfo.
+         * @implements IAnsSystemInitInfo
+         * @constructor
+         * @param {protoManage.IAnsSystemInitInfo=} [properties] Properties to set
+         */
+        function AnsSystemInitInfo(properties) {
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * AnsSystemInitInfo systemInit.
+         * @member {boolean} systemInit
+         * @memberof protoManage.AnsSystemInitInfo
+         * @instance
+         */
+        AnsSystemInitInfo.prototype.systemInit = false;
+
+        /**
+         * AnsSystemInitInfo openRegister.
+         * @member {boolean} openRegister
+         * @memberof protoManage.AnsSystemInitInfo
+         * @instance
+         */
+        AnsSystemInitInfo.prototype.openRegister = false;
+
+        /**
+         * Creates a new AnsSystemInitInfo instance using the specified properties.
+         * @function create
+         * @memberof protoManage.AnsSystemInitInfo
+         * @static
+         * @param {protoManage.IAnsSystemInitInfo=} [properties] Properties to set
+         * @returns {protoManage.AnsSystemInitInfo} AnsSystemInitInfo instance
+         */
+        AnsSystemInitInfo.create = function create(properties) {
+            return new AnsSystemInitInfo(properties);
+        };
+
+        /**
+         * Encodes the specified AnsSystemInitInfo message. Does not implicitly {@link protoManage.AnsSystemInitInfo.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.AnsSystemInitInfo
+         * @static
+         * @param {protoManage.IAnsSystemInitInfo} message AnsSystemInitInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsSystemInitInfo.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.systemInit != null && Object.hasOwnProperty.call(message, "systemInit"))
+                writer.uint32(/* id 1, wireType 0 =*/8).bool(message.systemInit);
+            if (message.openRegister != null && Object.hasOwnProperty.call(message, "openRegister"))
+                writer.uint32(/* id 2, wireType 0 =*/16).bool(message.openRegister);
+            return writer;
+        };
+
+        /**
+         * Encodes the specified AnsSystemInitInfo message, length delimited. Does not implicitly {@link protoManage.AnsSystemInitInfo.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.AnsSystemInitInfo
+         * @static
+         * @param {protoManage.IAnsSystemInitInfo} message AnsSystemInitInfo message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsSystemInitInfo.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an AnsSystemInitInfo message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.AnsSystemInitInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.AnsSystemInitInfo} AnsSystemInitInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsSystemInitInfo.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.AnsSystemInitInfo();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.systemInit = reader.bool();
+                    break;
+                case 2:
+                    message.openRegister = reader.bool();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an AnsSystemInitInfo message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.AnsSystemInitInfo
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.AnsSystemInitInfo} AnsSystemInitInfo
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsSystemInitInfo.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an AnsSystemInitInfo message.
+         * @function verify
+         * @memberof protoManage.AnsSystemInitInfo
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        AnsSystemInitInfo.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.systemInit != null && message.hasOwnProperty("systemInit"))
+                if (typeof message.systemInit !== "boolean")
+                    return "systemInit: boolean expected";
+            if (message.openRegister != null && message.hasOwnProperty("openRegister"))
+                if (typeof message.openRegister !== "boolean")
+                    return "openRegister: boolean expected";
+            return null;
+        };
+
+        /**
+         * Creates an AnsSystemInitInfo message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.AnsSystemInitInfo
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.AnsSystemInitInfo} AnsSystemInitInfo
+         */
+        AnsSystemInitInfo.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.AnsSystemInitInfo)
+                return object;
+            let message = new $root.protoManage.AnsSystemInitInfo();
+            if (object.systemInit != null)
+                message.systemInit = Boolean(object.systemInit);
+            if (object.openRegister != null)
+                message.openRegister = Boolean(object.openRegister);
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an AnsSystemInitInfo message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.AnsSystemInitInfo
+         * @static
+         * @param {protoManage.AnsSystemInitInfo} message AnsSystemInitInfo
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        AnsSystemInitInfo.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.defaults) {
+                object.systemInit = false;
+                object.openRegister = false;
+            }
+            if (message.systemInit != null && message.hasOwnProperty("systemInit"))
+                object.systemInit = message.systemInit;
+            if (message.openRegister != null && message.hasOwnProperty("openRegister"))
+                object.openRegister = message.openRegister;
+            return object;
+        };
+
+        /**
+         * Converts this AnsSystemInitInfo to JSON.
+         * @function toJSON
+         * @memberof protoManage.AnsSystemInitInfo
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        AnsSystemInitInfo.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return AnsSystemInitInfo;
     })();
 
     protoManage.ReqTopLinkList = (function() {
@@ -9797,7 +10356,6 @@ export const protoManage = $root.protoManage = (() => {
          * @interface IAnsNodeNotifyList
          * @property {number|null} [Length] AnsNodeNotifyList Length
          * @property {Array.<protoManage.INodeNotify>|null} [NodeNotifyList] AnsNodeNotifyList NodeNotifyList
-         * @property {Array.<protoManage.INode>|null} [NodeList] AnsNodeNotifyList NodeList
          */
 
         /**
@@ -9810,7 +10368,6 @@ export const protoManage = $root.protoManage = (() => {
          */
         function AnsNodeNotifyList(properties) {
             this.NodeNotifyList = [];
-            this.NodeList = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
                     if (properties[keys[i]] != null)
@@ -9832,14 +10389,6 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         AnsNodeNotifyList.prototype.NodeNotifyList = $util.emptyArray;
-
-        /**
-         * AnsNodeNotifyList NodeList.
-         * @member {Array.<protoManage.INode>} NodeList
-         * @memberof protoManage.AnsNodeNotifyList
-         * @instance
-         */
-        AnsNodeNotifyList.prototype.NodeList = $util.emptyArray;
 
         /**
          * Creates a new AnsNodeNotifyList instance using the specified properties.
@@ -9870,9 +10419,6 @@ export const protoManage = $root.protoManage = (() => {
             if (message.NodeNotifyList != null && message.NodeNotifyList.length)
                 for (let i = 0; i < message.NodeNotifyList.length; ++i)
                     $root.protoManage.NodeNotify.encode(message.NodeNotifyList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
-            if (message.NodeList != null && message.NodeList.length)
-                for (let i = 0; i < message.NodeList.length; ++i)
-                    $root.protoManage.Node.encode(message.NodeList[i], writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
             return writer;
         };
 
@@ -9914,11 +10460,6 @@ export const protoManage = $root.protoManage = (() => {
                     if (!(message.NodeNotifyList && message.NodeNotifyList.length))
                         message.NodeNotifyList = [];
                     message.NodeNotifyList.push($root.protoManage.NodeNotify.decode(reader, reader.uint32()));
-                    break;
-                case 3:
-                    if (!(message.NodeList && message.NodeList.length))
-                        message.NodeList = [];
-                    message.NodeList.push($root.protoManage.Node.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -9967,15 +10508,6 @@ export const protoManage = $root.protoManage = (() => {
                         return "NodeNotifyList." + error;
                 }
             }
-            if (message.NodeList != null && message.hasOwnProperty("NodeList")) {
-                if (!Array.isArray(message.NodeList))
-                    return "NodeList: array expected";
-                for (let i = 0; i < message.NodeList.length; ++i) {
-                    let error = $root.protoManage.Node.verify(message.NodeList[i]);
-                    if (error)
-                        return "NodeList." + error;
-                }
-            }
             return null;
         };
 
@@ -10010,16 +10542,6 @@ export const protoManage = $root.protoManage = (() => {
                     message.NodeNotifyList[i] = $root.protoManage.NodeNotify.fromObject(object.NodeNotifyList[i]);
                 }
             }
-            if (object.NodeList) {
-                if (!Array.isArray(object.NodeList))
-                    throw TypeError(".protoManage.AnsNodeNotifyList.NodeList: array expected");
-                message.NodeList = [];
-                for (let i = 0; i < object.NodeList.length; ++i) {
-                    if (typeof object.NodeList[i] !== "object")
-                        throw TypeError(".protoManage.AnsNodeNotifyList.NodeList: object expected");
-                    message.NodeList[i] = $root.protoManage.Node.fromObject(object.NodeList[i]);
-                }
-            }
             return message;
         };
 
@@ -10036,10 +10558,8 @@ export const protoManage = $root.protoManage = (() => {
             if (!options)
                 options = {};
             let object = {};
-            if (options.arrays || options.defaults) {
+            if (options.arrays || options.defaults)
                 object.NodeNotifyList = [];
-                object.NodeList = [];
-            }
             if (options.defaults)
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, false);
@@ -10056,11 +10576,6 @@ export const protoManage = $root.protoManage = (() => {
                 for (let j = 0; j < message.NodeNotifyList.length; ++j)
                     object.NodeNotifyList[j] = $root.protoManage.NodeNotify.toObject(message.NodeNotifyList[j], options);
             }
-            if (message.NodeList && message.NodeList.length) {
-                object.NodeList = [];
-                for (let j = 0; j < message.NodeList.length; ++j)
-                    object.NodeList[j] = $root.protoManage.Node.toObject(message.NodeList[j], options);
-            }
             return object;
         };
 
@@ -10076,6 +10591,749 @@ export const protoManage = $root.protoManage = (() => {
         };
 
         return AnsNodeNotifyList;
+    })();
+
+    protoManage.ReqNodeResourceList = (function() {
+
+        /**
+         * Properties of a ReqNodeResourceList.
+         * @memberof protoManage
+         * @interface IReqNodeResourceList
+         * @property {Array.<string>|null} [Name] ReqNodeResourceList Name
+         * @property {Array.<protoManage.State>|null} [State] ReqNodeResourceList State
+         * @property {Array.<string>|null} [UploaderName] ReqNodeResourceList UploaderName
+         * @property {Array.<protoManage.NotifySenderType>|null} [UploaderType] ReqNodeResourceList UploaderType
+         * @property {Array.<protoManage.ITime>|null} [InvalidTime] ReqNodeResourceList InvalidTime
+         * @property {Array.<protoManage.ITime>|null} [UploadTime] ReqNodeResourceList UploadTime
+         * @property {protoManage.IPage|null} [Page] ReqNodeResourceList Page
+         */
+
+        /**
+         * Constructs a new ReqNodeResourceList.
+         * @memberof protoManage
+         * @classdesc Represents a ReqNodeResourceList.
+         * @implements IReqNodeResourceList
+         * @constructor
+         * @param {protoManage.IReqNodeResourceList=} [properties] Properties to set
+         */
+        function ReqNodeResourceList(properties) {
+            this.Name = [];
+            this.State = [];
+            this.UploaderName = [];
+            this.UploaderType = [];
+            this.InvalidTime = [];
+            this.UploadTime = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * ReqNodeResourceList Name.
+         * @member {Array.<string>} Name
+         * @memberof protoManage.ReqNodeResourceList
+         * @instance
+         */
+        ReqNodeResourceList.prototype.Name = $util.emptyArray;
+
+        /**
+         * ReqNodeResourceList State.
+         * @member {Array.<protoManage.State>} State
+         * @memberof protoManage.ReqNodeResourceList
+         * @instance
+         */
+        ReqNodeResourceList.prototype.State = $util.emptyArray;
+
+        /**
+         * ReqNodeResourceList UploaderName.
+         * @member {Array.<string>} UploaderName
+         * @memberof protoManage.ReqNodeResourceList
+         * @instance
+         */
+        ReqNodeResourceList.prototype.UploaderName = $util.emptyArray;
+
+        /**
+         * ReqNodeResourceList UploaderType.
+         * @member {Array.<protoManage.NotifySenderType>} UploaderType
+         * @memberof protoManage.ReqNodeResourceList
+         * @instance
+         */
+        ReqNodeResourceList.prototype.UploaderType = $util.emptyArray;
+
+        /**
+         * ReqNodeResourceList InvalidTime.
+         * @member {Array.<protoManage.ITime>} InvalidTime
+         * @memberof protoManage.ReqNodeResourceList
+         * @instance
+         */
+        ReqNodeResourceList.prototype.InvalidTime = $util.emptyArray;
+
+        /**
+         * ReqNodeResourceList UploadTime.
+         * @member {Array.<protoManage.ITime>} UploadTime
+         * @memberof protoManage.ReqNodeResourceList
+         * @instance
+         */
+        ReqNodeResourceList.prototype.UploadTime = $util.emptyArray;
+
+        /**
+         * ReqNodeResourceList Page.
+         * @member {protoManage.IPage|null|undefined} Page
+         * @memberof protoManage.ReqNodeResourceList
+         * @instance
+         */
+        ReqNodeResourceList.prototype.Page = null;
+
+        /**
+         * Creates a new ReqNodeResourceList instance using the specified properties.
+         * @function create
+         * @memberof protoManage.ReqNodeResourceList
+         * @static
+         * @param {protoManage.IReqNodeResourceList=} [properties] Properties to set
+         * @returns {protoManage.ReqNodeResourceList} ReqNodeResourceList instance
+         */
+        ReqNodeResourceList.create = function create(properties) {
+            return new ReqNodeResourceList(properties);
+        };
+
+        /**
+         * Encodes the specified ReqNodeResourceList message. Does not implicitly {@link protoManage.ReqNodeResourceList.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.ReqNodeResourceList
+         * @static
+         * @param {protoManage.IReqNodeResourceList} message ReqNodeResourceList message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeResourceList.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.Name != null && message.Name.length)
+                for (let i = 0; i < message.Name.length; ++i)
+                    writer.uint32(/* id 1, wireType 2 =*/10).string(message.Name[i]);
+            if (message.State != null && message.State.length) {
+                writer.uint32(/* id 2, wireType 2 =*/18).fork();
+                for (let i = 0; i < message.State.length; ++i)
+                    writer.int32(message.State[i]);
+                writer.ldelim();
+            }
+            if (message.UploaderName != null && message.UploaderName.length)
+                for (let i = 0; i < message.UploaderName.length; ++i)
+                    writer.uint32(/* id 3, wireType 2 =*/26).string(message.UploaderName[i]);
+            if (message.UploaderType != null && message.UploaderType.length) {
+                writer.uint32(/* id 4, wireType 2 =*/34).fork();
+                for (let i = 0; i < message.UploaderType.length; ++i)
+                    writer.int32(message.UploaderType[i]);
+                writer.ldelim();
+            }
+            if (message.InvalidTime != null && message.InvalidTime.length)
+                for (let i = 0; i < message.InvalidTime.length; ++i)
+                    $root.protoManage.Time.encode(message.InvalidTime[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+            if (message.UploadTime != null && message.UploadTime.length)
+                for (let i = 0; i < message.UploadTime.length; ++i)
+                    $root.protoManage.Time.encode(message.UploadTime[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+            if (message.Page != null && Object.hasOwnProperty.call(message, "Page"))
+                $root.protoManage.Page.encode(message.Page, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified ReqNodeResourceList message, length delimited. Does not implicitly {@link protoManage.ReqNodeResourceList.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.ReqNodeResourceList
+         * @static
+         * @param {protoManage.IReqNodeResourceList} message ReqNodeResourceList message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        ReqNodeResourceList.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes a ReqNodeResourceList message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.ReqNodeResourceList
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.ReqNodeResourceList} ReqNodeResourceList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeResourceList.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.ReqNodeResourceList();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    if (!(message.Name && message.Name.length))
+                        message.Name = [];
+                    message.Name.push(reader.string());
+                    break;
+                case 2:
+                    if (!(message.State && message.State.length))
+                        message.State = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.State.push(reader.int32());
+                    } else
+                        message.State.push(reader.int32());
+                    break;
+                case 3:
+                    if (!(message.UploaderName && message.UploaderName.length))
+                        message.UploaderName = [];
+                    message.UploaderName.push(reader.string());
+                    break;
+                case 4:
+                    if (!(message.UploaderType && message.UploaderType.length))
+                        message.UploaderType = [];
+                    if ((tag & 7) === 2) {
+                        let end2 = reader.uint32() + reader.pos;
+                        while (reader.pos < end2)
+                            message.UploaderType.push(reader.int32());
+                    } else
+                        message.UploaderType.push(reader.int32());
+                    break;
+                case 5:
+                    if (!(message.InvalidTime && message.InvalidTime.length))
+                        message.InvalidTime = [];
+                    message.InvalidTime.push($root.protoManage.Time.decode(reader, reader.uint32()));
+                    break;
+                case 6:
+                    if (!(message.UploadTime && message.UploadTime.length))
+                        message.UploadTime = [];
+                    message.UploadTime.push($root.protoManage.Time.decode(reader, reader.uint32()));
+                    break;
+                case 7:
+                    message.Page = $root.protoManage.Page.decode(reader, reader.uint32());
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes a ReqNodeResourceList message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.ReqNodeResourceList
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.ReqNodeResourceList} ReqNodeResourceList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        ReqNodeResourceList.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies a ReqNodeResourceList message.
+         * @function verify
+         * @memberof protoManage.ReqNodeResourceList
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        ReqNodeResourceList.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.Name != null && message.hasOwnProperty("Name")) {
+                if (!Array.isArray(message.Name))
+                    return "Name: array expected";
+                for (let i = 0; i < message.Name.length; ++i)
+                    if (!$util.isString(message.Name[i]))
+                        return "Name: string[] expected";
+            }
+            if (message.State != null && message.hasOwnProperty("State")) {
+                if (!Array.isArray(message.State))
+                    return "State: array expected";
+                for (let i = 0; i < message.State.length; ++i)
+                    switch (message.State[i]) {
+                    default:
+                        return "State: enum value[] expected";
+                    case 0:
+                    case 1:
+                    case 2:
+                    case 3:
+                    case 4:
+                        break;
+                    }
+            }
+            if (message.UploaderName != null && message.hasOwnProperty("UploaderName")) {
+                if (!Array.isArray(message.UploaderName))
+                    return "UploaderName: array expected";
+                for (let i = 0; i < message.UploaderName.length; ++i)
+                    if (!$util.isString(message.UploaderName[i]))
+                        return "UploaderName: string[] expected";
+            }
+            if (message.UploaderType != null && message.hasOwnProperty("UploaderType")) {
+                if (!Array.isArray(message.UploaderType))
+                    return "UploaderType: array expected";
+                for (let i = 0; i < message.UploaderType.length; ++i)
+                    switch (message.UploaderType[i]) {
+                    default:
+                        return "UploaderType: enum value[] expected";
+                    case 0:
+                    case 1:
+                    case 2:
+                        break;
+                    }
+            }
+            if (message.InvalidTime != null && message.hasOwnProperty("InvalidTime")) {
+                if (!Array.isArray(message.InvalidTime))
+                    return "InvalidTime: array expected";
+                for (let i = 0; i < message.InvalidTime.length; ++i) {
+                    let error = $root.protoManage.Time.verify(message.InvalidTime[i]);
+                    if (error)
+                        return "InvalidTime." + error;
+                }
+            }
+            if (message.UploadTime != null && message.hasOwnProperty("UploadTime")) {
+                if (!Array.isArray(message.UploadTime))
+                    return "UploadTime: array expected";
+                for (let i = 0; i < message.UploadTime.length; ++i) {
+                    let error = $root.protoManage.Time.verify(message.UploadTime[i]);
+                    if (error)
+                        return "UploadTime." + error;
+                }
+            }
+            if (message.Page != null && message.hasOwnProperty("Page")) {
+                let error = $root.protoManage.Page.verify(message.Page);
+                if (error)
+                    return "Page." + error;
+            }
+            return null;
+        };
+
+        /**
+         * Creates a ReqNodeResourceList message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.ReqNodeResourceList
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.ReqNodeResourceList} ReqNodeResourceList
+         */
+        ReqNodeResourceList.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.ReqNodeResourceList)
+                return object;
+            let message = new $root.protoManage.ReqNodeResourceList();
+            if (object.Name) {
+                if (!Array.isArray(object.Name))
+                    throw TypeError(".protoManage.ReqNodeResourceList.Name: array expected");
+                message.Name = [];
+                for (let i = 0; i < object.Name.length; ++i)
+                    message.Name[i] = String(object.Name[i]);
+            }
+            if (object.State) {
+                if (!Array.isArray(object.State))
+                    throw TypeError(".protoManage.ReqNodeResourceList.State: array expected");
+                message.State = [];
+                for (let i = 0; i < object.State.length; ++i)
+                    switch (object.State[i]) {
+                    default:
+                    case "StateNot":
+                    case 0:
+                        message.State[i] = 0;
+                        break;
+                    case "StateUnknow":
+                    case 1:
+                        message.State[i] = 1;
+                        break;
+                    case "StateNormal":
+                    case 2:
+                        message.State[i] = 2;
+                        break;
+                    case "StateWarn":
+                    case 3:
+                        message.State[i] = 3;
+                        break;
+                    case "StateError":
+                    case 4:
+                        message.State[i] = 4;
+                        break;
+                    }
+            }
+            if (object.UploaderName) {
+                if (!Array.isArray(object.UploaderName))
+                    throw TypeError(".protoManage.ReqNodeResourceList.UploaderName: array expected");
+                message.UploaderName = [];
+                for (let i = 0; i < object.UploaderName.length; ++i)
+                    message.UploaderName[i] = String(object.UploaderName[i]);
+            }
+            if (object.UploaderType) {
+                if (!Array.isArray(object.UploaderType))
+                    throw TypeError(".protoManage.ReqNodeResourceList.UploaderType: array expected");
+                message.UploaderType = [];
+                for (let i = 0; i < object.UploaderType.length; ++i)
+                    switch (object.UploaderType[i]) {
+                    default:
+                    case "NotifySenderTypeUnknow":
+                    case 0:
+                        message.UploaderType[i] = 0;
+                        break;
+                    case "NotifySenderTypeUser":
+                    case 1:
+                        message.UploaderType[i] = 1;
+                        break;
+                    case "NotifySenderTypeNode":
+                    case 2:
+                        message.UploaderType[i] = 2;
+                        break;
+                    }
+            }
+            if (object.InvalidTime) {
+                if (!Array.isArray(object.InvalidTime))
+                    throw TypeError(".protoManage.ReqNodeResourceList.InvalidTime: array expected");
+                message.InvalidTime = [];
+                for (let i = 0; i < object.InvalidTime.length; ++i) {
+                    if (typeof object.InvalidTime[i] !== "object")
+                        throw TypeError(".protoManage.ReqNodeResourceList.InvalidTime: object expected");
+                    message.InvalidTime[i] = $root.protoManage.Time.fromObject(object.InvalidTime[i]);
+                }
+            }
+            if (object.UploadTime) {
+                if (!Array.isArray(object.UploadTime))
+                    throw TypeError(".protoManage.ReqNodeResourceList.UploadTime: array expected");
+                message.UploadTime = [];
+                for (let i = 0; i < object.UploadTime.length; ++i) {
+                    if (typeof object.UploadTime[i] !== "object")
+                        throw TypeError(".protoManage.ReqNodeResourceList.UploadTime: object expected");
+                    message.UploadTime[i] = $root.protoManage.Time.fromObject(object.UploadTime[i]);
+                }
+            }
+            if (object.Page != null) {
+                if (typeof object.Page !== "object")
+                    throw TypeError(".protoManage.ReqNodeResourceList.Page: object expected");
+                message.Page = $root.protoManage.Page.fromObject(object.Page);
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from a ReqNodeResourceList message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.ReqNodeResourceList
+         * @static
+         * @param {protoManage.ReqNodeResourceList} message ReqNodeResourceList
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        ReqNodeResourceList.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults) {
+                object.Name = [];
+                object.State = [];
+                object.UploaderName = [];
+                object.UploaderType = [];
+                object.InvalidTime = [];
+                object.UploadTime = [];
+            }
+            if (options.defaults)
+                object.Page = null;
+            if (message.Name && message.Name.length) {
+                object.Name = [];
+                for (let j = 0; j < message.Name.length; ++j)
+                    object.Name[j] = message.Name[j];
+            }
+            if (message.State && message.State.length) {
+                object.State = [];
+                for (let j = 0; j < message.State.length; ++j)
+                    object.State[j] = options.enums === String ? $root.protoManage.State[message.State[j]] : message.State[j];
+            }
+            if (message.UploaderName && message.UploaderName.length) {
+                object.UploaderName = [];
+                for (let j = 0; j < message.UploaderName.length; ++j)
+                    object.UploaderName[j] = message.UploaderName[j];
+            }
+            if (message.UploaderType && message.UploaderType.length) {
+                object.UploaderType = [];
+                for (let j = 0; j < message.UploaderType.length; ++j)
+                    object.UploaderType[j] = options.enums === String ? $root.protoManage.NotifySenderType[message.UploaderType[j]] : message.UploaderType[j];
+            }
+            if (message.InvalidTime && message.InvalidTime.length) {
+                object.InvalidTime = [];
+                for (let j = 0; j < message.InvalidTime.length; ++j)
+                    object.InvalidTime[j] = $root.protoManage.Time.toObject(message.InvalidTime[j], options);
+            }
+            if (message.UploadTime && message.UploadTime.length) {
+                object.UploadTime = [];
+                for (let j = 0; j < message.UploadTime.length; ++j)
+                    object.UploadTime[j] = $root.protoManage.Time.toObject(message.UploadTime[j], options);
+            }
+            if (message.Page != null && message.hasOwnProperty("Page"))
+                object.Page = $root.protoManage.Page.toObject(message.Page, options);
+            return object;
+        };
+
+        /**
+         * Converts this ReqNodeResourceList to JSON.
+         * @function toJSON
+         * @memberof protoManage.ReqNodeResourceList
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        ReqNodeResourceList.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return ReqNodeResourceList;
+    })();
+
+    protoManage.AnsNodeResourceList = (function() {
+
+        /**
+         * Properties of an AnsNodeResourceList.
+         * @memberof protoManage
+         * @interface IAnsNodeResourceList
+         * @property {number|null} [Length] AnsNodeResourceList Length
+         * @property {Array.<protoManage.INodeResource>|null} [NodeResourceList] AnsNodeResourceList NodeResourceList
+         */
+
+        /**
+         * Constructs a new AnsNodeResourceList.
+         * @memberof protoManage
+         * @classdesc Represents an AnsNodeResourceList.
+         * @implements IAnsNodeResourceList
+         * @constructor
+         * @param {protoManage.IAnsNodeResourceList=} [properties] Properties to set
+         */
+        function AnsNodeResourceList(properties) {
+            this.NodeResourceList = [];
+            if (properties)
+                for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
+                    if (properties[keys[i]] != null)
+                        this[keys[i]] = properties[keys[i]];
+        }
+
+        /**
+         * AnsNodeResourceList Length.
+         * @member {number} Length
+         * @memberof protoManage.AnsNodeResourceList
+         * @instance
+         */
+        AnsNodeResourceList.prototype.Length = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * AnsNodeResourceList NodeResourceList.
+         * @member {Array.<protoManage.INodeResource>} NodeResourceList
+         * @memberof protoManage.AnsNodeResourceList
+         * @instance
+         */
+        AnsNodeResourceList.prototype.NodeResourceList = $util.emptyArray;
+
+        /**
+         * Creates a new AnsNodeResourceList instance using the specified properties.
+         * @function create
+         * @memberof protoManage.AnsNodeResourceList
+         * @static
+         * @param {protoManage.IAnsNodeResourceList=} [properties] Properties to set
+         * @returns {protoManage.AnsNodeResourceList} AnsNodeResourceList instance
+         */
+        AnsNodeResourceList.create = function create(properties) {
+            return new AnsNodeResourceList(properties);
+        };
+
+        /**
+         * Encodes the specified AnsNodeResourceList message. Does not implicitly {@link protoManage.AnsNodeResourceList.verify|verify} messages.
+         * @function encode
+         * @memberof protoManage.AnsNodeResourceList
+         * @static
+         * @param {protoManage.IAnsNodeResourceList} message AnsNodeResourceList message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeResourceList.encode = function encode(message, writer) {
+            if (!writer)
+                writer = $Writer.create();
+            if (message.Length != null && Object.hasOwnProperty.call(message, "Length"))
+                writer.uint32(/* id 1, wireType 0 =*/8).int64(message.Length);
+            if (message.NodeResourceList != null && message.NodeResourceList.length)
+                for (let i = 0; i < message.NodeResourceList.length; ++i)
+                    $root.protoManage.NodeResource.encode(message.NodeResourceList[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+            return writer;
+        };
+
+        /**
+         * Encodes the specified AnsNodeResourceList message, length delimited. Does not implicitly {@link protoManage.AnsNodeResourceList.verify|verify} messages.
+         * @function encodeDelimited
+         * @memberof protoManage.AnsNodeResourceList
+         * @static
+         * @param {protoManage.IAnsNodeResourceList} message AnsNodeResourceList message or plain object to encode
+         * @param {$protobuf.Writer} [writer] Writer to encode to
+         * @returns {$protobuf.Writer} Writer
+         */
+        AnsNodeResourceList.encodeDelimited = function encodeDelimited(message, writer) {
+            return this.encode(message, writer).ldelim();
+        };
+
+        /**
+         * Decodes an AnsNodeResourceList message from the specified reader or buffer.
+         * @function decode
+         * @memberof protoManage.AnsNodeResourceList
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @param {number} [length] Message length if known beforehand
+         * @returns {protoManage.AnsNodeResourceList} AnsNodeResourceList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeResourceList.decode = function decode(reader, length) {
+            if (!(reader instanceof $Reader))
+                reader = $Reader.create(reader);
+            let end = length === undefined ? reader.len : reader.pos + length, message = new $root.protoManage.AnsNodeResourceList();
+            while (reader.pos < end) {
+                let tag = reader.uint32();
+                switch (tag >>> 3) {
+                case 1:
+                    message.Length = reader.int64();
+                    break;
+                case 2:
+                    if (!(message.NodeResourceList && message.NodeResourceList.length))
+                        message.NodeResourceList = [];
+                    message.NodeResourceList.push($root.protoManage.NodeResource.decode(reader, reader.uint32()));
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Decodes an AnsNodeResourceList message from the specified reader or buffer, length delimited.
+         * @function decodeDelimited
+         * @memberof protoManage.AnsNodeResourceList
+         * @static
+         * @param {$protobuf.Reader|Uint8Array} reader Reader or buffer to decode from
+         * @returns {protoManage.AnsNodeResourceList} AnsNodeResourceList
+         * @throws {Error} If the payload is not a reader or valid buffer
+         * @throws {$protobuf.util.ProtocolError} If required fields are missing
+         */
+        AnsNodeResourceList.decodeDelimited = function decodeDelimited(reader) {
+            if (!(reader instanceof $Reader))
+                reader = new $Reader(reader);
+            return this.decode(reader, reader.uint32());
+        };
+
+        /**
+         * Verifies an AnsNodeResourceList message.
+         * @function verify
+         * @memberof protoManage.AnsNodeResourceList
+         * @static
+         * @param {Object.<string,*>} message Plain object to verify
+         * @returns {string|null} `null` if valid, otherwise the reason why it is not
+         */
+        AnsNodeResourceList.verify = function verify(message) {
+            if (typeof message !== "object" || message === null)
+                return "object expected";
+            if (message.Length != null && message.hasOwnProperty("Length"))
+                if (!$util.isInteger(message.Length) && !(message.Length && $util.isInteger(message.Length.low) && $util.isInteger(message.Length.high)))
+                    return "Length: integer|Long expected";
+            if (message.NodeResourceList != null && message.hasOwnProperty("NodeResourceList")) {
+                if (!Array.isArray(message.NodeResourceList))
+                    return "NodeResourceList: array expected";
+                for (let i = 0; i < message.NodeResourceList.length; ++i) {
+                    let error = $root.protoManage.NodeResource.verify(message.NodeResourceList[i]);
+                    if (error)
+                        return "NodeResourceList." + error;
+                }
+            }
+            return null;
+        };
+
+        /**
+         * Creates an AnsNodeResourceList message from a plain object. Also converts values to their respective internal types.
+         * @function fromObject
+         * @memberof protoManage.AnsNodeResourceList
+         * @static
+         * @param {Object.<string,*>} object Plain object
+         * @returns {protoManage.AnsNodeResourceList} AnsNodeResourceList
+         */
+        AnsNodeResourceList.fromObject = function fromObject(object) {
+            if (object instanceof $root.protoManage.AnsNodeResourceList)
+                return object;
+            let message = new $root.protoManage.AnsNodeResourceList();
+            if (object.Length != null)
+                if ($util.Long)
+                    (message.Length = $util.Long.fromValue(object.Length)).unsigned = false;
+                else if (typeof object.Length === "string")
+                    message.Length = parseInt(object.Length, 10);
+                else if (typeof object.Length === "number")
+                    message.Length = object.Length;
+                else if (typeof object.Length === "object")
+                    message.Length = new $util.LongBits(object.Length.low >>> 0, object.Length.high >>> 0).toNumber();
+            if (object.NodeResourceList) {
+                if (!Array.isArray(object.NodeResourceList))
+                    throw TypeError(".protoManage.AnsNodeResourceList.NodeResourceList: array expected");
+                message.NodeResourceList = [];
+                for (let i = 0; i < object.NodeResourceList.length; ++i) {
+                    if (typeof object.NodeResourceList[i] !== "object")
+                        throw TypeError(".protoManage.AnsNodeResourceList.NodeResourceList: object expected");
+                    message.NodeResourceList[i] = $root.protoManage.NodeResource.fromObject(object.NodeResourceList[i]);
+                }
+            }
+            return message;
+        };
+
+        /**
+         * Creates a plain object from an AnsNodeResourceList message. Also converts values to other types if specified.
+         * @function toObject
+         * @memberof protoManage.AnsNodeResourceList
+         * @static
+         * @param {protoManage.AnsNodeResourceList} message AnsNodeResourceList
+         * @param {$protobuf.IConversionOptions} [options] Conversion options
+         * @returns {Object.<string,*>} Plain object
+         */
+        AnsNodeResourceList.toObject = function toObject(message, options) {
+            if (!options)
+                options = {};
+            let object = {};
+            if (options.arrays || options.defaults)
+                object.NodeResourceList = [];
+            if (options.defaults)
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
+                    object.Length = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.Length = options.longs === String ? "0" : 0;
+            if (message.Length != null && message.hasOwnProperty("Length"))
+                if (typeof message.Length === "number")
+                    object.Length = options.longs === String ? String(message.Length) : message.Length;
+                else
+                    object.Length = options.longs === String ? $util.Long.prototype.toString.call(message.Length) : options.longs === Number ? new $util.LongBits(message.Length.low >>> 0, message.Length.high >>> 0).toNumber() : message.Length;
+            if (message.NodeResourceList && message.NodeResourceList.length) {
+                object.NodeResourceList = [];
+                for (let j = 0; j < message.NodeResourceList.length; ++j)
+                    object.NodeResourceList[j] = $root.protoManage.NodeResource.toObject(message.NodeResourceList[j], options);
+            }
+            return object;
+        };
+
+        /**
+         * Converts this AnsNodeResourceList to JSON.
+         * @function toJSON
+         * @memberof protoManage.AnsNodeResourceList
+         * @instance
+         * @returns {Object.<string,*>} JSON object
+         */
+        AnsNodeResourceList.prototype.toJSON = function toJSON() {
+            return this.constructor.toObject(this, $protobuf.util.toJSONOptions);
+        };
+
+        return AnsNodeResourceList;
     })();
 
     protoManage.ReqNodeResourceUpload = (function() {
