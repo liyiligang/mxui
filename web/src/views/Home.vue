@@ -1,3 +1,19 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-row class="home flex-row-center-start">
         <el-row class="headView">
@@ -36,8 +52,6 @@ import {globals} from "../base/globals";
 import {convert} from "../base/convert";
 import {request} from "../base/request";
 import {refresh} from "../base/refresh";
-import {ElMessage} from "element-plus";
-
 
 export default defineComponent ({
     name: "Home",
@@ -56,6 +70,7 @@ export default defineComponent ({
         onMounted(()=>{
             initWs()
             initUserInfo()
+            refresh.watchGlobalAutoRefresh()
         })
 
         function initWs(){
@@ -71,27 +86,7 @@ export default defineComponent ({
             request.reqManagerByID(protoManage.Manager.create({})).then((response) => {
                 response.Token = globals.globalsData.manager.info.Token
                 globals.globalsData.manager.info = reactive(response)
-                initUserSetting(response.Setting)
             }).catch(error => {}).finally(()=>{})
-        }
-
-        function initUserSetting(data:string){
-            if (data != null){
-                if (globals.isJson(data)){
-                    let setting = JSON.parse(data)
-                    globals.globalsData.managerSetting.setting = setting
-                }
-                watch(() => globals.globalsData.managerSetting.setting, (newValue) => {
-                    request.reqManagerUpdateSetting(protoManage.Manager.create({
-                        Setting:JSON.stringify(newValue)
-                    })).then((response) => {}).catch(error => {}).finally(()=>{})
-                },{deep:true})
-            }else{
-                if (data != ""){
-                    ElMessage.error("用户配置解析失败, 将使用默认配置")
-                }
-            }
-            refresh.watchGlobalAutoRefresh()
         }
 
         function showToolbar():boolean {
@@ -123,7 +118,7 @@ export default defineComponent ({
 
 .bodyView{
     width: 100%;
-    height: calc(100% - 81px);
+    height: calc(100% - 82px);
 }
 
 .asideView{

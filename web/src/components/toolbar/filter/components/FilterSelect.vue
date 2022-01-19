@@ -1,9 +1,25 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-row class="filterSelectRow" type="flex" justify="start" align="middle">
         <el-row class="filterSelectHeadRow" type="flex" justify="space-between" align="middle">
             <div class="filterSelectText color-text-normal">{{ name }}</div>
         </el-row>
-        <el-select class="filterSelect" v-model="data.select" size="medium" @change="confirm">
+        <el-select class="filterSelect" v-model="data.select"  @change="confirm">
             <el-option v-for="(item, index) in options" :label="item.name" :value="String(index)"></el-option>
         </el-select>
     </el-row>

@@ -3850,9 +3850,6 @@ export namespace protoManage {
         /** ReqNodeResourceList UploaderType */
         UploaderType?: (protoManage.NotifySenderType[]|null);
 
-        /** ReqNodeResourceList InvalidTime */
-        InvalidTime?: (protoManage.ITime[]|null);
-
         /** ReqNodeResourceList UploadTime */
         UploadTime?: (protoManage.ITime[]|null);
 
@@ -3880,9 +3877,6 @@ export namespace protoManage {
 
         /** ReqNodeResourceList UploaderType. */
         public UploaderType: protoManage.NotifySenderType[];
-
-        /** ReqNodeResourceList InvalidTime. */
-        public InvalidTime: protoManage.ITime[];
 
         /** ReqNodeResourceList UploadTime. */
         public UploadTime: protoManage.ITime[];

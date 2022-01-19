@@ -1,7 +1,24 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
+
 <template>
     <el-card class="card cardViewFrame" @mouseenter="mouseEnter" @mouseleave="mouseLevel">
         <el-button v-if="isGray" class="cardViewFrameCloseButton"
-                   plain icon="el-icon-close" @click="closeClick"></el-button>
+                   plain :icon="Close" @click="closeClick"></el-button>
         <template v-if=hasHeader #header>
             <slot name="header"></slot>
         </template>
@@ -11,9 +28,10 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType, reactive} from "vue";
-import {protoManage} from "../../proto/manage";
+import {defineComponent, reactive} from "vue";
+import i18n from '../../base/i18n'
 import {ElMessageBox} from "element-plus";
+import {Close} from "@element-plus/icons";
 
 interface CardViewFrameInfo {
     isMouseHover:boolean
@@ -38,9 +56,9 @@ export default defineComponent ({
     setup(props, context){
         const data = reactive<CardViewFrameInfo>({isMouseHover:false})
         function closeClick(){
-            ElMessageBox.confirm('此操作将永久删除相关数据, 是否继续?', '警告', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
+            ElMessageBox.confirm(i18n.global.t('confirm.delete'), i18n.global.t('confirm.warn'), {
+                confirmButtonText: i18n.global.t('confirm.ok'),
+                cancelButtonText: i18n.global.t('confirm.cancel'),
                 type: 'warning'
             }).then(() => {
                 context.emit('closeClick');
@@ -55,7 +73,7 @@ export default defineComponent ({
             data.isMouseHover = false
         }
 
-        return {closeClick, mouseEnter, mouseLevel}
+        return {closeClick, mouseEnter, mouseLevel, Close}
     }
 })
 </script>

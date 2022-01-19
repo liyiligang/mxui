@@ -1,7 +1,23 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-tooltip effect="light" :content="getAutoRefreshTooltip()" placement="bottom">
         <el-button class="autoRefreshButton" plain @click="autoRefreshButtonClick">
-            <el-icon> <Refresh class="autoRefreshIcon" :class="getAutoRefreshButtonColor()"/> </el-icon>
+            <el-icon> <Refresh :class="getAutoRefreshButtonColor()"/> </el-icon>
         </el-button>
     </el-tooltip>
 </template>
@@ -12,6 +28,7 @@ import {globals} from "../../base/globals";
 import {Refresh} from "@element-plus/icons";
 import {useRoute} from "vue-router";
 import {routerPath} from "../../router";
+import i18n from '../../base/i18n'
 
 export default defineComponent ({
     name: "AutoRefreshButton",
@@ -36,7 +53,7 @@ export default defineComponent ({
         })
 
         function getAutoRefreshTooltip():string{
-            return props.isAutoRefresh?"自动同步已开启" : "自动同步已停止"
+            return props.isAutoRefresh?i18n.global.t('autoRefresh.start') : i18n.global.t('autoRefresh.stop')
         }
 
         function getAutoRefreshButtonColor():string{
@@ -60,9 +77,6 @@ export default defineComponent ({
     border:0;
     padding:0;
     margin-left:0 !important;
-}
-
-.autoRefreshIcon{
     font-size:25px;
 }
 </style>

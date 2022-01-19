@@ -1,46 +1,56 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-table class="resourceTable" :data="tableData" height="100%" highlight-current-row v-elTableInfiniteScroll="tableLoad">
-        <el-table-column label="编号" type="index" :index="indexMethod" align="center" width="120"></el-table-column>
-        <el-table-column label="资源名" align="center" width="160">
-            <template #default="scope">
-                <el-button type="text" class="resourceName" :class="[getStateColor(scope.$index)]" @click="resourceNameClick(scope.$index)">
-                    {{getResourceName(scope.$index)}}
-                </el-button>
-            </template>
-        </el-table-column>
-        <el-table-column label="资源大小" align="center" width="120">
-            <template #default="scope">
-                <div>{{getResourceSize(scope.$index)}}</div>
-            </template>
-        </el-table-column>
-        <el-table-column label="Md5" align="center" width="170">
-            <template #default="scope">
-                <div>{{getResourceMd5(scope.$index)}}</div>
-            </template>
-        </el-table-column>
-        <el-table-column label="下载次数" align="center" width="120">
-            <template #default="scope">
-                <div>{{getResourceDownLoadCnt(scope.$index)}}</div>
-            </template>
-        </el-table-column>
-
-        <el-table-column label="上传者" align="center" width="160">
+        <el-table-column :label="$t('nodeResource.table.id')" type="index" :index="indexMethod" align="center" width="120"></el-table-column>
+        <el-table-column :label="$t('nodeResource.table.uploader')" align="center" min-width="50">
             <template #default="scope">
                 <div>{{getUploaderName(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="上传源" align="center" width="150">
+        <el-table-column :label="$t('nodeResource.table.uploaderType')" align="center" width="80">
             <template #default="scope">
                 <div>{{getUploaderType(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="上传日期" align="center" width="100">
+        <el-table-column :label="$t('nodeResource.table.name')" align="center">
+            <template #default="scope">
+                <el-link :underline="false" :type=getNameColor(scope.$index) @click="resourceNameClick(scope.$index)">
+                    {{getResourceName(scope.$index)}}
+                </el-link>
+            </template>
+        </el-table-column>
+        <el-table-column :label="$t('nodeResource.table.size')" align="center" width="120">
+            <template #default="scope">
+                <div>{{getResourceSize(scope.$index)}}</div>
+            </template>
+        </el-table-column>
+        <el-table-column :label="$t('nodeResource.table.downLoadCnt')" align="center" width="120">
+            <template #default="scope">
+                <div>{{getResourceDownLoadCnt(scope.$index)}}</div>
+            </template>
+        </el-table-column>
+        <el-table-column :label="$t('nodeResource.table.date')" align="center" width="162">
             <template #default="scope">
                 <div>{{getUploaderTime(scope.$index)}}</div>
             </template>
         </el-table-column>
 
-        <el-table-column label="状态" align="center" width="80">
+        <el-table-column :label="$t('nodeResource.table.state')" align="center" width="80">
             <template #default="scope">
                 <div :class="[getStateColor(scope.$index)]">{{getResourceState(scope.$index)}}</div>
             </template>
@@ -52,7 +62,7 @@
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
 import {protoManage} from "../../proto/manage";
-import {globals} from "../../base/globals";
+import i18n from '../../base/i18n'
 import {convert} from "../../base/convert";
 import {request} from "../../base/request";
 
@@ -80,15 +90,15 @@ export default defineComponent ({
             return props.tableData[index].Md5
         }
         function getResourceSize(index){
-            return props.tableData[index].Sizes
+            return convert.renderSize(Number(props.tableData[index].Sizes))
         }
         function getResourceState(index){
             let state = props.tableData[index].State
             switch (state) {
                 case protoManage.State.StateNormal:
-                    return "正常"
+                    return i18n.global.t('nodeResource.state.normal')
                 default:
-                    return "已失效"
+                    return i18n.global.t('nodeResource.state.invalid')
             }
         }
         function getResourceDownLoadCnt(index){
@@ -101,16 +111,20 @@ export default defineComponent ({
             let uploaderType = props.tableData[index].UploaderType
             switch (uploaderType) {
                 case protoManage.NotifySenderType.NotifySenderTypeUser:
-                    return "用户"
+                    return i18n.global.t('nodeResource.uploaderType.user')
                 case protoManage.NotifySenderType.NotifySenderTypeNode:
-                    return "节点"
+                    return i18n.global.t('nodeResource.uploaderType.node')
                 default:
-                    return "未知"
+                    return i18n.global.t('nodeResource.uploaderType.unknown')
             }
         }
 
+        function getNameColor(index){
+            return convert.getColorWithResourceName(props.tableData[index].State)
+        }
+
         function getStateColor(index){
-            return convert.getColorByResourceState(props.tableData[index].State)
+            return convert.getColorWithResourceState(props.tableData[index].State)
         }
 
         function getUploaderTime(index){
@@ -132,7 +146,7 @@ export default defineComponent ({
         function tableLoad(){
 
         }
-        return {getResourceName, getResourceMd5, getResourceSize, getResourceDownLoadCnt,
+        return {getResourceName, getResourceSize, getResourceDownLoadCnt, getNameColor,
             getUploaderName, getUploaderType, getStateColor, getUploaderTime, getResourceState, indexMethod,
             resourceNameClick, tableLoad}
     }
@@ -142,15 +156,11 @@ export default defineComponent ({
 <style scoped>
 @import "../../css/color.css";
 @import "../../css/card.css";
-
-.resourceName {
-    font-size: 14px;
-}
-
 </style>
 
 <style>
 .resourceTable .el-table__body-wrapper{
     overflow-y: hidden !important;
+    height: auto !important;
 }
 </style>

@@ -1,11 +1,27 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-menu class="menu" @select="menuSelect" :default-active="data.activeName" :default-openeds="data.activeSubMenu">
-        <el-menu-item class="submenuSpanOne" :index="routerName.node">节点</el-menu-item>
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeFunc">方法</el-menu-item>
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeReport">报告</el-menu-item>
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeResource">资源</el-menu-item>
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeNotify">通知</el-menu-item>
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeTest">测试</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.node">{{$t('sideBar.node')}}</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeFunc">{{$t('sideBar.nodeFunc')}}</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeReport">{{$t('sideBar.nodeReport')}}</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeResource">{{$t('sideBar.nodeResource')}}</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeNotify">{{$t('sideBar.nodeNotify')}}</el-menu-item>
+        <el-menu-item class="submenuSpanOne" :index="routerName.nodeTest">{{$t('sideBar.nodeTest')}}</el-menu-item>
     </el-menu>
 </template>
 
@@ -13,6 +29,7 @@
 import {defineComponent, onMounted, reactive} from "vue";
 import { routerPath, routerName } from "../router";
 import { globals } from "../base/globals";
+import i18n from '../base/i18n'
 import {onBeforeRouteUpdate, useRoute} from "vue-router";
 
 interface SidebarInfo {
@@ -55,7 +72,7 @@ export default defineComponent ({
                     routerPath.toPath(key)
                     break
                 default:
-                    globals.viewError("错误的侧边栏菜单选项: " + key)
+                    globals.viewError(i18n.global.t('sideBar.errorKey') + key)
                     break
             }
         }

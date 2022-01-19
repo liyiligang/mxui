@@ -1,24 +1,40 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-row class="loginMain" type="flex" justify="center" align="middle" @keyup.enter.native="loginByName()">
-        <el-card v-show="data.isShowLogin" class="loginCard" v-loading="data.isLoad" element-loading-text="登录中...">
+        <el-card v-show="data.isShowLogin" class="loginCard" v-loading="data.isLoad" :element-loading-text="$t('login.logining')">
             <el-row type="flex" justify="center" align="middle">
                 <img class="loginLogo" src="../assets/logo.svg" alt="admin">
                 <el-row v-if="data.hasSystemInit" type="flex" justify="center" align="middle">
-                    <el-input class="loginInput" v-model="data.username" placeholder="用户名" clearable></el-input>
-                    <el-input class="loginInput" v-model="data.password" placeholder="密码" clearable show-password></el-input>
-                    <el-button class="loginButton" size="medium" type="primary" round @click="loginByName">登录</el-button>
+                    <el-input class="loginInput" v-model="data.username" :placeholder="$t('login.userName')" clearable></el-input>
+                    <el-input class="loginInput" v-model="data.password" :placeholder="$t('login.password')" clearable show-password></el-input>
+                    <el-button class="loginButton" type="primary" @click="loginByName">{{$t('login.login')}}</el-button>
                     <el-row class="loginToolRow" type="flex" justify="space-between" align="middle">
-                        <el-checkbox v-model="data.isAutoLogin" @change="autoLoginChanged">自动登录</el-checkbox>
-                        <el-button v-if="data.isShowRegister" type="text" @click="register">注册帐号</el-button>
+                        <el-checkbox v-model="data.isAutoLogin" @change="autoLoginChanged">{{$t('login.autoLogin')}}</el-checkbox>
+                        <el-button v-if="data.isShowRegister" type="text" @click="register">{{$t('login.register')}}</el-button>
                     </el-row>
                 </el-row>
                 <el-row v-else type="flex" justify="center" align="middle">
-                    <el-button class="createButton" type="primary" round @click="register">创建管理员</el-button>
+                    <el-button class="createButton" type="primary" @click="register">{{$t('login.createManager')}}</el-button>
                 </el-row>
             </el-row>
         </el-card>
     </el-row>
-    <Register v-model="data.registerVisible" title="注册帐号"></Register>
+    <Register v-model="data.registerVisible" :title="$t('login.register')" top-margin="25vh"></Register>
 </template>
 
 <script lang="ts">
@@ -27,7 +43,7 @@ import {protoManage} from "../proto/manage"
 import {globals} from "../base/globals"
 import {request} from "../base/request"
 import {routerName, routerPath} from '../router'
-import {ElMessage} from "element-plus";
+import i18n from '../base/i18n'
 import Register from "./Register.vue";
 
 interface LoginInfo {
@@ -62,7 +78,7 @@ export default defineComponent ({
         })
 
         function loginFinish(manager:protoManage.Manager){
-            ElMessage.success("登录成功");
+            globals.viewSuccess(i18n.global.t('login.loginSuccess'));
             localStorage.setItem(globals.globalsConfig.localStorageKey.token,  manager.Token);
             routerPath.toPath(routerName.node, {initPageNum:true, initPageSize:true})
         }

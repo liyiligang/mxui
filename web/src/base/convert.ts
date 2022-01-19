@@ -1,4 +1,21 @@
+/*
+ * Copyright 2021 liyiligang.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import {protoManage} from "../proto/manage";
+import i18n from '../base/i18n'
 
 export module convert {
     export function getColorByState(state: protoManage.State|undefined|null):string {
@@ -17,7 +34,15 @@ export module convert {
         return "color-state-main"
     }
 
-    export function getColorByResourceState(state: protoManage.State|undefined|null):string {
+    export function getColorWithResourceName(state: protoManage.State|undefined|null):string {
+        switch (state) {
+            case protoManage.State.StateNormal:
+                return "success"
+        }
+        return "danger"
+    }
+
+    export function getColorWithResourceState(state: protoManage.State|undefined|null):string {
         switch (state) {
             case protoManage.State.StateNormal:
                 return "color-state-success"
@@ -64,25 +89,13 @@ export module convert {
     export function getNodeStateName(state: protoManage.State):string {
         switch (state) {
             case protoManage.State.StateNormal:
-                return "正常"
+                return i18n.global.t('node.state.normal')
             case protoManage.State.StateWarn:
-                return "异常"
+                return i18n.global.t('node.state.warn')
             case protoManage.State.StateError:
-                return "停机"
+                return i18n.global.t('node.state.error')
         }
-        return "未知"
-    }
-
-    export function getNodeLinkStateName(state: protoManage.State):string {
-        switch (state) {
-            case protoManage.State.StateNormal:
-                return "已连接"
-            case protoManage.State.StateWarn:
-                return "连接中"
-            case protoManage.State.StateError:
-                return "已断开"
-        }
-        return "未知"
+        return i18n.global.t('node.state.unknown')
     }
 
     export function getStateViewType(level: protoManage.State|undefined|null):string {
@@ -102,15 +115,15 @@ export module convert {
     export function getManagerLevelName(level: protoManage.Level|undefined|null):string {
         switch (level) {
             case protoManage.Level.LevelPrimary:
-                return "访客"
+                return i18n.global.t('manager.level.primary')
             case protoManage.Level.LevelIntermediate:
-                return "员工"
+                return i18n.global.t('manager.level.intermediate')
             case protoManage.Level.LevelSenior:
-                return "管理员"
+                return i18n.global.t('manager.level.senior')
             case protoManage.Level.LevelSuper:
-                return "超级管理员"
+                return i18n.global.t('manager.level.super')
         }
-        return "无"
+        return i18n.global.t('manager.level.unknown')
     }
 
     export function getLevelViewType(level: protoManage.Level|undefined|null):string {
@@ -130,15 +143,15 @@ export module convert {
     export function getNodeFuncCallStateName(state: protoManage.State|undefined|null):string {
         switch (state) {
             case protoManage.State.StateUnknow:
-                return "超时"
+                return i18n.global.t('nodeFuncCall.state.timeout')
             case protoManage.State.StateNormal:
-                return "成功"
+                return i18n.global.t('nodeFuncCall.state.normal')
             case protoManage.State.StateWarn:
-                return "异常"
+                return i18n.global.t('nodeFuncCall.state.warn')
             case protoManage.State.StateError:
-                return "失败"
+                return i18n.global.t('nodeFuncCall.state.error')
         }
-        return "未知"
+        return i18n.global.t('nodeFuncCall.state.unknown')
     }
 
     export function getNodeFuncCallStateIcon(state: protoManage.State|undefined|null):string {
@@ -156,41 +169,55 @@ export module convert {
     }
 
     export function getNodeFuncParameterTypeName():string {
-        return "表单"
+        return i18n.global.t('nodeFunc.parameterTypeName.form')
     }
 
     export function getNodeFuncReturnTypeName(type: protoManage.NodeFuncReturnType|undefined|null):string {
         switch (type) {
             case protoManage.NodeFuncReturnType.NotReturn:
-                return "无"
+                return i18n.global.t('nodeFunc.returnTypeName.notReturn')
             case protoManage.NodeFuncReturnType.Error:
-                return "错误"
+                return i18n.global.t('nodeFunc.returnTypeName.error')
             case protoManage.NodeFuncReturnType.Text:
-                return "文本"
+                return i18n.global.t('nodeFunc.returnTypeName.text')
             case protoManage.NodeFuncReturnType.Json:
-                return "对象"
+                return i18n.global.t('nodeFunc.returnTypeName.json')
             case protoManage.NodeFuncReturnType.Link:
-                return "链接"
+                return i18n.global.t('nodeFunc.returnTypeName.link')
             case protoManage.NodeFuncReturnType.Image:
-                return "图片"
+                return i18n.global.t('nodeFunc.returnTypeName.image')
             case protoManage.NodeFuncReturnType.Media:
-                return "媒体"
+                return i18n.global.t('nodeFunc.returnTypeName.media')
             case protoManage.NodeFuncReturnType.File:
-                return "文件"
+                return i18n.global.t('nodeFunc.returnTypeName.file')
             case protoManage.NodeFuncReturnType.Table:
-                return "表格"
+                return i18n.global.t('nodeFunc.returnTypeName.table')
             case protoManage.NodeFuncReturnType.Charts:
-                return "图表"
+                return i18n.global.t('nodeFunc.returnTypeName.charts')
         }
-        return "未知"
+        return i18n.global.t('nodeFunc.returnTypeName.unknown')
+    }
+
+    export function renderSize(fileSize:number):string{
+        if(null==fileSize){
+            return "0 Bytes";
+        }
+        let unitArr = ["B","KB","MB","GB","TB","PB","EB","ZB","YB"];
+        let index=0;
+        let srcSize = parseFloat(String(fileSize));
+        index=Math.floor(Math.log(srcSize)/Math.log(1024));
+        let size =srcSize/Math.pow(1024,index);
+        let v = size.toFixed(2);
+        return v+unitArr[index];
     }
 
     export function getNodeReportIntervalStr(interval: number):string {
         if (interval <= 0) {
-            return "手动"
+            return i18n.global.t('time.manual')
         }
-        let conf = [{max:1000, name:"毫秒"}, {max:60, name:"秒"},{max:60, name:"分"},
-            {max:24, name:"时"}, {max:30, name:"天"}]
+        let conf = [{max:1000, name:i18n.global.t('time.ms')}, {max:60, name:i18n.global.t('time.s')},
+            {max:60, name:i18n.global.t('time.min')}, {max:24, name:i18n.global.t('time.hour')},
+            {max:30, name:i18n.global.t('time.day')}]
 
         let calc = function (index:number, val:number):string {
             if (index >= conf.length){
@@ -211,7 +238,7 @@ export module convert {
             }
             return val + f.name
         }
-        return calc(0, interval) + "/次"
+        return calc(0, interval) + "/"+i18n.global.t('time.once')
     }
 
     export function isGrayByState(state: protoManage.State):boolean {
@@ -247,12 +274,12 @@ export module convert {
             return s<10?"0"+s:s;
         }
         let date = new Date(timeStamp)
-        let year = date.getFullYear();  //取得4位数的年份
-        let month = date.getMonth() + 1;  //取得日期中的月份，其中0表示1月，11表示12月
-        let day = date.getDate();      //返回日期月份中的天数（1到31）
-        let hour = date.getHours();     //返回日期中的小时数（0到23）
-        let minute = date.getMinutes(); //返回日期中的分钟数（0到59）
-        let second = date.getSeconds(); //返回日期中的秒数（0到59）
+        let year = date.getFullYear();
+        let month = date.getMonth() + 1;
+        let day = date.getDate();
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
         return year + "-" + two(month) + "-" + two(day) + " " + two(hour) + ":" + two(minute) + ":" + two(second);
     }
 

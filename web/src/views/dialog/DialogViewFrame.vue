@@ -1,7 +1,23 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-dialog
         :width=width
-        top="12vh"
+        :top=topMargin
         :destroy-on-close="destroyOnClose"
         :modelValue="modelValue"
         :show-close="false"
@@ -14,27 +30,23 @@
             <el-row class="dialogViewFrameTitleRow" type="flex" justify="space-between" align="middle" >
                 <span class="dialogViewFrameTitle" :class=convert.getColorByLevel(level)>{{title}}</span>
                 <el-row type="flex" justify="end" align="middle">
-                    <el-tooltip v-if="showSetting" effect="light" content="设置(ctrl+q)" placement="bottom">
-                        <el-button  class="dialogViewFrameButton" icon="el-icon-setting" plain
-                                    @click="setting"></el-button>
+                    <el-tooltip v-if="showSetting" effect="light" :content="$t('dialog.frame.setting')" placement="bottom">
+                        <el-button  class="dialogViewFrameButton" :icon="Setting" plain @click="setting"></el-button>
                     </el-tooltip>
-                    <el-tooltip v-if="showAutoRefresh" effect="light" content="同步(ctrl+space)" placement="bottom">
-                        <el-button  :class="data.autoRefreshButtonColor" class="dialogViewFrameButton" icon="el-icon-refresh" plain
-                                    @click="autoRefresh"></el-button>
+                    <el-tooltip v-if="showAutoRefresh" effect="light" :content="$t('dialog.frame.sync')" placement="bottom">
+                        <el-button  class="dialogViewFrameButton" plain @click="autoRefresh">
+                            <el-icon> <Refresh :class="data.autoRefreshButtonColor"/> </el-icon>
+                        </el-button>
                     </el-tooltip>
-                    <el-tooltip v-if="showRefresh" effect="light" content="刷新(~)" placement="bottom">
-                        <el-button  class="dialogViewFrameButton" icon="el-icon-refresh-right" plain
-                                   @click="refresh"></el-button>
+                    <el-tooltip v-if="showRefresh" effect="light" :content="$t('dialog.frame.update')" placement="bottom">
+                        <el-button  class="dialogViewFrameButton" :icon="RefreshRight" plain @click="refresh"></el-button>
                     </el-tooltip>
-                    <el-tooltip v-if="showFullScreen" effect="light" content="全屏(ctrl+enter)" placement="bottom">
-                        <el-button class="dialogViewFrameButton"
-                                   icon="el-icon-full-screen" plain @click="fullScreen"></el-button>
+                    <el-tooltip v-if="showFullScreen" effect="light" :content="$t('dialog.frame.fullScreen')" placement="bottom">
+                        <el-button class="dialogViewFrameButton" :icon="FullScreen" plain @click="fullScreen"></el-button>
                     </el-tooltip>
-                    <el-tooltip effect="light" content="关闭(esc)" placement="bottom">
-                        <el-button class="dialogViewFrameButton" icon="el-icon-close" plain
-                                   @click="close"></el-button>
+                    <el-tooltip effect="light" :content="$t('dialog.frame.close')" placement="bottom">
+                        <el-button class="dialogViewFrameButton" :icon="Close" plain @click="close"></el-button>
                     </el-tooltip>
-
                 </el-row>
             </el-row>
         </template>
@@ -48,6 +60,7 @@ import {defineComponent, onMounted, reactive} from "vue";
 import { convert } from "../../base/convert";
 import {protoManage} from "../../proto/manage";
 import {globals} from "../../base/globals";
+import {Setting, Refresh, RefreshRight, FullScreen, Close} from "@element-plus/icons";
 
 interface DialogViewFrameInfo {
     fullScreen:boolean
@@ -58,7 +71,9 @@ interface DialogViewFrameInfo {
 export default defineComponent ({
     name: "DialogViewFrame",
     emits:['update:modelValue', 'refresh', 'autoRefresh', 'setting'],
-    components: {},
+    components: {
+        Refresh
+    },
     props:{
         modelValue:{
             type: Boolean,
@@ -67,6 +82,10 @@ export default defineComponent ({
         title:{
             type: String,
             default: ""
+        },
+        topMargin:{
+            type: String,
+            default: "12vh"
         },
         width:{
             type: String,
@@ -129,7 +148,7 @@ export default defineComponent ({
 
         function initData(){
             data.fullScreen = false
-            data.autoRefreshButtonColor = ""
+            data.autoRefreshButtonColor = "color-text-normal"
         }
 
         function getDialogViewFrameClass() {
@@ -152,7 +171,7 @@ export default defineComponent ({
         function autoRefresh(event) {
             if (props.showAutoRefresh){
                 data.autoRefresh = !data.autoRefresh
-                data.autoRefreshButtonColor = data.autoRefresh ? "color-state-success":""
+                data.autoRefreshButtonColor = data.autoRefresh ? "color-state-success":"color-text-normal"
                 globals.elButtonBlur(event)
                 context.emit("autoRefresh", data.autoRefresh)
             }
@@ -180,7 +199,8 @@ export default defineComponent ({
             initData()
         }
 
-        return {data, convert, getDialogViewFrameClass, refresh, autoRefresh, setting, fullScreen, close, open}
+        return {data, convert, getDialogViewFrameClass, refresh, autoRefresh, setting, fullScreen, close, open,
+            Setting, Refresh, RefreshRight, FullScreen, Close}
     }
 })
 </script>

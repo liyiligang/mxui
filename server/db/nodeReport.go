@@ -17,6 +17,7 @@
 package db
 
 import (
+	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
 	"github.com/liyiligang/mxrpc/typedef/orm"
 	"github.com/pkg/errors"
@@ -80,7 +81,7 @@ func (db *Server) FindNodeByNodeReport(req *protoManage.ReqNodeReportList) ([]or
 	subQuery2 := db.Gorm.Select("t.nodeID").
 		Table("(?) as t", subQuery1)
 	var nodeList []orm.Node
-	err := db.Gorm.Where("id = any(?)", subQuery2).Find(&nodeList).Error
+	err := db.Gorm.Where("id in(?)", subQuery2).Find(&nodeList).Error
 	return nodeList, err
 }
 
@@ -120,7 +121,7 @@ func (db *Server) SetNodeReportFilter(tx *gorm.DB, req *protoManage.ReqNodeRepor
 	}
 	tx.Where(sql, name...)
 
-	sql = db.spliceSql("nodeID = any(select id from node where name like ?)", len(req.NodeName), "or")
+	sql = db.spliceSql("nodeID in(select id from node where name like ?)", len(req.NodeName), "or")
 	var nodeName []interface{}
 	for _, item := range req.NodeName {
 		nodeName = append(nodeName, "%"+item+"%")
@@ -140,17 +141,17 @@ func (db *Server) SetNodeReportFilter(tx *gorm.DB, req *protoManage.ReqNodeRepor
 	var senderTime []interface{}
 	for index, item := range req.UpdateTime {
 		if item.BeginTime > 0 {
-			sql += "(UNIX_TIMESTAMP(updatedAt) >= ?"
-			senderTime = append(senderTime, item.BeginTime)
+			sql += "(updatedAt >= ?"
+			senderTime = append(senderTime, Jtool.TimeUnixToFormat(item.BeginTime))
 			if item.EndTime > 0 {
-				sql += " and UNIX_TIMESTAMP(updatedAt) <= ?)"
-				senderTime = append(senderTime, item.EndTime)
+				sql += " and updatedAt <= ?)"
+				senderTime = append(senderTime, Jtool.TimeUnixToFormat(item.EndTime))
 			}else {
 				sql += ")"
 			}
 		}else {
-			sql += "(UNIX_TIMESTAMP(updatedAt) <= ?)"
-			senderTime = append(senderTime, item.EndTime)
+			sql += "(updatedAt <= ?)"
+			senderTime = append(senderTime, Jtool.TimeUnixToFormat(item.EndTime))
 		}
 		if index < len(req.UpdateTime)-1 {
 			sql += " "+ "or" + " "

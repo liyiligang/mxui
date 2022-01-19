@@ -34,7 +34,7 @@ func (db *Server) DelNodeFuncCallByNodeFuncID(nodeFuncCall orm.NodeFuncCall) err
 
 func (db *Server) DelNodeFuncCallByNodeID(nodeID int64) error {
 	subQuery1 := db.Gorm.Select("id").Model(&orm.NodeFunc{}).Where("nodeID=?", nodeID)
-	return db.Gorm.Where("funcID = any(?)", subQuery1).Delete(&orm.NodeFuncCall{}).Error
+	return db.Gorm.Where("funcID in(?)", subQuery1).Delete(&orm.NodeFuncCall{}).Error
 }
 
 //按ID更新节点方法调用
@@ -87,9 +87,9 @@ func (db *Server) FindLastNodeFuncCallByNodeFunc(req *protoManage.ReqNodeFuncCal
 	subQuery1 := tx.Model(&orm.NodeFunc{})
 	subQuery2 := db.Gorm.Select("t.id").Table("(?) as t", subQuery1)
 	subQuery3 := db.Gorm.Select("max(id)").Table("nodeFuncCall").
-		Where("funcID = any(?)", subQuery2).Group("funcID")
+		Where("funcID in(?)", subQuery2).Group("funcID")
 	var nodeFuncCallList []orm.NodeFuncCall
-	err := db.Gorm.Where("id = any(?)", subQuery3).Find(&nodeFuncCallList).Error
+	err := db.Gorm.Where("id in(?)", subQuery3).Find(&nodeFuncCallList).Error
 	return nodeFuncCallList, err
 }
 

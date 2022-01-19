@@ -1,7 +1,23 @@
+/*
+ * Copyright 2021 liyiligang.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import {ElMessage, ElNotification} from "element-plus";
 import {protoManage} from "../proto/manage";
-import {globals} from "../base/globals";
-import {inject} from "vue";
+import {globals} from "./globals";
+import i18n from './i18n'
 
 export let ws:WebSocket|null = null
 export let reconnectCnt = 0
@@ -17,7 +33,7 @@ export module websocket {
             } else if ('MozWebSocket' in window) {
                 ws = new WebSocket(addr)
             } else {
-                globals.viewWarn("当前浏览器不支持websocket协议, 部分功能将无法使用")
+                globals.viewWarn(i18n.global.t('websocket.notSupport'))
             }
             if (ws != null){
                 ws.onopen = onOpen
@@ -26,29 +42,29 @@ export module websocket {
                 ws.onmessage = onMessage
             }
         } catch (e) {
-            globals.viewError("websocket初始化错误: " + e)
+            globals.viewError(i18n.global.t('websocket.initError') + e)
         }
 
         function wsReconnect() {
             reconnectCnt++
             setTimeout(function () {
-                ElMessage.warning("正在尝试重新连接服务器......"+ reconnectCnt + "次");
+                globals.viewWarn(i18n.global.t('websocket.reconnect', {msg:reconnectCnt}));
                 wsConnect(addr);
             }, globals.globalsConfig.wsConfig.wsReconnectTime);
         }
 
         function onOpen(ev: Event) {
             if (reconnectCnt != 0){
-                ElMessage.success("网络连接成功");
+                globals.viewSuccess(i18n.global.t('websocket.reconnectSuccess'));
                 reconnectCnt = 0
             }
         }
 
         function onClose(ev: CloseEvent) {
             if (reconnectCnt == 0 && !isClosed) {
-                ElMessage.error("网络连接已断开: "+ev.reason + '(' + ev.code + ')');
+                globals.viewError(i18n.global.t('websocket.disConnect')+ev.reason + '(' + ev.code + ')');
             }
-            console.warn("websocket连接关闭: ", ev);
+            console.warn("websocket is closed: ", ev);
             if (ev.code != websocketCloseByServer){
                 wsReconnect()
             }else{
@@ -59,7 +75,7 @@ export module websocket {
         }
 
         function onError(ev: Event) {
-            console.error("websocket连接错误: ", ev);
+            console.error("websocket error: ", ev);
         }
 
         function onMessage(ev: MessageEvent) {
@@ -90,7 +106,7 @@ export module websocket {
                 nodeFuncCallAns(msg.message)
                 break
             default:
-                globals.viewError("错误的websocket指令: " + msg.order)
+                globals.viewError(i18n.global.t('websocket.orderError') + msg.order)
                 break
         }
     }
@@ -124,7 +140,7 @@ export module websocket {
     function notifyInfo(msg:protoManage.NodeNotify){
         if (msg.SenderType == protoManage.NotifySenderType.NotifySenderTypeNode){
             ElNotification({
-                title: "节点：" + msg.SenderID,
+                title: msg.SenderName,
                 message: msg.Message,
                 type: 'info',
                 offset: notifyOffset
@@ -137,7 +153,7 @@ export module websocket {
     function notifySuccess(msg:protoManage.NodeNotify){
         if (msg.SenderType == protoManage.NotifySenderType.NotifySenderTypeNode){
             ElNotification({
-                title: "节点：" + msg.SenderID,
+                title: msg.SenderName,
                 message: msg.Message,
                 type: 'success',
                 offset: notifyOffset
@@ -150,7 +166,7 @@ export module websocket {
     function notifyWarn(msg:protoManage.NodeNotify){
         if (msg.SenderType == protoManage.NotifySenderType.NotifySenderTypeNode){
             ElNotification({
-                title: "节点：" + msg.SenderID,
+                title: msg.SenderName,
                 message: msg.Message,
                 type: 'warning',
                 offset: notifyOffset
@@ -163,7 +179,7 @@ export module websocket {
     function notifyError(msg:protoManage.NodeNotify){
         if (msg.SenderType == protoManage.NotifySenderType.NotifySenderTypeNode){
             ElNotification({
-                title: "节点：" + msg.SenderID,
+                title: msg.SenderName,
                 message: msg.Message,
                 type: 'error',
                 offset: notifyOffset

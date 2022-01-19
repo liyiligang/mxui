@@ -1,29 +1,45 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-table
         ref="funcCallTable" :data="tableData" @current-change="tableSelect"
         v-elTableInfiniteScroll="tableLoad" height="100%" highlight-current-row>
-        <el-table-column label="编号" type="index" :index="indexMethod" align="center" width="80"></el-table-column>
-        <el-table-column label="调用者" align="center" width="100">
+        <el-table-column :label="$t('nodeFuncCall.table.id')" type="index" :index="indexMethod" align="center" width="80"></el-table-column>
+        <el-table-column :label="$t('nodeFuncCall.table.caller')" align="center">
             <template #default="scope">
                 <div>{{getManagerNickName(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="状态" align="center" width="80">
+        <el-table-column :label="$t('nodeFuncCall.table.state')" align="center" width="80">
             <template #default="scope">
                 <div :class="[getStateColor(scope.$index)]">{{getState(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="参数" align="center" width="80">
+        <el-table-column :label="$t('nodeFuncCall.table.parameter')" align="center" width="100">
             <template #default="scope">
                 <el-button type="text" @click="clickParameter(scope.$index)">{{getParameterTypeName()}}</el-button>
             </template>
         </el-table-column>
-        <el-table-column label="返回值" align="center" width="80">
+        <el-table-column :label="$t('nodeFuncCall.table.returnVal')" align="center" width="100">
             <template #default="scope">
                 <el-button type="text" @click="clickReturnVal(scope.$index)">{{getReturnValTypeName(scope.$index)}}</el-button>
             </template>
         </el-table-column>
-        <el-table-column label="日期" align="center" width="160">
+        <el-table-column :label="$t('nodeFuncCall.table.date')" align="center" width="162">
             <template #default="scope">
                 <div>{{getTime(scope.$index)}}</div>
             </template>

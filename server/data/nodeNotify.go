@@ -29,25 +29,24 @@ func (data *Data) NodeNotifyAdd(protoNodeNotify *protoManage.NodeNotify, isSend 
 	 if err := check.NodeNotifyCheck(protoNodeNotify); err != nil {
 		 return err
 	 }
-	 name := ""
 	 if protoNodeNotify.SenderType == protoManage.NotifySenderType_NotifySenderTypeNode {
 		node := protoManage.Node{Base: protoManage.Base{ID: protoNodeNotify.SenderID}}
 		err := data.NodeFindByID(&node)
 		if err != nil {
 			return err
 		}
-		name = node.Name
+		protoNodeNotify.SenderName = node.Name
 	 }else if protoNodeNotify.SenderType == protoManage.NotifySenderType_NotifySenderTypeUser{
 		manager := protoManage.Manager{}
 		err := data.ManagerFindByID(protoNodeNotify.SenderID, &manager)
 		if err != nil {
 			return err
 		}
-		name = manager.Name
+		protoNodeNotify.SenderName = manager.Name
 	 }
 	 if err := data.DB.AddNodeNotify(orm.NodeNotify{
 		SenderID: protoNodeNotify.SenderID,
-		SenderName: name,
+		SenderName: protoNodeNotify.SenderName,
 		SenderType: int64(protoNodeNotify.SenderType),
 		Message: protoNodeNotify.Message,
 		State: int32(protoNodeNotify.State),

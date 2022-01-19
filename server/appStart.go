@@ -33,6 +33,7 @@ import (
 	"github.com/liyiligang/mxrpc/typedef/orm"
 	"github.com/robfig/cron/v3"
 	"google.golang.org/grpc"
+	"io/ioutil"
 	"log"
 	"os"
 	"time"
@@ -52,6 +53,7 @@ func (app *App) InitConfig(){
 func (app *App) InitLogServer(){
 	logConfig := Jlog.LogInitConfig{
 		Debug:      config.LocalConfig.Debug,
+		Level:      config.LocalConfig.Log.Level,
 		LocalPath:  config.LocalConfig.Log.Path,
 		MaxSize:    config.LocalConfig.Log.MaxSize,
 		MaxBackups: config.LocalConfig.Log.MaxNum,
@@ -88,11 +90,27 @@ func (app *App) InitTimer() {
 	if err != nil {
 		Jlog.Fatal("init timer fail", "error", err)
 	}
+	Jlog.Info("timer component is start")
+}
+
+func (app *App) StartTimer() error {
+	err := app.Data.NodeResourceDelWithTimer()
+	if err != nil {
+		return err
+	}
+	app.Timer.Start()
+	return nil
+}
+
+func (app *App) StopTimer() error {
+	app.Timer.Stop()
+	return nil
 }
 
 //启动orm服务
 func (app *App) InitDBServer() error {
 	db, err := Jorm.GormInit(Jorm.OrmInitConfig{
+		Name: 		 config.LocalConfig.DB.Name,
 		SqlDsn:      config.LocalConfig.DB.Connect,
 		MaxKeepConn: config.LocalConfig.DB.MaxKeepConn,
 		MaxConn:     config.LocalConfig.DB.MaxConn,
@@ -215,7 +233,7 @@ func (app *App) InitWebServer() error {
 		//r.StaticFS("/file", http.Dir(config.LocalConfig.File.SavePath))
 	}
 
-	httpServer := Jweb.WebInit(Jweb.WebInitConfig{
+	webConfig := Jweb.WebInitConfig{
 		Debug:          config.LocalConfig.Debug,
 		Addr:           config.LocalConfig.HTTP.ListenAddr,
 		IsHttps:        config.LocalConfig.HTTP.UseHTTPS,
@@ -223,7 +241,12 @@ func (app *App) InitWebServer() error {
 		PublicKeyPath:  config.LocalConfig.HTTP.HTTPS.PublicKeyPath,
 		PrivateKeyPath: config.LocalConfig.HTTP.HTTPS.PrivateKeyPath,
 		RouteCall:      routeFunc,
-	})
+	}
+	if !config.LocalConfig.HTTP.ShowLog {
+		webConfig.LogWrite = ioutil.Discard
+	}
+
+	httpServer := Jweb.WebInit(webConfig)
 	app.HttpServer = httpServer
 	Jlog.Info("web component is start")
 	return nil

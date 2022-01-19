@@ -1,22 +1,38 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-table class="notifyTable" :data="tableData" height="100%" highlight-current-row v-elTableInfiniteScroll="tableLoad">
-        <el-table-column label="编号" type="index" :index="indexMethod" align="center" width="120"></el-table-column>
-        <el-table-column label="通知者" align="center" width="200">
+        <el-table-column :label="$t('nodeNotify.table.id')" type="index" :index="indexMethod" align="center" width="120"></el-table-column>
+        <el-table-column :label="$t('nodeNotify.table.sender')" align="center" width="200">
             <template #default="scope">
                 <div>{{getSenderName(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="通知类型" align="center" width="80">
+        <el-table-column :label="$t('nodeNotify.table.sendType')" align="center" width="80">
             <template #default="scope">
                 <div>{{getSenderType(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="消息" align="center">
+        <el-table-column :label="$t('nodeNotify.table.message')" align="center">
             <template #default="scope">
                 <div :class="[getStateColor(scope.$index)]">{{getMessage(scope.$index)}}</div>
             </template>
         </el-table-column>
-        <el-table-column label="日期" align="center" width="160">
+        <el-table-column :label="$t('nodeNotify.table.date')" align="center" width="162">
             <template #default="scope">
                 <div>{{getTime(scope.$index)}}</div>
             </template>
@@ -28,7 +44,7 @@
 <script lang="ts">
 import {defineComponent, PropType} from "vue";
 import {protoManage} from "../../proto/manage";
-import {globals} from "../../base/globals";
+import i18n from '../../base/i18n'
 import {convert} from "../../base/convert";
 
 interface NodeNotifyTableInfo {
@@ -44,11 +60,7 @@ export default defineComponent ({
         tableData:{
             type: Array as PropType<protoManage.INodeNotify[]>,
             default: () => []
-        },
-        nodeMap:{
-            type: Object as PropType<Map<number, protoManage.INode>>,
-            default: new Map<number, protoManage.INode>()
-        },
+        }
     },
     setup(props){
 
@@ -60,11 +72,11 @@ export default defineComponent ({
             let senderType = props.tableData[index].SenderType
             switch (senderType) {
                 case protoManage.NotifySenderType.NotifySenderTypeUser:
-                    return "用户"
+                    return i18n.global.t('nodeNotify.senderType.user')
                 case protoManage.NotifySenderType.NotifySenderTypeNode:
-                    return "节点"
+                    return i18n.global.t('nodeNotify.senderType.node')
                 default:
-                    return "未知"
+                    return i18n.global.t('nodeNotify.senderType.unknown')
             }
         }
 
@@ -100,5 +112,6 @@ export default defineComponent ({
 <style>
 .notifyTable .el-table__body-wrapper{
     overflow-y: hidden !important;
+    height: auto !important;
 }
 </style>

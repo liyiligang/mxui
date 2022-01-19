@@ -1,13 +1,29 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-row class="filterInputRow" type="flex" justify="start" align="middle">
         <el-row class="filterInputHeadRow" type="flex" justify="space-between" align="middle">
             <div class="filterInputText color-text-normal">{{ name }}</div>
-            <el-tooltip effect="light" content="提交" placement="bottom">
-                <el-button  class="filterInputAddButton" icon="el-icon-search" plain
+            <el-tooltip effect="light" :content="$t('filter.tips.submit')" placement="bottom">
+                <el-button  class="filterInputAddButton" :icon="Search" plain
                             @click="confirm"></el-button>
             </el-tooltip>
         </el-row>
-        <el-input class="filterInput" v-model="data.input" size="small" clearable></el-input>
+        <el-input class="filterInput" v-model="data.input" clearable></el-input>
     </el-row>
 </template>
 
@@ -16,6 +32,7 @@
 import {defineComponent, onMounted, reactive} from "vue";
 import {useRoute} from "vue-router";
 import {convert} from "../../../../base/convert";
+import {Search} from "@element-plus/icons";
 
 interface FilterInputInfo {
     input:string
@@ -63,7 +80,7 @@ export default defineComponent ({
             }
             data.input = ""
         }
-        return {data, confirm}
+        return {data, confirm, Search}
     }
 
 })

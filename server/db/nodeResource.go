@@ -18,6 +18,7 @@ package db
 
 import (
 	"errors"
+	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
 	"github.com/liyiligang/mxrpc/typedef/config"
 	"github.com/liyiligang/mxrpc/typedef/orm"
@@ -55,9 +56,8 @@ func (db *Server) FindNodeResourceWithValid(nodeResource orm.NodeResource) error
 //获取过期节点资源
 func (db *Server) FindNodeResourceWithInvalid() ([]orm.NodeResource, error) {
 	var nodeResourceList []orm.NodeResource
-	err := db.Gorm.Debug().Where("State=? and UNIX_TIMESTAMP(updatedAt) <= ?",
-		protoManage.State_StateNormal, time.Now().Add(-24*time.Hour*time.Duration(config.LocalConfig.File.MaxAge)).
-		Unix()).Find(&nodeResourceList).Error
+	err := db.Gorm.Where("State=? and updatedAt<=?", protoManage.State_StateNormal,
+		time.Now().Add(-24*time.Hour*time.Duration(config.LocalConfig.File.MaxAge))).Find(&nodeResourceList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nodeResourceList, nil
 	}
@@ -119,17 +119,17 @@ func (db *Server) SetNodeResourceFilter(tx *gorm.DB, req *protoManage.ReqNodeRes
 	var uploadTime []interface{}
 	for index, item := range req.UploadTime {
 		if item.BeginTime > 0 {
-			sql += "(UNIX_TIMESTAMP(updatedAt) >= ?"
-			uploadTime = append(uploadTime, item.BeginTime)
+			sql += "(updatedAt >= ?"
+			uploadTime = append(uploadTime, Jtool.TimeUnixToFormat(item.BeginTime))
 			if item.EndTime > 0 {
-				sql += " and UNIX_TIMESTAMP(updatedAt) <= ?)"
-				uploadTime = append(uploadTime, item.EndTime)
+				sql += " and updatedAt <= ?)"
+				uploadTime = append(uploadTime, Jtool.TimeUnixToFormat(item.EndTime))
 			}else {
 				sql += ")"
 			}
 		}else {
-			sql += "(UNIX_TIMESTAMP(updatedAt) <= ?)"
-			uploadTime = append(uploadTime, item.EndTime)
+			sql += "(updatedAt <= ?)"
+			uploadTime = append(uploadTime, Jtool.TimeUnixToFormat(item.EndTime))
 		}
 		if index < len(req.UploadTime)-1 {
 			sql += " "+ "or" + " "

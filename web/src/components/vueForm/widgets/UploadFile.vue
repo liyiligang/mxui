@@ -1,3 +1,19 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
 
 </template>
@@ -5,6 +21,7 @@
 <script lang="ts">
 
 import { defineComponent, resolveComponent, h, ref, getCurrentInstance } from 'vue';
+import i18n from '../../../base/i18n'
 
 export default defineComponent ({
     name: "UploadFile",
@@ -18,7 +35,7 @@ export default defineComponent ({
             default: (res:any) =>{return ""}
         },
         btnText: {
-            default: '点击上传',
+            default: i18n.global.t('file.uploadTips'),
             type: String,
         },
         slots: {
@@ -84,12 +101,12 @@ export default defineComponent ({
                 fileList: fileListRef.value,
                 'on-exceed': () => {
                     if (globalProperties?.$message) {
-                        globalProperties.$message.warning('超出文件上传数');
+                        globalProperties.$message.warning(i18n.global.t('file.exceedTips'));
                     }
                 },
                 'on-error': () => {
                     if (globalProperties?.$message) {
-                        globalProperties.$message.error('文件上传失败');
+                        globalProperties.$message.error(i18n.global.t('file.failTips'));
                     }
                 },
                 // 'on-preview': (file) => {

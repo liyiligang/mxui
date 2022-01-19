@@ -1,9 +1,25 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.f
+-->
+
 <template>
     <el-row class="nodeNotify">
         <el-row class="nodeNotifyFrame">
             <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
                 <el-row class="nodeNotifyTableRow">
-                    <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList" :nodeMap="data.nodeMap" ></NodeNotifyTable>
+                    <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList"></NodeNotifyTable>
                 </el-row>
             </NodeViewFrame>
         </el-row>
@@ -24,7 +40,6 @@ import {convert} from "../../base/convert";
 
 interface NodeNotifyInfo {
     nodeNotifyList:Array<protoManage.INodeNotify>
-    nodeMap: Map<number, protoManage.INode>
     pageTotal:number
     isLoading:boolean
     refreshFlag:number
@@ -37,8 +52,7 @@ export default defineComponent ({
         NodeNotifyTable
     },
     setup(){
-        const data = reactive<NodeNotifyInfo>({nodeNotifyList:[], nodeMap:new Map<number, protoManage.INode>(),
-            isLoading:false, pageTotal:0, refreshFlag:0})
+        const data = reactive<NodeNotifyInfo>({nodeNotifyList:[], isLoading:false, pageTotal:0, refreshFlag:0})
         const route = useRoute()
         const instance = getCurrentInstance()
 
@@ -75,12 +89,6 @@ export default defineComponent ({
                     data.nodeNotifyList.length = 0
                     for (let i = 0; i < response.NodeNotifyList.length; i++){
                         data.nodeNotifyList.push(response.NodeNotifyList[i])
-                    }
-                    data.nodeMap.clear()
-                    for (let i = 0; i < response.NodeList.length; i++){
-                        let key = Number(response.NodeList[i].Base?.ID)
-                        let val = response.NodeList[i]
-                        data.nodeMap.set(key, val)
                     }
                 }).catch(error => {}).finally(()=>{
                     if (flag != data.refreshFlag){

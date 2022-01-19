@@ -1,3 +1,19 @@
+/*
+ * Copyright 2021 liyiligang.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import {createRouter, createWebHistory, LocationQueryRaw, RouteLocationNormalizedLoaded, useRoute} from "vue-router";
 import Login from "./views/Login.vue";
 import Home from "./views/Home.vue";
@@ -118,51 +134,6 @@ export module routerPath {
             query:getQuery(name, config, route)
         }).then()
     }
-
-    // export function toLogin(){
-    //     router.push({
-    //         name: "login"
-    //     }).then()
-    // }
-
-    // export function toNodeAll(){
-    //     router.push({
-    //         name: routerName.node,
-    //         query: {
-    //             pageSize: globals.globalsConfig.pageConfig.initSize,
-    //             pageNum:  globals.globalsConfig.pageConfig.initNum
-    //         }
-    //     }).then()
-    // }
-
-    // export function toNodeTestAll(){
-    //     router.push({
-    //         name: routerName.nodeTest,
-    //         query: {
-    //             // pageSize: globals.globalsConfig.pageConfig.initSize,
-    //             // pageNum:  globals.globalsConfig.pageConfig.initNum
-    //         }
-    //     }).then()
-    // }
-
-
-    // export function toNode(filter:protoManage.Filter){
-    //     let filterStr = setFilterStr(filter)
-    //     return routerName.node + filterStr
-    // }
-    // export function toNodeNotify(filter:protoManage.Filter){
-    //     let filterStr = setFilterStr(filter)
-    //     return routerName.nodeNotify + filterStr
-    // }
-    // export function toNodeLink(nodeID:number){
-    //     return "nodeLink?sourceID="+nodeID+"&targetID="+nodeID+"&pageSize="+globals.globalsConfig.pageConfig.initSize+"&pageNum="+globals.globalsConfig.pageConfig.initNum
-    // }
-    // export function toNodeFunc(nodeID:number){
-    //     return "nodeFunc?nodeID="+nodeID+"&pageSize="+globals.globalsConfig.pageConfig.initSize+"&pageNum="+globals.globalsConfig.pageConfig.initNum
-    // }
-    // export function toNodeReport(nodeID:number){
-    //     return "nodeReport?nodeID="+nodeID+"&pageSize="+globals.globalsConfig.pageConfig.initSize+"&pageNum="+globals.globalsConfig.pageConfig.initNum
-    // }
 }
 
 export default router

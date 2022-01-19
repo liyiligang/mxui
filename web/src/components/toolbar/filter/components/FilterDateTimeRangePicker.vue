@@ -1,17 +1,33 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-row class="filterDateTimeRangePickerRow" type="flex" justify="start" align="middle">
         <el-row class="filterDateTimeRangePickerHeadRow" type="flex" justify="space-between" align="middle">
             <div class="filterDateTimeRangePickerText color-text-normal">{{ name }}</div>
-            <el-tooltip effect="light" content="提交" placement="bottom">
-                <el-button  class="filterDateTimeRangePickerAddButton" icon="el-icon-search" plain
+            <el-tooltip effect="light" :content="$t('filter.tips.submit')" placement="bottom">
+                <el-button  class="filterDateTimeRangePickerAddButton" :icon="Search" plain
                             @click="confirm"></el-button>
             </el-tooltip>
         </el-row>
         <el-row class="filterDateTimeRangePickerElRow">
-            <el-date-picker v-model="data.dateStartTime" placeholder="起始时间" size="medium" type="datetime"></el-date-picker>
+            <el-date-picker v-model="data.dateStartTime" :placeholder="$t('filter.tips.startTime')" type="datetime"></el-date-picker>
         </el-row>
         <el-row class="filterDateTimeRangePickerElRow">
-            <el-date-picker v-model="data.dateEndTime" placeholder="结束时间" size="medium" type="datetime"></el-date-picker>
+            <el-date-picker v-model="data.dateEndTime" :placeholder="$t('filter.tips.endTime')"  type="datetime"></el-date-picker>
         </el-row>
     </el-row>
 </template>
@@ -22,6 +38,8 @@ import {defineComponent, onMounted, reactive} from "vue";
 import {convert} from "../../../../base/convert";
 import {useRoute} from "vue-router";
 import {globals} from "../../../../base/globals";
+import i18n from '../../../../base/i18n'
+import {Search} from "@element-plus/icons";
 
 interface FilterDateTimeRangePickerInfo {
     dateStartTime:string
@@ -89,7 +107,7 @@ export default defineComponent ({
             timeStampVal = startTimeStampVal+"-"+endTimeStampVal
 
             if (startTimeStampVal > endTimeStampVal) {
-                globals.viewWarn("起始时间不能超过结束时间")
+                globals.viewWarn(i18n.global.t('filter.tips.timeError'))
                 return
             }
 
@@ -99,7 +117,7 @@ export default defineComponent ({
             data.dateStartTime = ""
             data.dateEndTime = ""
         }
-        return {data, confirm}
+        return {data, confirm, Search}
     }
 })
 </script>

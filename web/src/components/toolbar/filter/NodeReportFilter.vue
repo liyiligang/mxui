@@ -1,9 +1,25 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
-    <FilterInput v-show="false" name="节点ID" sign="nodeID" @submit="submit"></FilterInput>
-    <FilterInput name="节点名" sign="nodeName" @submit="submit"></FilterInput>
-    <FilterInput name="节点报告名" sign="name" @submit="submit"></FilterInput>
-    <FilterSelect name="权限" sign="level" :options="data.nodeReportLevelOptions" @submit="submit"></FilterSelect>
-    <FilterDateTimeRangePicker name="更新时间" sign="updateTime" @submit="submit"></FilterDateTimeRangePicker>
+    <FilterInput v-show="false" :name="$t('filter.nodeReport.nodeID')" sign="nodeID" @submit="submit"></FilterInput>
+    <FilterInput :name="$t('filter.nodeReport.nodeName')" sign="nodeName" @submit="submit"></FilterInput>
+    <FilterInput :name="$t('filter.nodeReport.name')" sign="name" @submit="submit"></FilterInput>
+    <FilterSelect :name="$t('filter.nodeReport.level')" sign="level" :options="data.nodeReportLevelOptions" @submit="submit"></FilterSelect>
+    <FilterDateTimeRangePicker :name="$t('filter.nodeReport.time')" sign="updateTime" @submit="submit"></FilterDateTimeRangePicker>
 </template>
 
 <script lang="ts">

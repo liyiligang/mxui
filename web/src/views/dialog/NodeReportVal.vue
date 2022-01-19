@@ -1,5 +1,21 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.f
+-->
+
 <template>
-    <el-row class="nodeReportValMainRow" v-loading="data.loading" element-loading-text="请等待结果返回..." type="flex" justify="center" align="middle">
+    <el-row class="nodeReportValMainRow" v-loading="data.loading" :element-loading-text="$t('dialog.nodeReportVal.waitResult')" type="flex" justify="center" align="middle">
         <Empty v-if="data.nodeReportValList.length==0" class="nodeReportValEmpty"></Empty>
         <el-row v-else class="nodeReportValContentRow">
             <NodeReportValLine v-if="nodeReport.Type===protoManage.NodeReportType.NodeReportTypeLine" :line-schema="globals.getJson(nodeReport.Schema)"
@@ -8,19 +24,19 @@
                                 :table-schema="globals.getJson(nodeReport.Schema)"></NodeReportValTable>
         </el-row>
     </el-row>
-    <DialogViewFrame v-model="data.setDialogVisible" title="设置" width="380px" @closed="setViewClose">
-        <el-row class="nodeReportValSetRow"  type="flex" justify="center" align="middle">
+    <DialogViewFrame v-model="data.setDialogVisible" :title="$t('dialog.nodeReportVal.setting')" width="380px" @closed="setViewClose">
+        <el-row class="nodeReportValSetRow" type="flex" justify="center" align="middle">
             <el-form label-width="120px" label-position="left" :model="data.setData">
-                <el-form-item label="结果集(条):">
-                    <el-input-number v-model="data.setData.requestCount" size="medium" :min="1" />
+                <el-form-item :label="$t('dialog.nodeReportVal.resultSet')">
+                    <el-input-number v-model="data.setData.requestCount" :min="1" />
                 </el-form-item>
-                <el-form-item label="数据同步(秒/次):">
-                    <el-input-number v-model="data.setData.autoRefresh" size="medium" :min="0.1" :precision="2" />
-                </el-form-item>
-                <el-form-item>
-                    <el-button class="nodeReportValSetButton" type="primary" @click="setDataChanged">确定</el-button>
+                <el-form-item :label="$t('dialog.nodeReportVal.sync')">
+                    <el-input-number v-model="data.setData.autoRefresh" :min="0.1" :precision="2" />
                 </el-form-item>
             </el-form>
+            <el-row class="nodeReportValSetButtonRow" type="flex" justify="center" align="middle">
+                <el-button class="nodeReportValSetButton" type="primary" @click="setDataChanged">{{$t('dialog.nodeReportVal.okButton')}}</el-button>
+            </el-row>
         </el-row>
     </DialogViewFrame>
 </template>
@@ -164,6 +180,10 @@ export default defineComponent ({
 }
 
 .nodeReportValSetRow{
+    width: 100%;
+}
+
+.nodeReportValSetButtonRow{
     width: 100%;
 }
 

@@ -1,6 +1,22 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.f
+-->
+
 <template>
     <Load v-if="isLoading"></Load>
-    <el-row v-else class="frameView">
+    <el-row v-show="!isLoading" class="frameView">
         <Empty v-if="pageTotal<=0"></Empty>
         <el-row v-else :class="[globals.globalsData.managerSetting.setting.isPageFix ? 'mainViewPageFix' : 'mainView']" class="flex-row-center-between">
             <el-row :class="[globals.globalsData.managerSetting.setting.isPageFix ? 'slotViewPageFix' : 'slotView']">
@@ -14,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, PropType} from "vue";
+import {defineComponent} from "vue";
 import Page from "../../components/Page.vue"
 import Empty from "../../components/Empty.vue"
 import Load from "../../components/Load.vue"

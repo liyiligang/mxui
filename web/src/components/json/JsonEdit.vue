@@ -1,3 +1,19 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <div :id="id" class="json-editor"></div>
 </template>
@@ -6,7 +22,7 @@
 import {defineComponent, reactive, onMounted, onUnmounted, PropType, watchEffect} from "vue";
 import jsonEditor, {EditableNode, JSONEditorMode, JSONEditorOptions} from 'jsoneditor';
 import  "jsoneditor/dist/jsoneditor.min.css";
-import {ElMessage} from "element-plus";
+import i18n from '../../base/i18n'
 import {globals} from "../../base/globals";
 // import vueJsonEditor from 'vue-json-editor'
 
@@ -41,7 +57,7 @@ export default defineComponent ({
     setup(prop, context){
         const data = reactive<JsonEditInfo>({jsonEditor: null})
         function onError(err){
-            ElMessage.error("json格式化失败，" + err);
+            globals.viewError(i18n.global.t('json.formatFail') + err);
         }
 
         function onChangeText(json){
@@ -84,17 +100,17 @@ export default defineComponent ({
                 }
                 let options:JSONEditorOptions = {
                     modes:prop.modes,
-                    name:prop.name,             //主节点名
-                    indentation: 2,             //缩进
-                    mainMenuBar:true,           //开启主菜单
-                    navigationBar:true,         //开启面包屑菜单
-                    search: true,               //开启搜索
-                    history:false,              //关闭撤销。重做按钮
-                    statusBar:false,            //开启状态栏
-                    colorPicker:true,           //开启颜色选择器
-                    timestampTag:true,          //开启时间戳时间显示
-                    enableSort:false,           //关闭排序
-                    enableTransform:false,      //关闭过滤
+                    name:prop.name,             //main node name
+                    indentation: 2,             //indent
+                    mainMenuBar:true,           //open main menu
+                    navigationBar:true,         //open crumb menu
+                    search: true,               //open search
+                    history:false,              //close undo redo button
+                    statusBar:false,            //open status bar
+                    colorPicker:true,           //open color selector
+                    timestampTag:true,          //open timestamp view
+                    enableSort:false,           //close sort
+                    enableTransform:false,      //close filter
                     onError: onError,
                     onChangeText: onChangeText,
                     onEditable: onEditable

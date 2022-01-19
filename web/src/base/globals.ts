@@ -1,3 +1,19 @@
+/*
+ * Copyright 2021 liyiligang.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import {ElMessage} from "element-plus";
 import {protoManage} from "../proto/manage";
 import {routerPath, routerName} from "../router";
@@ -22,7 +38,8 @@ export module globals {
 	export let globalsConfig = {
 		localStorageKey:{
 			token:"token",
-			autoLogin:"autoLogin"
+			autoLogin:"autoLogin",
+			setting:"setting"
 		},
 		httpConfig:{
 			requestTimeout: 10000
@@ -40,8 +57,9 @@ export module globals {
 			tablePageSize:100
 		},
 		userSetSave:{
-			isPageFix: false,
+			isPageFix: true,
 			autoUpdateInterval: 2,
+			language:'eng'
 		},
 		userSetTemp:{
 			autoRefresh: false,
@@ -84,6 +102,15 @@ export module globals {
 		target.blur();
 	}
 
+	export function viewInfo(msg:string) {
+		ElMessage.info(msg);
+		console.log(msg)
+	}
+
+	export function viewSuccess(msg:string) {
+		ElMessage.success(msg);
+		console.log(msg)
+	}
 
 	export function viewWarn(msg:string) {
 		ElMessage.warning(msg);

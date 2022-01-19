@@ -62,13 +62,17 @@ func (app *App) InitBaseServer() error {
 	if err := app.InitRpcServer(); err != nil {
 		return err
 	}
-	app.Timer.Start()
+	if err := app.StartTimer(); err != nil {
+		return err
+	}
 	Jlog.Info("all component is start")
 	return nil
 }
 
 func (app *App) StopBaseServer() error {
-	app.Timer.Stop()
+	if err := app.StartTimer(); err != nil {
+		return err
+	}
 	if err := app.StopDBServer(); err != nil {
 		return err
 	}

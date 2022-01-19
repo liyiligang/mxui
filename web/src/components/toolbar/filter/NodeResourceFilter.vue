@@ -16,11 +16,11 @@ limitations under the License.
 
 <template>
     <el-row class="flex-row-center-start">
-        <FilterInput :name="$t('filter.nodeNotify.message')" sign="senderMessage" @submit="submit"></FilterInput>
-        <FilterInput :name="$t('filter.nodeNotify.sender')" sign="senderName" @submit="submit"></FilterInput>
-        <FilterSelect :name="$t('filter.nodeNotify.senderType')" sign="senderType" :options="data.senderTypeOptions" @submit="submit"></FilterSelect>
-        <FilterSelect :name="$t('filter.nodeNotify.state')" sign="senderState" :options="data.senderStateOptions" @submit="submit"></FilterSelect>
-        <FilterDateTimeRangePicker :name="$t('filter.nodeNotify.time')" sign="senderTime" @submit="submit"></FilterDateTimeRangePicker>
+        <FilterInput :name="$t('filter.nodeResource.name')" sign="name" @submit="submit"></FilterInput>
+        <FilterInput :name="$t('filter.nodeResource.uploader')" sign="uploaderName" @submit="submit"></FilterInput>
+        <FilterSelect :name="$t('filter.nodeResource.uploaderType')" sign="uploaderType" :options="data.uploaderTypeOptions" @submit="submit"></FilterSelect>
+        <FilterSelect :name="$t('filter.nodeResource.state')" sign="state" :options="data.stateOptions" @submit="submit"></FilterSelect>
+        <FilterDateTimeRangePicker :name="$t('filter.nodeResource.time')" sign="uploadTime" @submit="submit"></FilterDateTimeRangePicker>
     </el-row>
 </template>
 
@@ -34,13 +34,13 @@ import { protoManage } from "../../../proto/manage";
 import {convert} from "../../../base/convert";
 import i18n from '../../../base/i18n'
 
-interface NodeNotifyFilterInfo {
-    senderTypeOptions: Array<any>
-    senderStateOptions: Array<any>
+interface NodeResourceFilterInfo {
+    uploaderTypeOptions: Array<any>
+    stateOptions: Array<any>
 }
 
 export default defineComponent ({
-    name: "NodeNotifyFilter",
+    name: "NodeResourceFilter",
     emits:['addTag'],
     components: {
         FilterInput,
@@ -48,17 +48,14 @@ export default defineComponent ({
         FilterDateTimeRangePicker
     },
     setup(props, context){
-        const data = reactive<NodeNotifyFilterInfo>({
-            senderTypeOptions:[
+        const data = reactive<NodeResourceFilterInfo>({
+            uploaderTypeOptions:[
                 {name:i18n.global.t('nodeNotify.senderType.node'), value:protoManage.NotifySenderType.NotifySenderTypeNode},
                 {name:i18n.global.t('nodeNotify.senderType.user'), value:protoManage.NotifySenderType.NotifySenderTypeUser}
             ],
-            senderStateOptions:[
-                {name:i18n.global.t('nodeNotify.state.not'), value:protoManage.State.StateNot},
-                {name:i18n.global.t('nodeNotify.state.unknown'), type: convert.getStateViewType(protoManage.State.StateUnknow), value:protoManage.State.StateUnknow},
-                {name:i18n.global.t('nodeNotify.state.normal'), type: convert.getStateViewType(protoManage.State.StateNormal), value:protoManage.State.StateNormal},
-                {name:i18n.global.t('nodeNotify.state.warn'), type: convert.getStateViewType(protoManage.State.StateWarn), value:protoManage.State.StateWarn},
-                {name:i18n.global.t('nodeNotify.state.error'), type: convert.getStateViewType(protoManage.State.StateError), value:protoManage.State.StateError}
+            stateOptions:[
+                {name:i18n.global.t('nodeResource.state.normal'), type: convert.getStateViewType(protoManage.State.StateNormal), value:protoManage.State.StateNormal},
+                {name:i18n.global.t('nodeResource.state.invalid'), type: convert.getStateViewType(protoManage.State.StateError), value:protoManage.State.StateWarn},
             ]
         })
 

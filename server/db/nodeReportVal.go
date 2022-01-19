@@ -45,7 +45,7 @@ func (db *Server) DelNodeReportValByNodeReportID(nodeReportVal orm.NodeReportVal
 
 func (db *Server) DelNodeReportValByNodeID(nodeID int64) error {
 	subQuery1 := db.Gorm.Select("id").Model(&orm.NodeReport{}).Where("nodeID=?", nodeID)
-	return db.Gorm.Where("reportID = any(?)", subQuery1).Delete(&orm.NodeReportVal{}).Error
+	return db.Gorm.Where("reportID in(?)", subQuery1).Delete(&orm.NodeReportVal{}).Error
 }
 
 //获取节点报告中节点报告ID对应的最后一次报告值
@@ -55,9 +55,9 @@ func (db *Server) FindLastNodeReportValByNodeReport(req *protoManage.ReqNodeRepo
 	subQuery1 := tx.Model(&orm.NodeReport{})
 	subQuery2 := db.Gorm.Select("t.id").Table("(?) as t", subQuery1)
 	subQuery3 := db.Gorm.Select("max(id)").Table("nodeReportVal").
-		Where("reportID = any(?)", subQuery2).Group("reportID")
+		Where("reportID in(?)", subQuery2).Group("reportID")
 	var nodeReportValList []orm.NodeReportVal
-	err := db.Gorm.Where("id = any(?)", subQuery3).Find(&nodeReportValList).Error
+	err := db.Gorm.Where("id in(?)", subQuery3).Find(&nodeReportValList).Error
 	return nodeReportValList, err
 }
 

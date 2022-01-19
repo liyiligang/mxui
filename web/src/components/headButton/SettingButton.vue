@@ -1,17 +1,33 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-dropdown trigger="click" @command="handleCommand">
-        <el-button class="settingButton" icon="el-icon-setting" @click="data.dropdownShow=true" plain></el-button>
+        <el-button class="settingButton" :icon="Setting" @click="data.dropdownShow=true" plain></el-button>
         <template #dropdown>
             <el-dropdown-menu>
-                <el-dropdown-item :command="DropdownFlag.System">{{DropdownFlag.System}}</el-dropdown-item>
-                <el-dropdown-item :command="DropdownFlag.User">{{DropdownFlag.User}}</el-dropdown-item>
-                <el-dropdown-item :command="DropdownFlag.Top">{{DropdownFlag.Top}}</el-dropdown-item>
+                <el-dropdown-item :command="DropdownFlag.System">{{$t('setting.system')}}</el-dropdown-item>
+                <el-dropdown-item :command="DropdownFlag.User">{{$t('setting.user')}}</el-dropdown-item>
+                <el-dropdown-item :command="DropdownFlag.Top">{{$t('setting.topLink')}}</el-dropdown-item>
             </el-dropdown-menu>
         </template>
     </el-dropdown>
-    <SystemSet v-model="data.systemSetVisible" :title="DropdownFlag.System"></SystemSet>
-    <UserSet v-model="data.userSetVisible" :title="DropdownFlag.User"></UserSet>
-    <TopMenuSet v-model="data.topMenuSetVisible" :title="DropdownFlag.Top"></TopMenuSet>
+    <SystemSet v-model="data.systemSetVisible" :title="$t('setting.system')"></SystemSet>
+    <UserSet v-model="data.userSetVisible" :title="$t('setting.user')"></UserSet>
+    <TopMenuSet v-model="data.topMenuSetVisible" :title="$t('setting.topLink')"></TopMenuSet>
 </template>
 
 <script lang="ts">
@@ -19,11 +35,12 @@ import {defineComponent, reactive} from "vue";
 import SystemSet from "../setting/SystemSet.vue";
 import TopMenuSet from "../setting/TopMenuSet.vue";
 import UserSet from "../setting/UserSet.vue";
+import {Setting} from "@element-plus/icons";
 
 enum DropdownFlag {
-	System = "系统设置",
-    User = "用户设置",
-    Top = "顶栏设置"
+	System = 'system',
+    User = 'user',
+    Top = 'topLink'
 }
 
 interface SettingButtonInfo {
@@ -58,7 +75,7 @@ export default defineComponent ({
                     break
             }
         }
-        return {data, handleCommand, DropdownFlag}
+        return {data, handleCommand, DropdownFlag, Setting}
     }
 })
 </script>

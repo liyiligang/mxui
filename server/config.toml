@@ -13,6 +13,7 @@ MaxAge = 5                      #文件保留时间：天
 
 [Log]
 Path = '../store/log/app.log'
+Level = 'debug'
 MaxSize =  200      # 每个日志文件保存的最大尺寸 单位：M
 MaxNum = 1000       # 最多保存多少个日志文件
 MaxAge = 30         # 日志文件最多保存多少天
@@ -23,7 +24,10 @@ StartDuration = 0           #Token多久后生效(小时, 0:立即生效)
 StopDuration = 1000         #Token生效后多久后失效(小时, 0:立即失效)
 
 [DB]
-Connect = 'test1:root@tcp(36.158.255.149:3306)/manage?charset=utf8mb4&parseTime=True&loc=Local'
+#Name = 'mysql'
+#Connect = 'test1:root@tcp(36.158.255.149:3306)/manage?charset=utf8mb4&parseTime=True&loc=Local'
+Name = 'sqlite'
+Connect = '../store/db/manage.db'
 MaxConn =  0            #最大连接数, 0表示不限制
 MaxKeepConn = 2         #最大保持连接数(长连接)
 MaxLifeTime = 21        #数据库请求超时时间(秒, 0:表示立即拒绝请求)
@@ -34,6 +38,7 @@ PublicKeyPath = '../store/cert/grpc/server_cert.pem'
 PrivateKeyPath = '../store/cert/grpc/server_key.pem'
 
 [Http]
+ShowLog = false
 UseHttps = false
 ListenAddr = '0.0.0.0:80'
 

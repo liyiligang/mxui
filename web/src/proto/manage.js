@@ -10603,7 +10603,6 @@ export const protoManage = $root.protoManage = (() => {
          * @property {Array.<protoManage.State>|null} [State] ReqNodeResourceList State
          * @property {Array.<string>|null} [UploaderName] ReqNodeResourceList UploaderName
          * @property {Array.<protoManage.NotifySenderType>|null} [UploaderType] ReqNodeResourceList UploaderType
-         * @property {Array.<protoManage.ITime>|null} [InvalidTime] ReqNodeResourceList InvalidTime
          * @property {Array.<protoManage.ITime>|null} [UploadTime] ReqNodeResourceList UploadTime
          * @property {protoManage.IPage|null} [Page] ReqNodeResourceList Page
          */
@@ -10621,7 +10620,6 @@ export const protoManage = $root.protoManage = (() => {
             this.State = [];
             this.UploaderName = [];
             this.UploaderType = [];
-            this.InvalidTime = [];
             this.UploadTime = [];
             if (properties)
                 for (let keys = Object.keys(properties), i = 0; i < keys.length; ++i)
@@ -10660,14 +10658,6 @@ export const protoManage = $root.protoManage = (() => {
          * @instance
          */
         ReqNodeResourceList.prototype.UploaderType = $util.emptyArray;
-
-        /**
-         * ReqNodeResourceList InvalidTime.
-         * @member {Array.<protoManage.ITime>} InvalidTime
-         * @memberof protoManage.ReqNodeResourceList
-         * @instance
-         */
-        ReqNodeResourceList.prototype.InvalidTime = $util.emptyArray;
 
         /**
          * ReqNodeResourceList UploadTime.
@@ -10727,14 +10717,11 @@ export const protoManage = $root.protoManage = (() => {
                     writer.int32(message.UploaderType[i]);
                 writer.ldelim();
             }
-            if (message.InvalidTime != null && message.InvalidTime.length)
-                for (let i = 0; i < message.InvalidTime.length; ++i)
-                    $root.protoManage.Time.encode(message.InvalidTime[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             if (message.UploadTime != null && message.UploadTime.length)
                 for (let i = 0; i < message.UploadTime.length; ++i)
-                    $root.protoManage.Time.encode(message.UploadTime[i], writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
+                    $root.protoManage.Time.encode(message.UploadTime[i], writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
             if (message.Page != null && Object.hasOwnProperty.call(message, "Page"))
-                $root.protoManage.Page.encode(message.Page, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
+                $root.protoManage.Page.encode(message.Page, writer.uint32(/* id 6, wireType 2 =*/50).fork()).ldelim();
             return writer;
         };
 
@@ -10800,16 +10787,11 @@ export const protoManage = $root.protoManage = (() => {
                         message.UploaderType.push(reader.int32());
                     break;
                 case 5:
-                    if (!(message.InvalidTime && message.InvalidTime.length))
-                        message.InvalidTime = [];
-                    message.InvalidTime.push($root.protoManage.Time.decode(reader, reader.uint32()));
-                    break;
-                case 6:
                     if (!(message.UploadTime && message.UploadTime.length))
                         message.UploadTime = [];
                     message.UploadTime.push($root.protoManage.Time.decode(reader, reader.uint32()));
                     break;
-                case 7:
+                case 6:
                     message.Page = $root.protoManage.Page.decode(reader, reader.uint32());
                     break;
                 default:
@@ -10888,15 +10870,6 @@ export const protoManage = $root.protoManage = (() => {
                     case 2:
                         break;
                     }
-            }
-            if (message.InvalidTime != null && message.hasOwnProperty("InvalidTime")) {
-                if (!Array.isArray(message.InvalidTime))
-                    return "InvalidTime: array expected";
-                for (let i = 0; i < message.InvalidTime.length; ++i) {
-                    let error = $root.protoManage.Time.verify(message.InvalidTime[i]);
-                    if (error)
-                        return "InvalidTime." + error;
-                }
             }
             if (message.UploadTime != null && message.hasOwnProperty("UploadTime")) {
                 if (!Array.isArray(message.UploadTime))
@@ -10991,16 +10964,6 @@ export const protoManage = $root.protoManage = (() => {
                         break;
                     }
             }
-            if (object.InvalidTime) {
-                if (!Array.isArray(object.InvalidTime))
-                    throw TypeError(".protoManage.ReqNodeResourceList.InvalidTime: array expected");
-                message.InvalidTime = [];
-                for (let i = 0; i < object.InvalidTime.length; ++i) {
-                    if (typeof object.InvalidTime[i] !== "object")
-                        throw TypeError(".protoManage.ReqNodeResourceList.InvalidTime: object expected");
-                    message.InvalidTime[i] = $root.protoManage.Time.fromObject(object.InvalidTime[i]);
-                }
-            }
             if (object.UploadTime) {
                 if (!Array.isArray(object.UploadTime))
                     throw TypeError(".protoManage.ReqNodeResourceList.UploadTime: array expected");
@@ -11037,7 +11000,6 @@ export const protoManage = $root.protoManage = (() => {
                 object.State = [];
                 object.UploaderName = [];
                 object.UploaderType = [];
-                object.InvalidTime = [];
                 object.UploadTime = [];
             }
             if (options.defaults)
@@ -11061,11 +11023,6 @@ export const protoManage = $root.protoManage = (() => {
                 object.UploaderType = [];
                 for (let j = 0; j < message.UploaderType.length; ++j)
                     object.UploaderType[j] = options.enums === String ? $root.protoManage.NotifySenderType[message.UploaderType[j]] : message.UploaderType[j];
-            }
-            if (message.InvalidTime && message.InvalidTime.length) {
-                object.InvalidTime = [];
-                for (let j = 0; j < message.InvalidTime.length; ++j)
-                    object.InvalidTime[j] = $root.protoManage.Time.toObject(message.InvalidTime[j], options);
             }
             if (message.UploadTime && message.UploadTime.length) {
                 object.UploadTime = [];

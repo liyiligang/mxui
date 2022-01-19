@@ -1,8 +1,25 @@
+/*
+ * Copyright 2021 liyiligang.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+
 import {protoManage} from "../proto/manage"
-import {ElMessage} from "element-plus";
 import {globals} from "./globals";
 import axios from "axios";
 import {convert} from "./convert";
+import i18n from '../base/i18n'
 
 export module request {
 
@@ -500,7 +517,7 @@ export module request {
                 if (error.response != undefined){
                     httpError(error.response.status, error.response.data)
                 }else{
-                    ElMessage.error("请求失败（" + error+"）");
+                    globals.viewError(i18n.global.t('request.error.fail', { msg: error}));
                 }
                 reject(error)
             })
@@ -537,7 +554,7 @@ export module request {
                 if (error.response != undefined){
                     httpError(error.response.status, error.response.data)
                 }else{
-                    ElMessage.error("请求失败（" + error+"）");
+                    globals.viewError(i18n.global.t('request.error.fail', { msg: error}));
                 }
                 reject(error)
             })
@@ -560,44 +577,44 @@ export module request {
         let str = new TextDecoder().decode(data)
         switch (code) {
             case protoManage.HttpError.HttpErrorGetHeader:
-                ElMessage.error("获取头信息错误（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.header', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorGetBody:
-                ElMessage.error("获取信息错误（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.body', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorGetFile:
-                ElMessage.error("获取文件信息错误（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.file', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorCheckFile:
-                ElMessage.error("校验文件信息错误（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.checkFile', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorMarshal:
-                ElMessage.error("数据编码失败（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.marshal', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorUnmarshal:
-                ElMessage.error("数据解析失败（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.unmarshal', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorRegister:
-                ElMessage.error("注册失败（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.register', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorLoginWithAccount:
-                ElMessage.error("登录失败（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.loginWithAccount', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorPasswordWithAccount:
-                ElMessage.error("登录失败（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.passwordWithAccount', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorLoginWithToken:
-                ElMessage.error("校验失败（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.loginWithToken', { msg: str}));
                 globals.reLogin()
                 break
             case protoManage.HttpError.HttpErrorLevelLow:
-                ElMessage.error("权限不足（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.levelLow', { msg: str}));
                 break
             case protoManage.HttpError.HttpErrorRequest:
-                ElMessage.error("请求错误（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.request', { msg: str}));
                 break
             default:
-                ElMessage.error("请求失败（" + str+"）");
+                globals.viewError(i18n.global.t('request.error.fail', { msg: str}));
                 break
         }
     }

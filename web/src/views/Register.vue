@@ -1,13 +1,29 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
-                     :title="title" width="280px">
+                     :title="title" width="280px" :top-margin="topMargin">
         <el-row v-loading="data.isLoad" type="flex" justify="center" align="middle">
-            <el-input class="registerInput" v-model="data.manager.NickName" placeholder="昵称" clearable></el-input>
-            <el-input class="registerInput" v-model="data.manager.Name" placeholder="用户名" clearable></el-input>
-            <el-input class="registerInput" v-model="data.manager.Password" placeholder="密码" clearable show-password></el-input>
-            <el-input class="registerInput" v-model="data.passwordConfirm" placeholder="确认密码" clearable show-password></el-input>
+            <el-input class="registerInput" v-model="data.manager.NickName" :placeholder="$t('register.nickName')" clearable></el-input>
+            <el-input class="registerInput" v-model="data.manager.Name" :placeholder="$t('register.userName')" clearable></el-input>
+            <el-input class="registerInput" v-model="data.manager.Password" :placeholder="$t('register.password')" clearable show-password></el-input>
+            <el-input class="registerInput" v-model="data.passwordConfirm" :placeholder="$t('register.confirmPassword')" clearable show-password></el-input>
             <LevelSelect v-if="useLevel" class="registerSelect" v-model="data.manager.Level"></LevelSelect>
-            <el-button class="registerButton" size="medium" type="primary" round @click="register">注册</el-button>
+            <el-button class="registerButton" type="primary" @click="register">{{$t('register.registerButton')}}</el-button>
         </el-row>
     </DialogViewFrame>
 </template>
@@ -16,9 +32,10 @@
 import {defineComponent, onMounted, reactive} from "vue";
 import { request } from "../base/request";
 import {protoManage} from "../proto/manage";
-import {ElMessage} from "element-plus";
+import i18n from '../base/i18n'
 import LevelSelect from "../components/setting/LevelSelect.vue";
 import DialogViewFrame from "../views/dialog/DialogViewFrame.vue";
+import {globals} from "../base/globals";
 
 
 interface RegisterInfo {
@@ -38,6 +55,10 @@ export default defineComponent ({
         modelValue:{
             type: Boolean,
             default: false,
+        },
+        topMargin:{
+            type: String,
+            default: "12vh"
         },
         title:{
             type: String,
@@ -66,14 +87,14 @@ export default defineComponent ({
 
         function registerCheck():boolean {
             if (data.manager.Password != data.passwordConfirm){
-                ElMessage.error("两次输入密码不一致")
+                globals.viewWarn(i18n.global.t('register.passwordInconsistent'))
                 return false
             }
             return true
         }
 
         function registerSuccess() {
-            ElMessage.success("注册成功")
+            globals.viewSuccess(i18n.global.t('register.registerSuccess'))
             context.emit("registerSuccess")
             modelValueUpdate(false)
         }

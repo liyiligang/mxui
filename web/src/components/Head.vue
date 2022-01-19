@@ -1,3 +1,19 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <el-row class="headRow" type="flex" justify="space-between" align="middle">
         <img class="headLogo" src="../assets/logo.svg" alt="admin">
@@ -57,13 +73,13 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{})
         }
 
-        //顶栏刷新
+        //toplink list update
         const topLinkListUpdate = () => {
             reqTopLinkList()
         }
         provide('topLinkListUpdate', topLinkListUpdate)
 
-        //管理员刷新
+        //manager list update
         const ManagerListUpdate = () => {
             reqManagerList()
         }

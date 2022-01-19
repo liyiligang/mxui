@@ -1,23 +1,39 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.f
+-->
+
 <template>
     <el-row class="nodeFuncCallRow">
         <el-row class="nodeFuncCallTabsRow">
             <el-tabs v-if="data.schema!==''" class="funcCallTabs" v-loading="data.loading" v-model="data.tabActiveName" type="border-card" @tabClick="tabClick">
-                <el-tab-pane class="formPane" label="表单" name="form">
+                <el-tab-pane class="formPane" :label="$t('dialog.nodeFuncCall.form')" name="form">
                     <el-row class="formRow" type="flex" justify="start" align="top">
-                        <vue-form class="form" v-model="data.formData" :form-footer="data.formFooter"
+                        <vue-form v-if="data.showVueForm" class="form" v-model="data.formData" :form-footer="data.formFooter"
                                   :ui-schema="data.uiSchema" :schema="data.schema"></vue-form>
                     </el-row>
                 </el-tab-pane>
-                <el-tab-pane class="jsonPane" label="JSON" name="json">
+                <el-tab-pane class="jsonPane" :label="$t('dialog.nodeFuncCall.json')" name="json">
                         <JsonEdit ref="jsonEdit" :readOnly="false" :modes="['code', 'tree']" :id="'jsonEdit'+nodeFunc.Base.ID"
                                   :name="nodeFunc.Name" @jsonChanged=jsonChanged></JsonEdit>
                 </el-tab-pane>
             </el-tabs>
-            <Empty v-else class="funcCallEmpty" description="此方法沒有设置参数"></Empty>
+            <Empty v-else class="funcCallEmpty" :description="$t('dialog.nodeFuncCall.emptyParameter')"></Empty>
         </el-row>
         <el-row type="flex" justify="center" align="middle">
-            <el-button class="funcCallButton" type="primary" @click=reset :disabled="data.loading">重置</el-button>
-            <el-button class="funcCallButton" type="primary" @click=funcCall :disabled="data.loading">提交</el-button>
+            <el-button class="funcCallButton" type="primary" @click=reset :disabled="data.loading">{{$t('dialog.nodeFuncCall.resetButton')}}</el-button>
+            <el-button class="funcCallButton" type="primary" @click=funcCall :disabled="data.loading">{{$t('dialog.nodeFuncCall.submitButton')}}</el-button>
         </el-row>
     </el-row>
 
@@ -28,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive, ref, watch} from "vue";
+import {defineComponent, nextTick, onMounted, reactive, ref, watch} from "vue";
 import {protoManage} from "../../proto/manage";
 import {defaultVal} from "../../base/defaultVal";
 import { globals } from "../../base/globals";
@@ -38,6 +54,7 @@ import JsonEdit from "../../components/json/JsonEdit.vue";
 import NodeFuncReturn from "./NodeFuncReturn.vue";
 import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
 import Empty from "../../components/Empty.vue"
+import i18n from '../../base/i18n'
 import * as lodash from 'lodash';
 
 interface NodeFuncCallInfo {
@@ -52,7 +69,8 @@ interface NodeFuncCallInfo {
     funcCallID:number
     returnValVisible:boolean
     nodeFuncCall:protoManage.NodeFuncCall
-    fullScreen:boolean
+    fullScreen:boolean,
+    showVueForm:boolean
 }
 
 export default defineComponent ({
@@ -77,7 +95,7 @@ export default defineComponent ({
         const data = reactive<NodeFuncCallInfo>({formData:{}, resetData:"", uiSchema:{},
             schema:globals.getJson(props.nodeFunc.Schema), formFooter:{show: false},
             loading:false, returnLoading: false, tabActiveName:"form", funcCallID:0, returnValVisible:false,
-            fullScreen:false, nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall()})
+            fullScreen:false, nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall(), showVueForm:true})
         if (props.nodeFuncCall.Parameter != ""){
             data.formData = globals.getJson(props.nodeFuncCall.Parameter)
         }
@@ -129,9 +147,12 @@ export default defineComponent ({
             }
         }
 
-        function reset(){
+        async function reset() {
             data.formData = globals.getJson(data.resetData)
             setJsonEditValue(data.formData)
+            data.showVueForm = false
+            await nextTick()
+            data.showVueForm = true
         }
 
         async function funcCall() {
@@ -195,7 +216,7 @@ export default defineComponent ({
             if (data.schema != ''){
                 await jsonEdit.value.validate().then((response) => {
                     if (response.length > 0) {
-                        globals.viewError("参数校验失败(" + response[0].message + ")")
+                        globals.viewError(i18n.global.t('dialog.nodeFuncCall.jsonCheckFail')+"(" + response[0].message + ")")
                         isOK = false
                     }
                 })
@@ -235,7 +256,7 @@ export default defineComponent ({
         }
 
         function uploadFileError(err, file) {
-            globals.viewError("上传文件失败:" + err)
+            globals.viewError(i18n.global.t('file.failTips') + ":" + err)
         }
 
         function uploadFilePreview(file) {
@@ -254,7 +275,7 @@ export default defineComponent ({
 
         function uploadFileRemove(file) {
             if (file?.url) {
-                globals.viewWarn("禁止删除历史文件")
+                globals.viewWarn(i18n.global.t('file.forbidDelHistoryFile'))
                 return false
             }else if (file?.response?.url) {
                 return request.reqNodeResourceDel(protoManage.NodeResource.create({
@@ -268,7 +289,7 @@ export default defineComponent ({
         }
 
         function uploadFileExceed(files) {
-            globals.viewError("文件超出最大限制")
+            globals.viewError(i18n.global.t('file.exceedTips'))
         }
 
         return {data, funcCall, reset, funcCallRefresh, jsonChanged, tabClick, jsonEdit, convert,
@@ -339,5 +360,9 @@ export default defineComponent ({
 .funcCallTabs .el-tabs__content{
     height: 100%;
     overflow:visible;
+}
+
+.form .el-upload-list__item{
+    width: 420px;
 }
 </style>

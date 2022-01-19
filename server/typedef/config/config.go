@@ -33,6 +33,7 @@ type Config struct {
 	} `toml:"File"`
 	Log struct {
 		Path    string `toml:"Path"`
+		Level   string `toml:"Level"`
 		MaxSize int    `toml:"MaxSize"`
 		MaxNum  int    `toml:"MaxNum"`
 		MaxAge  int    `toml:"MaxAge"`
@@ -43,6 +44,7 @@ type Config struct {
 		StopDuration  int    `toml:"StopDuration"`
 	} `toml:"Token"`
 	DB struct {
+		Name        string `toml:"Name"`
 		Connect     string `toml:"Connect"`
 		MaxConn     int    `toml:"MaxConn"`
 		MaxKeepConn int    `toml:"MaxKeepConn"`
@@ -54,6 +56,7 @@ type Config struct {
 		PrivateKeyPath string `toml:"PrivateKeyPath"`
 	} `toml:"Grpc"`
 	HTTP struct {
+		ShowLog    bool   `toml:"ShowLog"`
 		UseHTTPS   bool   `toml:"UseHttps"`
 		ListenAddr string `toml:"ListenAddr"`
 		HTTPS      struct {

@@ -1,47 +1,63 @@
+<!--
+Copyright 2021 liyiligang
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+
 <template>
     <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate"
                      :title="title" width="660px" show-full-screen fixHeight>
         <el-row class="userSetRow" v-loading="data.userSetLoading">
             <el-row class="userSetTableRow" type="flex" justify="start" align="top">
                 <el-table class="userSetTable" :data="data.userSetList" ref="userSetTable" height="100%" highlight-current-row>
-                    <el-table-column label="编号" type="index" :index="indexMethod" align="center" width="50"></el-table-column>
-                    <el-table-column label="用户名" align="center">
+                    <el-table-column :label="$t('setting.userSet.id')" type="index" :index="indexMethod" align="center" width="80"></el-table-column>
+                    <el-table-column :label="$t('setting.userSet.userName')" align="center">
                         <template #default="scope">
                             <div :class="[getUserStateColor(scope.$index)]">{{scope.row.Name}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="昵称" align="center">
+                    <el-table-column :label="$t('setting.userSet.nickName')" align="center">
                         <template #default="scope">
-                            <el-input v-if="isEditing(scope.$index)" size="small" v-model="scope.row.NickName" placeholder="昵称"></el-input>
+                            <el-input v-if="isEditing(scope.$index)" v-model="scope.row.NickName" :placeholder="$t('setting.userSet.nickName')"></el-input>
                             <div v-else>{{scope.row.NickName}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="权限" align="center" width="150">
+                    <el-table-column :label="$t('setting.userSet.level')" align="center" width="150">
                         <template #default="scope">
-                            <LevelSelect v-if="isEditing(scope.$index)" size="small" v-model="scope.row.Level"></LevelSelect>
+                            <LevelSelect v-if="isEditing(scope.$index)" v-model="scope.row.Level"></LevelSelect>
                             <div v-else :class="[getUserLevelColor(scope.$index)]">{{getUserLevelNameByTableIndex(scope.$index)}}</div>
                         </template>
                     </el-table-column>
-                    <el-table-column label="操作" align="center" width="100">
+                    <el-table-column :label="$t('setting.userSet.operate')" align="center" width="100">
                         <template #default="scope">
                             <el-row v-if="isEditing(scope.$index)">
-                                <el-button size="mini" type="success" icon="el-icon-check" circle @click="updateUserSet(scope.$index)"/>
-                                <el-button size="mini" type="danger" icon="el-icon-close" circle @click="cancelUserSet(scope.$index)"/>
+                                <el-button type="success" :icon="Check" circle @click="updateUserSet(scope.$index)"/>
+                                <el-button type="danger" :icon="Close" circle @click="cancelUserSet(scope.$index)"/>
                             </el-row>
                             <el-row v-else>
-                                <el-button size="mini" type="primary" icon="el-icon-edit" circle @click="editUserSet(scope.$index)"/>
-                                <el-button size="mini" type="danger" icon="el-icon-minus" circle @click="delUserSet(scope.$index)"/>
+                                <el-button type="primary" :icon="Edit" circle @click="editUserSet(scope.$index)"/>
+                                <el-button type="danger" :icon="Minus" circle @click="delUserSet(scope.$index)"/>
                             </el-row>
                         </template>
                     </el-table-column>
                 </el-table>
             </el-row>
             <el-row class="userSetAddButtonRow" type="flex" justify="center" align="middle">
-                <el-button :disabled="data.userSetAddFlag" type="primary" icon="el-icon-plus" circle @click="newUserSet"></el-button>
+                <el-button size="large" :disabled="data.userSetAddFlag" type="primary" :icon="Plus" circle @click="newUserSet"></el-button>
             </el-row>
         </el-row>
     </DialogViewFrame>
-    <Register v-model="data.userSetAddFlag" title="新增账号" :useLevel="true" @registerSuccess="newUserSuccess"></Register>
+    <Register v-model="data.userSetAddFlag" :title="$t('setting.userSet.addUser')" :useLevel="true" @registerSuccess="newUserSuccess"></Register>
 </template>
 
 <script lang="ts">
@@ -52,7 +68,10 @@ import {request} from "../../base/request";
 import Register from "../../views/Register.vue";
 import LevelSelect from "./LevelSelect.vue";
 import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
-import {ElMessage, ElTable} from "element-plus";
+import {ElTable} from "element-plus";
+import i18n from '../../base/i18n'
+import {globals} from "../../base/globals";
+import {Check, Close, Edit, Minus, Plus} from "@element-plus/icons";
 
 interface UserSetEditInfo {
     isEdit:boolean
@@ -143,7 +162,7 @@ export default defineComponent ({
 
         function delUserSet(index){
             request.reqManagerDel(protoManage.Manager.create(data.userSetList[index])).then((response) => {
-                ElMessage.success("删除成功");
+                globals.viewSuccess(i18n.global.t('setting.userSet.deleteSuccess'));
                 data.userSetList.splice(index, 1)
                 data.userSetEditList.splice(index, 1)
             }).catch(error => {}).finally(()=>{})
@@ -151,7 +170,7 @@ export default defineComponent ({
 
         function updateUserSet(index){
             request.reqManagerUpdate(protoManage.Manager.create(data.userSetList[index])).then((response) => {
-                ElMessage.success("更新成功");
+                globals.viewSuccess(i18n.global.t('setting.userSet.updateSuccess'));
                 data.userSetEditList[index].isEdit = false
             }).catch(error => {}).finally(()=>{})
         }
@@ -171,7 +190,8 @@ export default defineComponent ({
             context.emit("update:modelValue", val)
         }
         return {data, modelValueUpdate, getUserStateColor, isEditing, getUserLevelColor, getUserLevelNameByTableIndex,
-            newUserSet, newUserSuccess, editUserSet, delUserSet, updateUserSet, cancelUserSet, indexMethod, userSetTable}
+            newUserSet, newUserSuccess, editUserSet, delUserSet, updateUserSet, cancelUserSet, indexMethod, userSetTable,
+            Check, Close, Edit, Minus, Plus}
     }
 })
 
