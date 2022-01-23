@@ -65,7 +65,7 @@ export module websocket {
                 globals.viewError(i18n.global.t('websocket.disConnect')+ev.reason + '(' + ev.code + ')');
             }
             console.warn("websocket is closed: ", ev);
-            if (ev.code != websocketCloseByServer){
+            if (ev.code != websocketCloseByServer && !isClosed){
                 wsReconnect()
             }else{
                 if (!isClosed){
@@ -105,6 +105,12 @@ export module websocket {
             case protoManage.Order.NodeFuncCallAns:
                 nodeFuncCallAns(msg.message)
                 break
+            case protoManage.Order.ManagerUpdate:
+                managerUpdate(msg.message)
+                break
+            case protoManage.Order.ManagerDel:
+                managerDel(msg.message)
+                break
             default:
                 globals.viewError(i18n.global.t('websocket.orderError') + msg.order)
                 break
@@ -112,8 +118,22 @@ export module websocket {
     }
 
     function nodeFuncCallAns(data:Uint8Array){
-        let msg = protoManage.AnsNodeFuncCall.decode(data)
-        globals.globalsData.wsMessage.message.nodeFuncCallAns = msg
+        globals.globalsData.wsMessage.message.nodeFuncCallAns = protoManage.AnsNodeFuncCall.decode(data)
+    }
+
+    function managerUpdate(data:Uint8Array){
+        let response = protoManage.Manager.decode(data)
+        if (response.Level != globals.globalsData.manager.info.Level){
+            globals.reLogin()
+            globals.viewWarn(i18n.global.t('websocket.levelChanged', {msg:response.Name}))
+        }
+        globals.updateManagerInfo(response)
+    }
+
+    function managerDel(data:Uint8Array){
+        let response = protoManage.Manager.decode(data)
+        globals.reLogin()
+        globals.viewWarn(i18n.global.t('websocket.deleteNotify', {msg:response.Name}))
     }
 
     function nodeNotify(data:Uint8Array){

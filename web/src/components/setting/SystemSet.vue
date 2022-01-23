@@ -18,6 +18,11 @@ limitations under the License.
     <DialogViewFrame :modelValue="modelValue" @update:modelValue="modelValueUpdate" :title="title" width="620px">
         <el-row class="systemSetMainRow">
             <el-row class="systemSetGroupRow">
+                <el-row class="systemSetDivItemRow">
+                    <div class="systemSetDiv">{{$t('setting.systemSet.user')}}{{globals.globalsData.manager.info.NickName}}</div>
+                    <div>{{$t('setting.systemSet.level')}}</div>
+                    <div :class="convert.getColorByLevel(globals.globalsData.manager.info.Level)">{{convert.getManagerLevelName(globals.globalsData.manager.info.Level)}}</div>
+                </el-row>
                 <el-row class="systemSetItemRow">
                     <el-row class="systemSetBlockRow">
                         <div>{{$t('setting.systemSet.modifyPassword')}}</div>
@@ -41,8 +46,7 @@ limitations under the License.
                             <el-option v-for="item in data.languageSelect"
                                 :key="item.value"
                                 :label="item.label"
-                                :value="item.value"
-                            >
+                                :value="item.value">
                             </el-option>
                         </el-select>
                     </el-row>
@@ -61,6 +65,7 @@ limitations under the License.
 <script lang="ts">
 import {defineComponent, reactive} from "vue";
 import {globals} from "../../base/globals";
+import {convert} from "../../base/convert";
 import PasswordReset from "./PasswordReset.vue";
 import AutoRefresh from "./AutoRefresh.vue";
 import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
@@ -111,7 +116,7 @@ export default defineComponent ({
             context.emit("update:modelValue", val)
         }
 
-        return {data, globals, updatePassword, exitLogin, modelValueUpdate}
+        return {data, globals, convert, updatePassword, exitLogin, modelValueUpdate}
     }
 })
 </script>
@@ -133,6 +138,16 @@ export default defineComponent ({
 .systemSetItemRow{
     width: 100%;
     height: 52px;
+}
+
+.systemSetDivItemRow{
+    width: 100%;
+    height: 35px;
+    font-size: 15px;
+}
+
+.systemSetDiv{
+    margin-right: 30px;
 }
 
 .systemSetBlockRow{

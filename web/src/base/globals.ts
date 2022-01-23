@@ -87,6 +87,11 @@ export module globals {
 		return  globalsData.managerList.get(id)
 	}
 
+	export function updateManagerInfo(response:protoManage.Manager) {
+		response.Token = globals.globalsData.manager.info.Token
+		globals.globalsData.manager.info = reactive(response)
+	}
+
 	export function reLogin() {
 		globals.globalsData.manager.info = protoManage.Manager.create()
 		localStorage.removeItem(globals.globalsConfig.localStorageKey.token)

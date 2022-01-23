@@ -21,7 +21,7 @@ limitations under the License.
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeReport">{{$t('sideBar.nodeReport')}}</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeResource">{{$t('sideBar.nodeResource')}}</el-menu-item>
         <el-menu-item class="submenuSpanOne" :index="routerName.nodeNotify">{{$t('sideBar.nodeNotify')}}</el-menu-item>
-        <el-menu-item class="submenuSpanOne" :index="routerName.nodeTest">{{$t('sideBar.nodeTest')}}</el-menu-item>
+<!--        <el-menu-item class="submenuSpanOne" :index="routerName.nodeTest">{{$t('sideBar.nodeTest')}}</el-menu-item>-->
     </el-menu>
 </template>
 
@@ -68,9 +68,9 @@ export default defineComponent ({
                 case routerName.nodeNotify:
                     routerPath.toPath(key, {initPageNum:true, withPageSize:true}, route)
                     break
-                case routerName.nodeTest:
-                    routerPath.toPath(key)
-                    break
+                // case routerName.nodeTest:
+                //     routerPath.toPath(key)
+                //     break
                 default:
                     globals.viewError(i18n.global.t('sideBar.errorKey') + key)
                     break

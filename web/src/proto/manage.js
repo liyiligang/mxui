@@ -21,6 +21,8 @@ export const protoManage = $root.protoManage = (() => {
      * @name protoManage.Order
      * @enum {number}
      * @property {number} Unknow=0 Unknow value
+     * @property {number} ManagerUpdate=101 ManagerUpdate value
+     * @property {number} ManagerDel=102 ManagerDel value
      * @property {number} NodeFuncCallReq=608 NodeFuncCallReq value
      * @property {number} NodeFuncCallAns=609 NodeFuncCallAns value
      * @property {number} NodeReportUpdateVal=704 NodeReportUpdateVal value
@@ -30,6 +32,8 @@ export const protoManage = $root.protoManage = (() => {
     protoManage.Order = (function() {
         const valuesById = {}, values = Object.create(valuesById);
         values[valuesById[0] = "Unknow"] = 0;
+        values[valuesById[101] = "ManagerUpdate"] = 101;
+        values[valuesById[102] = "ManagerDel"] = 102;
         values[valuesById[608] = "NodeFuncCallReq"] = 608;
         values[valuesById[609] = "NodeFuncCallAns"] = 609;
         values[valuesById[704] = "NodeReportUpdateVal"] = 704;
@@ -341,6 +345,8 @@ export const protoManage = $root.protoManage = (() => {
                 default:
                     return "order: enum value expected";
                 case 0:
+                case 101:
+                case 102:
                 case 608:
                 case 609:
                 case 704:
@@ -370,6 +376,14 @@ export const protoManage = $root.protoManage = (() => {
             case "Unknow":
             case 0:
                 message.order = 0;
+                break;
+            case "ManagerUpdate":
+            case 101:
+                message.order = 101;
+                break;
+            case "ManagerDel":
+            case 102:
+                message.order = 102;
                 break;
             case "NodeFuncCallReq":
             case 608:
@@ -607,6 +621,8 @@ export const protoManage = $root.protoManage = (() => {
                 default:
                     return "order: enum value expected";
                 case 0:
+                case 101:
+                case 102:
                 case 608:
                 case 609:
                 case 704:
@@ -639,6 +655,14 @@ export const protoManage = $root.protoManage = (() => {
             case "Unknow":
             case 0:
                 message.order = 0;
+                break;
+            case "ManagerUpdate":
+            case 101:
+                message.order = 101;
+                break;
+            case "ManagerDel":
+            case 102:
+                message.order = 102;
                 break;
             case "NodeFuncCallReq":
             case 608:
@@ -3055,7 +3079,8 @@ export const protoManage = $root.protoManage = (() => {
          * @memberof protoManage
          * @interface INodeFuncCall
          * @property {protoManage.IBase|null} [Base] NodeFuncCall Base
-         * @property {number|null} [ManagerID] NodeFuncCall ManagerID
+         * @property {number|null} [RequesterID] NodeFuncCall RequesterID
+         * @property {string|null} [RequesterName] NodeFuncCall RequesterName
          * @property {number|null} [FuncID] NodeFuncCall FuncID
          * @property {string|null} [Parameter] NodeFuncCall Parameter
          * @property {string|null} [ReturnVal] NodeFuncCall ReturnVal
@@ -3087,12 +3112,20 @@ export const protoManage = $root.protoManage = (() => {
         NodeFuncCall.prototype.Base = null;
 
         /**
-         * NodeFuncCall ManagerID.
-         * @member {number} ManagerID
+         * NodeFuncCall RequesterID.
+         * @member {number} RequesterID
          * @memberof protoManage.NodeFuncCall
          * @instance
          */
-        NodeFuncCall.prototype.ManagerID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+        NodeFuncCall.prototype.RequesterID = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
+         * NodeFuncCall RequesterName.
+         * @member {string} RequesterName
+         * @memberof protoManage.NodeFuncCall
+         * @instance
+         */
+        NodeFuncCall.prototype.RequesterName = "";
 
         /**
          * NodeFuncCall FuncID.
@@ -3160,18 +3193,20 @@ export const protoManage = $root.protoManage = (() => {
                 writer = $Writer.create();
             if (message.Base != null && Object.hasOwnProperty.call(message, "Base"))
                 $root.protoManage.Base.encode(message.Base, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
-            if (message.ManagerID != null && Object.hasOwnProperty.call(message, "ManagerID"))
-                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.ManagerID);
+            if (message.RequesterID != null && Object.hasOwnProperty.call(message, "RequesterID"))
+                writer.uint32(/* id 2, wireType 0 =*/16).int64(message.RequesterID);
+            if (message.RequesterName != null && Object.hasOwnProperty.call(message, "RequesterName"))
+                writer.uint32(/* id 3, wireType 2 =*/26).string(message.RequesterName);
             if (message.FuncID != null && Object.hasOwnProperty.call(message, "FuncID"))
-                writer.uint32(/* id 3, wireType 0 =*/24).int64(message.FuncID);
+                writer.uint32(/* id 4, wireType 0 =*/32).int64(message.FuncID);
             if (message.Parameter != null && Object.hasOwnProperty.call(message, "Parameter"))
-                writer.uint32(/* id 4, wireType 2 =*/34).string(message.Parameter);
+                writer.uint32(/* id 5, wireType 2 =*/42).string(message.Parameter);
             if (message.ReturnVal != null && Object.hasOwnProperty.call(message, "ReturnVal"))
-                writer.uint32(/* id 5, wireType 2 =*/42).string(message.ReturnVal);
+                writer.uint32(/* id 6, wireType 2 =*/50).string(message.ReturnVal);
             if (message.ReturnType != null && Object.hasOwnProperty.call(message, "ReturnType"))
-                writer.uint32(/* id 6, wireType 0 =*/48).int32(message.ReturnType);
+                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.ReturnType);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 7, wireType 0 =*/56).int32(message.State);
+                writer.uint32(/* id 8, wireType 0 =*/64).int32(message.State);
             return writer;
         };
 
@@ -3210,21 +3245,24 @@ export const protoManage = $root.protoManage = (() => {
                     message.Base = $root.protoManage.Base.decode(reader, reader.uint32());
                     break;
                 case 2:
-                    message.ManagerID = reader.int64();
+                    message.RequesterID = reader.int64();
                     break;
                 case 3:
-                    message.FuncID = reader.int64();
+                    message.RequesterName = reader.string();
                     break;
                 case 4:
-                    message.Parameter = reader.string();
+                    message.FuncID = reader.int64();
                     break;
                 case 5:
-                    message.ReturnVal = reader.string();
+                    message.Parameter = reader.string();
                     break;
                 case 6:
-                    message.ReturnType = reader.int32();
+                    message.ReturnVal = reader.string();
                     break;
                 case 7:
+                    message.ReturnType = reader.int32();
+                    break;
+                case 8:
                     message.State = reader.int32();
                     break;
                 default:
@@ -3267,9 +3305,12 @@ export const protoManage = $root.protoManage = (() => {
                 if (error)
                     return "Base." + error;
             }
-            if (message.ManagerID != null && message.hasOwnProperty("ManagerID"))
-                if (!$util.isInteger(message.ManagerID) && !(message.ManagerID && $util.isInteger(message.ManagerID.low) && $util.isInteger(message.ManagerID.high)))
-                    return "ManagerID: integer|Long expected";
+            if (message.RequesterID != null && message.hasOwnProperty("RequesterID"))
+                if (!$util.isInteger(message.RequesterID) && !(message.RequesterID && $util.isInteger(message.RequesterID.low) && $util.isInteger(message.RequesterID.high)))
+                    return "RequesterID: integer|Long expected";
+            if (message.RequesterName != null && message.hasOwnProperty("RequesterName"))
+                if (!$util.isString(message.RequesterName))
+                    return "RequesterName: string expected";
             if (message.FuncID != null && message.hasOwnProperty("FuncID"))
                 if (!$util.isInteger(message.FuncID) && !(message.FuncID && $util.isInteger(message.FuncID.low) && $util.isInteger(message.FuncID.high)))
                     return "FuncID: integer|Long expected";
@@ -3327,15 +3368,17 @@ export const protoManage = $root.protoManage = (() => {
                     throw TypeError(".protoManage.NodeFuncCall.Base: object expected");
                 message.Base = $root.protoManage.Base.fromObject(object.Base);
             }
-            if (object.ManagerID != null)
+            if (object.RequesterID != null)
                 if ($util.Long)
-                    (message.ManagerID = $util.Long.fromValue(object.ManagerID)).unsigned = false;
-                else if (typeof object.ManagerID === "string")
-                    message.ManagerID = parseInt(object.ManagerID, 10);
-                else if (typeof object.ManagerID === "number")
-                    message.ManagerID = object.ManagerID;
-                else if (typeof object.ManagerID === "object")
-                    message.ManagerID = new $util.LongBits(object.ManagerID.low >>> 0, object.ManagerID.high >>> 0).toNumber();
+                    (message.RequesterID = $util.Long.fromValue(object.RequesterID)).unsigned = false;
+                else if (typeof object.RequesterID === "string")
+                    message.RequesterID = parseInt(object.RequesterID, 10);
+                else if (typeof object.RequesterID === "number")
+                    message.RequesterID = object.RequesterID;
+                else if (typeof object.RequesterID === "object")
+                    message.RequesterID = new $util.LongBits(object.RequesterID.low >>> 0, object.RequesterID.high >>> 0).toNumber();
+            if (object.RequesterName != null)
+                message.RequesterName = String(object.RequesterName);
             if (object.FuncID != null)
                 if ($util.Long)
                     (message.FuncID = $util.Long.fromValue(object.FuncID)).unsigned = false;
@@ -3437,9 +3480,10 @@ export const protoManage = $root.protoManage = (() => {
                 object.Base = null;
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, false);
-                    object.ManagerID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                    object.RequesterID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
-                    object.ManagerID = options.longs === String ? "0" : 0;
+                    object.RequesterID = options.longs === String ? "0" : 0;
+                object.RequesterName = "";
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, false);
                     object.FuncID = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
@@ -3452,11 +3496,13 @@ export const protoManage = $root.protoManage = (() => {
             }
             if (message.Base != null && message.hasOwnProperty("Base"))
                 object.Base = $root.protoManage.Base.toObject(message.Base, options);
-            if (message.ManagerID != null && message.hasOwnProperty("ManagerID"))
-                if (typeof message.ManagerID === "number")
-                    object.ManagerID = options.longs === String ? String(message.ManagerID) : message.ManagerID;
+            if (message.RequesterID != null && message.hasOwnProperty("RequesterID"))
+                if (typeof message.RequesterID === "number")
+                    object.RequesterID = options.longs === String ? String(message.RequesterID) : message.RequesterID;
                 else
-                    object.ManagerID = options.longs === String ? $util.Long.prototype.toString.call(message.ManagerID) : options.longs === Number ? new $util.LongBits(message.ManagerID.low >>> 0, message.ManagerID.high >>> 0).toNumber() : message.ManagerID;
+                    object.RequesterID = options.longs === String ? $util.Long.prototype.toString.call(message.RequesterID) : options.longs === Number ? new $util.LongBits(message.RequesterID.low >>> 0, message.RequesterID.high >>> 0).toNumber() : message.RequesterID;
+            if (message.RequesterName != null && message.hasOwnProperty("RequesterName"))
+                object.RequesterName = message.RequesterName;
             if (message.FuncID != null && message.hasOwnProperty("FuncID"))
                 if (typeof message.FuncID === "number")
                     object.FuncID = options.longs === String ? String(message.FuncID) : message.FuncID;

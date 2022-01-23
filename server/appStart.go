@@ -169,11 +169,11 @@ func (app *App) InitWebServer() error {
 
 		r.Use(app.Request.ParseTokenWithHttp)
 		//manager
+		r.POST( "/manager/find", app.Request.ConvertWithHttp(app.Request.ReqManagerFind))
 		r.POST( "/manager/findNickName", app.Request.ConvertWithHttp(app.Request.ReqManagerFindNickName))
 		r.POST( "/manager/findByID", app.Request.ConvertWithHttp(app.Request.ReqManagerFindByID))
 		r.POST( "/manager/updatePasswd", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdatePasswd))
 		r.POST( "/manager/updateSetting", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdateSetting))
-		r.POST( "/manager/findLowLevel", app.Request.ConvertWithHttp(app.Request.ReqManagerFindLowLevel))
 
 		//topLink
 		r.POST( "/topLink/find", app.Request.ConvertWithHttp(app.Request.ReqTopLinkFind))

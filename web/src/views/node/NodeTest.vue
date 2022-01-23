@@ -15,19 +15,11 @@ limitations under the License.f
 -->
 
 <template>
-    <el-button @click="setChs">中文</el-button>
-    <el-button @click="setEng">英文</el-button>
+
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, reactive} from "vue";
-import {globals} from "../../base/globals";
-import i18n from '../../base/i18n'
-import axios from "axios";
-import * as SparkMD5 from "spark-md5";
-import {protoManage} from "../../proto/manage";
-import { request } from "../../base/request";
-
+import {defineComponent, reactive} from "vue";
 
 interface NodeTestInfo {
 
@@ -39,18 +31,7 @@ export default defineComponent ({
     },
     setup(){
         const data = reactive<NodeTestInfo>({})
-
-        function setChs(){
-            globals.globalsData.managerSetting.setting.language = "chs"
-            i18n.global.locale = "chs"
-        }
-
-        function setEng(){
-            globals.globalsData.managerSetting.setting.language = "eng"
-            i18n.global.locale = "eng"
-        }
-
-        return {data, setChs, setEng}
+        return {data}
     }
 })
 </script>

@@ -33,11 +33,18 @@ func (request *Request) ReqNodeFuncCall(r *HTTPRequest) error {
 	if err != nil {
 		return err
 	}
-	req.NodeFuncCall.ManagerID = r.UserID
+	req.NodeFuncCall.RequesterID = r.UserID
+	manager := protoManage.Manager{}
+	err = request.Data.ManagerFindByID(r.UserID, &manager)
+	if err != nil {
+		return err
+	}
+	req.NodeFuncCall.RequesterName = manager.NickName
 	err = request.Data.NodeFuncCallReq(req)
 	if err != nil {
 		rErr := request.Data.DB.AddNodeFuncCall(&orm.NodeFuncCall{
-			ManagerID: req.NodeFuncCall.ManagerID,
+			RequesterID: req.NodeFuncCall.RequesterID,
+			RequesterName: req.NodeFuncCall.RequesterName,
 			FuncID: req.NodeFuncCall.FuncID,
 			Parameter: req.NodeFuncCall.Parameter,
 			ReturnType: int32(protoManage.NodeFuncReturnType_Error),

@@ -88,7 +88,7 @@ export default defineComponent ({
             context.emit('clickReturnVal', props.tableData[index].Base?.ID)
         }
         function getManagerNickName(index){
-            return globals.getManagerByID(props.tableData[index].ManagerID)?.NickName
+            return props.tableData[index].RequesterName
         }
         function getState(index){
             return convert.getNodeFuncCallStateName(props.tableData[index].State)

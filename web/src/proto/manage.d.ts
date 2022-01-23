@@ -5,6 +5,8 @@ export namespace protoManage {
     /** Order enum. */
     enum Order {
         Unknow = 0,
+        ManagerUpdate = 101,
+        ManagerDel = 102,
         NodeFuncCallReq = 608,
         NodeFuncCallAns = 609,
         NodeReportUpdateVal = 704,
@@ -1213,8 +1215,11 @@ export namespace protoManage {
         /** NodeFuncCall Base */
         Base?: (protoManage.IBase|null);
 
-        /** NodeFuncCall ManagerID */
-        ManagerID?: (number|null);
+        /** NodeFuncCall RequesterID */
+        RequesterID?: (number|null);
+
+        /** NodeFuncCall RequesterName */
+        RequesterName?: (string|null);
 
         /** NodeFuncCall FuncID */
         FuncID?: (number|null);
@@ -1244,8 +1249,11 @@ export namespace protoManage {
         /** NodeFuncCall Base. */
         public Base?: (protoManage.IBase|null);
 
-        /** NodeFuncCall ManagerID. */
-        public ManagerID: number;
+        /** NodeFuncCall RequesterID. */
+        public RequesterID: number;
+
+        /** NodeFuncCall RequesterName. */
+        public RequesterName: string;
 
         /** NodeFuncCall FuncID. */
         public FuncID: number;

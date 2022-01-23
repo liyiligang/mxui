@@ -55,23 +55,23 @@ export default defineComponent ({
         const data = reactive<HeadInfo>({topLinkList:[]})
         onMounted(()=>{
             reqTopLinkList()
-            reqManagerList()
+            // reqManagerList()
         })
         function reqTopLinkList(){
             request.reqTopLinkList().then((response) => {
                 data.topLinkList = response.TopLinkList
             }).catch(error => {}).finally(()=>{})
         }
-        function reqManagerList(){
-            request.reqManagerNickNameList().then((response) => {
-                globals.globalsData.managerList.clear()
-                for (let i = 0; i < response.ManagerList .length; i++){
-                    let key = Number(response.ManagerList[i].Base?.ID)
-                    let val = response.ManagerList[i]
-                    globals.globalsData.managerList.set(key, val)
-                }
-            }).catch(error => {}).finally(()=>{})
-        }
+        // function reqManagerList(){
+        //     request.reqManagerNickNameList().then((response) => {
+        //         globals.globalsData.managerList.clear()
+        //         for (let i = 0; i < response.ManagerList .length; i++){
+        //             let key = Number(response.ManagerList[i].Base?.ID)
+        //             let val = response.ManagerList[i]
+        //             globals.globalsData.managerList.set(key, val)
+        //         }
+        //     }).catch(error => {}).finally(()=>{})
+        // }
 
         //toplink list update
         const topLinkListUpdate = () => {
@@ -80,10 +80,10 @@ export default defineComponent ({
         provide('topLinkListUpdate', topLinkListUpdate)
 
         //manager list update
-        const ManagerListUpdate = () => {
-            reqManagerList()
-        }
-        provide('managerListUpdate', ManagerListUpdate)
+        // const ManagerListUpdate = () => {
+        //     reqManagerList()
+        // }
+        // provide('managerListUpdate', ManagerListUpdate)
         return {data, globals}
     }
 })

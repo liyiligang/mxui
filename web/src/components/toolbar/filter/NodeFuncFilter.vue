@@ -58,7 +58,7 @@ export default defineComponent ({
             for(let level of levelList) {
                 if (level > protoManage.Level.LevelNot){
                     if (globals.globalsData.manager.info.Level == protoManage.Level.LevelNot ||
-                        level < globals.globalsData.manager.info.Level) {
+                        level <= globals.globalsData.manager.info.Level) {
                         data.nodeFuncLevelOptions.push({name:convert.getManagerLevelName(level),
                             type: convert.getLevelViewType(level), value:level})
                     }

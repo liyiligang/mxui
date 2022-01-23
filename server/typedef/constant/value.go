@@ -18,7 +18,7 @@ package constant
 
 //common
 const ConstSendBroadcast = -1
-const ConstStringLimitMaxLength = 20
+const ConstStringLimitMaxLength = 25
 
 //rpc
 const ConstRpcServerMaxMsgSize = 10*1024*1024

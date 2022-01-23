@@ -68,7 +68,7 @@ import {request} from "../../base/request";
 import Register from "../../views/Register.vue";
 import LevelSelect from "./LevelSelect.vue";
 import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
-import {ElTable} from "element-plus";
+import {ElMessageBox, ElTable} from "element-plus";
 import i18n from '../../base/i18n'
 import {globals} from "../../base/globals";
 import {Check, Close, Edit, Minus, Plus} from "@element-plus/icons";
@@ -112,7 +112,7 @@ export default defineComponent ({
         })
 
         function initUserSetList(){
-            request.reqManagerLowLevelList().then((response) => {
+            request.reqManagerList().then((response) => {
                 data.userSetList = response.ManagerList
                 for (let i=0; i<data.userSetList.length; i++){
                     let userSetEditInfo:UserSetEditInfo = {isEdit:false}
@@ -161,11 +161,17 @@ export default defineComponent ({
         }
 
         function delUserSet(index){
-            request.reqManagerDel(protoManage.Manager.create(data.userSetList[index])).then((response) => {
-                globals.viewSuccess(i18n.global.t('setting.userSet.deleteSuccess'));
-                data.userSetList.splice(index, 1)
-                data.userSetEditList.splice(index, 1)
-            }).catch(error => {}).finally(()=>{})
+            ElMessageBox.confirm(i18n.global.t('confirm.delete'), i18n.global.t('confirm.warn'), {
+                confirmButtonText: i18n.global.t('confirm.ok'),
+                cancelButtonText: i18n.global.t('confirm.cancel'),
+                type: 'warning'
+            }).then(() => {
+                request.reqManagerDel(protoManage.Manager.create(data.userSetList[index])).then((response) => {
+                    globals.viewSuccess(i18n.global.t('setting.userSet.deleteSuccess'));
+                    data.userSetList.splice(index, 1)
+                    data.userSetEditList.splice(index, 1)
+                }).catch(error => {}).finally(()=>{})
+            }).catch(() => {});
         }
 
         function updateUserSet(index){
@@ -182,11 +188,11 @@ export default defineComponent ({
             }).catch(error => {}).finally(()=>{})
         }
 
-        const managerListUpdate = inject<Function>('managerListUpdate')
+        // const managerListUpdate = inject<Function>('managerListUpdate')
         function modelValueUpdate(val){
-            if(managerListUpdate){
-                managerListUpdate()
-            }
+            // if(managerListUpdate){
+            //     managerListUpdate()
+            // }
             context.emit("update:modelValue", val)
         }
         return {data, modelValueUpdate, getUserStateColor, isEditing, getUserLevelColor, getUserLevelNameByTableIndex,

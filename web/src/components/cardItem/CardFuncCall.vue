@@ -21,7 +21,7 @@ limitations under the License.
     </el-row>
 
     <DialogViewFrame v-model="data.callVisible" :title="nodeFunc.Name"
-                     :level="nodeFunc.Level" width="500px" show-full-screen fixHeight>
+                     :level="nodeFunc.Level" width="520px" show-full-screen fixHeight>
         <NodeFuncCall :nodeFunc="nodeFunc"></NodeFuncCall>
     </DialogViewFrame>
 

@@ -84,8 +84,7 @@ export default defineComponent ({
 
         function initUserInfo(){
             request.reqManagerByID(protoManage.Manager.create({})).then((response) => {
-                response.Token = globals.globalsData.manager.info.Token
-                globals.globalsData.manager.info = reactive(response)
+                globals.updateManagerInfo(response)
             }).catch(error => {}).finally(()=>{})
         }
 

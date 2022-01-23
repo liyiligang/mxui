@@ -53,7 +53,7 @@ func (db *Server) FindNodeFuncCall(req *protoManage.ReqNodeFuncCallList) ([]orm.
 	tx = db.SetNodeFuncCallFilter(tx, req)
 	var NodeFuncCallList []orm.NodeFuncCall
 	err := tx.Order("id desc").Select("id", "updatedAt",
-		"managerID", "funcID", "returnType", "state").Find(&NodeFuncCallList).Error
+		"requesterID", "requesterName", "funcID", "returnType", "state").Find(&NodeFuncCallList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return NodeFuncCallList, nil
 	}

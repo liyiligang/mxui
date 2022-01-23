@@ -52,6 +52,7 @@ export module defaultVal {
     }
 
     export function getDefaultLanguage():string{
+        // @ts-ignore
         let lan = navigator.systemLanguage || navigator.language;
         if(lan.toLowerCase().indexOf('zh')!==-1){
             return 'chs'

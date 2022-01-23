@@ -63,6 +63,7 @@ interface NodeFuncCallInfo {
     uiSchema:{}
     formFooter:{}
     resetData:string
+    uploadedFileList:Array<Number>,
     loading: boolean
     returnLoading: boolean
     tabActiveName:string
@@ -93,18 +94,23 @@ export default defineComponent ({
     },
     setup(props){
         const data = reactive<NodeFuncCallInfo>({formData:{}, resetData:"", uiSchema:{},
-            schema:globals.getJson(props.nodeFunc.Schema), formFooter:{show: false},
+            schema:globals.getJson(props.nodeFunc.Schema), formFooter:{show: false}, uploadedFileList:[],
             loading:false, returnLoading: false, tabActiveName:"form", funcCallID:0, returnValVisible:false,
             fullScreen:false, nodeFuncCall: defaultVal.getDefaultProtoNodeFuncCall(), showVueForm:true})
         if (props.nodeFuncCall.Parameter != ""){
             data.formData = globals.getJson(props.nodeFuncCall.Parameter)
         }
+        let aa = {}
+        lodash.defaultsDeep(aa, data.schema)
         if (typeof data.schema === "object") {
             mergeSchema(data.schema)
         }
 
         const jsonEdit = ref<typeof JsonEdit>(JsonEdit);
         onMounted(()=>{
+            console.log(data.schema)
+            console.log(data.formData)
+            mergeFormData(data.formData)
             data.resetData = JSON.stringify(data.formData)
             setJsonEditSchemaValue(data.schema)
             setJsonEditValue(data.formData)
@@ -139,6 +145,17 @@ export default defineComponent ({
             }
         }
 
+        function mergeFormData(obj:object){
+            for (let i in obj){
+                if ((typeof obj[i] === "number") && (isNaN(obj[i]))){
+                    obj[i] = 0
+                }
+                if (typeof obj[i] === "object") {
+                    mergeFormData(obj[i])
+                }
+            }
+        }
+
         function tabClick(tab, event) {
             if (tab.props.name == "form"){
                 jsonValidate()
@@ -150,9 +167,19 @@ export default defineComponent ({
         async function reset() {
             data.formData = globals.getJson(data.resetData)
             setJsonEditValue(data.formData)
+            resetUploadedFileList()
             data.showVueForm = false
             await nextTick()
             data.showVueForm = true
+        }
+
+        function resetUploadedFileList() {
+            for (let fileID of data.uploadedFileList) {
+                request.reqNodeResourceDel(protoManage.NodeResource.create({
+                    Base: protoManage.Base.create({ID: Number(fileID)})
+                })).then((response) => {})
+            }
+            data.uploadedFileList.length = 0
         }
 
         async function funcCall() {
@@ -186,6 +213,7 @@ export default defineComponent ({
                     data.nodeFuncCall = protoManage.NodeFuncCall.create(returnVal.NodeFuncCall)
                     data.returnValVisible = true
                     data.returnLoading = false
+                    data.uploadedFileList.length = 0
                 }
             }
         }
@@ -250,6 +278,7 @@ export default defineComponent ({
                         para.onProgress(progressEvent)
                     }
                 }).then((response) => {
+                    data.uploadedFileList.push(Number(response.Base?.ID))
                     para.onSuccess({name:response.Name, url:getFileUrl(Number(response.Base?.ID), response.Name)})
                 })
             })
@@ -340,7 +369,9 @@ export default defineComponent ({
 }
 
 .form{
-    margin-right: 6px;
+    width: 100%;
+    margin-right: 20px;
+    margin-left: 12px;
 }
 
 .jsonPane{

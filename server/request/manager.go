@@ -164,6 +164,24 @@ func (request *Request) ReqManagerUpdateSetting(r *HTTPRequest) error {
 	return nil
 }
 
+//管理员列表查询
+func (request *Request) ReqManagerFind(r *HTTPRequest) error {
+	req := &protoManage.ReqManagerList{}
+	err := request.unmarshalWithHttp(r, req)
+	if err != nil {
+		return err
+	}
+	ans, err := request.Data.ManagerFind(r.UserID, req)
+	if err != nil {
+		return err
+	}
+	err = request.marshalWithHttp(r, ans)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 //管理员信息查询按ID
 func (request *Request) ReqManagerFindByID(r *HTTPRequest) error {
 	req := &protoManage.Manager{}
@@ -200,21 +218,5 @@ func (request *Request) ReqManagerFindNickName(r *HTTPRequest) error {
 	return nil
 }
 
-//下级管理员信息查询
-func (request *Request) ReqManagerFindLowLevel(r *HTTPRequest) error {
-	req := &protoManage.ReqManagerList{}
-	err := request.unmarshalWithHttp(r, req)
-	if err != nil {
-		return err
-	}
-	ans, err := request.Data.ManagerFindLowLevel(r.UserID, req)
-	if err != nil {
-		return err
-	}
-	err = request.marshalWithHttp(r, ans)
-	if err != nil {
-		return err
-	}
-	return nil
-}
+
 

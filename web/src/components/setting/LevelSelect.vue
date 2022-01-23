@@ -45,6 +45,10 @@ export default defineComponent ({
         modelValue:{
             type: Number,
             default: 0,
+        },
+        suffix:{
+            type: String,
+            default: "",
         }
     },
     setup(props, context){
@@ -57,7 +61,7 @@ export default defineComponent ({
         function initLevelSelect(){
            let levelList = <Array<protoManage.Level>>Object.values(protoManage.Level)
             for(let level of levelList) {
-                if (level > protoManage.Level.LevelNot && level < globals.globalsData.manager.info.Level){
+                if (level > protoManage.Level.LevelNot && level <= globals.globalsData.manager.info.Level){
                     data.levelSelectOptions.push(level)
                 }
             }
@@ -68,7 +72,7 @@ export default defineComponent ({
         }
 
         function getUserLevelNameBySelectIndex(index){
-            return convert.getManagerLevelName(index)
+            return convert.getManagerLevelName(index) + props.suffix
         }
         return {data, getUserLevelNameBySelectIndex, modelValueChanged}
     }

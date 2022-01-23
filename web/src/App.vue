@@ -29,6 +29,9 @@ import eng from 'element-plus/lib/locale/lang/en'
 import {globals} from "./base/globals";
 import {defaultVal} from "./base/defaultVal";
 import i18n from "./base/i18n";
+import formEn from 'ajv-i18n/localize/en';
+import formZh from 'ajv-i18n/localize/zh';
+import {i18n as formI18n} from '@lljj/vue3-form-element';
 
 export default defineComponent ({
     name: 'App',
@@ -50,11 +53,20 @@ export default defineComponent ({
             }else{
                 globals.globalsData.managerSetting.setting.language = defaultVal.getDefaultLanguage()
             }
-            i18n.global.locale =  globals.globalsData.managerSetting.setting.language
+            setLanguage()
             watch(() => globals.globalsData.managerSetting.setting, (newValue) => {
-                i18n.global.locale =  globals.globalsData.managerSetting.setting.language
+                setLanguage()
                 localStorage.setItem(globals.globalsConfig.localStorageKey.setting, JSON.stringify(newValue));
             },{deep:true})
+        }
+
+        function setLanguage(){
+            i18n.global.locale =  globals.globalsData.managerSetting.setting.language
+            if  (globals.globalsData.managerSetting.setting.language === "eng") {
+                formI18n.useLocal(formEn)
+            }else if (globals.globalsData.managerSetting.setting.language === "chs"){
+                formI18n.useLocal(formZh)
+            }
         }
 
         return {resolveComponent, globals}

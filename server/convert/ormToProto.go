@@ -129,7 +129,8 @@ func OrmNodeFuncListToProtoNodeFuncList(ormNodeFuncList []orm.NodeFunc) []protoM
 //DBNodeFuncCall To PBNodeFuncCall
 func OrmNodeFuncCallToProtoNodeFuncCall(ormNodeFuncCall *orm.NodeFuncCall, protoNodeFuncCall *protoManage.NodeFuncCall) {
 	OrmBaseToProtoBase(&ormNodeFuncCall.Base, &protoNodeFuncCall.Base)
-	protoNodeFuncCall.ManagerID = ormNodeFuncCall.ManagerID
+	protoNodeFuncCall.RequesterID = ormNodeFuncCall.RequesterID
+	protoNodeFuncCall.RequesterName = ormNodeFuncCall.RequesterName
 	protoNodeFuncCall.FuncID = ormNodeFuncCall.FuncID
 	protoNodeFuncCall.Parameter = ormNodeFuncCall.Parameter
 	protoNodeFuncCall.ReturnVal = ormNodeFuncCall.ReturnVal

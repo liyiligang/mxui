@@ -59,7 +59,7 @@ import {defineComponent, inject, onMounted, reactive, ref, nextTick} from "vue";
 import {request} from "../../base/request";
 import {protoManage} from "../../proto/manage";
 import DialogViewFrame from "../../views/dialog/DialogViewFrame.vue";
-import {ElTable} from "element-plus";
+import {ElMessageBox, ElTable} from "element-plus";
 import i18n from '../../base/i18n'
 import {globals} from "../../base/globals";
 import {Check, Close, Edit, Minus, Plus} from "@element-plus/icons";
@@ -136,11 +136,17 @@ export default defineComponent ({
         }
 
         function delTopLink(index){
-            request.reqTopLinkDel(protoManage.TopLink.create(data.topLinkList[index])).then((response) => {
-                globals.viewSuccess(i18n.global.t('setting.topMenuSet.deleteSuccess'));
-                data.topLinkList.splice(index, 1)
-                data.topLinkEditList.splice(index, 1)
-            }).catch(error => {}).finally(()=>{})
+            ElMessageBox.confirm(i18n.global.t('confirm.delete'), i18n.global.t('confirm.warn'), {
+                confirmButtonText: i18n.global.t('confirm.ok'),
+                cancelButtonText: i18n.global.t('confirm.cancel'),
+                type: 'warning'
+            }).then(() => {
+                request.reqTopLinkDel(protoManage.TopLink.create(data.topLinkList[index])).then((response) => {
+                    globals.viewSuccess(i18n.global.t('setting.topMenuSet.deleteSuccess'));
+                    data.topLinkList.splice(index, 1)
+                    data.topLinkEditList.splice(index, 1)
+                }).catch(error => {}).finally(()=>{})
+            }).catch(() => {});
         }
 
         function updateTopLink(index){

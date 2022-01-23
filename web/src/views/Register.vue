@@ -22,7 +22,7 @@ limitations under the License.
             <el-input class="registerInput" v-model="data.manager.Name" :placeholder="$t('register.userName')" clearable></el-input>
             <el-input class="registerInput" v-model="data.manager.Password" :placeholder="$t('register.password')" clearable show-password></el-input>
             <el-input class="registerInput" v-model="data.passwordConfirm" :placeholder="$t('register.confirmPassword')" clearable show-password></el-input>
-            <LevelSelect v-if="useLevel" class="registerSelect" v-model="data.manager.Level"></LevelSelect>
+            <LevelSelect v-if="useLevel" class="registerSelect" v-model="data.manager.Level" :suffix="$t('register.level')"></LevelSelect>
             <el-button class="registerButton" type="primary" @click="register">{{$t('register.registerButton')}}</el-button>
         </el-row>
     </DialogViewFrame>

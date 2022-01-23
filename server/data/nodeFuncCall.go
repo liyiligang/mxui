@@ -22,7 +22,25 @@ import (
 	"github.com/liyiligang/mxrpc/typedef/orm"
 	"github.com/pkg/errors"
 	"github.com/xeipuuv/gojsonschema"
+	"math/big"
 )
+
+
+type DateTimeFormatChecker struct {}
+func (f DateTimeFormatChecker) IsFormat(input interface{}) bool {
+	switch input.(type) {
+		case string:
+			return true
+		case *big.Rat:
+			return true
+	default:
+		return false
+	}
+}
+func init() {
+	gojsonschema.FormatCheckers.Add("date", DateTimeFormatChecker{})
+	gojsonschema.FormatCheckers.Add("date-time", DateTimeFormatChecker{})
+}
 
 //节点方法调用请求
 func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
@@ -30,9 +48,6 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 	err := data.NodeFuncFindByID(&protoNodeFunc)
 	if err != nil {
 		return err
-	}
-	if protoNodeFunc.State == protoManage.State_StateNot {
-		return errors.New(protoNodeFunc.Name +" is invalid")
 	}
 	protoNode := protoManage.Node{Base: protoManage.Base{ID: protoNodeFunc.NodeID}}
 	err = data.NodeFindByID(&protoNode)
@@ -42,6 +57,9 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 	if protoNode.State == protoManage.State_StateUnknow {
 		return errors.New("node " + protoNode.Name +" is offline")
 	}
+	if protoNodeFunc.State == protoManage.State_StateNot {
+		return errors.New( "node method state is invalid")
+	}
 	if protoNodeFunc.Schema != ""{
 		err = data.jsonSchemaValid(protoNodeFunc.Schema, req.NodeFuncCall.Parameter)
 		if err != nil {
@@ -49,7 +67,8 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 		}
 	}
 	ormNodeFuncCall := &orm.NodeFuncCall{
-		ManagerID: req.NodeFuncCall.ManagerID,
+		RequesterID: req.NodeFuncCall.RequesterID,
+		RequesterName: req.NodeFuncCall.RequesterName,
 		FuncID: req.NodeFuncCall.FuncID,
 		Parameter: req.NodeFuncCall.Parameter,
 		State: int32(protoManage.State_StateUnknow),
@@ -73,7 +92,7 @@ func (data *Data) NodeFuncCallAns(ans *protoManage.AnsNodeFuncCall) error {
 	if err != nil {
 		return err
 	}
-	return data.Gateway.WsSendOrBroadCastPB(ans.NodeFuncCall.ManagerID, protoManage.Order_NodeFuncCallAns, ans)
+	return data.Gateway.WsSendOrBroadCastPB(ans.NodeFuncCall.RequesterID, protoManage.Order_NodeFuncCallAns, ans)
 }
 
 //查找节点方法调用信息

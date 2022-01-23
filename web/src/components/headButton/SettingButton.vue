@@ -20,14 +20,14 @@ limitations under the License.
         <template #dropdown>
             <el-dropdown-menu>
                 <el-dropdown-item :command="DropdownFlag.System">{{$t('setting.system')}}</el-dropdown-item>
-                <el-dropdown-item :command="DropdownFlag.User">{{$t('setting.user')}}</el-dropdown-item>
-                <el-dropdown-item :command="DropdownFlag.Top">{{$t('setting.topLink')}}</el-dropdown-item>
+                <el-dropdown-item v-if="isManager()" :command="DropdownFlag.User">{{$t('setting.user')}}</el-dropdown-item>
+                <el-dropdown-item v-if="isManager()" :command="DropdownFlag.Top">{{$t('setting.topLink')}}</el-dropdown-item>
             </el-dropdown-menu>
         </template>
     </el-dropdown>
     <SystemSet v-model="data.systemSetVisible" :title="$t('setting.system')"></SystemSet>
-    <UserSet v-model="data.userSetVisible" :title="$t('setting.user')"></UserSet>
-    <TopMenuSet v-model="data.topMenuSetVisible" :title="$t('setting.topLink')"></TopMenuSet>
+    <UserSet v-if="isManager()" v-model="data.userSetVisible" :title="$t('setting.user')"></UserSet>
+    <TopMenuSet v-if="isManager()" v-model="data.topMenuSetVisible" :title="$t('setting.topLink')"></TopMenuSet>
 </template>
 
 <script lang="ts">
@@ -36,6 +36,8 @@ import SystemSet from "../setting/SystemSet.vue";
 import TopMenuSet from "../setting/TopMenuSet.vue";
 import UserSet from "../setting/UserSet.vue";
 import {Setting} from "@element-plus/icons";
+import {globals} from "../../base/globals";
+import {protoManage} from "../../proto/manage";
 
 enum DropdownFlag {
 	System = 'system',
@@ -75,7 +77,12 @@ export default defineComponent ({
                     break
             }
         }
-        return {data, handleCommand, DropdownFlag, Setting}
+
+        function isManager():boolean{
+            return globals.globalsData.manager.info.Level == protoManage.Level.LevelSuper
+        }
+
+        return {data, handleCommand, DropdownFlag, Setting, isManager}
     }
 })
 </script>

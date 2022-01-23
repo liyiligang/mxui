@@ -62,7 +62,8 @@ type NodeFunc struct {
 
 type NodeFuncCall struct {
 	Base
-	ManagerID          	int64   `gorm:"NOT NULL;"`
+	RequesterID         int64   `gorm:"NOT NULL;"`
+	RequesterName       string  `gorm:"NOT NULL;"`
 	FuncID       		int64	`gorm:"NOT NULL; INDEX:NodeFuncCallIndex;"`
 	Parameter  			string	`gorm:"NOT NULL;"`
 	ReturnVal 			string	`gorm:"NOT NULL;"`

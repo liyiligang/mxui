@@ -95,7 +95,7 @@ func (db *Server) DelManager(manager orm.Manager) error {
 //获取管理员
 func (db *Server) FindManager() ([]orm.Manager, error) {
 	var ormManagerList []orm.Manager
-	err := db.Gorm.Find(&ormManagerList).Error
+	err := db.Gorm.Order("Level desc").Find(&ormManagerList).Error
 	return ormManagerList, err
 }
 
@@ -106,7 +106,7 @@ func (db *Server) FindManagerLowLevel(manager orm.Manager) ([]orm.Manager, error
 	return ormManagerList, err
 }
 
-//查询是否存在超管
+//按权限查询用户
 func (db *Server) FindManagerByLevel(manager orm.Manager) (*orm.Base, error) {
 	err := db.Gorm.Where("Level = ?", manager.Level).First(&manager).Error
 	if err != nil {
@@ -116,4 +116,11 @@ func (db *Server) FindManagerByLevel(manager orm.Manager) (*orm.Base, error) {
 		return nil, err
 	}
 	return &manager.Base, err
+}
+
+//按权限查询列表
+func (db *Server) FindManagerListByLevel(manager orm.Manager) ([]orm.Manager, error) {
+	var ormManagerList []orm.Manager
+	err := db.Gorm.Where("Level = ?", manager.Level).Find(&ormManagerList).Error
+	return ormManagerList, err
 }

@@ -45,21 +45,20 @@ func (data *Data) ReqNodeResourceCheck(protoNodeResource *protoManage.NodeResour
 }
 
 func (data *Data) ReqNodeResourceAdd(protoNodeResource *protoManage.NodeResource) error {
-	name := ""
 	if protoNodeResource.UploaderType == protoManage.NotifySenderType_NotifySenderTypeNode {
 		node := protoManage.Node{Base: protoManage.Base{ID: protoNodeResource.UploaderID}}
 		err := data.NodeFindByID(&node)
 		if err != nil {
 			return err
 		}
-		name = node.Name
+		protoNodeResource.UploaderName = node.Name
 	}else if protoNodeResource.UploaderType == protoManage.NotifySenderType_NotifySenderTypeUser{
 		manager := protoManage.Manager{}
 		err := data.ManagerFindByID(protoNodeResource.UploaderID, &manager)
 		if err != nil {
 			return err
 		}
-		name = manager.Name
+		protoNodeResource.UploaderName = manager.NickName
 	}
 	ormNodeResource := &orm.NodeResource{
 		Name: protoNodeResource.Name,
@@ -67,7 +66,7 @@ func (data *Data) ReqNodeResourceAdd(protoNodeResource *protoManage.NodeResource
 		Sizes:protoNodeResource.Sizes,
 		Type:int64(protoNodeResource.Type),
 		UploaderID:protoNodeResource.UploaderID,
-		UploaderName: name,
+		UploaderName: protoNodeResource.UploaderName,
 		UploaderType:int64(protoNodeResource.UploaderType),
 		State: int32(protoManage.State_StateNormal),
 	}

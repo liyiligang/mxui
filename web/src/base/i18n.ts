@@ -23,10 +23,10 @@ const i18n = createI18n({
         chs: {
             manager: {
                 level: {
-                    primary: '访客',
-                    intermediate: '成员',
-                    senior: '管理员',
-                    super: '超级管理员',
+                    primary: '初级',
+                    intermediate: '中级',
+                    senior: '高级',
+                    super: '管理员',
                     unknown : '未知'
                 }
             },
@@ -232,7 +232,9 @@ const i18n = createI18n({
                 reconnect:'正在尝试重新连接服务器......{msg}次',
                 reconnectSuccess:'网络连接成功',
                 disConnect:'网络连接已断开: ',
-                orderError:'错误的websocket指令: '
+                orderError:'错误的websocket指令: ',
+                deleteNotify:'您的帐号 {msg} 已被管理员注销',
+                levelChanged:'您的帐号 {msg} 发生权限变更, 请重新登录'
             },
             confirm:{
                 delete:'此操作将永久删除相关数据, 是否继续?',
@@ -245,6 +247,8 @@ const i18n = createI18n({
                 user:'用户设置',
                 topLink:'顶栏设置',
                 systemSet:{
+                    user:'用户：',
+                    level:'权限：',
                     fixPage:'固定分页：',
                     language:'语言选择：',
                     modifyPassword:'修改密码：',
@@ -255,7 +259,7 @@ const i18n = createI18n({
                     autoRefresh:'数据同步(秒/次)：',
                 },
                 topMenuSet:{
-                    id:'编号',
+                    id:'外链ID',
                     name:'名称',
                     link:'链接',
                     operate:'操作',
@@ -264,7 +268,7 @@ const i18n = createI18n({
                     updateSuccess:'更新成功'
                 },
                 userSet:{
-                    id:'编号',
+                    id:'用户ID',
                     userName:'用户名',
                     nickName:'昵称',
                     level:'权限',
@@ -350,6 +354,7 @@ const i18n = createI18n({
                 nickName:'昵称',
                 userName:'用户名',
                 password:'密码',
+                level:'权限',
                 confirmPassword:'确认密码',
                 registerButton:'注册',
                 registerSuccess:'注册成功',
@@ -363,9 +368,9 @@ const i18n = createI18n({
         eng: {
             manager: {
                 level: {
-                    primary: 'Visitor',
-                    intermediate: 'Member',
-                    senior: 'Leader',
+                    primary: 'Primary',
+                    intermediate: 'Intermediate',
+                    senior: 'Advanced',
                     super: 'Administrators',
                     unknown : 'Unknown'
                 }
@@ -572,7 +577,9 @@ const i18n = createI18n({
                 reconnect:'Attempting to reconnect to the server......{msg} time',
                 reconnectSuccess:'Network connection succeeded',
                 disConnect:'The network connection has been disconnected: ',
-                orderError:'Bad websocket instruction: '
+                orderError:'Bad websocket instruction: ',
+                deleteNotify:'Your account {msg} has been cancelled by the administrator',
+                levelChanged:'Your account {msg} has changed permissions. Please log in again'
             },
             confirm:{
                 delete:'This operation will permanently delete relevant data. Do you want to continue?',
@@ -585,6 +592,8 @@ const i18n = createI18n({
                 user:'User set',
                 topLink:'Top bar set',
                 systemSet:{
+                    user:'User：',
+                    level:'Level：',
                     fixPage:'Fixed paging：',
                     language:'Choose language：',
                     modifyPassword:'Modify password：',
@@ -690,6 +699,7 @@ const i18n = createI18n({
                 nickName:'Nick name',
                 userName:'User name',
                 password:'Password',
+                level:' level',
                 confirmPassword:'Confirm password',
                 registerButton:'Register',
                 registerSuccess:'Register succeeded',

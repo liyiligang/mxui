@@ -42,7 +42,7 @@ func (data *Data) NodeNotifyAdd(protoNodeNotify *protoManage.NodeNotify, isSend 
 		if err != nil {
 			return err
 		}
-		protoNodeNotify.SenderName = manager.Name
+		protoNodeNotify.SenderName = manager.NickName
 	 }
 	 if err := data.DB.AddNodeNotify(orm.NodeNotify{
 		SenderID: protoNodeNotify.SenderID,

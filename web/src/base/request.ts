@@ -89,11 +89,11 @@ export module request {
         })
     }
 
-    export function reqManagerLowLevelList():Promise<protoManage.AnsManagerList> {
+    export function reqManagerList():Promise<protoManage.AnsManagerList> {
         return new Promise((resolve, reject)=>{
             let req = protoManage.ReqManagerList.create({})
             let msg = protoManage.ReqManagerList.encode(req).finish()
-            request.httpRequest("/manager/findLowLevel", msg)
+            request.httpRequest("/manager/find", msg)
                 .then((response) => {
                     let ans = protoManage.AnsManagerList.decode(response)
                     resolve(ans)
