@@ -23,7 +23,7 @@ limitations under the License.
                     <el-table-column :label="$t('setting.userSet.id')" type="index" :index="indexMethod" align="center" width="80"></el-table-column>
                     <el-table-column :label="$t('setting.userSet.userName')" align="center">
                         <template #default="scope">
-                            <div :class="[getUserStateColor(scope.$index)]">{{scope.row.Name}}</div>
+                            <div>{{scope.row.Name}}</div>
                         </template>
                     </el-table-column>
                     <el-table-column :label="$t('setting.userSet.nickName')" align="center">

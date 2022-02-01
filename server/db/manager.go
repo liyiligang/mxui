@@ -17,7 +17,7 @@
 package db
 
 import (
-	"github.com/liyiligang/mxrpc/typedef/orm"
+	"github.com/liyiligang/mxui/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )

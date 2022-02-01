@@ -100,11 +100,13 @@ export default defineComponent ({
         }
     },
     setup(props){
-
         const returnObj = computed(()=> {
-            return globals.getJson(props.nodeFuncCall.ReturnVal)
+            let returnVal = globals.getJson(props.nodeFuncCall.ReturnVal)
+            if (returnVal == undefined || returnVal == "null"){
+                return {}
+            }
+            return returnVal
         })
-
         return {convert, globals, protoManage, returnObj}
     }
 })
@@ -139,6 +141,7 @@ export default defineComponent ({
     height: 100%;
     font-size: 16px;
     overflow-y:scroll;
+    white-space: pre-wrap;
 }
 
 .contextJson{

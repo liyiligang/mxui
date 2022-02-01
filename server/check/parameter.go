@@ -17,9 +17,9 @@
 package check
 
 import (
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
-	"github.com/liyiligang/mxrpc/typedef/config"
-	"github.com/liyiligang/mxrpc/typedef/constant"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/typedef/config"
+	"github.com/liyiligang/mxui/typedef/constant"
 	"github.com/pkg/errors"
 	"unicode/utf8"
 )

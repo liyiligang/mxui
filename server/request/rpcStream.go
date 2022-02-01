@@ -21,7 +21,7 @@ import (
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jrpc"
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
 	"time"
 )
 

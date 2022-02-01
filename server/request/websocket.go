@@ -21,7 +21,7 @@ import (
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
 )
 
 func (request *Request) WebsocketConnect(conn *Jweb.WebsocketConn) (interface{}, error) {

@@ -20,7 +20,7 @@ limitations under the License.
     </el-row>
 
     <DialogViewFrame v-model="data.dialogVisible" :title="nodeReport.Name" :level="nodeReport.Level" width="860px"
-                     show-refresh show-full-screen show-setting show-auto-refresh fixHeight @refresh="nodeReportRefresh"
+                     show-refresh show-full-screen show-setting show-auto-refresh default-auto-refresh fixHeight @refresh="nodeReportRefresh"
                      @autoRefresh="nodeReportAutoRefresh" @setting="nodeReportSetting">
         <NodeReportVal ref="nodeReportValRef" :nodeReport="nodeReport"></NodeReportVal>
     </DialogViewFrame>

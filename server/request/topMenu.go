@@ -18,7 +18,7 @@
 package request
 
 import (
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
 )
 
 //顶部链接信息查询

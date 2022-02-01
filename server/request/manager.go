@@ -19,7 +19,7 @@ package request
 import (
 	"github.com/liyiligang/base/component/Jerror"
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
 	"github.com/pkg/errors"
 )
 

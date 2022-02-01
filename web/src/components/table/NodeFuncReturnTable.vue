@@ -15,13 +15,21 @@ limitations under the License.
 -->
 
 <template>
-    <el-table class="returnTable" :stripe="options.Stripe" :border="options.Border"
-              :show-summary="options.ShowSummary" :sum-text="options.SumText"
-              :row-class-name="getTableRowState" :span-method="mergeSameCell"
-              height="100%" :data="getTableData()"  highlight-current-row>
-        <el-table-column v-for="i of getTableCol()" :type="i.Type" :prop="i.Name" :label="i.Name"
-                         :fixed="getTableColFixed(i)" :resizable="i.Resizable" :align="i.Align"
-                         :width="getTableColWidth(i)" :min-width="i.Width" > </el-table-column>
+    <el-table class="returnTable" :stripe="options.Stripe" :border="options.Border" :data="getTableData()"
+              :show-summary="options.ShowSummary" :sum-text="options.SumText" :span-method="mergeSameCell"
+              height="100%" highlight-current-row>
+
+        <el-table-column v-if="hasIndexCol()" type="index" :label="options.IndexCol.Name"
+                         :fixed="getTableColFixed(options.IndexCol)" :resizable="options.IndexCol.Resizable"
+                         :align="options.IndexCol.Align" :width="options.IndexCol.Width">
+        </el-table-column>
+        <el-table-column v-for="(v, i) of getTableCol()" :prop="v.Name" :label="v.Name"
+                         :fixed="getTableColFixed(v)" :resizable="v.Resizable" :align="v.Align"
+                         :min-width="v.Width" >
+            <template #default="scope">
+                <div :class="[getValueColor(scope.$index, i)]">{{getValue(scope.$index, i)}}</div>
+            </template>
+        </el-table-column>
     </el-table>
 </template>
 
@@ -31,7 +39,7 @@ import {defineComponent, onMounted, reactive} from "vue";
 import {convert} from "../../base/convert";
 
 interface NodeFuncReturnTableInfo {
-    colDataIndexMap: Map<number, number>
+
 }
 
 export default defineComponent ({
@@ -45,36 +53,63 @@ export default defineComponent ({
     },
     setup(props){
 
-        const data = reactive<NodeFuncReturnTableInfo>({colDataIndexMap:new Map<number, number>()})
+        const data = reactive<NodeFuncReturnTableInfo>({})
 
         onMounted(() => {
-            initDataColIndex()
+
         });
 
         function getTableCol(){
             return props.options.Col
         }
 
-        function getTableData(){
-            let data = new Array()
-            for (let i = 0; i<props.options.Row.length; i++){
-                let obj = {}
-                for (let j = 0, d = 0; j<props.options.Col.length; j++){
-                    if (props.options.Col[j].Type != ""){
-                        continue
-                    }
-                    obj[props.options.Col[j].Name] = props.options.Row[i].Data[d++]
-                }
-                data.push(obj)
+        function hasIndexCol(){
+            if (props.options.IndexCol == undefined){
+                return false
             }
-            return data
+            if (props.options.IndexCol.Name == undefined || props.options.IndexCol.Name == ""){
+                return false
+            }
+            if (props.options.Col == undefined){
+                return false
+            }
+            return true
         }
 
-        function getTableColWidth(col){
-            if (col.Type != ""){
-                return col.Width
+        function getValue(rowIndex, colIndex){
+            return getDataFromValue(props.options.Row[rowIndex].Value[colIndex])
+        }
+
+        function getValueColor(rowIndex, colIndex){
+            return convert.getColorByState(getStateFromValue(props.options.Row[rowIndex].Value[colIndex]))
+        }
+
+        function getDataFromValue(value){
+            if (typeof value == 'object'){
+                return value.Data
+            }
+            return value
+        }
+
+        function getStateFromValue(value){
+            if (typeof value == 'object'){
+                return value.State
             }
             return ""
+        }
+
+        function getTableData(){
+            let data:Array<Object> = []
+            if (props.options.Row){
+                for (let i = 0; i<props.options.Row.length; i++){
+                    let obj = {}
+                    for (let j = 0; j<props.options.Col.length; j++){
+                        obj[props.options.Col[j].Name] = getDataFromValue(props.options.Row[i].Value[j])
+                    }
+                    data.push(obj)
+                }
+            }
+            return data
         }
 
         function getTableColFixed(col){
@@ -84,36 +119,17 @@ export default defineComponent ({
             return col.Fixed
         }
 
-        function getTableRowState({ row, rowIndex }) {
-            return convert.getTableRowColorByState(props.options.Row[rowIndex].State)
-        }
-
-        function initDataColIndex() {
-            let total = 0
-            for (let i = 0; i<props.options.Col.length; i++){
-                if (props.options.Col[i].Type != ""){
-                    total++
-                }
-                data.colDataIndexMap[i] = i-total
-            }
-        }
-
-        function getDataColIndex(columnIndex:number):number {
-            return data.colDataIndexMap[columnIndex]
-        }
-
         function getMergeSameColSpan(rowIndex:number, columnIndex:number):number|null {
             if (props.options.Col[columnIndex].MergeSameCol) {
-                let colIndex:number = getDataColIndex(columnIndex)
                 let mergeRow = 0
                 for (let i = rowIndex; i < props.options.Row.length; i++){
                     if (i != 0 && mergeRow == 0) {
-                        if (props.options.Row[i].Data[colIndex] == props.options.Row[i-1].Data[colIndex]){
+                        if (getDataFromValue(props.options.Row[i].Value[columnIndex]) == getDataFromValue(props.options.Row[i-1].Value[columnIndex])){
                             return 0
                         }
                     }
                     if (i != props.options.Row.length-1) {
-                        if (props.options.Row[i].Data[colIndex] == props.options.Row[i+1].Data[colIndex]){
+                        if (getDataFromValue(props.options.Row[i].Value[columnIndex]) == getDataFromValue(props.options.Row[i+1].Value[columnIndex])){
                             mergeRow++
                             continue
                         }else{
@@ -134,15 +150,15 @@ export default defineComponent ({
             if (props.options.Row[rowIndex].MergeSameRow) {
                 let mergeCol = 0
                 for (let i = columnIndex; i < props.options.Col.length; i++){
-                    let colIndex:number = getDataColIndex(i)
+                    let colIndex:number = i
                     if (colIndex >= 0){
                         if (colIndex != 0 && mergeCol == 0) {
-                            if (props.options.Row[rowIndex].Data[colIndex] == props.options.Row[rowIndex].Data[colIndex-1]){
+                            if (getDataFromValue(props.options.Row[rowIndex].Value[colIndex]) == getDataFromValue(props.options.Row[rowIndex].Value[colIndex-1])){
                                 return 0
                             }
                         }
-                        if (colIndex !=props.options.Row[rowIndex].Data.length-1) {
-                            if (props.options.Row[rowIndex].Data[colIndex] == props.options.Row[rowIndex].Data[colIndex+1]){
+                        if (colIndex !=props.options.Row[rowIndex].Value.length-1) {
+                            if (getDataFromValue(props.options.Row[rowIndex].Value[colIndex]) == getDataFromValue(props.options.Row[rowIndex].Value[colIndex+1])){
                                 mergeCol++
                                 continue
                             }else{
@@ -163,6 +179,13 @@ export default defineComponent ({
         }
 
         function mergeSameCell({ row, column, rowIndex, columnIndex}) {
+            if (hasIndexCol()){
+                if (columnIndex == 0){
+                    return
+                }else{
+                    columnIndex -=1
+                }
+            }
             let mergeRow = getMergeSameColSpan(rowIndex, columnIndex)
             let mergeCol = getMergeSameRowSpan(rowIndex, columnIndex)
             if (mergeRow != null){
@@ -181,13 +204,13 @@ export default defineComponent ({
             }
         }
 
-        return {getTableCol, getTableData, getTableColWidth, getTableColFixed, getTableRowState,
-            mergeSameCell}
+        return {getTableCol, hasIndexCol, getTableData, getTableColFixed, mergeSameCell,
+            getValue, getValueColor}
     }
 })
 </script>
 
-<style scoped>
+<style>
 @import "../../css/color.css";
 
 .returnTable{

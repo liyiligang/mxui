@@ -18,7 +18,7 @@ package request
 
 import (
 	"github.com/liyiligang/base/component/Jlog"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
 )
 
 //节点通知增加

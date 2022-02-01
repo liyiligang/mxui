@@ -108,8 +108,6 @@ export default defineComponent ({
 
         const jsonEdit = ref<typeof JsonEdit>(JsonEdit);
         onMounted(()=>{
-            console.log(data.schema)
-            console.log(data.formData)
             mergeFormData(data.formData)
             data.resetData = JSON.stringify(data.formData)
             setJsonEditSchemaValue(data.schema)

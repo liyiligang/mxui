@@ -111,6 +111,10 @@ export default defineComponent ({
             type: Boolean,
             default: false
         },
+        defaultAutoRefresh:{
+            type: Boolean,
+            default: false
+        },
         showSetting:{
             type: Boolean,
             default: false
@@ -149,6 +153,7 @@ export default defineComponent ({
         function initData(){
             data.fullScreen = false
             data.autoRefreshButtonColor = "color-text-normal"
+            openAutoRefresh()
         }
 
         function getDialogViewFrameClass() {
@@ -174,6 +179,13 @@ export default defineComponent ({
                 data.autoRefreshButtonColor = data.autoRefresh ? "color-state-success":"color-text-normal"
                 globals.elButtonBlur(event)
                 context.emit("autoRefresh", data.autoRefresh)
+            }
+        }
+
+        function openAutoRefresh() {
+            if (props.showAutoRefresh && props.defaultAutoRefresh){
+                data.autoRefresh = !data.autoRefresh
+                data.autoRefreshButtonColor = data.autoRefresh ? "color-state-success":"color-text-normal"
             }
         }
 

@@ -17,8 +17,8 @@
 package data
 
 import (
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
-	"github.com/liyiligang/mxrpc/typedef/orm"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/typedef/orm"
 )
 
 //请求节点测试

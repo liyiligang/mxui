@@ -18,10 +18,10 @@ package main
 
 import (
 	"github.com/liyiligang/base/component/Jlog"
-	"github.com/liyiligang/mxrpc/data"
-	"github.com/liyiligang/mxrpc/db"
-	"github.com/liyiligang/mxrpc/gateway"
-	"github.com/liyiligang/mxrpc/request"
+	"github.com/liyiligang/mxui/data"
+	"github.com/liyiligang/mxui/db"
+	"github.com/liyiligang/mxui/gateway"
+	"github.com/liyiligang/mxui/request"
 	"github.com/robfig/cron/v3"
 	"google.golang.org/grpc"
 	"net/http"
@@ -48,7 +48,7 @@ func InitServer() (*App, error) {
 	if err := app.InitBaseServer(); err != nil {
 		return nil, err
 	}
-	Jlog.Info("mxrpc server is running")
+	Jlog.Info("mxui server is running")
 	return &app, nil
 }
 
@@ -95,7 +95,7 @@ func (app *App) initAppDependency() {
 func main() {
 	_, err := InitServer()
 	if err != nil {
-		Jlog.Fatal("mxrpc server start fail", "error", err)
+		Jlog.Fatal("mxui server start fail", "error", err)
 	}
 	select {}
 }

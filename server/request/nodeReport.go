@@ -19,7 +19,7 @@ package request
 
 import (
 	"context"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
 )
 
 

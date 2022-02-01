@@ -1,5 +1,5 @@
 {
-  "name": "mxrpc",
+  "name": "mxui",
   "version": "0.0.0",
   "scripts": {
     "build": "vite build",

@@ -34,7 +34,7 @@ limitations under the License.
 
 
 <script lang="ts">
-import {defineComponent, onMounted, PropType} from "vue";
+import {defineComponent, PropType} from "vue";
 import {protoManage} from "../../proto/manage";
 import {globals} from "../../base/globals";
 import {convert} from "../../base/convert";
@@ -53,31 +53,43 @@ export default defineComponent ({
             type: Array as PropType<protoManage.INodeReportVal[]>,
             default: () => []
         },
+        tableDataArrayList:{
+            type: Array as any,
+            default: () => []
+        },
         tableSchema:{
             type: Object,
             default: {}
         },
     },
     setup(props){
+
         function indexMethod(index) {
             return index+1
         }
 
         function getStateColor(rowIndex, valIndex){
-            let valObj = globals.getJson(String(props.tableData[rowIndex].Value))
-            if (valObj.ValueList[valIndex]){
-                return convert.getColorByState(valObj.ValueList[valIndex].State)
-            }
-            return ""
+            return  convert.getColorByState(getStateFromValue(props.tableDataArrayList[rowIndex][valIndex]))
+        }
 
-        }
         function getValue(rowIndex, valIndex){
-            let valObj = globals.getJson(String(props.tableData[rowIndex].Value))
-            if (valObj.ValueList[valIndex]){
-                return valObj.ValueList[valIndex].Value
+            return getDataFromValue(props.tableDataArrayList[rowIndex][valIndex])
+        }
+
+        function getDataFromValue(value){
+            if (typeof value == 'object'){
+                return value.Data
+            }
+            return value
+        }
+
+        function getStateFromValue(value){
+            if (typeof value == 'object'){
+                return value.State
             }
             return ""
         }
+
         function getTime(index){
             return convert.timeStampToFormatDate(props.tableData[index].Base?.UpdateTime)
         }

@@ -20,8 +20,8 @@ import (
 	"github.com/gogo/protobuf/proto"
 	"github.com/liyiligang/base/component/Jtool"
 	"github.com/liyiligang/base/component/Jweb"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
-	"github.com/liyiligang/mxrpc/typedef/constant"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/typedef/constant"
 	"github.com/pkg/errors"
 )
 

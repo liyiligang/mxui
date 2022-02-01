@@ -18,8 +18,8 @@ package db
 
 import (
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
-	"github.com/liyiligang/mxrpc/typedef/orm"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 )

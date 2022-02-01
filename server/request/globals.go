@@ -17,8 +17,8 @@
 package request
 
 import (
-	"github.com/liyiligang/mxrpc/data"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/data"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
 )
 
 type Request struct {

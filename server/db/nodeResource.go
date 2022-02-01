@@ -19,9 +19,9 @@ package db
 import (
 	"errors"
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
-	"github.com/liyiligang/mxrpc/typedef/config"
-	"github.com/liyiligang/mxrpc/typedef/orm"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/typedef/config"
+	"github.com/liyiligang/mxui/typedef/orm"
 	"gorm.io/gorm"
 	"time"
 )

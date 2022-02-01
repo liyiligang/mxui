@@ -16,11 +16,11 @@ limitations under the License.f
 
 <template>
     <el-row class="nodeReportValMainRow" v-loading="data.loading" :element-loading-text="$t('dialog.nodeReportVal.waitResult')" type="flex" justify="center" align="middle">
-        <Empty v-if="data.nodeReportValList.length==0" class="nodeReportValEmpty"></Empty>
+        <Empty v-if="data.nodeReportValList.length===0" class="nodeReportValEmpty"></Empty>
         <el-row v-else class="nodeReportValContentRow">
             <NodeReportValLine v-if="nodeReport.Type===protoManage.NodeReportType.NodeReportTypeLine" :line-schema="globals.getJson(nodeReport.Schema)"
                                :line-data="data.nodeReportValList"></NodeReportValLine>
-            <NodeReportValTable v-else :table-data="data.nodeReportValList"
+            <NodeReportValTable v-else :table-data="data.nodeReportValList" :table-data-array-list="convertValObjToArray()"
                                 :table-schema="globals.getJson(nodeReport.Schema)"></NodeReportValTable>
         </el-row>
     </el-row>
@@ -81,12 +81,13 @@ export default defineComponent ({
     },
     setup(props){
         const data = reactive<NodeReportValInfo>({loading:false, setDialogVisible:false, tabActiveName:"line",
-            nodeReportValList:[], setData:{requestCount:100, autoRefresh:2, autoRefreshState:false}, setDataOld:""})
+            nodeReportValList:[], setData:{requestCount:100, autoRefresh:3, autoRefreshState:false}, setDataOld:""})
         const instance = getCurrentInstance()
 
         onMounted(()=>{
             data.setDataOld = JSON.stringify(data.setData)
             reqNodeReportValList()
+            autoRefreshStateChanged(true)
         })
         onUnmounted(()=>{
             refresh.removeUserAutoRefresh(instance?.uid)
@@ -155,8 +156,18 @@ export default defineComponent ({
             }
         }
 
+        function convertValObjToArray() {
+            let valueList:Array<any> = []
+            for (let i=0; i<data.nodeReportValList.length; i++){
+                let nodeReportVal:protoManage.INodeReportVal = data.nodeReportValList[i]
+                let jsonObj = globals.getJson(String(nodeReportVal.Value))
+                valueList.push(Object.values(jsonObj))
+            }
+            return valueList
+        }
+
         return {data, globals, protoManage, setDataChanged, reqNodeReportValList, autoRefreshStateChanged,
-            showSettingView, setViewClose}
+            showSettingView, setViewClose, convertValObjToArray}
     }
 })
 </script>

@@ -19,9 +19,9 @@ package makeDBData
 import (
 	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jtool"
-	"github.com/liyiligang/mxrpc"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
-	"github.com/liyiligang/mxrpc/typedef/orm"
+	"github.com/liyiligang/mxui"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/typedef/orm"
 	"strconv"
 	"testing"
 )

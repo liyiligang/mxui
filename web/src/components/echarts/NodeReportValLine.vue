@@ -87,9 +87,10 @@ export default defineComponent ({
             for (let i=props.lineData.length-1; i>=0; i--)
             {
                 let valObj = globals.getJson(String(props.lineData[i].Value))
+                let valList:Array<any> = Object.values(valObj)
                 let dot = [props.lineData[i].Base?.UpdateTime]
-                for (let j=0; j<valObj.ValueList.length; j++){
-                    dot.push(valObj.ValueList[j].State)
+                for (let j=0; j<valList.length; j++){
+                    dot.push(getStateFromValue(valList[j]))
                 }
                 visualData.push(dot)
             }
@@ -151,10 +152,11 @@ export default defineComponent ({
             let lineData:any = []
             for (let i=props.lineData.length-1; i>=0; i--)
             {
-                let valObj = globals.getJson(String(props.lineData[i].Value))
+                let valObj = Object(globals.getJson(String(props.lineData[i].Value)))
+                let valList:Array<any> = Object.values(valObj)
                 let dot = [props.lineData[i].Base?.UpdateTime]
-                for (let j=0; j<valObj.ValueList.length; j++){
-                    dot.push(valObj.ValueList[j].Value)
+                for (let j=0; j<valList.length; j++){
+                    dot.push(getDataFromValue(valList[j]))
                 }
                 lineData.push(dot)
             }
@@ -168,7 +170,7 @@ export default defineComponent ({
                 let obj = {
                     name: data.legend.data[i],
                     type: 'line',
-                    smooth: true,
+                    // smooth: true,
                     showSymbol: false,
                     sampling: 'lttb',
                     data:objData
@@ -224,6 +226,20 @@ export default defineComponent ({
                 },
                 series: data.series
             };
+        }
+
+        function getDataFromValue(value){
+            if (typeof value == 'object'){
+                return value.Data
+            }
+            return value
+        }
+
+        function getStateFromValue(value){
+            if (typeof value == 'object'){
+                return value.State
+            }
+            return ""
         }
 
         function updateLine(){

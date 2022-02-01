@@ -16,7 +16,7 @@
 
 package db
 
-import "github.com/liyiligang/mxrpc/typedef/orm"
+import "github.com/liyiligang/mxui/typedef/orm"
 
 //获取顶部链接
 func (db *Server) FindTopLink() ([]orm.TopLink, error) {

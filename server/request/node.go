@@ -18,7 +18,7 @@ package request
 
 import (
 	"context"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
 )
 
 func (request *Request) RegisterNode(ctx context.Context, node *protoManage.Node) (*protoManage.Node, error) {

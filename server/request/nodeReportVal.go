@@ -17,7 +17,7 @@
 
 package request
 
-import "github.com/liyiligang/mxrpc/protoFiles/protoManage"
+import "github.com/liyiligang/mxui/protoFiles/protoManage"
 
 //节点报告值查询
 func (request *Request) ReqNodeReportValFind(r *HTTPRequest) error {

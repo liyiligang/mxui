@@ -18,11 +18,11 @@ package data
 
 import (
 	"github.com/liyiligang/base/component/Jtoken"
-	"github.com/liyiligang/mxrpc/check"
-	"github.com/liyiligang/mxrpc/convert"
-	"github.com/liyiligang/mxrpc/protoFiles/protoManage"
-	"github.com/liyiligang/mxrpc/typedef/config"
-	"github.com/liyiligang/mxrpc/typedef/orm"
+	"github.com/liyiligang/mxui/check"
+	"github.com/liyiligang/mxui/convert"
+	"github.com/liyiligang/mxui/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/typedef/config"
+	"github.com/liyiligang/mxui/typedef/orm"
 	"github.com/pkg/errors"
 	"gorm.io/gorm"
 	"time"

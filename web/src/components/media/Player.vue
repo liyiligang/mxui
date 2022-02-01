@@ -24,6 +24,7 @@ import {defineComponent, onMounted} from "vue";
 import Hls from 'hls.js';
 import Flv from 'flv.js';
 import DPlayer from 'dplayer';
+import {globals} from "../../base/globals";
 
 export default defineComponent ({
     name: "Player",
@@ -39,7 +40,6 @@ export default defineComponent ({
     setup(props){
 
         onMounted(()=>{
-            console.log(props)
             initPlayer()
         })
 
@@ -47,10 +47,17 @@ export default defineComponent ({
             if (props.options.Type == ""){
                 props.options.Type = 'auto'
             }
+
+            let language = "en"
+            if (globals.globalsData.managerSetting.setting.language === "chs"){
+                language = "zh-cn"
+            }
+
             const dp = new DPlayer({
                 container: document.getElementById('dplayer'),
                 live:props.options.Live,
                 loop:props.options.Loop,
+                lang:language,
                 video: {
                     url: props.options.URL,
                     type:props.options.Type,
