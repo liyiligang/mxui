@@ -30,18 +30,14 @@ const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 type Order int32
 
 const (
-	Order_Unknow Order = 0
-	//用户
-	Order_ManagerUpdate Order = 101
-	Order_ManagerDel    Order = 102
-	//节点方法
-	Order_NodeFuncCallReq Order = 608
-	Order_NodeFuncCallAns Order = 609
-	//节点报告
+	Order_Unknow              Order = 0
+	Order_ManagerUpdate       Order = 101
+	Order_ManagerDel          Order = 102
+	Order_NodeFuncCallReq     Order = 608
+	Order_NodeFuncCallAns     Order = 609
 	Order_NodeReportUpdateVal Order = 704
-	//节点通知
-	Order_NodeNotifyAdd   Order = 801
-	Order_NodeNotifyError Order = 803
+	Order_NodeNotifyAdd       Order = 801
+	Order_NodeNotifyError     Order = 803
 )
 
 var Order_name = map[int32]string{
@@ -333,7 +329,6 @@ func (HttpError) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_519fa8ed5ffbbc8f, []int{7}
 }
 
-//*******************消息包*****************
 type Message struct {
 	Order                Order    `protobuf:"varint,1,opt,name=order,proto3,enum=protoManage.Order" json:"order,omitempty"`
 	Message              []byte   `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
@@ -452,7 +447,6 @@ func (m *HttpMessage) GetToken() string {
 	return ""
 }
 
-//基础数据
 type Base struct {
 	ID                   int64    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
 	UpdateTime           int64    `protobuf:"varint,2,opt,name=UpdateTime,proto3" json:"UpdateTime,omitempty"`
@@ -508,7 +502,6 @@ func (m *Base) GetUpdateTime() int64 {
 	return 0
 }
 
-//分页
 type Page struct {
 	Count                int64    `protobuf:"varint,1,opt,name=Count,proto3" json:"Count,omitempty"`
 	Num                  int64    `protobuf:"varint,2,opt,name=Num,proto3" json:"Num,omitempty"`
@@ -564,7 +557,6 @@ func (m *Page) GetNum() int64 {
 	return 0
 }
 
-//时间
 type Time struct {
 	BeginTime            int64    `protobuf:"varint,1,opt,name=BeginTime,proto3" json:"BeginTime,omitempty"`
 	EndTime              int64    `protobuf:"varint,2,opt,name=EndTime,proto3" json:"EndTime,omitempty"`
@@ -620,7 +612,6 @@ func (m *Time) GetEndTime() int64 {
 	return 0
 }
 
-//管理员
 type Manager struct {
 	Base                 Base     `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	Name                 string   `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
@@ -724,7 +715,6 @@ func (m *Manager) GetState() State {
 	return State_StateNot
 }
 
-//链接
 type TopLink struct {
 	Base                 Base     `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	Name                 string   `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
@@ -796,7 +786,6 @@ func (m *TopLink) GetState() State {
 	return State_StateNot
 }
 
-//节点
 type Node struct {
 	Base                 Base     `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	Name                 string   `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
@@ -860,7 +849,6 @@ func (m *Node) GetState() State {
 	return State_StateNot
 }
 
-//节点方法
 type NodeFunc struct {
 	Base                 Base     `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	NodeID               int64    `protobuf:"varint,2,opt,name=NodeID,proto3" json:"NodeID,omitempty"`
@@ -956,7 +944,6 @@ func (m *NodeFunc) GetState() State {
 	return State_StateNot
 }
 
-//节点方法调用
 type NodeFuncCall struct {
 	Base                 Base               `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	RequesterID          int64              `protobuf:"varint,2,opt,name=RequesterID,proto3" json:"RequesterID,omitempty"`
@@ -1060,7 +1047,6 @@ func (m *NodeFuncCall) GetState() State {
 	return State_StateNot
 }
 
-//节点报告
 type NodeReport struct {
 	Base                 Base           `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	NodeID               int64          `protobuf:"varint,2,opt,name=NodeID,proto3" json:"NodeID,omitempty"`
@@ -1172,7 +1158,6 @@ func (m *NodeReport) GetState() State {
 	return State_StateNot
 }
 
-//节点报告值
 type NodeReportVal struct {
 	Base                 Base     `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	ReportID             int64    `protobuf:"varint,2,opt,name=ReportID,proto3" json:"ReportID,omitempty"`
@@ -1244,7 +1229,6 @@ func (m *NodeReportVal) GetState() State {
 	return State_StateNot
 }
 
-//节点通知
 type NodeNotify struct {
 	Base                 Base             `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	SenderID             int64            `protobuf:"varint,2,opt,name=SenderID,proto3" json:"SenderID,omitempty"`
@@ -1340,7 +1324,6 @@ func (m *NodeNotify) GetShowPop() bool {
 	return false
 }
 
-//节点资源
 type NodeResource struct {
 	Base                 Base             `protobuf:"bytes,1,opt,name=Base,proto3" json:"Base"`
 	Name                 string           `protobuf:"bytes,2,opt,name=Name,proto3" json:"Name,omitempty"`
@@ -1460,7 +1443,6 @@ func (m *NodeResource) GetState() State {
 	return State_StateNot
 }
 
-//获取顶部链接列表
 type ReqSystemInitInfo struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -1500,7 +1482,6 @@ func (m *ReqSystemInitInfo) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_ReqSystemInitInfo proto.InternalMessageInfo
 
-//获取顶部链接列表
 type AnsSystemInitInfo struct {
 	SystemInit           bool     `protobuf:"varint,1,opt,name=systemInit,proto3" json:"systemInit,omitempty"`
 	OpenRegister         bool     `protobuf:"varint,2,opt,name=openRegister,proto3" json:"openRegister,omitempty"`
@@ -1556,7 +1537,6 @@ func (m *AnsSystemInitInfo) GetOpenRegister() bool {
 	return false
 }
 
-//获取顶部链接列表
 type ReqTopLinkList struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -1643,7 +1623,6 @@ func (m *AnsTopLinkList) GetTopLinkList() []TopLink {
 	return nil
 }
 
-//获取管理员列表
 type ReqManagerList struct {
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
@@ -1730,7 +1709,6 @@ func (m *AnsManagerList) GetManagerList() []Manager {
 	return nil
 }
 
-//获取节点列表
 type ReqNodeList struct {
 	ID                   []int64  `protobuf:"varint,1,rep,packed,name=ID,proto3" json:"ID,omitempty"`
 	Name                 []string `protobuf:"bytes,2,rep,name=Name,proto3" json:"Name,omitempty"`
@@ -1865,7 +1843,6 @@ func (m *AnsNodeList) GetNodeList() []Node {
 	return nil
 }
 
-//获取节点方法列表
 type ReqNodeFuncList struct {
 	ID                   []int64  `protobuf:"varint,1,rep,packed,name=ID,proto3" json:"ID,omitempty"`
 	Name                 []string `protobuf:"bytes,2,rep,name=Name,proto3" json:"Name,omitempty"`
@@ -2032,7 +2009,6 @@ func (m *AnsNodeFuncList) GetNodeList() []Node {
 	return nil
 }
 
-//获取节点报告列表
 type ReqNodeReportList struct {
 	ID                   []int64  `protobuf:"varint,1,rep,packed,name=ID,proto3" json:"ID,omitempty"`
 	Name                 []string `protobuf:"bytes,2,rep,name=Name,proto3" json:"Name,omitempty"`
@@ -2199,7 +2175,6 @@ func (m *AnsNodeReportList) GetNodeList() []Node {
 	return nil
 }
 
-//请求节点方法调用
 type ReqNodeFuncCall struct {
 	NodeFuncCall         NodeFuncCall `protobuf:"bytes,1,opt,name=NodeFuncCall,proto3" json:"NodeFuncCall"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
@@ -2302,7 +2277,6 @@ func (m *AnsNodeFuncCall) GetError() string {
 	return ""
 }
 
-//获取节点方法调用列表
 type ReqNodeFuncCallList struct {
 	FuncID               int64    `protobuf:"varint,1,opt,name=FuncID,proto3" json:"FuncID,omitempty"`
 	Page                 Page     `protobuf:"bytes,2,opt,name=Page,proto3" json:"Page"`
@@ -2405,7 +2379,6 @@ func (m *AnsNodeFuncCallList) GetNodeFuncCallList() []NodeFuncCall {
 	return nil
 }
 
-//获取节点报告值列表
 type ReqNodeReportValList struct {
 	ID                   int64    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
 	ReportID             int64    `protobuf:"varint,2,opt,name=ReportID,proto3" json:"ReportID,omitempty"`
@@ -2516,7 +2489,6 @@ func (m *AnsNodeReportValList) GetNodeReportValList() []NodeReportVal {
 	return nil
 }
 
-//获取节点通知列表
 type ReqNodeNotifyList struct {
 	Message              []string           `protobuf:"bytes,1,rep,name=Message,proto3" json:"Message,omitempty"`
 	State                []State            `protobuf:"varint,2,rep,packed,name=State,proto3,enum=protoManage.State" json:"State,omitempty"`
@@ -2659,7 +2631,6 @@ func (m *AnsNodeNotifyList) GetNodeNotifyList() []NodeNotify {
 	return nil
 }
 
-//获取节点资源列表
 type ReqNodeResourceList struct {
 	Name                 []string           `protobuf:"bytes,1,rep,name=Name,proto3" json:"Name,omitempty"`
 	State                []State            `protobuf:"varint,2,rep,packed,name=State,proto3,enum=protoManage.State" json:"State,omitempty"`
@@ -2802,7 +2773,6 @@ func (m *AnsNodeResourceList) GetNodeResourceList() []NodeResource {
 	return nil
 }
 
-//请求上传节点资源
 type ReqNodeResourceUpload struct {
 	Data                 []byte   `protobuf:"bytes,1,opt,name=Data,proto3" json:"Data,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -2897,7 +2867,6 @@ func (m *AnsNodeResourceUpload) GetNodeResource() NodeResource {
 	return NodeResource{}
 }
 
-//请求下载节点资源
 type ReqNodeResourceDownload struct {
 	NodeResource         NodeResource `protobuf:"bytes,1,opt,name=NodeResource,proto3" json:"NodeResource"`
 	XXX_NoUnkeyedLiteral struct{}     `json:"-"`
@@ -2992,7 +2961,6 @@ func (m *AnsNodeResourceDownload) GetData() []byte {
 	return nil
 }
 
-//请求节点测试
 type ReqNodeTest struct {
 	ID                   int64    `protobuf:"varint,1,opt,name=ID,proto3" json:"ID,omitempty"`
 	Type                 int64    `protobuf:"varint,2,opt,name=Type,proto3" json:"Type,omitempty"`

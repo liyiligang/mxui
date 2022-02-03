@@ -22,7 +22,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-//请求节点方法调用
 func (request *Request) ReqNodeFuncCall(r *HTTPRequest) error {
 	req := &protoManage.ReqNodeFuncCall{}
 	err := request.unmarshalWithHttp(r, req)
@@ -63,7 +62,6 @@ func (request *Request) ReqNodeFuncCall(r *HTTPRequest) error {
 	return nil
 }
 
-//回复节点方法调用
 func (request *Request) AnsNodeFuncCall(nodeID int64, message []byte) error {
 	ans := protoManage.AnsNodeFuncCall{}
 	err := ans.Unmarshal(message)
@@ -77,7 +75,6 @@ func (request *Request) AnsNodeFuncCall(nodeID int64, message []byte) error {
 	return nil
 }
 
-//节点方法调用查询
 func (request *Request) ReqNodeFuncCallFind(r *HTTPRequest) error {
 	req := &protoManage.ReqNodeFuncCallList{}
 	err := request.unmarshalWithHttp(r, req)
@@ -99,7 +96,6 @@ func (request *Request) ReqNodeFuncCallFind(r *HTTPRequest) error {
 	return nil
 }
 
-//获取节点方法调用按ID
 func (request *Request) ReqNodeFuncCallFindByID(r *HTTPRequest) error {
 	req := &protoManage.NodeFuncCall{}
 	err := request.unmarshalWithHttp(r, req)
@@ -121,7 +117,6 @@ func (request *Request) ReqNodeFuncCallFindByID(r *HTTPRequest) error {
 	return nil
 }
 
-//获取节点方法调用参数按ID
 func (request *Request) ReqNodeFuncCallParameterFindByID(r *HTTPRequest) error {
 	req := &protoManage.NodeFuncCall{}
 	err := request.unmarshalWithHttp(r, req)
@@ -143,7 +138,6 @@ func (request *Request) ReqNodeFuncCallParameterFindByID(r *HTTPRequest) error {
 	return nil
 }
 
-//获取节点方法调用返回值按ID
 func (request *Request) ReqNodeFuncCallReturnValFindByID(r *HTTPRequest) error {
 	req := &protoManage.NodeFuncCall{}
 	err := request.unmarshalWithHttp(r, req)

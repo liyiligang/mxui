@@ -37,7 +37,6 @@ type App struct {
 	Gateway			gateway.Gateway
 }
 
-//服务初始化
 func InitServer() (*App, error) {
 	app := App{}
 	app.InitConfig()

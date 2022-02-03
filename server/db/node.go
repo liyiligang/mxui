@@ -24,22 +24,18 @@ import (
 	"gorm.io/gorm"
 )
 
-//新增节点
 func (db *Server) AddNode(node *orm.Node) error {
 	return db.Gorm.Create(node).Error
 }
 
-//删除节点
 func (db *Server) DelNode(node orm.Node) error {
 	return db.Gorm.Delete(&node).Error
 }
 
-//按ID更新节点状态
 func (db *Server) UpdateNodeState(node orm.Node) error {
 	return db.Gorm.Model(&node).Update("State", node.State).Error
 }
 
-//获取节点信息
 func (db *Server) FindNode(req *protoManage.ReqNodeList) ([]orm.Node, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeFilter(tx, req)
@@ -51,7 +47,6 @@ func (db *Server) FindNode(req *protoManage.ReqNodeList) ([]orm.Node, error) {
 	return nodeList, err
 }
 
-//获取节点计数
 func (db *Server) FindNodeCount(req *protoManage.ReqNodeList) (int64, error) {
 	tx := db.Gorm.Model(&orm.Node{})
 	tx = db.SetNodeFilter(tx, req)
@@ -60,19 +55,16 @@ func (db *Server) FindNodeCount(req *protoManage.ReqNodeList) (int64, error) {
 	return count, err
 }
 
-//按ID获取指定节点
 func (db *Server) FindNodeByID(node orm.Node) (*orm.Node, error) {
 	err := db.Gorm.Where("id = ?", node.ID).First(&node).Error
 	return &node, err
 }
 
-//按节点名获取指定节点
 func (db *Server) FindNodeByName(node orm.Node) (*orm.Node, error) {
 	err := db.Gorm.Where("name = ?", node.Name).First(&node).Error
 	return &node, err
 }
 
-//节点过滤器
 func (db *Server) SetNodeFilter(tx *gorm.DB, req *protoManage.ReqNodeList) *gorm.DB {
 	sql := db.spliceSql("id = ?", len(req.ID), "or")
 	var id []interface{}

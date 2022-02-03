@@ -78,7 +78,6 @@ func (app *App) InitSystemDir(){
 	Jlog.Info("system dir create success")
 }
 
-//启动定时服务
 func (app *App) InitTimer() {
 	app.Timer = cron.New(cron.WithSeconds())
 	_, err := app.Timer.AddFunc("* * 0 * * *", func() {
@@ -107,7 +106,6 @@ func (app *App) StopTimer() error {
 	return nil
 }
 
-//启动orm服务
 func (app *App) InitDBServer() error {
 	db, err := Jorm.GormInit(Jorm.OrmInitConfig{
 		Name: 		 config.LocalConfig.DB.Name,
@@ -141,7 +139,6 @@ func (app *App) StopDBServer() error {
 	return nil
 }
 
-//启动web服务
 func (app *App) InitWebServer() error {
 	websocketConfig := Jweb.WebsocketConfig{
 		WriteWaitTime: time.Duration(config.LocalConfig.HTTP.WebSocket.WriteWaitTime) * time.Second,
@@ -252,7 +249,6 @@ func (app *App) InitWebServer() error {
 	return nil
 }
 
-//优雅关闭http服务
 func (app *App) GracefulStopWebServer() error {
 	if app.HttpServer == nil {
 		return errors.New("web component must not be nil")
@@ -263,7 +259,6 @@ func (app *App) GracefulStopWebServer() error {
 	return nil
 }
 
-//立即关闭http服务
 func (app *App) StopWebServer() error {
 	if app.HttpServer == nil {
 		return errors.New("web component must not be nil")
@@ -274,7 +269,6 @@ func (app *App) StopWebServer() error {
 	return nil
 }
 
-//启动rpc服务
 func (app *App) InitRpcServer() error {
 	s, err := Jrpc.GrpcServerInit(Jrpc.RpcServerConfig{
 		RpcBaseConfig:Jrpc.RpcBaseConfig{
@@ -295,7 +289,6 @@ func (app *App) InitRpcServer() error {
 	return err
 }
 
-//优雅关闭rpc服务
 func (app *App) GracefulStopRpcServer() error {
 	if app.RpcServer == nil {
 		return errors.New("rpc component must not be nil")
@@ -304,7 +297,6 @@ func (app *App) GracefulStopRpcServer() error {
 	return nil
 }
 
-//立即关闭rpc服务
 func (app *App) StopRpcServer() error {
 	if app.RpcServer == nil {
 		return errors.New("rpc component must not be nil")

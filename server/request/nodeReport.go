@@ -31,7 +31,6 @@ func (request *Request) RegisterNodeReport(ctx context.Context, nodeReport *prot
 	return nodeReport, nil
 }
 
-//节点报告查询
 func (request *Request) ReqNodeReportFind(r *HTTPRequest) error {
 	req := &protoManage.ReqNodeReportList{}
 	err := request.unmarshalWithHttp(r, req)
@@ -50,7 +49,6 @@ func (request *Request) ReqNodeReportFind(r *HTTPRequest) error {
 	return nil
 }
 
-//刪除节点报告
 func (request *Request) ReqNodeReportDel(r *HTTPRequest) error {
 	req := &protoManage.NodeReport{}
 	err := request.unmarshalWithHttp(r, req)

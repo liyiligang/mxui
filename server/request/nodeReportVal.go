@@ -19,7 +19,6 @@ package request
 
 import "github.com/liyiligang/mxui/protoFiles/protoManage"
 
-//节点报告值查询
 func (request *Request) ReqNodeReportValFind(r *HTTPRequest) error {
 	req := &protoManage.ReqNodeReportValList{}
 	err := request.unmarshalWithHttp(r, req)
@@ -41,7 +40,6 @@ func (request *Request) ReqNodeReportValFind(r *HTTPRequest) error {
 	return nil
 }
 
-//节点报告值更新
 func (request *Request) ReqNodeReportValAdd(nodeID int64, message []byte) error {
 	nodeReportVal := protoManage.NodeReportVal{}
 	err := nodeReportVal.Unmarshal(message)

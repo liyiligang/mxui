@@ -94,7 +94,7 @@ export namespace protoManage {
         message?: (Uint8Array|null);
     }
 
-    /** 消息包***************** */
+    /** Represents a Message. */
     class Message implements IMessage {
 
         /**

@@ -209,7 +209,7 @@ export const protoManage = $root.protoManage = (() => {
         /**
          * Constructs a new Message.
          * @memberof protoManage
-         * @classdesc 消息包*****************
+         * @classdesc Represents a Message.
          * @implements IMessage
          * @constructor
          * @param {protoManage.IMessage=} [properties] Properties to set

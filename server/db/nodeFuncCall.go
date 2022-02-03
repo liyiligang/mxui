@@ -23,7 +23,6 @@ import (
 	"gorm.io/gorm"
 )
 
-//新增节点方法调用
 func (db *Server) AddNodeFuncCall(nodeFuncCall *orm.NodeFuncCall) error {
 	return db.Gorm.Create(nodeFuncCall).Error
 }
@@ -37,7 +36,6 @@ func (db *Server) DelNodeFuncCallByNodeID(nodeID int64) error {
 	return db.Gorm.Where("funcID in(?)", subQuery1).Delete(&orm.NodeFuncCall{}).Error
 }
 
-//按ID更新节点方法调用
 func (db *Server) UpdateNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) error {
 	err := db.Gorm.Model(&nodeFuncCall).
 		Updates(map[string]interface{}{
@@ -47,7 +45,6 @@ func (db *Server) UpdateNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) error {
 	return err
 }
 
-//获取节点方法调用信息
 func (db *Server) FindNodeFuncCall(req *protoManage.ReqNodeFuncCallList) ([]orm.NodeFuncCall, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeFuncCallFilter(tx, req)
@@ -60,27 +57,23 @@ func (db *Server) FindNodeFuncCall(req *protoManage.ReqNodeFuncCallList) ([]orm.
 	return NodeFuncCallList, err
 }
 
-//按ID获取指定节点方法调用
 func (db *Server) FindNodeFuncCallByID(nodeFuncCall orm.NodeFuncCall) (*orm.NodeFuncCall, error) {
 	err := db.Gorm.First(&nodeFuncCall, nodeFuncCall.ID).Error
 	return &nodeFuncCall, err
 }
 
-//按ID获取指定节点方法调用参数
 func (db *Server) FindNodeFuncCallParameterByID(nodeFuncCall orm.NodeFuncCall) (*orm.NodeFuncCall, error) {
 	err := db.Gorm.Select("id", "parameter").Find(&nodeFuncCall).
 		Where("id = ?", nodeFuncCall.ID).Error
 	return &nodeFuncCall, err
 }
 
-//按ID获取指定节点方法调用返回值
 func (db *Server) FindNodeFuncCallReturnValByID(nodeFuncCall orm.NodeFuncCall) (*orm.NodeFuncCall, error) {
 	err := db.Gorm.Select("id", "returnVal", "returnType", "state").Find(&nodeFuncCall).
 		Where("id = ?", nodeFuncCall.ID).Error
 	return &nodeFuncCall, err
 }
 
-//获取节点方法调用中节点方法ID对应的最后一次调用信息
 func (db *Server) FindLastNodeFuncCallByNodeFunc(req *protoManage.ReqNodeFuncCallList) ([]orm.NodeFuncCall, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeFuncCallFilter(tx, req)
@@ -93,7 +86,6 @@ func (db *Server) FindLastNodeFuncCallByNodeFunc(req *protoManage.ReqNodeFuncCal
 	return nodeFuncCallList, err
 }
 
-//节点方法调用过滤器
 func (db *Server) SetNodeFuncCallFilter(tx *gorm.DB, req *protoManage.ReqNodeFuncCallList) *gorm.DB {
 	if req.FuncID != 0 {
 		tx.Where("funcID = ?", req.FuncID)

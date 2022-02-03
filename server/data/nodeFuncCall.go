@@ -42,7 +42,6 @@ func init() {
 	gojsonschema.FormatCheckers.Add("date-time", DateTimeFormatChecker{})
 }
 
-//节点方法调用请求
 func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 	protoNodeFunc := protoManage.NodeFunc{Base: protoManage.Base{ID: req.NodeFuncCall.FuncID}}
 	err := data.NodeFuncFindByID(&protoNodeFunc)
@@ -81,7 +80,6 @@ func (data *Data) NodeFuncCallReq(req *protoManage.ReqNodeFuncCall) error {
 	return data.Gateway.RpcSendOrBroadCastPB(protoNode.Base.ID, protoManage.Order_NodeFuncCallReq, req)
 }
 
-//节点方法调用回复
 func (data *Data) NodeFuncCallAns(ans *protoManage.AnsNodeFuncCall) error {
 	err := data.DB.UpdateNodeFuncCallByID(orm.NodeFuncCall{
 		Base:      orm.Base{ID: ans.NodeFuncCall.Base.ID},
@@ -95,7 +93,6 @@ func (data *Data) NodeFuncCallAns(ans *protoManage.AnsNodeFuncCall) error {
 	return data.Gateway.WsSendOrBroadCastPB(ans.NodeFuncCall.RequesterID, protoManage.Order_NodeFuncCallAns, ans)
 }
 
-//查找节点方法调用信息
 func (data *Data) NodeFuncCallFind(req *protoManage.ReqNodeFuncCallList) (*protoManage.AnsNodeFuncCallList, error) {
 	ormFuncCallList, err := data.DB.FindNodeFuncCall(req)
 	if err != nil {
@@ -105,7 +102,6 @@ func (data *Data) NodeFuncCallFind(req *protoManage.ReqNodeFuncCallList) (*proto
 	return &protoManage.AnsNodeFuncCallList{NodeFuncCallList: protoNodeFuncCallList}, nil
 }
 
-//按ID查询节点方法调用
 func (data *Data) NodeFuncCallFindByID(protoNodeFuncCall *protoManage.NodeFuncCall) error {
 	ormNodeFuncCall, err :=data.DB.FindNodeFuncCallByID(orm.NodeFuncCall{Base: orm.Base{ID: protoNodeFuncCall.Base.ID}})
 	if err != nil {
@@ -115,7 +111,6 @@ func (data *Data) NodeFuncCallFindByID(protoNodeFuncCall *protoManage.NodeFuncCa
 	return nil
 }
 
-//按ID查询节点方法调用参数
 func (data *Data) NodeFuncCallParameterFindByID(protoNodeFuncCall *protoManage.NodeFuncCall) error {
 	ormNodeFuncCall, err :=data.DB.FindNodeFuncCallParameterByID(orm.NodeFuncCall{Base: orm.Base{ID: protoNodeFuncCall.Base.ID}})
 	if err != nil {
@@ -125,7 +120,6 @@ func (data *Data) NodeFuncCallParameterFindByID(protoNodeFuncCall *protoManage.N
 	return nil
 }
 
-//按ID查询节点方法调用返回值
 func (data *Data) NodeFuncCallReturnValFindByID(protoNodeFuncCall *protoManage.NodeFuncCall) error {
 	ormNodeFuncCall, err :=data.DB.FindNodeFuncCallReturnValByID(orm.NodeFuncCall{Base: orm.Base{ID: protoNodeFuncCall.Base.ID}})
 	if err != nil {

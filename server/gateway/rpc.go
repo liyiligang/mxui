@@ -43,7 +43,6 @@ func (gateway *Gateway) RpcSendOrBroadCastData(nodeID int64, order protoManage.O
 	return err
 }
 
-//关闭客户端
 func (gateway *Gateway) RpcCloseClient(nodeID int64) error {
 	conn, ok := gateway.RpcManage.Load(nodeID)
 	if !ok {

@@ -28,7 +28,6 @@ func (request *Request) RegisterNodeFunc(ctx context.Context, nodeFunc *protoMan
 	return nodeFunc, nil
 }
 
-//节点方法查询
 func (request *Request) ReqNodeFuncFind(r *HTTPRequest) error {
 	req := &protoManage.ReqNodeFuncList{}
 	err := request.unmarshalWithHttp(r, req)
@@ -47,7 +46,6 @@ func (request *Request) ReqNodeFuncFind(r *HTTPRequest) error {
 	return nil
 }
 
-//刪除节点方法
 func (request *Request) ReqNodeFuncDel(r *HTTPRequest) error {
 	req := &protoManage.NodeFunc{}
 	err := request.unmarshalWithHttp(r, req)

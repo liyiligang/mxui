@@ -26,34 +26,28 @@ import (
 	"time"
 )
 
-//新增节点资源
 func (db *Server) AddNodeResource(nodeResource *orm.NodeResource) error {
 	return db.Gorm.Create(nodeResource).Error
 }
 
-//更新节点资源状态
 func (db *Server) UpdateNodeResourceState(nodeResource *orm.NodeResource) error {
 	return db.Gorm.Model(&nodeResource).Update("State", nodeResource.State).Error
 }
 
-//更新节点资源下载次数
 func (db *Server) UpdateNodeResourceDownLoadCnt(nodeResource *orm.NodeResource) error {
 	return db.Gorm.Model(&nodeResource).Update("DownLoadCnt", nodeResource.DownLoadCnt).Error
 }
 
-//按ID获取指定节点资源
 func (db *Server) FindNodeResourceByID(nodeResource orm.NodeResource) (*orm.NodeResource, error) {
 	err := db.Gorm.First(&nodeResource, nodeResource.ID).Error
 	return &nodeResource, err
 }
 
-//更新节点资源状态按有效信息
 func (db *Server) FindNodeResourceWithValid(nodeResource orm.NodeResource) error {
 	return db.Gorm.Where("Md5=? and State=?",
 		nodeResource.Md5, nodeResource.State).First(&nodeResource).Error
 }
 
-//获取过期节点资源
 func (db *Server) FindNodeResourceWithInvalid() ([]orm.NodeResource, error) {
 	var nodeResourceList []orm.NodeResource
 	err := db.Gorm.Where("State=? and updatedAt<=?", protoManage.State_StateNormal,
@@ -64,7 +58,6 @@ func (db *Server) FindNodeResourceWithInvalid() ([]orm.NodeResource, error) {
 	return nodeResourceList, err
 }
 
-//获取节点资源信息
 func (db *Server) FindNodeResource(req *protoManage.ReqNodeResourceList) ([]orm.NodeResource, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeResourceFilter(tx, req)
@@ -76,7 +69,6 @@ func (db *Server) FindNodeResource(req *protoManage.ReqNodeResourceList) ([]orm.
 	return nodeResourceList, err
 }
 
-//获取节点通知计数
 func (db *Server) FindNodeResourceCount(req *protoManage.ReqNodeResourceList) (int64, error) {
 	tx := db.Gorm.Model(&orm.NodeResource{})
 	tx = db.SetNodeResourceFilter(tx, req)
@@ -85,7 +77,6 @@ func (db *Server) FindNodeResourceCount(req *protoManage.ReqNodeResourceList) (i
 	return count, err
 }
 
-//节点资源过滤器
 func (db *Server) SetNodeResourceFilter(tx *gorm.DB, req *protoManage.ReqNodeResourceList) *gorm.DB {
 	sql := db.spliceSql("name like ?", len(req.Name), "or")
 	var message []interface{}

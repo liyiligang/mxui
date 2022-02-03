@@ -21,7 +21,6 @@ import (
 	"github.com/liyiligang/mxui/protoFiles/protoManage"
 )
 
-//顶部链接信息查询
 func (request *Request) ReqTopLinkFind(r *HTTPRequest) error {
 	req := &protoManage.ReqTopLinkList{}
 	err := request.unmarshalWithHttp(r, req)
@@ -39,7 +38,6 @@ func (request *Request) ReqTopLinkFind(r *HTTPRequest) error {
 	return nil
 }
 
-//按ID查询顶部链接信息
 func (request *Request) ReqTopLinkFindByID(r *HTTPRequest) error {
 	req := &protoManage.TopLink{}
 	err := request.unmarshalWithHttp(r, req)
@@ -57,7 +55,6 @@ func (request *Request) ReqTopLinkFindByID(r *HTTPRequest) error {
 	return nil
 }
 
-//顶部链接新增
 func (request *Request) ReqTopLinkAdd(r *HTTPRequest) error {
 	req := &protoManage.TopLink{}
 	err := request.unmarshalWithHttp(r, req)
@@ -75,7 +72,6 @@ func (request *Request) ReqTopLinkAdd(r *HTTPRequest) error {
 	return nil
 }
 
-//顶部链接删除
 func (request *Request) ReqTopLinkDel(r *HTTPRequest) error {
 	req := &protoManage.TopLink{}
 	err := request.unmarshalWithHttp(r, req)
@@ -93,7 +89,6 @@ func (request *Request) ReqTopLinkDel(r *HTTPRequest) error {
 	return nil
 }
 
-//顶部链接更新
 func (request *Request) ReqTopLinkUpdate(r *HTTPRequest) error {
 	req := &protoManage.TopLink{}
 	err := request.unmarshalWithHttp(r, req)

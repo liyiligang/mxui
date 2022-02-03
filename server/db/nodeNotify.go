@@ -24,12 +24,10 @@ import (
 	"gorm.io/gorm"
 )
 
-//新增节点通知
 func (db *Server) AddNodeNotify(nodeNotify orm.NodeNotify) error {
 	return db.Gorm.Create(&nodeNotify).Error
 }
 
-//获取节点通知信息
 func (db *Server) FindNodeNotify(req *protoManage.ReqNodeNotifyList) ([]orm.NodeNotify, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeNotifyFilter(tx, req)
@@ -41,7 +39,6 @@ func (db *Server) FindNodeNotify(req *protoManage.ReqNodeNotifyList) ([]orm.Node
 	return nodeNotifyList, err
 }
 
-//获取节点通知中节点ID对应的节点信息
 func (db *Server) FindNodeByNodeNotify(req *protoManage.ReqNodeNotifyList) ([]orm.Node, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeNotifyFilter(tx, req)
@@ -53,7 +50,6 @@ func (db *Server) FindNodeByNodeNotify(req *protoManage.ReqNodeNotifyList) ([]or
 	return nodeList, err
 }
 
-//获取节点通知计数
 func (db *Server) FindNodeNotifyCount(req *protoManage.ReqNodeNotifyList) (int64, error) {
 	tx := db.Gorm.Model(&orm.NodeNotify{})
 	tx = db.SetNodeNotifyFilter(tx, req)
@@ -62,7 +58,6 @@ func (db *Server) FindNodeNotifyCount(req *protoManage.ReqNodeNotifyList) (int64
 	return count, err
 }
 
-//按节点ID查询节点通知
 func (db *Server) FindNodeNotifyByNodeID(nodeID int64, offset int, num int) ([]orm.NodeNotify, error) {
 	var nodeNotifyList []orm.NodeNotify
 	err := db.Gorm.Where("NodeID = ?", nodeID).Order("id desc").
@@ -70,7 +65,6 @@ func (db *Server) FindNodeNotifyByNodeID(nodeID int64, offset int, num int) ([]o
 	return nodeNotifyList, err
 }
 
-//节点通知过滤器
 func (db *Server) SetNodeNotifyFilter(tx *gorm.DB, req *protoManage.ReqNodeNotifyList) *gorm.DB {
 	sql := db.spliceSql("message like ?", len(req.Message), "or")
 	var message []interface{}

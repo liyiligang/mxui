@@ -24,35 +24,29 @@ import (
 	"gorm.io/gorm"
 )
 
-//新增节点方法
 func (db *Server) AddNodeFunc(nodeFunc *orm.NodeFunc) error {
 	return db.Gorm.Create(nodeFunc).Error
 }
 
-//删除节点方法
 func (db *Server) DelNodeFunc(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Delete(nodeFunc).Error
 }
 
-//按节点ID删除所有节点方法
 func (db *Server) DelAllNodeFuncByNodeID(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Where("nodeID = ?", nodeFunc.NodeID).Delete(orm.NodeFunc{}).Error
 }
 
-//按节点ID更新节点方法状态
 func (db *Server) UpdateNodeFuncStateByNodeID(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Model(&nodeFunc).Where("nodeID = ?", nodeFunc.NodeID).
 		Updates(map[string]interface{}{"state": nodeFunc.State}).Error
 }
 
-//按ID更新指定节点方法信息
 func (db *Server) UpdateNodeFuncInfo(nodeFunc orm.NodeFunc) error {
 	return db.Gorm.Model(&nodeFunc).Updates(map[string]interface{}{
 		"func": nodeFunc.Func, "schema": nodeFunc.Schema,
 		"level": nodeFunc.Level, "state": nodeFunc.State}).Error
 }
 
-//获取节点方法信息
 func (db *Server) FindNodeFunc(req *protoManage.ReqNodeFuncList) ([]orm.NodeFunc, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeFuncFilter(tx, req)
@@ -64,7 +58,6 @@ func (db *Server) FindNodeFunc(req *protoManage.ReqNodeFuncList) ([]orm.NodeFunc
 	return nodeFuncList, err
 }
 
-//获取节点方法计数
 func (db *Server) FindNodeFuncCount(req *protoManage.ReqNodeFuncList) (int64, error) {
 	tx := db.Gorm.Model(&orm.NodeFunc{})
 	tx = db.SetNodeFuncFilter(tx, req)
@@ -73,7 +66,6 @@ func (db *Server) FindNodeFuncCount(req *protoManage.ReqNodeFuncList) (int64, er
 	return count, err
 }
 
-//获取节点方法中节点ID对应的节点信息
 func (db *Server) FindNodeByNodeFunc(req *protoManage.ReqNodeFuncList) ([]orm.Node, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeFuncFilter(tx, req)
@@ -85,20 +77,17 @@ func (db *Server) FindNodeByNodeFunc(req *protoManage.ReqNodeFuncList) ([]orm.No
 	return nodeList, err
 }
 
-//按ID获取指定节点方法
 func (db *Server) FindNodeFuncByID(nodeFunc orm.NodeFunc) (*orm.NodeFunc, error) {
 	err := db.Gorm.First(&nodeFunc, nodeFunc.ID).Error
 	return &nodeFunc, err
 }
 
-//按名称获取指定节点方法
 func (db *Server) FindNodeFuncByIndex(nodeFunc orm.NodeFunc) (*orm.NodeFunc, error) {
 	err := db.Gorm.Where("nodeID = ? and name = ?",
 		nodeFunc.NodeID, nodeFunc.Name).First(&nodeFunc).Error
 	return &nodeFunc, err
 }
 
-//节点方法过滤器
 func (db *Server) SetNodeFuncFilter(tx *gorm.DB, req *protoManage.ReqNodeFuncList) *gorm.DB {
 	sql := db.spliceSql("id = ?", len(req.ID), "or")
 	var id []interface{}

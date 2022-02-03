@@ -22,7 +22,6 @@ import (
 	"gorm.io/gorm"
 )
 
-//获取节点报告值信息
 func (db *Server) FindNodeReportVal(req *protoManage.ReqNodeReportValList) ([]orm.NodeReportVal, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeReportValFilter(tx, req)
@@ -34,7 +33,6 @@ func (db *Server) FindNodeReportVal(req *protoManage.ReqNodeReportValList) ([]or
 	return NodeReportValList, err
 }
 
-//新增节点报告值
 func (db *Server) AddNodeReportVal(nodeReportVal *orm.NodeReportVal) error {
 	return db.Gorm.Create(nodeReportVal).Error
 }
@@ -48,7 +46,6 @@ func (db *Server) DelNodeReportValByNodeID(nodeID int64) error {
 	return db.Gorm.Where("reportID in(?)", subQuery1).Delete(&orm.NodeReportVal{}).Error
 }
 
-//获取节点报告中节点报告ID对应的最后一次报告值
 func (db *Server) FindLastNodeReportValByNodeReport(req *protoManage.ReqNodeReportValList) ([]orm.NodeReportVal, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeReportValFilter(tx, req)
@@ -61,7 +58,6 @@ func (db *Server) FindLastNodeReportValByNodeReport(req *protoManage.ReqNodeRepo
 	return nodeReportValList, err
 }
 
-//节点报告过滤器
 func (db *Server) SetNodeReportValFilter(tx *gorm.DB, req *protoManage.ReqNodeReportValList) *gorm.DB {
 	if req.ReportID != 0 {
 		tx.Where("reportID = ?", req.ReportID)

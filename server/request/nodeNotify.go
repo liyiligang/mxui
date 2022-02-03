@@ -21,7 +21,6 @@ import (
 	"github.com/liyiligang/mxui/protoFiles/protoManage"
 )
 
-//节点通知增加
 func (request *Request) ReqNodeNotifyAdd(nodeID int64, message []byte) error {
 	nodeNotify := protoManage.NodeNotify{}
 	err := nodeNotify.Unmarshal(message)
@@ -78,7 +77,6 @@ func (request *Request) SendNodeNotifyWithNodeError(senderID int64, message stri
 	}
 }
 
-//节点通知查询
 func (request *Request) ReqNodeNotifyFind(r *HTTPRequest) error {
 	req := &protoManage.ReqNodeNotifyList{}
 	err := request.unmarshalWithHttp(r, req)

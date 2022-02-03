@@ -25,7 +25,6 @@ import (
 	"gorm.io/gorm"
 )
 
-//新增节点
 func (data *Data) NodeAdd(protoNode *protoManage.Node) error {
 	if err := check.NodeCheck(protoNode); err != nil {
 		return err
@@ -38,9 +37,7 @@ func (data *Data) NodeAdd(protoNode *protoManage.Node) error {
 	return nil
 }
 
-//删除节点
 func (data *Data) NodeDel(protoNode *protoManage.Node) error {
-	//删除节点其他相关信息
 	err := data.NodeFuncDelAllByNodeID(&protoManage.NodeFunc{NodeID: protoNode.Base.ID})
 	if err != nil {
 		return err
@@ -56,12 +53,10 @@ func (data *Data) NodeDel(protoNode *protoManage.Node) error {
 	return nil
 }
 
-//更新节点状态
 func (data *Data) NodeStateUpdate(protoNode *protoManage.Node) error {
 	return data.DB.UpdateNodeState(orm.Node{Base: orm.Base{ID: protoNode.Base.ID}, State: int32(protoNode.State)})
 }
 
-//查找节点信息
 func (data *Data) NodeFind(req *protoManage.ReqNodeList) (*protoManage.AnsNodeList, error) {
 	ormNodeList, err := data.DB.FindNode(req)
 	if err != nil {
@@ -77,7 +72,6 @@ func (data *Data) NodeFind(req *protoManage.ReqNodeList) (*protoManage.AnsNodeLi
 		Length: count}, nil
 }
 
-//按ID查询节点
 func (data *Data) NodeFindByID(protoNode *protoManage.Node) error {
 	ormNode, err :=data.DB.FindNodeByID(orm.Node{Base: orm.Base{ID: protoNode.Base.ID}})
 	if err != nil {
@@ -87,7 +81,6 @@ func (data *Data) NodeFindByID(protoNode *protoManage.Node) error {
 	return nil
 }
 
-//按节点名查询节点
 func (data *Data) NodeFindByName(protoNode *protoManage.Node) error {
 	ormNode, err :=data.DB.FindNodeByName(orm.Node{Name: protoNode.Name})
 	if err != nil {
@@ -97,7 +90,6 @@ func (data *Data) NodeFindByName(protoNode *protoManage.Node) error {
 	return nil
 }
 
-//按节点名查找或者新增节点
 func (data *Data) NodeFindOrAddByName(protoNode *protoManage.Node) error {
 	err := data.NodeFindByName(protoNode)
 	if err != nil {

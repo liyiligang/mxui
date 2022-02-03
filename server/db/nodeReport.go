@@ -24,35 +24,29 @@ import (
 	"gorm.io/gorm"
 )
 
-//新增节点报告
 func (db *Server) AddNodeReport(nodeReport *orm.NodeReport) error {
 	return db.Gorm.Create(nodeReport).Error
 }
 
-//删除节点报告
 func (db *Server) DelNodeReport(nodeReport orm.NodeReport) error {
 	return db.Gorm.Delete(&nodeReport).Error
 }
 
-//按节点ID删除所有节点报告
 func (db *Server) DelAllNodeReportByNodeID(nodeReport orm.NodeReport) error {
 	return db.Gorm.Where("nodeID = ?", nodeReport.NodeID).Delete(orm.NodeReport{}).Error
 }
 
-//按ID更新指定节点报告信息
 func (db *Server) UpdateNodeReportInfo(nodeReport orm.NodeReport) error {
 	return db.Gorm.Model(&nodeReport).Updates(map[string]interface{}{
 		"func": nodeReport.Func, "schema":nodeReport.Schema, "type":nodeReport.Type,
 		"interval":nodeReport.Interval, "level": nodeReport.Level, "state": nodeReport.State}).Error
 }
 
-//按节点ID更新节点报告状态
 func (db *Server) UpdateNodeReportStateByNodeID(nodeReport orm.NodeReport) error {
 	return db.Gorm.Model(&nodeReport).Where("nodeID = ?", nodeReport.NodeID).
 		Updates(map[string]interface{}{"state": nodeReport.State}).Error
 }
 
-//获取节点报告信息
 func (db *Server) FindNodeReport(req *protoManage.ReqNodeReportList) ([]orm.NodeReport, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeReportFilter(tx, req)
@@ -64,7 +58,6 @@ func (db *Server) FindNodeReport(req *protoManage.ReqNodeReportList) ([]orm.Node
 	return nodeReportList, err
 }
 
-//获取节点报告计数
 func (db *Server) FindNodeReportCount(req *protoManage.ReqNodeReportList) (int64, error) {
 	tx := db.Gorm.Model(&orm.NodeReport{})
 	tx = db.SetNodeReportFilter(tx, req)
@@ -73,7 +66,6 @@ func (db *Server) FindNodeReportCount(req *protoManage.ReqNodeReportList) (int64
 	return count, err
 }
 
-//获取节点报告中节点ID对应的节点信息
 func (db *Server) FindNodeByNodeReport(req *protoManage.ReqNodeReportList) ([]orm.Node, error) {
 	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeReportFilter(tx, req)
@@ -85,20 +77,17 @@ func (db *Server) FindNodeByNodeReport(req *protoManage.ReqNodeReportList) ([]or
 	return nodeList, err
 }
 
-//按ID获取指定节点报告
 func (db *Server) FindNodeReportByID(nodeReport orm.NodeReport) (*orm.NodeReport, error) {
 	err := db.Gorm.First(&nodeReport, nodeReport.ID).Error
 	return &nodeReport, err
 }
 
-//按名称获取指定节点报告
 func (db *Server) FindNodeReportByIndex(nodeReport orm.NodeReport) (*orm.NodeReport, error) {
 	err := db.Gorm.Where("nodeID = ? and name = ?",
 		nodeReport.NodeID, nodeReport.Name).First(&nodeReport).Error
 	return &nodeReport, err
 }
 
-//节点报告过滤器
 func (db *Server) SetNodeReportFilter(tx *gorm.DB, req *protoManage.ReqNodeReportList) *gorm.DB {
 	sql := db.spliceSql("id = ?", len(req.ID), "or")
 	var id []interface{}

@@ -24,7 +24,6 @@ import (
 	 "github.com/liyiligang/mxui/typedef/orm"
  )
 
- //新增节点通知
 func (data *Data) NodeNotifyAdd(protoNodeNotify *protoManage.NodeNotify, isSend bool) error {
 	 if err := check.NodeNotifyCheck(protoNodeNotify); err != nil {
 		 return err
@@ -59,7 +58,6 @@ func (data *Data) NodeNotifyAdd(protoNodeNotify *protoManage.NodeNotify, isSend 
 	 return nil
 }
 
-//节点通知查询
 func (data *Data) NodeNotifyFind(req *protoManage.ReqNodeNotifyList) (*protoManage.AnsNodeNotifyList, error) {
 	ormNotifyList, err := data.DB.FindNodeNotify(req)
 	if err != nil {

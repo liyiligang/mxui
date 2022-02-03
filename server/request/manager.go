@@ -23,7 +23,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-//管理员登录(websocket)
 func (request *Request) ReqWsTokenCheck(message []byte, addr string) (int64, error) {
 	message = Jtool.RunesToBytes(message)
 	manager := protoManage.Manager{}
@@ -38,7 +37,6 @@ func (request *Request) ReqWsTokenCheck(message []byte, addr string) (int64, err
 	return tokenData.UserID, nil
 }
 
-//管理员注册
 func (request *Request) ReqManagerRegister(r *HTTPRequest) error {
 	req := &protoManage.Manager{}
 	err := request.unmarshalWithHttp(r, req)
@@ -56,7 +54,6 @@ func (request *Request) ReqManagerRegister(r *HTTPRequest) error {
 	return nil
 }
 
-//管理员登录
 func (request *Request) ReqManagerLogin(r *HTTPRequest) error {
 	req := &protoManage.Manager{}
 	err := request.unmarshalWithHttp(r, req)
@@ -74,7 +71,6 @@ func (request *Request) ReqManagerLogin(r *HTTPRequest) error {
 	return nil
 }
 
-//管理员新增
 func (request *Request) ReqManagerAdd(r *HTTPRequest) error {
 	req := &protoManage.Manager{}
 	err := request.unmarshalWithHttp(r, req)
@@ -92,7 +88,6 @@ func (request *Request) ReqManagerAdd(r *HTTPRequest) error {
 	return nil
 }
 
-//管理员删除
 func (request *Request) ReqManagerDel(r *HTTPRequest) error {
 	req := &protoManage.Manager{}
 	err := request.unmarshalWithHttp(r, req)
@@ -110,7 +105,6 @@ func (request *Request) ReqManagerDel(r *HTTPRequest) error {
 	return nil
 }
 
-//更新管理员信息
 func (request *Request) ReqManagerUpdate(r *HTTPRequest) error {
 	req := &protoManage.Manager{}
 	err := request.unmarshalWithHttp(r, req)
@@ -128,7 +122,6 @@ func (request *Request) ReqManagerUpdate(r *HTTPRequest) error {
 	return nil
 }
 
-//更新管理员密码
 func (request *Request) ReqManagerUpdatePasswd(r *HTTPRequest) error {
 	req := &protoManage.Manager{}
 	err := request.unmarshalWithHttp(r, req)
@@ -146,7 +139,6 @@ func (request *Request) ReqManagerUpdatePasswd(r *HTTPRequest) error {
 	return nil
 }
 
-//更新管理员设置
 func (request *Request) ReqManagerUpdateSetting(r *HTTPRequest) error {
 	req := &protoManage.Manager{}
 	err := request.unmarshalWithHttp(r, req)
@@ -164,7 +156,6 @@ func (request *Request) ReqManagerUpdateSetting(r *HTTPRequest) error {
 	return nil
 }
 
-//管理员列表查询
 func (request *Request) ReqManagerFind(r *HTTPRequest) error {
 	req := &protoManage.ReqManagerList{}
 	err := request.unmarshalWithHttp(r, req)
@@ -182,7 +173,6 @@ func (request *Request) ReqManagerFind(r *HTTPRequest) error {
 	return nil
 }
 
-//管理员信息查询按ID
 func (request *Request) ReqManagerFindByID(r *HTTPRequest) error {
 	req := &protoManage.Manager{}
 	err := request.unmarshalWithHttp(r, req)
@@ -200,7 +190,6 @@ func (request *Request) ReqManagerFindByID(r *HTTPRequest) error {
 	return nil
 }
 
-//管理员昵称查询
 func (request *Request) ReqManagerFindNickName(r *HTTPRequest) error {
 	req := &protoManage.ReqManagerList{}
 	err := request.unmarshalWithHttp(r, req)

@@ -29,7 +29,6 @@ import (
 	"os"
 )
 
-//节点资源校验
 func (request *Request) ReqNodeResourceCheck(r *HTTPRequest) error {
 	req := &protoManage.NodeResource{}
 	err := request.unmarshalWithHttp(r, req)
@@ -49,7 +48,6 @@ func (request *Request) ReqNodeResourceCheck(r *HTTPRequest) error {
 	return nil
 }
 
-//节点资源删除
 func (request *Request) ReqNodeResourceDel(r *HTTPRequest) error {
 	req := &protoManage.NodeResource{}
 	err := request.unmarshalWithHttp(r, req)
@@ -67,7 +65,6 @@ func (request *Request) ReqNodeResourceDel(r *HTTPRequest) error {
 	return nil
 }
 
-//节点资源查找
 func (request *Request) ReqNodeResourceFind(r *HTTPRequest) error {
 	req := &protoManage.ReqNodeResourceList{}
 	err := request.unmarshalWithHttp(r, req)

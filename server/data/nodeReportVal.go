@@ -22,7 +22,6 @@ import (
 	"github.com/liyiligang/mxui/typedef/orm"
 )
 
-//查找节点报告值信息
 func (data *Data) NodeReportValFind(req *protoManage.ReqNodeReportValList) (*protoManage.AnsNodeReportValList, error) {
 	ormReportValList, err := data.DB.FindNodeReportVal(req)
 	if err != nil {
@@ -32,7 +31,6 @@ func (data *Data) NodeReportValFind(req *protoManage.ReqNodeReportValList) (*pro
 	return &protoManage.AnsNodeReportValList{NodeReportValList: protoNodeReportValList}, nil
 }
 
-//更新节点报告值
 func (data *Data) NodeReportValAdd(protoNodeReportVal *protoManage.NodeReportVal) error {
 	ormNodeReportVal := &orm.NodeReportVal{
 		ReportID: protoNodeReportVal.ReportID,

@@ -29,7 +29,6 @@ func (request *Request) RegisterNode(ctx context.Context, node *protoManage.Node
 	return node, nil
 }
 
-//节点离线
 func (request *Request) ReqNodeOffline(nodeID int64) error {
 	err := request.Data.NodeStateUpdate(&protoManage.Node{Base: protoManage.Base{ID: nodeID},
 		State: protoManage.State_StateUnknow})
@@ -47,7 +46,6 @@ func (request *Request) ReqNodeOffline(nodeID int64) error {
 	return nil
 }
 
-//节点信息查询
 func (request *Request) ReqNodeFind(r *HTTPRequest) error {
 	req := &protoManage.ReqNodeList{}
 	err := request.unmarshalWithHttp(r, req)
@@ -65,7 +63,6 @@ func (request *Request) ReqNodeFind(r *HTTPRequest) error {
 	return nil
 }
 
-//获取节点按ID
 func (request *Request) ReqNodeFindByID(r *HTTPRequest) error {
 	req := &protoManage.Node{}
 	err := request.unmarshalWithHttp(r, req)
@@ -83,7 +80,6 @@ func (request *Request) ReqNodeFindByID(r *HTTPRequest) error {
 	return nil
 }
 
-//刪除节点
 func (request *Request) ReqNodeDel(r *HTTPRequest) error {
 	req := &protoManage.Node{}
 	err := request.unmarshalWithHttp(r, req)
@@ -101,7 +97,6 @@ func (request *Request) ReqNodeDel(r *HTTPRequest) error {
 	return nil
 }
 
-//请求节点测试
 func (request *Request) ReqNodeTest(r *HTTPRequest) error {
 	req := &protoManage.ReqNodeTest{}
 	err := request.unmarshalWithHttp(r, req)

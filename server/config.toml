@@ -8,29 +8,27 @@ NodeName = ''
 
 [File]
 SavePath = '../store/cache/'
-MaxSize = 200                    #单位：M
-MaxAge = 5                      #文件保留时间：天
+MaxSize = 200                    #Company：M
+MaxAge = 5                       #File retention time: days
 
 [Log]
 Path = '../store/log/app.log'
 Level = 'debug'
-MaxSize =  200      # 每个日志文件保存的最大尺寸 单位：M
-MaxNum = 1000       # 最多保存多少个日志文件
-MaxAge = 30         # 日志文件最多保存多少天
+MaxSize =  200                   #Maximum size saved per log file unit: M
+MaxNum = 1000                    #How many log files can be saved at most
+MaxAge = 30                      #How many days can the log file be saved at most
 
 [Token]
-Key = 'ChYzvtt8ixVbM%Eo'    #Token密钥
-StartDuration = 0           #Token多久后生效(小时, 0:立即生效)
-StopDuration = 1000         #Token生效后多久后失效(小时, 0:立即失效)
+Key = 'ChYzvtt8ixVbM%Eo'         #Token key
+StartDuration = 0                #How long will the token take effect (hours, 0: immediately)
+StopDuration = 1000              #How long after the token takes effect (hours, 0: immediate)
 
 [DB]
-#Name = 'mysql'
-#Connect = 'test1:root@tcp(36.158.255.149:3306)/manage?charset=utf8mb4&parseTime=True&loc=Local'
 Name = 'sqlite'
 Connect = '../store/db/manage.db'
-MaxConn =  0            #最大连接数, 0表示不限制
-MaxKeepConn = 2         #最大保持连接数(长连接)
-MaxLifeTime = 21        #数据库请求超时时间(秒, 0:表示立即拒绝请求)
+MaxConn =  0                     #Maximum number of connections, 0 means unlimited
+MaxKeepConn = 2                  #Maximum number of connections maintained (long connections)
+MaxLifeTime = 21                 #Database request timeout (seconds, 0: for immediate rejection)
 
 [Grpc]
 ListenAddr = ':888'
@@ -43,15 +41,15 @@ UseHttps = false
 ListenAddr = '0.0.0.0:80'
 
 [Http.Https]
-RedirectAddr = '0.0.0.0:80'       #将http重定向至https
+RedirectAddr = '0.0.0.0:80'      #Redirect HTTP to HTTPS
 PublicKeyPath = '../store/cert/https/public.pem'
 PrivateKeyPath = '../store/cert/https/private.key'
 
 [Http.WebSocket]
-ReadWaitTime = 0     #读请求超时时间(秒, 0:永远超时, 负数: 立即超时)
-WriteWaitTime = 5    #写请求超时时间(秒, 0:永远超时, 负数: 立即超时)
-PingWaitTime = 0     #Ping请求超时时间(秒, 0:永远超时, 负数: 立即超时)
-PongWaitTime = 0     #Pong请求超时时间(秒, 0:永远超时, 负数: 立即超时)
+ReadWaitTime = 0        #Read request timeout (seconds, 0: Forever timeout, negative: immediate timeout)
+WriteWaitTime = 5       #Write request timeout (seconds, 0: Forever timeout, negative: immediate timeout)
+PingWaitTime = 0        #Ping request timeout (seconds, 0: timeout forever, negative: timeout immediately)
+PongWaitTime = 0        #Pong request timeout (seconds, 0: timeout forever, negative: timeout immediately)
 
 [Http.StaticFiles]
 WebManagePath = '../../../bin/web/'
