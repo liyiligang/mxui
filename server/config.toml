@@ -8,7 +8,7 @@ NodeName = ''
 
 [File]
 SavePath = '../store/cache/'
-MaxSize = 200                    #Company：M
+MaxSize = 200                    #Company: M
 MaxAge = 5                       #File retention time: days
 
 [Log]
@@ -51,8 +51,8 @@ WriteWaitTime = 5       #Write request timeout (seconds, 0: Forever timeout, neg
 PingWaitTime = 0        #Ping request timeout (seconds, 0: timeout forever, negative: timeout immediately)
 PongWaitTime = 0        #Pong request timeout (seconds, 0: timeout forever, negative: timeout immediately)
 
-[Http.StaticFiles]
-WebManagePath = '../../../bin/web/'
+[Http.Files]
+Web = '../../../../bin/mxui/web'
 
 
 

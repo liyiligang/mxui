@@ -91,7 +91,7 @@ export default defineComponent ({
     height: 100%;
 }
 .submenuSpanOne {
-    text-align: center;
+    justify-content: center;
     font-size:18px;
 }
 .submenuSpanTwo {

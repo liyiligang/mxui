@@ -70,8 +70,8 @@ type Config struct {
 			PingWaitTime  int `toml:"PingWaitTime"`
 			PongWaitTime  int `toml:"PongWaitTime"`
 		} `toml:"WebSocket"`
-		StaticFiles struct {
-			WebManagePath string `toml:"WebManagePath"`
-		} `toml:"StaticFiles"`
+		Files struct {
+			Web string `toml:"Web"`
+		} `toml:"Files"`
 	} `toml:"Http"`
 }

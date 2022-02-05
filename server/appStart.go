@@ -20,6 +20,7 @@ import (
 	"context"
 	"errors"
 	"github.com/gin-contrib/gzip"
+	"github.com/gin-contrib/static"
 	"github.com/gin-gonic/gin"
 	"github.com/liyiligang/base/component/Jconfig"
 	"github.com/liyiligang/base/component/Jlog"
@@ -158,6 +159,7 @@ func (app *App) InitWebServer() error {
 		r.NoRoute(app.Request.NotFoundWithHttp)
 		r.NoMethod(app.Request.NotFoundWithHttp)
 
+		r.Use(static.ServeRoot("/", config.LocalConfig.HTTP.Files.Web))
 		r.GET( "/ws", websocketConfig.WsHandle)
 		r.GET("/nodeResource/download/"+ ":name", app.Request.ConvertWithHttpFileDownload(app.Request.ReqNodeResourceDownload))
 		r.POST( "/system/getInitInfo", app.Request.ConvertWithHttp(app.Request.ReqFindSystemInfo))
@@ -226,8 +228,6 @@ func (app *App) InitWebServer() error {
 
 		//nodeReport
 		r.POST( "/nodeReport/del", app.Request.ConvertWithHttp(app.Request.ReqNodeReportDel))
-
-		//r.StaticFS("/file", http.Dir(config.LocalConfig.File.SavePath))
 	}
 
 	webConfig := Jweb.WebInitConfig{

@@ -27,6 +27,7 @@ import (
 	"github.com/liyiligang/mxui/check"
 	"github.com/liyiligang/mxui/data"
 	"github.com/liyiligang/mxui/protoFiles/protoManage"
+	"github.com/liyiligang/mxui/typedef/config"
 	"google.golang.org/grpc"
 	"mime/multipart"
 	"net/http"
@@ -46,30 +47,33 @@ const (
 )
 
 func (request *Request) NotFoundWithHttp(c *gin.Context) {
-	//c.Redirect(http.StatusMovedPermanently, "/not found")
-	c.String(http.StatusNotFound, "not found")
+	c.File(config.LocalConfig.HTTP.Files.Web + "/index.html")
 }
 
 func (request *Request) ParseTokenWithHttp(c *gin.Context) {
-	token := c.GetHeader("token")
-	tokenData, err := request.Data.ParseToken(token)
-	if err != nil {
-		request.errorWithHttp(&HTTPRequest{ginContext: c, abort: true},
-			protoManage.HttpError_HttpErrorLoginWithToken, err)
-		return
+	if c.Request.Method == http.MethodPost {
+		token := c.GetHeader("token")
+		tokenData, err := request.Data.ParseToken(token)
+		if err != nil {
+			request.errorWithHttp(&HTTPRequest{ginContext: c, abort: true},
+				protoManage.HttpError_HttpErrorLoginWithToken, err)
+			return
+		}
+		c.Request.Header.Add(httpHeaderKeyUserID, Jtool.Int64ToString(tokenData.UserID))
+		c.Request.Header.Add(httpHeaderKeyUserLevel,Jtool.Int64ToString(int64(tokenData.UserLevel)))
 	}
-	c.Request.Header.Add(httpHeaderKeyUserID, Jtool.Int64ToString(tokenData.UserID))
-	c.Request.Header.Add(httpHeaderKeyUserLevel,Jtool.Int64ToString(int64(tokenData.UserLevel)))
 	c.Next()
 }
 
 func (request *Request) LevelCheckWithHttp(level protoManage.Level) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userLevel := protoManage.Level(Jtool.StringToInt64(c.GetHeader(httpHeaderKeyUserLevel)))
-		if userLevel < level {
-			request.errorWithHttp(&HTTPRequest{ginContext: c, abort: true},
-				protoManage.HttpError_HttpErrorLevelLow, errors.New("no permission"))
-			return
+		if c.Request.Method == http.MethodPost {
+			userLevel := protoManage.Level(Jtool.StringToInt64(c.GetHeader(httpHeaderKeyUserLevel)))
+			if userLevel < level {
+				request.errorWithHttp(&HTTPRequest{ginContext: c, abort: true},
+					protoManage.HttpError_HttpErrorLevelLow, errors.New("no permission"))
+				return
+			}
 		}
 		c.Next()
 	}

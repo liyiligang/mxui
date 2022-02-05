@@ -4,6 +4,7 @@ go 1.15
 
 require (
 	github.com/gin-contrib/gzip v0.0.1
+	github.com/gin-contrib/static v0.0.1 // indirect
 	github.com/gin-gonic/gin v1.7.1
 	github.com/gogo/protobuf v1.3.2
 	github.com/golang/protobuf v1.5.2
