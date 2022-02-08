@@ -6,7 +6,7 @@
 <img src="https://img.shields.io/badge/vite-2.7.13-brightgreen"/>
 <img src="https://img.shields.io/badge/element--plus-2.0.1-green"/>
 <img src="https://img.shields.io/badge/npm-6.14.8-red"/>
-
+ <br/> 
 <img src="https://img.shields.io/badge/golang-1.16-blue"/>
 <img src="https://img.shields.io/badge/gin-1.7.1-brightgreen"/>
 <img src="https://img.shields.io/badge/gorm-1.22.3-lightBlue"/>
@@ -16,7 +16,7 @@
  <br/> 
  
  [English](./README-en.md) | 简体中文
-******************************************* 
+
 
 ## 简介
 MXUI是基于golang+vue3搭建的接口可视化平台, 能够快速的利用后端接口生成表单, 表格, 图表, 文件上传下载，音视频播放等UI组件。同时集成权限管理, 历史记录, 消息通知等功能。能够显著提高开发测试效率
@@ -66,7 +66,7 @@ mxui.exe
 ./mxui
 ```
 
-## 进入MXUI主页
+## 进入MXUI
 ###  在浏览器访问: http://localhost 
 能够进入MXUI登录界面, 代表服务端已经部署成功   
 <img src="store\image\home.jpg" width="80%"/>

@@ -66,7 +66,7 @@ mxui.exe
 ./mxui
 ```
 
-## Enter MXUI home page
+## Enter MXUI
 ### Access in browser: http://localhost 
 Being able to enter the mxui login interface means that the server has been successfully deployed
 <img src="store\image\home-en.jpg" width="80%"/>
