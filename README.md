@@ -46,7 +46,7 @@ git clone https://github.com/liyiligang/mxui.git
 
 # 编译服务端
 cd mxui/server/
-go build 
+go build -o ../bin
 
 # 编译web端
 cd mxui/web/
@@ -54,11 +54,12 @@ npm run build
 ```
 
 ## Releases
-你也可以直接下载已经编译好的执行文件
 - [下载](https://github.com/liyiligang/mxui/releases) 
 
 ## 运行
 ```bash
+cd mxui/bin/
+
 # windows 
 mxui.exe
 

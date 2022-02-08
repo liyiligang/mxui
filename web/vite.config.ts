@@ -3,7 +3,7 @@
 module.exports = {
     plugins:[vue()],
     build:{
-        outDir:"../../../../bin/mxui/web"
+        outDir:"../bin/web"
     },
     optimizeDeps: {
         include: ["protobufjs/minimal", "element-plus/lib/locale/lang/zh-cn", "dayjs/locale/zh-cn", "echarts/core",

@@ -1,4 +1,4 @@
-Debug = true
+Debug = false
 
 [User]
 OpenRegister = true
@@ -13,7 +13,7 @@ MaxAge = 5                       #File retention time: days
 
 [Log]
 Path = '../store/log/app.log'
-Level = 'debug'
+Level = 'info'
 MaxSize =  200                   #Maximum size saved per log file unit: M
 MaxNum = 1000                    #How many log files can be saved at most
 MaxAge = 30                      #How many days can the log file be saved at most

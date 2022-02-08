@@ -46,7 +46,7 @@ git clone https://github.com/liyiligang/mxui.git
 
 # Build server
 cd mxui/server/
-go build 
+go build -o ../bin
 
 # Build web
 cd mxui/web/
@@ -54,11 +54,12 @@ npm run build
 ```
 
 ## Releases
-You can also download the compiled executable directly
 - [Download](https://github.com/liyiligang/mxui/releases) 
 
 ## Run
 ```bash
+cd mxui/bin/
+
 # windows 
 mxui.exe
 
