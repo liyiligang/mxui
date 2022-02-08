@@ -19,7 +19,7 @@ limitations under the License.f
         <el-row class="nodeNotifyFrame">
             <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
                 <el-row class="nodeNotifyTableRow">
-                    <NodeNotifyTable class="nodeNotifyTable" :tableData="data.nodeNotifyList"></NodeNotifyTable>
+                    <NodeNotifyTable :key="new Date().getTime()" class="nodeNotifyTable" :tableData="data.nodeNotifyList"></NodeNotifyTable>
                 </el-row>
             </NodeViewFrame>
         </el-row>
@@ -111,12 +111,6 @@ export default defineComponent ({
 .nodeNotify{
     width: 100%;
     flex-direction: column;
-}
-
-.nodeNotifyFilter{
-    margin-bottom: 10px;
-    padding-right: 18px;
-    width: 100%;
 }
 
 .nodeNotifyFrame{

@@ -163,4 +163,8 @@ export default defineComponent ({
     overflow-y: hidden !important;
     height: auto !important;
 }
+
+.resourceTable .el-scrollbar__wrap{
+    height: auto !important;
+}
 </style>

@@ -114,4 +114,8 @@ export default defineComponent ({
     overflow-y: hidden !important;
     height: auto !important;
 }
+
+.notifyTable .el-scrollbar__wrap{
+    height: auto !important;
+}
 </style>

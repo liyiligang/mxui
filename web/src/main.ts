@@ -27,8 +27,6 @@ import JsonViewer from "vue3-json-viewer"
 import i18n from './base/i18n'
 import "echarts";
 import ECharts  from 'vue-echarts'
-// import 'dayjs/locale/zh-cn'
-
 
 const app = createApp(App)
 app.config.unwrapInjectedRef = true

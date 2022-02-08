@@ -52,7 +52,7 @@ PingWaitTime = 0        #Ping request timeout (seconds, 0: timeout forever, nega
 PongWaitTime = 0        #Pong request timeout (seconds, 0: timeout forever, negative: timeout immediately)
 
 [Http.Files]
-Web = '../../../../bin/mxui/web'
+Web = './web'
 
 
 

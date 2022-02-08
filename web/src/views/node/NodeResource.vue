@@ -19,7 +19,7 @@ limitations under the License.f
         <el-row class="nodeResourceFrame">
             <NodeViewFrame :pageTotal="data.pageTotal" :isLoading="data.isLoading">
                 <el-row class="nodeResourceTableRow">
-                    <NodeResourceTable class="nodeResourceTable" :tableData="data.nodeResourceList"></NodeResourceTable>
+                    <NodeResourceTable :key="new Date().getTime()" class="nodeResourceTable" :tableData="data.nodeResourceList"></NodeResourceTable>
                 </el-row>
             </NodeViewFrame>
         </el-row>
