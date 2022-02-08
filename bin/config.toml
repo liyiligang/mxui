@@ -4,7 +4,7 @@ Debug = false
 OpenRegister = true
 
 [Node]
-NodeName = 'MXUI'
+NodeName = ''
 
 [File]
 SavePath = '../store/cache/'
