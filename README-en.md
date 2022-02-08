@@ -6,7 +6,7 @@
 <img src="https://img.shields.io/badge/vite-2.7.13-brightgreen"/>
 <img src="https://img.shields.io/badge/element--plus-2.0.1-green"/>
 <img src="https://img.shields.io/badge/npm-6.14.8-red"/>
-
+ <br/>
 <img src="https://img.shields.io/badge/golang-1.16-blue"/>
 <img src="https://img.shields.io/badge/gin-1.7.1-brightgreen"/>
 <img src="https://img.shields.io/badge/gorm-1.22.3-lightBlue"/>
@@ -16,7 +16,7 @@
  <br/> 
  
  [简体中文](./README.md) | English
-******************************************* 
+
 
 ## About
 MXUI is an interface visualization platform based on golang + vue3. It can quickly use the back-end interface to generate UI components such as forms, tables, charts, file upload and download, audio and video playback and so on. At the same time, it integrates authority management, history, message notification and other functions. It can significantly improve the efficiency of development and testing
@@ -73,7 +73,7 @@ Being able to enter the mxui login interface means that the server has been succ
 
 
 ## Client
-After the deployment of the server, you need to introduce the mxui client package into your code, and use the API provided by this package to generate the UI you want
+After the deployment of the server, you need to introduce the mxui client package into your code, and use the API provided by this package to generate the UI you want   
 At present, mxui provides golang client support. We encourage and welcome you to develop more programming language clients!
 - golang: [mxui-go-client](https://github.com/liyiligang/mxui-go-client)
 
