@@ -31,17 +31,17 @@ MaxKeepConn = 2                  #Maximum number of connections maintained (long
 MaxLifeTime = 21                 #Database request timeout (seconds, 0: for immediate rejection)
 
 [Grpc]
-ListenAddr = ':888'
+ListenAddr = ':302'
 PublicKeyPath = '../store/cert/grpc/server_cert.pem'
 PrivateKeyPath = '../store/cert/grpc/server_key.pem'
 
 [Http]
 ShowLog = false
 UseHttps = false
-ListenAddr = '0.0.0.0:80'
+ListenAddr = '0.0.0.0:806'
 
 [Http.Https]
-RedirectAddr = '0.0.0.0:80'      #Redirect HTTP to HTTPS
+RedirectAddr = '0.0.0.0:806'      #Redirect HTTP to HTTPS
 PublicKeyPath = '../store/cert/https/public.pem'
 PrivateKeyPath = '../store/cert/https/private.key'
 

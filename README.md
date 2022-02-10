@@ -34,7 +34,7 @@ MXUI是基于golang+vue3搭建的接口可视化平台, 能够快速的利用后
 
 ## 查看文档
 - [中文](https://mxui-doc.liyiligang.com)    
-- [English](https://mxui-doc.liyiligang.com)
+- [English](https://mxui-doc.liyiligang.com/en)
 
 ## 在线预览
 - [MXUI](https://mxui.liyiligang.com)    
@@ -68,16 +68,13 @@ mxui.exe
 ```
 
 ## 进入MXUI
-###  在浏览器访问: http://localhost 
-能够进入MXUI登录界面, 代表服务端已经部署成功   
-<img src="store\image\home.jpg" width="80%"/>
-
+### 浏览器访问: http://localhost:806 进入登录界面
+<img src="store\image\home.jpg" width="75%"/>
 
 ## 客户端
 服务端部署完成后, 需要在你的代码里引入MXUI客户端包, 利用此包提供的API就可以生成你想要的UI了   
 目前MXUI提供了golang的客户端支持, 我们鼓励且欢迎大家开发更多编程语言的客户端！
 - golang: [mxui-go-client](https://github.com/liyiligang/mxui-go-client)
-
 
 ## 联系方式 
 ### QQ交流群: 757595139

@@ -19,24 +19,24 @@
 
 
 ## About
-MXUI is an interface visualization platform based on golang + vue3. It can quickly use the back-end interface to generate UI components such as forms, tables, charts, file upload and download, audio and video playback and so on. At the same time, it integrates authority management, history, message notification and other functions. It can significantly improve the efficiency of development and testing
+MXUI is an API visualization platform based on golang + vue3. It can quickly use the back-end API to generate UI components such as forms, tables, charts, file upload and download, audio and video playback and so on. At the same time, it integrates authority management, history, message notification and other functions. It can significantly improve the efficiency of development and testing
 
 ## Features
 - Out of the box, easy deployment, default configuration, no need to install other dependent services
-- UI interface generation, network request and interface call process can be completed in one minute. Only one function (Interface) needs to be provided at the back end
-- Built in rich UI components, modify or add interfaces to support dynamic loading without restarting the server
+- UI interface generation, network request and API call process can be completed in one minute. Only one function (API) needs to be provided at the back end
+- Built in rich UI components, modify or add API to support dynamic loading without restarting the server
 - The built-in JSON editor supports two parameter editing modes of form / JSON, and uses JSON schema for parameter verification
-- The interface access adopts the client mode, without exposing and monitoring ports, with built-in JWT authentication, interface authority management and other security settings
-- Support file upload, interface request, record query, error prompt, message push, background data monitoring (experimental) and other auxiliary functions
+- The API access adopts the client mode, without exposing and monitoring ports, with built-in JWT authentication, API authority management and other security settings
+- Support file upload, API request, record query, error prompt, message push, background data monitoring (experimental) and other auxiliary functions
 - Support multiple types of data sources (sqlite, mysql, postgresql...)
 - Multilingual support (i18n)
 
 
 ## Document
 - [中文](https://mxui-doc.liyiligang.com)    
-- [English](https://mxui-doc.liyiligang.com)
+- [English](https://mxui-doc.liyiligang.com/en)
 
-## Online preview
+## Preview
 - [MXUI](https://mxui.liyiligang.com)    
 
 ## Build
@@ -68,16 +68,13 @@ mxui.exe
 ```
 
 ## Enter MXUI
-### Access in browser: http://localhost 
-Being able to enter the mxui login interface means that the server has been successfully deployed
-<img src="store\image\home-en.jpg" width="80%"/>
-
+### Browser access: http://localhost:806 Enter the login interface
+<img src="store\image\home-en.jpg" width="75%"/>
 
 ## Client
 After the deployment of the server, you need to introduce the mxui client package into your code, and use the API provided by this package to generate the UI you want   
 At present, mxui provides golang client support. We encourage and welcome you to develop more programming language clients!
 - golang: [mxui-go-client](https://github.com/liyiligang/mxui-go-client)
-
 
 ## Contact information
 ### QQ Group: 757595139
