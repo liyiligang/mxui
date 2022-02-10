@@ -69,7 +69,7 @@ mxui.exe
 
 ## 进入MXUI
 ### 浏览器访问: http://localhost:806 进入登录界面
-<img src="store\image\home.jpg" width="85%"/>
+<img src="store\image\home.jpg" width="60%"/>
 
 ## 客户端
 服务端部署完成后, 需要在你的代码里引入MXUI客户端包, 利用此包提供的API就可以生成你想要的UI了   

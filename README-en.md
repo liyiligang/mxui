@@ -69,7 +69,7 @@ mxui.exe
 
 ## Enter MXUI
 ### Browser access: http://localhost:806 Enter the login interface
-<img src="store\image\home-en.jpg" width="85%"/>
+<img src="store\image\home-en.jpg" width="60%"/>
 
 ## Client
 After the deployment of the server, you need to introduce the mxui client package into your code, and use the API provided by this package to generate the UI you want   
