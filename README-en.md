@@ -24,7 +24,7 @@ MXUI is an API visualization platform based on golang + vue3. It can quickly use
 ## Features
 - Out of the box, easy deployment, default configuration, no need to install other dependent services
 - UI interface generation, network request and API call process can be completed in one minute. Only one function (API) needs to be provided at the back end
-- Built in rich UI components, modify or add API to support dynamic loading without restarting the server
+- Built in rich UI components, modify or add API to support dynamic loading
 - The built-in JSON editor supports two parameter editing modes of form / JSON, and uses JSON schema for parameter verification
 - The API access adopts the client mode, without exposing and monitoring ports, with built-in JWT authentication, API authority management and other security settings
 - Support file upload, API request, record query, error prompt, message push, background data monitoring (experimental) and other auxiliary functions
@@ -69,7 +69,7 @@ mxui.exe
 
 ## Enter MXUI
 ### Browser access: http://localhost:806 Enter the login interface
-<img src="store\image\home-en.jpg" width="75%"/>
+<img src="store\image\home-en.jpg" width="85%"/>
 
 ## Client
 After the deployment of the server, you need to introduce the mxui client package into your code, and use the API provided by this package to generate the UI you want   
