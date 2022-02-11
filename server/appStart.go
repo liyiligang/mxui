@@ -155,12 +155,13 @@ func (app *App) InitWebServer() error {
 	}
 
 	routeFunc := func(r *gin.Engine) {
-		r.Use(gzip.Gzip(gzip.DefaultCompression))
 		r.NoRoute(app.Request.NotFoundWithHttp)
 		r.NoMethod(app.Request.NotFoundWithHttp)
 
-		r.Use(static.ServeRoot("/", config.LocalConfig.HTTP.Files.Web))
 		r.GET( "/ws", websocketConfig.WsHandle)
+
+		r.Use(gzip.Gzip(gzip.DefaultCompression))
+		r.Use(static.ServeRoot("/", config.LocalConfig.HTTP.Files.Web))
 		r.GET("/nodeResource/download/"+ ":name", app.Request.ConvertWithHttpFileDownload(app.Request.ReqNodeResourceDownload))
 		r.POST( "/system/getInitInfo", app.Request.ConvertWithHttp(app.Request.ReqFindSystemInfo))
 		r.POST( "/manager/login", app.Request.ConvertWithHttp(app.Request.ReqManagerLogin))
