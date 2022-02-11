@@ -156,6 +156,7 @@ export default defineComponent ({
     margin-top: 20px;
     margin-bottom: 10px;
 }
+
 .loginInput {
     margin-top: 15px;
 }

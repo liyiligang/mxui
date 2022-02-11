@@ -363,7 +363,9 @@ const i18n = createI18n({
             empty:{
                 emptyData:'暂无数据'
             },
-            notFound:'页面不存在'
+            notFound:'抱歉, 您访问的页面不存在',
+            notFoundToHome:'返回至首页',
+            notFoundToUp:'返回上一级'
         },
         eng: {
             manager: {
@@ -708,7 +710,9 @@ const i18n = createI18n({
             empty:{
                 emptyData:'No data'
             },
-            notFound:'Page does not exist'
+            notFound:'Sorry, the page you visited does not exist',
+            notFoundToHome:'Return to login page',
+            notFoundToUp:'Return to previous page'
         },
     },
 })

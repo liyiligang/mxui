@@ -15,19 +15,70 @@ limitations under the License.
 -->
 
 <template>
-{{$t('notFound')}}
+    <el-row class="mainRow" type="flex" justify="center" align="middle">
+        <el-row class="notFoundRow" type="flex"  justify="center" align="middle">
+            <img class="logo" src="../assets/logo.svg" alt="admin">
+            <div class="notFound">{{$t('notFound')}}</div>
+            <el-row type="flex"  justify="center" align="middle">
+                <el-button type="primary" size="large" class="button" @click="toHome">{{$t('notFoundToHome')}}</el-button>
+                <el-button type="primary" size="large" class="button" @click="toUp">{{$t('notFoundToUp')}}</el-button>
+            </el-row>
+        </el-row>
+    </el-row>
 </template>
 
 <script lang="ts">
 
 import {defineComponent} from "vue";
+import {globals} from "../base/globals";
+import {useRouter} from "vue-router";
 
 export default defineComponent ({
-    name: "NotFound"
+    name: "NotFound",
+    setup(){
+        const router = useRouter()
+        function toHome(){
+            globals.reLogin()
+        }
+
+        function toUp(){
+            router.go(-1)
+        }
+
+        return {toHome, toUp}
+    }
 })
 </script>
 
 <style scoped>
+
+.mainRow{
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(-225deg, #5D9FFF 0%, #B8DCFF 48%, #6BBBFF 100%);
+}
+
+.notFoundRow{
+    width: 40%;
+}
+
+.logo{
+    width: 40%;
+    margin-bottom: 25px;
+}
+
+.notFound{
+    width: 100%;
+    font-size: 45px;
+    color: #909399;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.button{
+    margin-left: 25px;
+    margin-right: 25px;
+}
 
 </style>
 
