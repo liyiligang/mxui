@@ -24,6 +24,7 @@ export let reconnectCnt = 0
 export let isClosed = false
 export let websocketCloseByServer = 4000
 export let notifyOffset = 80
+let heartbeatInterval:any = null
 
 export module websocket {
     export function wsConnect(addr:string) {
@@ -58,9 +59,11 @@ export module websocket {
                 globals.viewSuccess(i18n.global.t('websocket.reconnectSuccess'));
                 reconnectCnt = 0
             }
+            sendHeartbeat(true)
         }
 
         function onClose(ev: CloseEvent) {
+            sendHeartbeat(false)
             if (reconnectCnt == 0 && !isClosed) {
                 globals.viewError(i18n.global.t('websocket.disConnect')+ev.reason + '(' + ev.code + ')');
             }
@@ -94,6 +97,18 @@ export module websocket {
     export function wsClose() {
         isClosed = true
         ws?.close()
+    }
+
+    function sendHeartbeat(open:boolean){
+        if (open) {
+            heartbeatInterval = setInterval(()=>{
+                ws?.send("heartbeat")
+            },20*1000)
+        }else{
+            if (heartbeatInterval){
+                clearInterval(heartbeatInterval)
+            }
+        }
     }
 
     function receiver(msg:protoManage.Message){

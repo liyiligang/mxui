@@ -13,7 +13,7 @@ module.exports = {
         host:"localhost",
         proxy: {
             '/api': {
-                target: 'http://localhost',
+                target: 'http://localhost:806',
                 changeOrigin: true,
                 ws:true,
                 rewrite: (path) => path.replace(/^\/api/, '')
