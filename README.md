@@ -5,7 +5,7 @@
 <img src="https://img.shields.io/badge/vue-3.2.30-blue"/>
 <img src="https://img.shields.io/badge/vite-2.7.13-brightgreen"/>
 <img src="https://img.shields.io/badge/element--plus-2.0.1-green"/>
-<img src="https://img.shields.io/badge/npm-6.14.8-red"/>
+<img src="https://img.shields.io/badge/node.js-14.15.0-red"/>
  <br/> 
 <img src="https://img.shields.io/badge/golang-1.16-blue"/>
 <img src="https://img.shields.io/badge/gin-1.7.1-brightgreen"/>

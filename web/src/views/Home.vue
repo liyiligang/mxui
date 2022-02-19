@@ -103,6 +103,7 @@ export default defineComponent ({
 .home{
     width: 100%;
     height: 100%;
+    min-width: 1550px;
     overflow-x:hidden;
 }
 

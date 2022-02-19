@@ -128,7 +128,7 @@ export default defineComponent ({
         }
 
         function getUploaderTime(index){
-            return convert.timeStampToFormatDate(props.tableData[index].Base?.UpdateTime)
+            return convert.timeStampToFormatDate(props.tableData[index].UploadTime)
         }
 
         function indexMethod(index) {

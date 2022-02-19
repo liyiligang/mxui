@@ -1740,6 +1740,9 @@ export namespace protoManage {
         /** NodeResource UploaderType */
         UploaderType?: (protoManage.NotifySenderType|null);
 
+        /** NodeResource UploadTime */
+        UploadTime?: (number|null);
+
         /** NodeResource DownLoadCnt */
         DownLoadCnt?: (number|null);
 
@@ -1779,6 +1782,9 @@ export namespace protoManage {
 
         /** NodeResource UploaderType. */
         public UploaderType: protoManage.NotifySenderType;
+
+        /** NodeResource UploadTime. */
+        public UploadTime: number;
 
         /** NodeResource DownLoadCnt. */
         public DownLoadCnt: number;

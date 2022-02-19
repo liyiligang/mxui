@@ -27,6 +27,7 @@ import (
 	"github.com/liyiligang/mxui/typedef/orm"
 	"gorm.io/gorm"
 	"os"
+	"time"
 )
 
 func (data *Data) ReqNodeResourceCheck(protoNodeResource *protoManage.NodeResource) error {
@@ -68,6 +69,7 @@ func (data *Data) ReqNodeResourceAdd(protoNodeResource *protoManage.NodeResource
 		UploaderID:protoNodeResource.UploaderID,
 		UploaderName: protoNodeResource.UploaderName,
 		UploaderType:int64(protoNodeResource.UploaderType),
+		UploadTime:time.Now(),
 		State: int32(protoManage.State_StateNormal),
 	}
 	err := data.DB.AddNodeResource(ormNodeResource)

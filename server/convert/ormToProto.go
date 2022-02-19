@@ -223,6 +223,7 @@ func OrmNodeResourceToProtoNodeResource(ormNodeResource *orm.NodeResource, proto
 	protoNodeResource.UploaderID = ormNodeResource.UploaderID
 	protoNodeResource.UploaderName = ormNodeResource.UploaderName
 	protoNodeResource.UploaderType = protoManage.NotifySenderType(ormNodeResource.UploaderType)
+	protoNodeResource.UploadTime = Jtool.TimeStringToMsTimeInt64(ormNodeResource.UploadTime)
 	protoNodeResource.DownLoadCnt = ormNodeResource.DownLoadCnt
 	protoNodeResource.State = protoManage.State(ormNodeResource.State)
 }

@@ -99,6 +99,7 @@ type NodeResource struct {
 	UploaderID  		int64		`gorm:"NOT NULL;"`
 	UploaderName  		string		`gorm:"NOT NULL;"`
 	UploaderType  		int64		`gorm:"NOT NULL;"`
+	UploadTime  		time.Time	`gorm:"NOT NULL;"`
 	DownLoadCnt			int64		`gorm:"NOT NULL;"`
 	State				int32		`gorm:"NOT NULL;"`
 }

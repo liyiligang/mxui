@@ -50,7 +50,7 @@ func (db *Server) FindNodeResourceWithValid(nodeResource orm.NodeResource) error
 
 func (db *Server) FindNodeResourceWithInvalid() ([]orm.NodeResource, error) {
 	var nodeResourceList []orm.NodeResource
-	err := db.Gorm.Where("State=? and updatedAt<=?", protoManage.State_StateNormal,
+	err := db.Gorm.Where("State=? and uploadTime<=?", protoManage.State_StateNormal,
 		time.Now().Add(-24*time.Hour*time.Duration(config.LocalConfig.File.MaxAge))).Find(&nodeResourceList).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		return nodeResourceList, nil
@@ -110,16 +110,16 @@ func (db *Server) SetNodeResourceFilter(tx *gorm.DB, req *protoManage.ReqNodeRes
 	var uploadTime []interface{}
 	for index, item := range req.UploadTime {
 		if item.BeginTime > 0 {
-			sql += "(updatedAt >= ?"
+			sql += "(uploadTime >= ?"
 			uploadTime = append(uploadTime, Jtool.TimeUnixToFormat(item.BeginTime))
 			if item.EndTime > 0 {
-				sql += " and updatedAt <= ?)"
+				sql += " and uploadTime <= ?)"
 				uploadTime = append(uploadTime, Jtool.TimeUnixToFormat(item.EndTime))
 			}else {
 				sql += ")"
 			}
 		}else {
-			sql += "(updatedAt <= ?)"
+			sql += "(uploadTime <= ?)"
 			uploadTime = append(uploadTime, Jtool.TimeUnixToFormat(item.EndTime))
 		}
 		if index < len(req.UploadTime)-1 {

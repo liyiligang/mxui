@@ -344,6 +344,7 @@ export default defineComponent ({
 
 .funcCallTabs{
     width: 100%;
+    min-height: 400px;
     flex: auto;
     display: flex;
     flex-direction: column;

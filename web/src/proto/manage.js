@@ -4704,6 +4704,7 @@ export const protoManage = $root.protoManage = (() => {
          * @property {number|null} [UploaderID] NodeResource UploaderID
          * @property {string|null} [UploaderName] NodeResource UploaderName
          * @property {protoManage.NotifySenderType|null} [UploaderType] NodeResource UploaderType
+         * @property {number|null} [UploadTime] NodeResource UploadTime
          * @property {number|null} [DownLoadCnt] NodeResource DownLoadCnt
          * @property {protoManage.State|null} [State] NodeResource State
          */
@@ -4788,6 +4789,14 @@ export const protoManage = $root.protoManage = (() => {
         NodeResource.prototype.UploaderType = 0;
 
         /**
+         * NodeResource UploadTime.
+         * @member {number} UploadTime
+         * @memberof protoManage.NodeResource
+         * @instance
+         */
+        NodeResource.prototype.UploadTime = $util.Long ? $util.Long.fromBits(0,0,false) : 0;
+
+        /**
          * NodeResource DownLoadCnt.
          * @member {number} DownLoadCnt
          * @memberof protoManage.NodeResource
@@ -4843,10 +4852,12 @@ export const protoManage = $root.protoManage = (() => {
                 writer.uint32(/* id 7, wireType 2 =*/58).string(message.UploaderName);
             if (message.UploaderType != null && Object.hasOwnProperty.call(message, "UploaderType"))
                 writer.uint32(/* id 8, wireType 0 =*/64).int32(message.UploaderType);
+            if (message.UploadTime != null && Object.hasOwnProperty.call(message, "UploadTime"))
+                writer.uint32(/* id 9, wireType 0 =*/72).int64(message.UploadTime);
             if (message.DownLoadCnt != null && Object.hasOwnProperty.call(message, "DownLoadCnt"))
-                writer.uint32(/* id 9, wireType 0 =*/72).int64(message.DownLoadCnt);
+                writer.uint32(/* id 10, wireType 0 =*/80).int64(message.DownLoadCnt);
             if (message.State != null && Object.hasOwnProperty.call(message, "State"))
-                writer.uint32(/* id 10, wireType 0 =*/80).int32(message.State);
+                writer.uint32(/* id 11, wireType 0 =*/88).int32(message.State);
             return writer;
         };
 
@@ -4906,9 +4917,12 @@ export const protoManage = $root.protoManage = (() => {
                     message.UploaderType = reader.int32();
                     break;
                 case 9:
-                    message.DownLoadCnt = reader.int64();
+                    message.UploadTime = reader.int64();
                     break;
                 case 10:
+                    message.DownLoadCnt = reader.int64();
+                    break;
+                case 11:
                     message.State = reader.int32();
                     break;
                 default:
@@ -4983,6 +4997,9 @@ export const protoManage = $root.protoManage = (() => {
                 case 2:
                     break;
                 }
+            if (message.UploadTime != null && message.hasOwnProperty("UploadTime"))
+                if (!$util.isInteger(message.UploadTime) && !(message.UploadTime && $util.isInteger(message.UploadTime.low) && $util.isInteger(message.UploadTime.high)))
+                    return "UploadTime: integer|Long expected";
             if (message.DownLoadCnt != null && message.hasOwnProperty("DownLoadCnt"))
                 if (!$util.isInteger(message.DownLoadCnt) && !(message.DownLoadCnt && $util.isInteger(message.DownLoadCnt.low) && $util.isInteger(message.DownLoadCnt.high)))
                     return "DownLoadCnt: integer|Long expected";
@@ -5065,6 +5082,15 @@ export const protoManage = $root.protoManage = (() => {
                 message.UploaderType = 2;
                 break;
             }
+            if (object.UploadTime != null)
+                if ($util.Long)
+                    (message.UploadTime = $util.Long.fromValue(object.UploadTime)).unsigned = false;
+                else if (typeof object.UploadTime === "string")
+                    message.UploadTime = parseInt(object.UploadTime, 10);
+                else if (typeof object.UploadTime === "number")
+                    message.UploadTime = object.UploadTime;
+                else if (typeof object.UploadTime === "object")
+                    message.UploadTime = new $util.LongBits(object.UploadTime.low >>> 0, object.UploadTime.high >>> 0).toNumber();
             if (object.DownLoadCnt != null)
                 if ($util.Long)
                     (message.DownLoadCnt = $util.Long.fromValue(object.DownLoadCnt)).unsigned = false;
@@ -5131,6 +5157,11 @@ export const protoManage = $root.protoManage = (() => {
                 object.UploaderType = options.enums === String ? "NotifySenderTypeUnknow" : 0;
                 if ($util.Long) {
                     let long = new $util.Long(0, 0, false);
+                    object.UploadTime = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
+                } else
+                    object.UploadTime = options.longs === String ? "0" : 0;
+                if ($util.Long) {
+                    let long = new $util.Long(0, 0, false);
                     object.DownLoadCnt = options.longs === String ? long.toString() : options.longs === Number ? long.toNumber() : long;
                 } else
                     object.DownLoadCnt = options.longs === String ? "0" : 0;
@@ -5158,6 +5189,11 @@ export const protoManage = $root.protoManage = (() => {
                 object.UploaderName = message.UploaderName;
             if (message.UploaderType != null && message.hasOwnProperty("UploaderType"))
                 object.UploaderType = options.enums === String ? $root.protoManage.NotifySenderType[message.UploaderType] : message.UploaderType;
+            if (message.UploadTime != null && message.hasOwnProperty("UploadTime"))
+                if (typeof message.UploadTime === "number")
+                    object.UploadTime = options.longs === String ? String(message.UploadTime) : message.UploadTime;
+                else
+                    object.UploadTime = options.longs === String ? $util.Long.prototype.toString.call(message.UploadTime) : options.longs === Number ? new $util.LongBits(message.UploadTime.low >>> 0, message.UploadTime.high >>> 0).toNumber() : message.UploadTime;
             if (message.DownLoadCnt != null && message.hasOwnProperty("DownLoadCnt"))
                 if (typeof message.DownLoadCnt === "number")
                     object.DownLoadCnt = options.longs === String ? String(message.DownLoadCnt) : message.DownLoadCnt;
