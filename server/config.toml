@@ -6,8 +6,8 @@ OpenRegister = true
 [Node]
 NodeName = ''
 
-[Chart]
-MaxAge = 1                       #File retention time: days
+[Node.Report]
+MaxAge = 1                       #Report Value retention time: days
 
 [File]
 SavePath = '../store/cache/'

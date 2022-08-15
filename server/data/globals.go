@@ -77,8 +77,13 @@ func (data *Data) DataInvalidDeal() {
 	if err != nil {
 		Jlog.Warn("find invalid resource fail", "error", err)
 	}
-	err = data.NodeReportValDelByMaxAge(config.LocalConfig.Chart.MaxAge)
+	err = data.NodeReportValDelByMaxAge(config.LocalConfig.Node.Report.MaxAge)
 	if err != nil {
 		Jlog.Warn("delete invalid node report val fail", "error", err)
 	}
+	count, err := data.DB.FindNodeReportValCount()
+	if err != nil {
+		Jlog.Warn("get report val count fail", "error", err)
+	}
+	Jlog.Info("get report val count success", "count", count)
 }
