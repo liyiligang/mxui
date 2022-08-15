@@ -20,10 +20,11 @@ import (
 	"github.com/liyiligang/mxui/protoFiles/protoManage"
 	"github.com/liyiligang/mxui/typedef/orm"
 	"gorm.io/gorm"
+	"time"
 )
 
 func (db *Server) FindNodeReportVal(req *protoManage.ReqNodeReportValList) ([]orm.NodeReportVal, error) {
-	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx := db.Gorm.Offset(int(req.Page.Count * req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeReportValFilter(tx, req)
 	var NodeReportValList []orm.NodeReportVal
 	err := tx.Order("id desc").Find(&NodeReportValList).Error
@@ -46,8 +47,12 @@ func (db *Server) DelNodeReportValByNodeID(nodeID int64) error {
 	return db.Gorm.Where("reportID in(?)", subQuery1).Delete(&orm.NodeReportVal{}).Error
 }
 
+func (db *Server) DelNodeReportValByMaxAge(maxAge int) error {
+	return db.Gorm.Where("updatedAt<=?", time.Now().Add(-24*time.Hour*time.Duration(maxAge))).Delete(&orm.NodeReportVal{}).Error
+}
+
 func (db *Server) FindLastNodeReportValByNodeReport(req *protoManage.ReqNodeReportValList) ([]orm.NodeReportVal, error) {
-	tx := db.Gorm.Offset(int(req.Page.Count*req.Page.Num)).Limit(int(req.Page.Count))
+	tx := db.Gorm.Offset(int(req.Page.Count * req.Page.Num)).Limit(int(req.Page.Count))
 	tx = db.SetNodeReportValFilter(tx, req)
 	subQuery1 := tx.Model(&orm.NodeReport{})
 	subQuery2 := db.Gorm.Select("t.id").Table("(?) as t", subQuery1)

@@ -40,7 +40,7 @@ import (
 	"time"
 )
 
-func (app *App) InitConfig(){
+func (app *App) InitConfig() {
 	configPath := ""
 	if len(os.Args) > 1 {
 		configPath = os.Args[1]
@@ -51,7 +51,7 @@ func (app *App) InitConfig(){
 	}
 }
 
-func (app *App) InitLogServer(){
+func (app *App) InitLogServer() {
 	logConfig := Jlog.LogInitConfig{
 		Debug:      config.LocalConfig.Debug,
 		Level:      config.LocalConfig.Log.Level,
@@ -60,16 +60,16 @@ func (app *App) InitLogServer(){
 		MaxBackups: config.LocalConfig.Log.MaxNum,
 		MaxAge:     config.LocalConfig.Log.MaxAge,
 	}
-	if config.LocalConfig.Node.NodeName != ""{
+	if config.LocalConfig.Node.NodeName != "" {
 		logConfig.InitialFields = map[string]interface{}{
-			"@nodeName":     config.LocalConfig.Node.NodeName,
+			"@nodeName": config.LocalConfig.Node.NodeName,
 		}
 	}
 	Jlog.InitGlobalLog(logConfig)
 	Jlog.Info("log component is start")
 }
 
-func (app *App) InitSystemDir(){
+func (app *App) InitSystemDir() {
 	if !Jtool.IsDirExist(config.LocalConfig.File.SavePath) {
 		err := Jtool.MakeDir(config.LocalConfig.File.SavePath)
 		if err != nil {
@@ -82,10 +82,7 @@ func (app *App) InitSystemDir(){
 func (app *App) InitTimer() {
 	app.Timer = cron.New(cron.WithSeconds())
 	_, err := app.Timer.AddFunc("* * 0 * * *", func() {
-		err := app.Data.NodeResourceDelWithTimer()
-		if err != nil {
-			Jlog.Warn("find invalid resource fail", "error", err)
-		}
+		app.Data.DataInvalidDeal()
 	})
 	if err != nil {
 		Jlog.Fatal("init timer fail", "error", err)
@@ -94,10 +91,7 @@ func (app *App) InitTimer() {
 }
 
 func (app *App) StartTimer() error {
-	err := app.Data.NodeResourceDelWithTimer()
-	if err != nil {
-		return err
-	}
+	app.Data.DataInvalidDeal()
 	app.Timer.Start()
 	return nil
 }
@@ -109,12 +103,12 @@ func (app *App) StopTimer() error {
 
 func (app *App) InitDBServer() error {
 	db, err := Jorm.GormInit(Jorm.OrmInitConfig{
-		Name: 		 config.LocalConfig.DB.Name,
+		Name:        config.LocalConfig.DB.Name,
 		SqlDsn:      config.LocalConfig.DB.Connect,
 		MaxKeepConn: config.LocalConfig.DB.MaxKeepConn,
 		MaxConn:     config.LocalConfig.DB.MaxConn,
 		MaxLifetime: time.Duration(config.LocalConfig.DB.MaxLifeTime) * time.Second,
-		LogWrite:    Jlog.IOWrite( "DB-Log", nil),
+		LogWrite:    Jlog.IOWrite("DB-Log", nil),
 		TableCheck:  orm.InitOrmTable,
 	})
 	if err != nil {
@@ -146,11 +140,11 @@ func (app *App) InitWebServer() error {
 		ReadWaitTime:  time.Duration(config.LocalConfig.HTTP.WebSocket.ReadWaitTime) * time.Second,
 		PingWaitTime:  time.Duration(config.LocalConfig.HTTP.WebSocket.PingWaitTime) * time.Second,
 		PongWaitTime:  time.Duration(config.LocalConfig.HTTP.WebSocket.PongWaitTime) * time.Second,
-		Call:          Jweb.WebsocketCall{
-			WebsocketConnect: app.Request.WebsocketConnect,
+		Call: Jweb.WebsocketCall{
+			WebsocketConnect:   app.Request.WebsocketConnect,
 			WebsocketConnected: app.Request.WebsocketConnected,
-			WebsocketClosed: app.Request.WebsocketClosed,
-			WebsocketError: app.Request.WebsocketError,
+			WebsocketClosed:    app.Request.WebsocketClosed,
+			WebsocketError:     app.Request.WebsocketError,
 		},
 	}
 
@@ -158,77 +152,77 @@ func (app *App) InitWebServer() error {
 		r.NoRoute(app.Request.NotFoundWithHttp)
 		r.NoMethod(app.Request.NotFoundWithHttp)
 
-		r.GET( "/ws", websocketConfig.WsHandle)
+		r.GET("/ws", websocketConfig.WsHandle)
 
 		r.Use(gzip.Gzip(gzip.DefaultCompression))
 		r.Use(static.ServeRoot("/", config.LocalConfig.HTTP.Files.Web))
-		r.GET("/nodeResource/download/"+ ":name", app.Request.ConvertWithHttpFileDownload(app.Request.ReqNodeResourceDownload))
-		r.POST( "/system/getInitInfo", app.Request.ConvertWithHttp(app.Request.ReqFindSystemInfo))
-		r.POST( "/manager/login", app.Request.ConvertWithHttp(app.Request.ReqManagerLogin))
-		r.POST( "/manager/register", app.Request.ConvertWithHttp(app.Request.ReqManagerRegister))
+		r.GET("/nodeResource/download/"+":name", app.Request.ConvertWithHttpFileDownload(app.Request.ReqNodeResourceDownload))
+		r.POST("/system/getInitInfo", app.Request.ConvertWithHttp(app.Request.ReqFindSystemInfo))
+		r.POST("/manager/login", app.Request.ConvertWithHttp(app.Request.ReqManagerLogin))
+		r.POST("/manager/register", app.Request.ConvertWithHttp(app.Request.ReqManagerRegister))
 
 		r.Use(app.Request.ParseTokenWithHttp)
 		//manager
-		r.POST( "/manager/find", app.Request.ConvertWithHttp(app.Request.ReqManagerFind))
-		r.POST( "/manager/findNickName", app.Request.ConvertWithHttp(app.Request.ReqManagerFindNickName))
-		r.POST( "/manager/findByID", app.Request.ConvertWithHttp(app.Request.ReqManagerFindByID))
-		r.POST( "/manager/updatePasswd", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdatePasswd))
-		r.POST( "/manager/updateSetting", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdateSetting))
+		r.POST("/manager/find", app.Request.ConvertWithHttp(app.Request.ReqManagerFind))
+		r.POST("/manager/findNickName", app.Request.ConvertWithHttp(app.Request.ReqManagerFindNickName))
+		r.POST("/manager/findByID", app.Request.ConvertWithHttp(app.Request.ReqManagerFindByID))
+		r.POST("/manager/updatePasswd", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdatePasswd))
+		r.POST("/manager/updateSetting", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdateSetting))
 
 		//topLink
-		r.POST( "/topLink/find", app.Request.ConvertWithHttp(app.Request.ReqTopLinkFind))
-		r.POST( "/topLink/findByID", app.Request.ConvertWithHttp(app.Request.ReqTopLinkFindByID))
+		r.POST("/topLink/find", app.Request.ConvertWithHttp(app.Request.ReqTopLinkFind))
+		r.POST("/topLink/findByID", app.Request.ConvertWithHttp(app.Request.ReqTopLinkFindByID))
 
 		//node
-		r.POST( "/node/find", app.Request.ConvertWithHttp(app.Request.ReqNodeFind))
-		r.POST( "/node/findByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFindByID))
-		r.POST( "/node/del", app.Request.ConvertWithHttp(app.Request.ReqNodeDel))
+		r.POST("/node/find", app.Request.ConvertWithHttp(app.Request.ReqNodeFind))
+		r.POST("/node/findByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFindByID))
+		r.POST("/node/del", app.Request.ConvertWithHttp(app.Request.ReqNodeDel))
 
 		//nodeFunc
-		r.POST( "/nodeFunc/find", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncFind))
+		r.POST("/nodeFunc/find", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncFind))
 
 		//nodeFuncCall
-		r.POST( "/nodeFuncCall/call", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCall))
-		r.POST( "/nodeFuncCall/find", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallFind))
-		r.POST( "/nodeFuncCall/findByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallFindByID))
-		r.POST( "/nodeFuncCall/findParameterByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallParameterFindByID))
-		r.POST( "/nodeFuncCall/findReturnValByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallReturnValFindByID))
+		r.POST("/nodeFuncCall/call", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCall))
+		r.POST("/nodeFuncCall/find", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallFind))
+		r.POST("/nodeFuncCall/findByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallFindByID))
+		r.POST("/nodeFuncCall/findParameterByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallParameterFindByID))
+		r.POST("/nodeFuncCall/findReturnValByID", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncCallReturnValFindByID))
 
 		//nodeReport
-		r.POST( "/nodeReport/find", app.Request.ConvertWithHttp(app.Request.ReqNodeReportFind))
+		r.POST("/nodeReport/find", app.Request.ConvertWithHttp(app.Request.ReqNodeReportFind))
 
 		//nodeReportVal
-		r.POST( "/nodeReportVal/find", app.Request.ConvertWithHttp(app.Request.ReqNodeReportValFind))
+		r.POST("/nodeReportVal/find", app.Request.ConvertWithHttp(app.Request.ReqNodeReportValFind))
 
 		//nodeNotify
-		r.POST( "/nodeNotify/find", app.Request.ConvertWithHttp(app.Request.ReqNodeNotifyFind))
+		r.POST("/nodeNotify/find", app.Request.ConvertWithHttp(app.Request.ReqNodeNotifyFind))
 
 		//nodeResource
-		r.POST( "/nodeResource/check", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceCheck))
-		r.POST( "/nodeResource/find", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceFind))
+		r.POST("/nodeResource/check", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceCheck))
+		r.POST("/nodeResource/find", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceFind))
 		r.POST("/nodeResource/upload", app.Request.ConvertWithHttpFileUpload(app.Request.ReqNodeResourceUpload))
-		r.POST( "/nodeResource/del", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceDel))
+		r.POST("/nodeResource/del", app.Request.ConvertWithHttp(app.Request.ReqNodeResourceDel))
 
 		//nodeTest
-		r.POST( "/nodeTest/test", app.Request.ConvertWithHttp(app.Request.ReqNodeTest))
+		r.POST("/nodeTest/test", app.Request.ConvertWithHttp(app.Request.ReqNodeTest))
 
 		r.Use(app.Request.LevelCheckWithHttp(protoManage.Level_LevelSuper))
 
 		//topLink
-		r.POST( "/topLink/add", app.Request.ConvertWithHttp(app.Request.ReqTopLinkAdd))
-		r.POST( "/topLink/del", app.Request.ConvertWithHttp(app.Request.ReqTopLinkDel))
-		r.POST( "/topLink/update", app.Request.ConvertWithHttp(app.Request.ReqTopLinkUpdate))
+		r.POST("/topLink/add", app.Request.ConvertWithHttp(app.Request.ReqTopLinkAdd))
+		r.POST("/topLink/del", app.Request.ConvertWithHttp(app.Request.ReqTopLinkDel))
+		r.POST("/topLink/update", app.Request.ConvertWithHttp(app.Request.ReqTopLinkUpdate))
 
 		//manager
-		r.POST( "/manager/add", app.Request.ConvertWithHttp(app.Request.ReqManagerAdd))
-		r.POST( "/manager/del", app.Request.ConvertWithHttp(app.Request.ReqManagerDel))
-		r.POST( "/manager/update", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdate))
+		r.POST("/manager/add", app.Request.ConvertWithHttp(app.Request.ReqManagerAdd))
+		r.POST("/manager/del", app.Request.ConvertWithHttp(app.Request.ReqManagerDel))
+		r.POST("/manager/update", app.Request.ConvertWithHttp(app.Request.ReqManagerUpdate))
 
 		//nodeFunc
-		r.POST( "/nodeFunc/del", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncDel))
+		r.POST("/nodeFunc/del", app.Request.ConvertWithHttp(app.Request.ReqNodeFuncDel))
 
 		//nodeReport
-		r.POST( "/nodeReport/del", app.Request.ConvertWithHttp(app.Request.ReqNodeReportDel))
+		r.POST("/nodeReport/del", app.Request.ConvertWithHttp(app.Request.ReqNodeReportDel))
 	}
 
 	webConfig := Jweb.WebInitConfig{
@@ -272,15 +266,15 @@ func (app *App) StopWebServer() error {
 
 func (app *App) InitRpcServer() error {
 	s, err := Jrpc.GrpcServerInit(Jrpc.RpcServerConfig{
-		RpcBaseConfig:Jrpc.RpcBaseConfig{
-			Addr:           config.LocalConfig.Grpc.ListenAddr,
-			PublicKeyPath:  config.LocalConfig.Grpc.PublicKeyPath,
+		RpcBaseConfig: Jrpc.RpcBaseConfig{
+			Addr:          config.LocalConfig.Grpc.ListenAddr,
+			PublicKeyPath: config.LocalConfig.Grpc.PublicKeyPath,
 		},
 		PrivateKeyPath: config.LocalConfig.Grpc.PrivateKeyPath,
 		RegisterCall: func(s *grpc.Server) {
 			protoManage.RegisterRpcEngineServer(s, &app.Request)
 		},
-		ServerOption: 	[]grpc.ServerOption{
+		ServerOption: []grpc.ServerOption{
 			grpc.MaxSendMsgSize(constant.ConstRpcServerMaxMsgSize), grpc.MaxRecvMsgSize(constant.ConstRpcServerMaxMsgSize),
 			grpc.UnaryInterceptor(app.Request.RpcUnaryInterceptor), grpc.StreamInterceptor(app.Request.RpcStreamInterceptor)},
 	})
@@ -305,5 +299,3 @@ func (app *App) StopRpcServer() error {
 	app.RpcServer.Stop()
 	return nil
 }
-
-

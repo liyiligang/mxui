@@ -540,7 +540,7 @@ export module request {
                     'Content-type':'multipart/form-data',
                     'token':globals.globalsData.manager.info.Token
                 },
-                timeout: globals.globalsConfig.httpConfig.requestTimeout,
+                timeout: globals.globalsConfig.httpConfig.uploadTimeout,
                 onUploadProgress: onUploadProgressCall
             }).then(response => {
                 if (response.status == 200) {

@@ -6,6 +6,9 @@ OpenRegister = true
 [Node]
 NodeName = ''
 
+[Chart]
+MaxAge = 1                       #File retention time: days
+
 [File]
 SavePath = '../store/cache/'
 MaxSize = 200                    #Company: M

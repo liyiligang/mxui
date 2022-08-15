@@ -18,6 +18,7 @@ package data
 
 import (
 	"errors"
+	"github.com/liyiligang/base/component/Jlog"
 	"github.com/liyiligang/base/component/Jtoken"
 	"github.com/liyiligang/mxui/db"
 	"github.com/liyiligang/mxui/gateway"
@@ -27,13 +28,13 @@ import (
 )
 
 type Data struct {
-	DB				*db.Server
-	Gateway			*gateway.Gateway
+	DB      *db.Server
+	Gateway *gateway.Gateway
 }
 
 type TokenData struct {
-	UserID 				int64
-	UserLevel 			protoManage.Level
+	UserID    int64
+	UserLevel protoManage.Level
 }
 
 func (data *Data) FindSystemInfo(info *protoManage.ReqSystemInitInfo) (*protoManage.AnsSystemInitInfo, error) {
@@ -47,7 +48,7 @@ func (data *Data) FindSystemInfo(info *protoManage.ReqSystemInitInfo) (*protoMan
 	return ans, nil
 }
 
-func (data *Data) ParseToken (token string) (*TokenData, error) {
+func (data *Data) ParseToken(token string) (*TokenData, error) {
 	claims, err := Jtoken.ParseToken(token, config.LocalConfig.Token.Key)
 	if err != nil {
 		return nil, err
@@ -69,4 +70,15 @@ func (data *Data) ParseToken (token string) (*TokenData, error) {
 		return nil, errors.New("level assert fail with float64")
 	}
 	return &TokenData{UserID: int64(id), UserLevel: protoManage.Level(level)}, nil
+}
+
+func (data *Data) DataInvalidDeal() {
+	err := data.NodeResourceDelWithTimer()
+	if err != nil {
+		Jlog.Warn("find invalid resource fail", "error", err)
+	}
+	err = data.NodeReportValDelByMaxAge(config.LocalConfig.Chart.MaxAge)
+	if err != nil {
+		Jlog.Warn("delete invalid node report val fail", "error", err)
+	}
 }

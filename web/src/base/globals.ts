@@ -42,7 +42,8 @@ export module globals {
 			setting:"setting"
 		},
 		httpConfig:{
-			requestTimeout: 10000
+			requestTimeout: 1000 * 10,
+			uploadTimeout: 1000 * 60 * 60 * 2
 		},
 		wsConfig:{
 			wsReconnectTime: 5000,

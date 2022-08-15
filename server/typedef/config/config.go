@@ -26,6 +26,9 @@ type Config struct {
 	Node struct {
 		NodeName string `toml:"NodeName"`
 	} `toml:"Node"`
+	Chart struct {
+		MaxAge int `toml:"MaxAge"`
+	} `toml:"Chart"`
 	File struct {
 		SavePath string `toml:"SavePath"`
 		MaxSize  int    `toml:"MaxSize"`

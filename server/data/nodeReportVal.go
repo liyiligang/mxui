@@ -49,3 +49,7 @@ func (data *Data) NodeReportValDelByNodeReportID(reportID int64) error {
 func (data *Data) NodeReportValDelByNodeID(nodeID int64) error {
 	return data.DB.DelNodeReportValByNodeID(nodeID)
 }
+
+func (data *Data) NodeReportValDelByMaxAge(maxAge int) error {
+	return data.DB.DelNodeReportValByMaxAge(maxAge)
+}
