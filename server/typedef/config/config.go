@@ -46,7 +46,8 @@ type Config struct {
 		StartDuration int    `toml:"StartDuration"`
 		StopDuration  int    `toml:"StopDuration"`
 	} `toml:"Token"`
-	DB struct {
+	Db struct {
+		ShowLog     bool   `toml:"ShowLog"`
 		Name        string `toml:"Name"`
 		Connect     string `toml:"Connect"`
 		MaxConn     int    `toml:"MaxConn"`
@@ -59,15 +60,11 @@ type Config struct {
 		PrivateKeyPath string `toml:"PrivateKeyPath"`
 	} `toml:"Grpc"`
 	HTTP struct {
-		ShowLog    bool   `toml:"ShowLog"`
-		UseHTTPS   bool   `toml:"UseHttps"`
-		ListenAddr string `toml:"ListenAddr"`
-		HTTPS      struct {
-			RedirectAddr   string `toml:"RedirectAddr"`
-			PublicKeyPath  string `toml:"PublicKeyPath"`
-			PrivateKeyPath string `toml:"PrivateKeyPath"`
-		} `toml:"Https"`
-		WebSocket struct {
+		ShowLog        bool   `toml:"ShowLog"`
+		ListenAddr     string `toml:"ListenAddr"`
+		PublicKeyPath  string `toml:"PublicKeyPath"`
+		PrivateKeyPath string `toml:"PrivateKeyPath"`
+		WebSocket      struct {
 			ReadWaitTime  int `toml:"ReadWaitTime"`
 			WriteWaitTime int `toml:"WriteWaitTime"`
 			PingWaitTime  int `toml:"PingWaitTime"`

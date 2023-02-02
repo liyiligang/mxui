@@ -27,6 +27,7 @@ StartDuration = 0                #How long will the token take effect (hours, 0:
 StopDuration = 1000              #How long after the token takes effect (hours, 0: immediate)
 
 [DB]
+ShowLog = false
 Name = 'sqlite'
 Connect = '../store/db/mxui.db'
 MaxConn =  0                     #Maximum number of connections, 0 means unlimited
@@ -40,11 +41,7 @@ PrivateKeyPath = '../store/cert/grpc/server_key.pem'
 
 [Http]
 ShowLog = false
-UseHttps = false
 ListenAddr = '0.0.0.0:806'
-
-[Http.Https]
-RedirectAddr = '0.0.0.0:806'      #Redirect HTTP to HTTPS
 PublicKeyPath = '../store/cert/https/public.pem'
 PrivateKeyPath = '../store/cert/https/private.key'
 

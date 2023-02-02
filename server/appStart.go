@@ -34,7 +34,7 @@ import (
 	"github.com/liyiligang/mxui/typedef/orm"
 	"github.com/robfig/cron/v3"
 	"google.golang.org/grpc"
-	"io/ioutil"
+	"io"
 	"log"
 	"os"
 	"time"
@@ -52,10 +52,10 @@ func (app *App) InitConfig() {
 }
 
 func (app *App) InitLogServer() {
-	logConfig := Jlog.LogInitConfig{
+	logConfig := Jlog.LogConfig{
 		Debug:      config.LocalConfig.Debug,
 		Level:      config.LocalConfig.Log.Level,
-		LocalPath:  config.LocalConfig.Log.Path,
+		Path:       config.LocalConfig.Log.Path,
 		MaxSize:    config.LocalConfig.Log.MaxSize,
 		MaxBackups: config.LocalConfig.Log.MaxNum,
 		MaxAge:     config.LocalConfig.Log.MaxAge,
@@ -65,12 +65,13 @@ func (app *App) InitLogServer() {
 			"@nodeName": config.LocalConfig.Node.NodeName,
 		}
 	}
-	Jlog.InitGlobalLog(logConfig)
+	Jlog.InitLog(logConfig)
 	Jlog.Info("log component is start")
 }
 
 func (app *App) InitSystemDir() {
-	if !Jtool.IsDirExist(config.LocalConfig.File.SavePath) {
+	isDirExist, _ := Jtool.IsDirExist(config.LocalConfig.File.SavePath)
+	if !isDirExist {
 		err := Jtool.MakeDir(config.LocalConfig.File.SavePath)
 		if err != nil {
 			Jlog.Fatal("system dir create fail", "error", err)
@@ -102,15 +103,20 @@ func (app *App) StopTimer() error {
 }
 
 func (app *App) InitDBServer() error {
-	db, err := Jorm.GormInit(Jorm.OrmInitConfig{
-		Name:        config.LocalConfig.DB.Name,
-		SqlDsn:      config.LocalConfig.DB.Connect,
-		MaxKeepConn: config.LocalConfig.DB.MaxKeepConn,
-		MaxConn:     config.LocalConfig.DB.MaxConn,
-		MaxLifetime: time.Duration(config.LocalConfig.DB.MaxLifeTime) * time.Second,
-		LogWrite:    Jlog.IOWrite("DB-Log", nil),
+	ormConfig := Jorm.OrmConfig{
+		Name:        config.LocalConfig.Db.Name,
+		SqlDsn:      config.LocalConfig.Db.Connect,
+		MaxKeepConn: config.LocalConfig.Db.MaxKeepConn,
+		MaxConn:     config.LocalConfig.Db.MaxConn,
+		MaxLifetime: time.Duration(config.LocalConfig.Db.MaxLifeTime) * time.Second,
 		TableCheck:  orm.InitOrmTable,
-	})
+	}
+	if config.LocalConfig.Db.ShowLog {
+		ormConfig.LogWrite = Jlog.GetLogger("debug")
+	} else {
+		ormConfig.LogWrite = Jlog.GetLogger("warn")
+	}
+	db, err := Jorm.GormInit(ormConfig)
 	if err != nil {
 		return err
 	}
@@ -225,17 +231,17 @@ func (app *App) InitWebServer() error {
 		r.POST("/nodeReport/del", app.Request.ConvertWithHttp(app.Request.ReqNodeReportDel))
 	}
 
-	webConfig := Jweb.WebInitConfig{
+	webConfig := Jweb.WebConfig{
 		Debug:          config.LocalConfig.Debug,
 		Addr:           config.LocalConfig.HTTP.ListenAddr,
-		IsHttps:        config.LocalConfig.HTTP.UseHTTPS,
-		RedirectAddr:   config.LocalConfig.HTTP.HTTPS.RedirectAddr,
-		PublicKeyPath:  config.LocalConfig.HTTP.HTTPS.PublicKeyPath,
-		PrivateKeyPath: config.LocalConfig.HTTP.HTTPS.PrivateKeyPath,
+		PublicKeyPath:  config.LocalConfig.HTTP.PublicKeyPath,
+		PrivateKeyPath: config.LocalConfig.HTTP.PrivateKeyPath,
 		RouteCall:      routeFunc,
 	}
-	if !config.LocalConfig.HTTP.ShowLog {
-		webConfig.LogWrite = ioutil.Discard
+	if config.LocalConfig.HTTP.ShowLog {
+		webConfig.AccessWrite = Jlog.GetLogger("debug")
+	} else {
+		webConfig.AccessWrite = io.Discard
 	}
 
 	httpServer := Jweb.WebInit(webConfig)
